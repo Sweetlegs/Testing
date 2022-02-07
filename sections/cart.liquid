@@ -1,16 +1,3 @@
-<script data-cfasync="false" type="text/javascript">if (typeof Shopify === "undefined") var Shopify = {}; Shopify.cart = {{ cart | json }};</script> 
-<div id="sca-fg-owl-carousel">
-  <div id="freegift_cart_container" class="sca-fg-cart-container" style="display: none;">
-    <div id="freegift_message" class="owl-carousel"></div>
-  </div> 
-  <div id="sca-fg-slider-cart" style="display: none;">
-    <div class="sca-fg-cart-title">
-      <strong>Select your free gift (s)</strong>
-    </div>
-    <div id="sca_freegift_list" class="owl-carousel"></div>
-  </div>
-</div>
-<div id="sca_fg_cart">
 <!-- /sections/cart.liquid -->
 {%- liquid
   assign hide_quantity = 'quantity--hide'
@@ -39,7 +26,7 @@
     {% render 'cart-empty' %}
   </div>
   {% comment %} Cart is full {% endcomment %}
-  <div class="limoniapps-discountninja-cart-root wrapper pt2 pb4 {{ full_init }}" data-cart-form data-cart-loading>
+  <div class="wrapper pt2 pb4 {{ full_init }}" data-cart-form data-cart-loading>
     <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
       <h3 class="h3--body">{{ 'cart.general.title' | t }}</h3>
       <div class="errors" data-form-errors style="display: none;"></div>
@@ -173,17 +160,10 @@
               {% render 'cart-subtotal' %}
             </div>
 
-            <p class="limoniapps-discountninja-cart-subtotal">
+            <p>
               <span class="cart__footer__label">{{ 'cart.general.subtotal' | t }}</span>
-              
-<span class="saso-cart-original-total"><span class="cart__footer__value limoniapps-discountninja-cart-subtotal-price" data-cart-final>{{ cart.total_price | money }}</span></span>
-<span class="saso-cart-total"></span>
-
+              <span class="cart__footer__value" data-cart-final>{{ cart.total_price | money }}</span>
             </p>
-            {% comment %}
-            The placeholder below is used by Limoni Apps Discount Ninja to display the cart promotion summary configured in the settings of the app.
-            {% endcomment %}
-            <div class="limoniapps-discountninja-cart-promotionsummary"></div>
             <p class="cart__footer__small">{{ 'cart.general.shipping_at_checkout' | t }}</p>
           </div>
 
@@ -192,10 +172,6 @@
             <button type="submit" name="checkout" class="btn btn--primary btn--large uppercase checkout__button">
               {{ 'cart.general.checkout' | t }}
             </button>
-            {% comment %}
-            The placeholder below is used by Limoni Apps Discount Ninja to display the cart discount code field configured in the settings of the app.
-            {% endcomment %}
-            <div class="limoniapps-discountninja-cartdiscountfield-placeholder"></div>
           </div>
 
           <div class="cart__footer__update">
@@ -218,6 +194,4 @@
       </div>
     </form>
   </div>
-</div>
-
 </div>

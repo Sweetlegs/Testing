@@ -146,7 +146,7 @@
       data-main-menu-text-item
     {%- endunless -%}
   {%- endcapture -%}
-
+  
   <div class="header__desktop__buttons{% if section.settings.use_icons %} header__desktop__buttons--icons{% endif %}" {{ text_wrapper }}>
 
     {%- if shop.customer_accounts_enabled and section.settings.enable_account -%}
@@ -333,8 +333,6 @@
             <div  data-takes-space class="header__desktop__bar__r">
               <div class="header__desktop__bar__inline">
                 {{ menu }}
-               
-              
                 {{ cart_content }}
               </div>
             </div>
@@ -378,8 +376,6 @@
   "url": {{ shop.url | append: page.url | json }}
 }
 </script>
-
-<script src="https://www.googleoptimize.com/optimize.js?id=OPT-M2JJHPC" />
 
 {% if template.name == 'index' %}
   {% assign potential_action_target = shop.url | append: "/search?q={search_term_string}" %}

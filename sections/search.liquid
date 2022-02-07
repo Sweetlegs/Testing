@@ -23,12 +23,6 @@
           {%- endif -%}
 
           {% for item in search.results %}
-            {%- assign limoniapps_discountninja_product = item -%}
-            {%- if limoniapps_discountninja_product.object_type == 'product' -%}
-              {%- if limoniapps_discountninja_product.tags contains 'GWP' -%}
-                {%- continue -%}
-              {%- endif -%}
-            {%- endif -%}
             <div class="grid">
 
               {% if item.featured_media.preview_image %}

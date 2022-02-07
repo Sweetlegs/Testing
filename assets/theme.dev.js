@@ -3499,9 +3499,6 @@
           }
         });
       this.updateTotal();
-      
-      //Integration with Discount Ninja
-      document.dispatchEvent(new CustomEvent('limoniapps:discountninja:drawercart:opened'));
     }
 
     initQuantity() {

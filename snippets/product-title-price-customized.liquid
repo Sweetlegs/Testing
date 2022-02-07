@@ -12,7 +12,7 @@
   {% render 'okendo-reviews-product-rating-summary', product: product %}
 
   <div class="product__price__wrap">
-    <div class="product__price__main limoniapps-discountninja-productprice" data-price-wrapper>
+    <div class="product__price__main" data-price-wrapper>
       <span class="product__price">
         <span data-product-price {% if current_variant.compare_at_price > current_variant.price %} class="product__price--sale"{% endif %}>
           {{ current_variant.price | money }}
@@ -66,8 +66,4 @@
       {% endif %}
     </div>
   </div>
-  
-  {% comment %}
-The placeholder below is used by Limoni Apps Discount Ninja to display the promotion text configured in the building blocks of the offers in the app.
-{% endcomment %}
-<div class="limoniapps-discountninja-promotioncard-productpage"></div>
+</div>

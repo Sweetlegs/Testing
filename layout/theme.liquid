@@ -23,7 +23,6 @@
   <link rel="preload" href="{{ 'vendor.js' | asset_url }}" as="script">
   <link rel="preload" href="{{ 'theme.dev.js' | asset_url }}" as="script">
   <link rel="preload" href="{{ 'theme.dev.css' | asset_url }}" as="style">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
   {%- if settings.favicon != blank -%}
     <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
@@ -137,7 +136,6 @@
   <script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script>
   <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'theme.dev.js' | asset_url }}" defer="defer"></script>
-{% render 'limoniapps-discountninja-header' %}{%- if product -%}{%- assign discountninjaproduct = product -%}{%- endif -%}{%- if collection -%}{%- assign discountninjacollection = collection -%}{%- endif -%}
 
   <script>
     (function () {
@@ -170,6 +168,10 @@
 
   <!-- Shopify app scripts =========================================================== -->
   {{ content_for_header }}
+{%- if product -%}{%- assign discountninjaproduct = product -%}{%- endif -%}{%- if collection -%}{%- assign discountninjacollection = collection -%}{%- endif -%}
+{%- if product -%}{%- assign discountninjaproduct = product -%}{%- endif -%}{%- if collection -%}{%- assign discountninjacollection = collection -%}{%- endif -%}
+{%- if product -%}{%- assign discountninjaproduct = product -%}{%- endif -%}{%- if collection -%}{%- assign discountninjacollection = collection -%}{%- endif -%}
+{% render 'limoniapps-discountninja-header' %}{%- if product -%}{%- assign discountninjaproduct = product -%}{%- endif -%}{%- if collection -%}{%- assign discountninjacollection = collection -%}{%- endif -%}
 </head>
 
 <body id="{{ page_title | handle }}" class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}{% if customer %} customer-logged-in{% endif %}">
@@ -189,7 +191,7 @@
     {% render 'search-predictive', version: 'search-popdown' %}
   </div>
 
-{% include 'limoniapps-discountninja-body' %}
+
   {% render 'template-swatch' %}
   
 
@@ -206,13 +208,11 @@
 
   <!-- And above this comment line ================================================== -->
 
-
+{% include 'limoniapps-discountninja-body' %}
 {% section 'geolocation-popup' %}
 {% render 'preorder-now' %}
   
 {% include 'swymSnippet' %}
-{% section 'popup-chat' %}
-
 
  
   
@@ -230,57 +230,7 @@
 <script async type="text/javascript" id="stamped-script-widget" data-api-key="pubkey-x5M56Bl1L9w49ORh3vblQoXU7eqsOZ" src="https://cdn1.stamped.io/files/widget.min.js"></script>
 <!-- Stamped - End script -->
 
- 
-<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https://config.gorgias.chat/gorgias-chat-bundle-loader.js?applicationId=6257"></script>
-<script id="gorgias-chat-shopify-install">!function(_){_.SHOPIFY_PERMANENT_DOMAIN="{{shop.permanent_domain}}",_.SHOPIFY_CUSTOMER_ID="{{customer.id}}",_.SHOPIFY_CUSTOMER_EMAIL="{{customer.email}}"}(window||{});</script>
-<script>
- gorgiasChat.init().then(function(GorgiasChat) {
-  const helpButton  = document.getElementById("help-button");
-  // helpButton.style.backgroundImage = "url('https://cdn.shopify.com/s/files/1/0104/0492/t/95/assets/chatbox.png?v=1644181426')";
-  helpButton.addEventListener("click", openChatApp);
-  helpButton.classList.toggle('show');
-  document.getElementById("live_chat").addEventListener("click", openGorgiasChatApp);
-  
-
-  function openChatApp() {
-    const popupElement = document.getElementById("chat-popover");
-    popupElement.classList.toggle('show');
-    if(helpButton.innerHTML === "CLOSE") {
-        //helpButton.innerHTML ="CONTACT US";
-        helpButton.setAttribute('class', "show");
-      GorgiasChat.close();      
-    } else {
-      
-      helpButton.innerHTML ="CLOSE";
-      helpButton.setAttribute('class', "close");
-    }
-  }
-  
-   function openGorgiasChatApp() {
-    const popupElement = document.getElementById("chat-popover");   
-    GorgiasChat.open();
-  }
-  
-  
-  GorgiasChat.on('widget:opened', function(data) {
-    GorgiasChat.close();
-
-     
-  });
-    
-})
- function currencyFormSubmit(event) {
-    event.target.form.submit();
-  }
-
-  document.querySelectorAll('.shopify-currency-form select').forEach(function(element) {
-    element.addEventListener('change', currencyFormSubmit);
-  });
- 
- 
-</script>
-  <!--Gorgias Chat Widget End-->
-</body>
+  </body>
 </html>
 
 

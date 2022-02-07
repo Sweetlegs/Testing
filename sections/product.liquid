@@ -1,7 +1,3 @@
-{%- if product.tags contains 'BK GWP' -%}
-  <script>window.location.href="/"</script>
-{%- endif %}
-
 {%- liquid
   assign thumbs_align = section.settings.align
   assign ratio = product.media[0].preview_image.aspect_ratio

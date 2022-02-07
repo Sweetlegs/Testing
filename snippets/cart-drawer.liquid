@@ -20,7 +20,7 @@
   data-drawer="drawer-cart"
   aria-label="{{ 'layout.cart.title' | t }}" 
   id="drawer-cart">
-  <div class="drawer__content limoniapps-discountninja-drawercart-root">
+  <div class="drawer__content">
     <div class="drawer__top">
 
       <div class="drawer__top__left">
@@ -171,19 +171,11 @@
       <div class="drawer__footer__subtotal" data-cart-subtotal>
         {% render 'cart-subtotal' %}
       </div>
-      {% comment %}
-The placeholder below is used by Limoni Apps Discount Ninja to display the cart promotion summary configured in the settings of the app.
-{% endcomment %}
-<div class="limoniapps-discountninja-cart-promotionsummary"></div>
-      
+
       <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
         <button type="submit" name="checkout" class="btn btn--primary btn--large btn--full uppercase checkout__button">
-          {{ 'cart.general.checkout' | t }} • <span class="limoniapps-discountninja-cart-subtotal-price" data-cart-final>{{ cart.total_price | money }}</span>
+          {{ 'cart.general.checkout' | t }} • <span data-cart-final>{{ cart.total_price | money }}</span>
         </button>
-        {% comment %}
-        The placeholder below is used by Limoni Apps Discount Ninja to display the cart discount code field configured in the settings of the app.
-        {% endcomment %}
-        <div class="limoniapps-discountninja-cartdiscountfield-placeholder"></div>
       </form>
       {% if additional_checkout_buttons and settings.cart_show_additional_buttons %}
         <div class="drawer__checkout__additional">

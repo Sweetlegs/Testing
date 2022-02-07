@@ -87,12 +87,6 @@
               <!-- /snippets/product-grid-item.liquid -->
 
               {% for product in collection.products %}
-                {%- assign limoniapps_discountninja_product = product -%}
-                {%- if limoniapps_discountninja_product.object_type == 'product' -%}
-                  {%- if limoniapps_discountninja_product.tags contains 'BK GWP' -%}
-                    {%- continue -%}
-                  {%- endif -%}
-                {%- endif -%}
               <div>
                 {% render 'product-grid-item', product: product %}
                 </div>

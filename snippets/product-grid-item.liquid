@@ -138,18 +138,8 @@
   {%- endcapture -%}
 {%- endif -%}
 
-{% comment %}Added/Modified by Limoni Apps on January 17 2022 to support Discount Ninja{% endcomment %}
-<div
-    data-limoniapps-discountninja-product-handle="{{ product.handle }}"
-	data-limoniapps-discountninja-product-collections="{{ product.collections | map: 'handle' | join: ',' }}"
-	data-limoniapps-discountninja-product-collectionids="{{ product.collections | map: 'id' | join: ',' }}"
-	data-limoniapps-discountninja-product-available="{{ product.available}}"
-	data-limoniapps-discountninja-product-price="{{ product.first_available_variant.price}}"
-	data-limoniapps-discountninja-product-compareatprice="{{ product.compare_at_price_max}}"
-	data-limoniapps-discountninja-product-pricevaries="{{ product.price_varies}}"
-	data-limoniapps-discountninja-product-pricemin="{{ product.price_min}}"
-	data-limoniapps-discountninja-product-tags="{{ product.tags | join: ',' }}"
-     class="product-grid-item {{ image_classes }}{% if on_sale %} on-sale{% endif %}{% if tagged %} tagged{% endif %}" data-grid-item>
+
+<div class="product-grid-item {{ image_classes }}{% if on_sale %} on-sale{% endif %}{% if tagged %} tagged{% endif %}" data-grid-item>
   <div {{ auto_height }}>
     <a href="{{ product.url | within: collection }}" data-grid-link class="lazy-image{% if double_img %} double__image{% endif %}" aria-label="{{ product.title | strip_html | escape }}" style="padding-top:{{ image_ratio }}%; background-image:  url('{{ product.featured_media.preview_image | img_url: '1x1' }}');">
       <div class="lazyload fade-in collection__image__top"
@@ -178,35 +168,32 @@
         {{ product.title }}
       </p>
       <div class="product__grid__price">
-        {% comment %}Added/Modified by Limoni Apps on January 17 2022 to support Discount Ninja{% endcomment %}
-        <div class="limoniapps-discountninja-productprice limoniapps-discountninja-align-center">
-          <span class="price{% if on_sale %} on-sale{% endif %}">
-            {% if product.price_varies %}{{ 'products.general.from' | t }} {% endif %}
-            {{ product.price | money }}
-          </span>
-          {% if sold_out %}
-          <br /><em>{{ 'products.product.sold_out' | t }}</em>
-          {% endif %}
-          {% if on_sale %}
-          <span class="compare-at">
-            {{ product.compare_at_price | money }}
-          </span>
-          {% endif %}
-          {% if current_variant.unit_price %}
-            {% capture unit_price_separator %}
-              <span aria-hidden="true">/</span><span class="visually-hidden">{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
-            {% endcapture %}
-            {% capture unit_price_base_unit %}
-              {% if current_variant.unit_price_measurement.reference_value != 1 %}
-                {{ current_variant.unit_price_measurement.reference_value }}
-              {% endif %}
-              {{ current_variant.unit_price_measurement.reference_unit }}
-            {% endcapture %}
-            <br>
-              <span class="visually-hidden">{{ 'products.product.unit_price_label' | t }}</span>
-              <span class="price-per-unit">{{ current_variant.unit_price | money }}{{ unit_price_separator }}{{ unit_price_base_unit }}</span>
-          {% endif %}
-        </div>  
+        <span class="price{% if on_sale %} on-sale{% endif %}">
+          {% if product.price_varies %}{{ 'products.general.from' | t }} {% endif %}
+          {{ product.price | money }}
+        </span>
+        {% if sold_out %}
+        <br /><em>{{ 'products.product.sold_out' | t }}</em>
+        {% endif %}
+        {% if on_sale %}
+        <span class="compare-at">
+          {{ product.compare_at_price | money }}
+        </span>
+        {% endif %}
+        {% if current_variant.unit_price %}
+          {% capture unit_price_separator %}
+            <span aria-hidden="true">/</span><span class="visually-hidden">{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+          {% endcapture %}
+          {% capture unit_price_base_unit %}
+            {% if current_variant.unit_price_measurement.reference_value != 1 %}
+              {{ current_variant.unit_price_measurement.reference_value }}
+            {% endif %}
+            {{ current_variant.unit_price_measurement.reference_unit }}
+          {% endcapture %}
+          <br>
+            <span class="visually-hidden">{{ 'products.product.unit_price_label' | t }}</span>
+            <span class="price-per-unit">{{ current_variant.unit_price | money }}{{ unit_price_separator }}{{ unit_price_base_unit }}</span>
+        {% endif %}
         {% if product.metafields.spr.reviews %}
           <br />
           <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>

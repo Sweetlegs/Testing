@@ -62,11 +62,10 @@
               {%- endfor -%}
             {%- endif -%}
           </div>
-          <div class="limoniapps-discountninja-cart-item-product-comment" data-limoniapps-discountninja-cart-key="{{line_item.key}}"></div>
         </div>
 
         <div class="cart__items__price">
-          <p class="line__price limoniapps-discountninja-cart-item-product-price" data-limoniapps-discountninja-cart-key="{{line_item.key}}">
+          <p class="line__price">
             {%- assign discounted = false -%}
             {%- if line_item.original_price > line_item.final_price -%}
               {%- assign discounted = true -%}
@@ -106,7 +105,7 @@
           {% endif %}
         </div>
 
-        <div class="cart__items__quantity limoniapps-discountninja-cart-item-quantity" data-limoniapps-discountninja-cart-key="{{line_item.key}}">
+        <div class="cart__items__quantity">
           <div class="quantity__wrapper" data-quantity-selector>
             <button class="quantity__button quantity__button--minus" data-decrease-quantity>&minus;</button>
             <label for="updates_{{ line_item.key }}" class="visually-hidden">{{ 'cart.label.quantity' | t }}</label>
@@ -124,7 +123,7 @@
           </div>
         </div>
 
-       <div class="cart__items__total limoniapps-discountninja-cart-item-line-price" data-limoniapps-discountninja-cart-key="{{line_item.key}}">
+       <div class="cart__items__total">
           {{ line_item.final_line_price | money }}
         </div>
 
