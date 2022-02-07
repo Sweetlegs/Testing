@@ -1,0 +1,59 @@
+
+<div id="popup-geolocation">
+  <h4 class="headline title-font-3">{{section.settings.title}}</h4>
+  <p class="seperator">{{section.settings.text}}</p>
+  <button onclick="closeStay()">Stay here</button>|<button onclick="closePopup()">{{section.settings.button}}</button>
+</div>
+
+
+<script type="text/javascript">
+  var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)redirect\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  console.log("cookie length=" & cookieValue.length);
+  
+  if (cookieValue.length == 0) {
+  fetch('https://geo.sunbowl.ca/json').then(function (response) {
+    return response.json();
+  })
+  .then(function (body) {
+    if(body.country_name.toLowerCase() == 'us'){
+      	document.getElementById("shopify-section-geolocation-popup").style.display = 'flex'
+      }
+  });
+  
+  } 
+  
+  if (cookieValue.length == 5) {
+    document.getElementById("shopify-section-geolocation-popup").style.display = 'none'
+  }
+
+
+  function closePopup(){
+    document.getElementById("shopify-section-geolocation-popup").style.display = 'none';
+    location.href = "https://www.deandavidson.com" + {{request.path | json}}
+  }
+  
+  function closeStay(){
+    document.cookie = "redirect=False;"
+    document.getElementById("shopify-section-geolocation-popup").style.display = 'none'
+  }
+  
+</script>
+
+
+
+{% schema %}
+  {
+    "name": "Geolocation Popoup",
+    "settings": [
+		{"type": "text", "id": "title", "label": "Heading", "default": "Welcome to the Dean Davidson US Store."},
+    	{"type": "text", "id": "text", "label": "Text", "default": "We would like to invite you to visit our Canadian Store. You will be able view prices in CAD by selecting continue."},
+    	{"type": "text", "id": "button", "label": "CTA", "default": "Continue"}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

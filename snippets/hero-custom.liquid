@@ -1,0 +1,78 @@
+{% comment %}
+  Required params:
+  frame_height_class - css class to control frame height
+  parallax_boolean - Boolean value to turn on parallax
+  img_object - Image object to use used
+
+  Example:
+  {% render 'hero', img_object: section.settings.image, mobile_img_object: section.settings.mobile_image, frame_height_class: section.settings.image_height %}
+{% endcomment %}
+
+{%- liquid
+assign default_image = 'blank.svg' | asset_url
+assign height = frame_height_class | default: 'image_height'
+assign image = img_object | default: default_image
+assign mobile_image = mobile_img_object | default: default_image
+assign aspect_ratio = image.aspect_ratio | default: 1 
+assign mobile_aspect_ratio = mobile_image.aspect_ratio | default: 1 
+-%}
+
+<div class="image__hero__frame fade-in-child {{ height }}"
+  data-overflow-background
+  {% if height == 'use_image' %}
+     data-trudy
+    style="--padding-top: {{ 1 | divided_by: aspect_ratio | times: 100 }}%;
+           --mobile-padding-top: {{ 1 | divided_by: mobile_aspect_ratio | times: 100 }}%;
+           --background-image: url('{{ image | img_url: '1x1' }}');
+           --background-mobile-image: url('{{ mobile_image | img_url: '1x1' }}');"
+  {% endif %}
+  {% if settings.parallax_enable %}data-parallax-wrapper{% endif %}>
+
+  <div class="image__hero__pane">
+    <div class="image__hero__scale"
+    {% if settings.parallax_enable %}
+        style="height: {{  1 | divided_by: aspect_ratio | times: 100 }}vw;"
+        data-parallax-img
+    {% endif %}>
+      <div class="background-size-cover desktop lazyload"
+        data-bgset="{% render 'bgset', image: image %}"
+        style="background-position: {{ bg_position | replace: '-', ' ' }};"
+        role="img"
+        aria-label="{{ image.alt | strip_html | escape }}"></div>
+      
+      	<div class="background-size-cover mobile lazyload"
+        data-bgset="{% render 'bgset', image: mobile_image %}"
+        style="background-position: {{ bg_position | replace: '-', ' ' }};"
+        role="img"
+        aria-label="{{ image.alt | strip_html | escape }}"></div>
+    </div>
+  </div>
+
+  <noscript>
+    <img src="{{ image | img_url: '720x' }}" alt="{{ image.alt | strip_html | escape }}" class="responsive-wide-image"/>
+  </noscript>
+</div>
+
+<style>
+  .image__hero__frame {
+    background-image: var(--background-image);
+    padding-top: var(--padding-top);
+  }
+  
+  .background-size-cover.mobile {
+    	display: none;
+    }
+  
+  @media (max-width: 767px) {
+    .image__hero__frame {
+      background-image: var(--background-mobile-image);
+      padding-top: var(--mobile-padding-top);
+    }
+    .background-size-cover.desktop {
+    	display: none;
+    }
+    .background-size-cover.mobile {
+    	display: block;
+    }
+  }
+</style>
