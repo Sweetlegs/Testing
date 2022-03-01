@@ -1,0 +1,97 @@
+<div
+    id="PageHeaderSection"
+    data-section-id="{{ section.id }}"
+    data-section-type="page-header"
+   data-parallax="true">
+
+    <div class="page-hero">
+        
+          <div class="parallax-container">
+            <div
+              class="parallax-image collection-hero__image lazyload"
+              data-bgset="{% include 'bgset', image: section.settings.banner_image %}"
+              data-sizes="auto">
+            </div>
+          </div>
+      	{% if section.settings.video_url != blank %}
+      		<div class="video-player" data-plyr-provider="{{section.settings.video_url.type}}" data-plyr-embed-id="{{section.settings.video_url.id}}"></div>
+      	{% endif %}
+       
+ 
+        <div class="blog-hero__content">
+          <div class="page-width">
+            <header class="section-header section-header--hero">
+              <div class="section-header__noshadow">
+                <h1 class="section-header__title">
+                    {{ section.settings.banner_heading }}
+                </h1>
+              </div>
+            </header>
+          </div>
+        </div>
+    </div>
+</div>
+
+<section class="about-us">
+    {% if section.settings.intro_text != '' %}
+        <div class="container">
+            <div class="text-wrapper ">
+                {{ section.settings.intro_text }}
+            </div>
+            <center><pa></pa></center>
+        </div>
+    {% endif %}
+
+    {% if section.settings.intro_text2 != '' %}
+        <div class="text-wrapper3 ">
+            {{ section.settings.intro_text2 }}
+        </div>
+    {% endif %}
+</section>
+
+<div class="page-width page-content">
+
+    <div class="grid">
+        <div class="grid__item medium-up--three-quarters medium-up--push-one-eighth">
+
+            {{ page.content }}
+
+        </div>
+    </div>
+
+    </div>
+
+{% schema %}
+  {
+    "name": "Find a Spa",
+    "settings": [
+      {
+        "type": "text",
+        "id": "banner_heading",
+        "label": "Banner Heading"
+      },
+      {
+        "type": "image_picker",
+        "id": "banner_image",
+        "label": "Banner Image",
+		"info": "Recommended image size: 1920 x 420 pixels"
+      },
+	  {
+        "id": "video_url",
+        "type": "video_url",
+        "label": "Video URL",
+        "accept": ["youtube", "vimeo"]
+      },
+      {
+        "type": "richtext",
+        "id": "intro_text",
+        "label": "Introduction"
+      },
+      {
+        "type": "richtext",
+        "id": "intro_text2",
+        "label": "Introduction"
+      }
+    ]
+  }
+{% endschema %}

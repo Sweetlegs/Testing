@@ -1,0 +1,63 @@
+<section class="our-promise">
+  <div class="container">
+      <div class="heading">
+          <h2>{{ section.settings.promise_heading }}</h2>
+      </div>
+      <div class="content">
+          <ul>
+            {% for block in section.blocks %}
+              {% if block.type == 'list' %}
+                <li>{{ block.settings.promise_list }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+      </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "About Our Promise",
+    "settings": [          
+      {
+        "type": "header",
+        "content": "Promise Section"
+      },
+      {
+        "type": "text",
+        "id": "promise_heading",
+        "label": "Section Heading"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "logo",
+        "name": "Testimonial Logos",
+        "settings": [
+          {
+            "id": "t_logo",
+            "type": "image_picker",
+            "label": "Logo"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "name": "Promise List",
+        "settings": [
+          {
+            "type": "text",
+            "id": "promise_list",
+            "label": "List text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

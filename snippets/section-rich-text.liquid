@@ -1,0 +1,33 @@
+ <div class="index-section {{ section_class }}">
+  <div class="page-width text-{{ section.settings.align_text }}">
+    <div class="grid">
+      <section class="about-us">
+        <div class="container">
+          <div class="text-wrapper" data-aos="fade-in">
+            <p>{{ section.settings.title }}</p>
+           </div>
+            <center><pa></pa></center>
+            <div class="text-wrapper2" data-aos="fade-in">
+            {{ section.settings.text }}
+          </div>
+        </div>
+      </section>
+      <!--
+      <div class="grid__item{% if section.settings.narrow_column %} medium-up--four-sixths medium-up--push-one-sixth{% endif %}">
+        {% if section.settings.title != blank %}
+          <p class="h2">
+            {{ section.settings.title | escape }}
+          </p>
+        {% endif %}
+        <center><pa></pa></center>
+        {% if section.settings.text != blank %}
+          <div class="rte">
+            {% if section.settings.enlarge_text %}<div class="enlarge-text h2">{% endif %}
+              {{ section.settings.text }}
+            {% if section.settings.enlarge_text %}</div>{% endif %}
+          </div>
+        {% endif %}
+      </div> -->
+    </div>
+  </div>
+</div>

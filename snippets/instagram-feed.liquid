@@ -1,0 +1,20 @@
+
+<div class="product-wrapper instagram-section" style="background-color: #fff;">
+  <section class="product-wrapper-header">
+    <div class="container">
+      <h2 class="product-wrapper-heading" style="font-size: 70px">{{ section.settings.heading }}
+
+        <a href="https://instagram.com/{{ section.settings.instagram_username }}" target="_blank">
+            <span class="follow-me">@{{ section.settings.instagram_username }}</span>
+        </a>
+      </h2>
+    </div>
+  </section>
+  <div class="container">
+    <div class="instagram-section__wrap">
+      <div class="instagram-wrap grid" id="instagram-feed" data-user="{{ section.settings.instagram_username }}">
+
+      </div>
+    </div>
+  </div>
+</div>

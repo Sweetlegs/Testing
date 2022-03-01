@@ -1,0 +1,26 @@
+{% section 'blog-farmanac-header' %}
+
+<nav class="find-facial-nav has-margin-bottom">
+    <div class="page-width">
+        <ul>
+            <li><a href="/blogs/{{ blog.handle }}">All</a></li>
+
+            {%- comment -%}
+            
+            {% for tag in blog.all_tags %}
+              {%- include 'filter-out-custom-tags' -%}
+              <li class="{% if current_tags contains tag %}active{% endif %}"><a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a></li>
+            {% endfor %}
+            {%- endcomment -%}
+
+            {% assign FarmanacCategories = 'Farmacist’s Tips, Ranch Life, Farm to Treatment, Just Harvested, Seeds of Love, Dog Bed Fairy Deliveries' | split: ',' %}
+
+            {% for categories in FarmanacCategories %}
+                <li class="{% if current_tags contains categories %}active{% endif %}"><a href="/blogs/{{ blog.handle }}/tagged/{{ categories | handleize }}">{{ categories }}</a></li>
+            {% endfor %}
+
+        </ul>
+    </div>
+</nav>
+
+{% section 'farmanac-template' %}

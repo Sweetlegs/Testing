@@ -1,0 +1,141 @@
+<!-- page-making-videos -->
+{% if section.settings.enable_filter %}
+{% assign filter_categories = section.settings.filter_categories | split: ',' %}
+<nav class="find-facial-nav has-margin-bottom">
+  <div class="page-width">
+    <ul class="tag-list-filters unique">
+      <li data-tag=""><a href="#">All</a></li>
+      {% for category in filter_categories %}
+      <li data-tag="{{category}}"><a href="#">{{ category }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</nav>
+{% endif %}
+
+<div id="section-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="blocks">
+  <div class="page-width page-content">
+    <div class="blog-template__container">
+      <h2 class="span-head__style popitheading text-left">
+        {{section.settings.title}}
+      </h2>
+        {% for blocks in section.blocks %}
+      	<div class="grid">
+          <div class="grid__item medium-up--one-quarter"></div>
+          <div class="grid__item medium-up--one-half section-product" data-tags='{{blocks.settings.tags | split: ',' | json}}' data-aos="row-of-3">
+            <div class="grid">
+              <div class="grid__item">   
+                {% if blocks.settings.video %}
+                <div class='embed-container'>
+                  <iframe src='https://player.vimeo.com/video/{{blocks.settings.video.id}}' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                </div>
+                {% endif %}
+              </div>
+              <div class="grid__item">
+                <div class="article__grid-meta {% if template == 'index' %}center{% endif %}">
+
+                  <a href="{{ blocks.settings.link }}" class="article__title" >{{ blocks.settings.title }}</a>
+                  {% assign content = blocks.settings.content | strip_html %}
+                  {% unless content == blank %}
+                    <div class="rte article__excerpt">
+                      {{content}}
+                    </div>
+                  {% endunless %}
+
+                  <div>
+                    {% unless blocks.settings.link1_text == blank %}
+                    {% assign lin1 = blocks.settings.link1 %}
+                    {% if blocks.settings.link1 == blank %}
+                      {% assign link1 = 'https://vimeo.com/' | append: blocks.settings.video.id %}
+                    {% endif %}
+                    {% assign target = "" %}
+                    {% if link1 contains 'http' %}
+                      {% assign target = 'target="_blank"' %}
+                    {% endif %}
+                    <a {{target}} href="{{ link1 }}" class="btn btn-secondary">{{ blocks.settings.link1_text }}</a>
+                    {% endunless %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Videos",
+	"settings": [
+	  {
+		"type": "textarea",
+		"id": "title",
+		"label": "Title",
+		"default": "Marketing Videos"
+	  },
+	  {
+		"type": "checkbox",
+		"id": "enable_filter",
+		"label": "Enable Filter"
+	  },
+	  {
+		"type": "checkbox",
+		"id": "hide_title",
+		"label": "Hide Title"
+	  },
+	  {
+		"type": "text",
+		"id": "filter_categories",
+		"label": "Filter Categories",
+		"info": "Comma separated list of categories to show in filter bar (no spaces)",
+		"default": "Season,Scent,Product Used,Focus,Special Event"
+	  }
+	],
+    "blocks": [
+      {
+        "type": "product",
+        "name": "Video",
+        "settings": [
+          {
+            "type": "video_url",
+            "id": "video",
+            "label": "Video",
+			"accept": ["vimeo"]
+          },
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "content",
+            "type": "richtext",
+            "label": "Content"
+          },
+		  {
+			"type": "header",
+			"content": "Link 1"
+		  },
+          {
+            "id": "link1",
+            "type": "url",
+            "label": "Link"
+          },
+          {
+            "id": "link1_text",
+            "type": "text",
+            "label": "Link Text",
+            "default": "Download"
+          },
+		  {
+			"type": "textarea",
+			"id": "tags",
+			"label": "Tags",
+			"info": "Commada separated categories"
+		  }
+        ]
+      }
+    ]
+  }
+{% endschema %}

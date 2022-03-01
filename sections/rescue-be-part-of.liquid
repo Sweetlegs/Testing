@@ -1,0 +1,86 @@
+<div id="section-{{ section.id }}" data-section-id="{{ section.id }}" class="blog-hp" data-section-type="blocks">
+  <div class="page-width page-content">
+    <div class="">
+      <h2 class="span-head__style popitheading text-left" style="margin-top: -115px; margin-bottom:60px">
+        Be Part of the Rescue
+      </h2>
+      <div class="grid grid--uniform MasonGrid">
+        
+        {% for blocks in section.blocks %}
+        <div class="grid__item medium-up--one-third" data-aos="row-of-3">
+          <div class="grid">
+            <div class="grid__item small--one-third">
+              {% if blocks.settings.image %}
+              <a href="{{ blocks.settings.link }}" class="article__grid-image">
+                <div class="image-wrap" style="height: 0; padding-bottom: 80%;">
+                  {%- assign img_url = blocks.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                  <img class="lazyload"
+                       data-src="{{ img_url }}"
+                       data-widths="[180, 360, 540, 720, 900, 1080]"
+                       data-aspectratio="{{ blocks.settings.image.aspect_ratio }}"
+                       data-sizes="auto"
+                       alt="{{ blocks.settings.image.alt | escape }}">
+                  <noscript>
+                    <img class="lazyloaded" src="{{ blocks.settings.image | img_url: '400x' }}" alt="{{ blocks.settings.title | escape }}">
+                  </noscript>
+                </div>
+              </a> 
+              {% endif %}
+            </div>
+            <div class="grid__item small--two-thirds">
+              <div class="article__grid-meta">
+                <a href="{{ blocks.settings.link }}" class="article__title" >{{ blocks.settings.title }}</a>
+                <div class="rte article__excerpt">
+                  {% if blocks.settings.content.size > 0 %}
+                  {{ blocks.settings.content | strip_html | truncatewords: 25 }}
+                  {% else %}
+                  {{ blocks.settings.content | strip_html | truncatewords: 25 }}
+                  {% endif %}
+                </div>
+
+                <div>
+                  <a href="{{ blocks.settings.link }}" class="btn btn-secondary">Learn More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Be Part Of The Rescue",
+    "blocks": [
+      {
+        "type": "rescue-block",
+        "name": "Rescue Block",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "content",
+            "type": "richtext",
+            "label": "Content"
+          },
+          {
+            "id": "link",
+            "type": "url",
+            "label": "Link"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

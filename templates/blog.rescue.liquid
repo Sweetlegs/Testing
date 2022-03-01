@@ -1,0 +1,82 @@
+
+
+{% if request.path contains '/tagged/virtual-cams' %}
+  {% section 'page-virtualcam' %}
+{% else %}  
+  <div id="blog">
+    {% section 'rescue-template' %}
+  </div>
+{% endif %}
+
+<style>
+  #shopify-section-hawke-rescue__content .product-wrapper {
+    padding-bottom:130px;
+  }
+  
+  #section-rescue-be-part-of .page-content {
+    padding-top:0;
+  }
+  
+  #section-rescue-be-part-of h2 {
+    margin-top:-65px;
+  }
+  
+  #section-rescue-be-part-of .grid__item.small--two-thirds .article__grid-meta {
+    border: 1px solid #C5BBB6;
+    margin-top: -60px;
+    padding-top: 60px;
+    padding-bottom: 30px;
+    max-width: 420px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 34px;
+    padding-left: 34px;
+  }
+  
+  @media screen and (min-width:769px) {
+    #section-rescue-be-part-of .grid__item.small--one-third {
+      max-width:350px;
+      margin:0 auto;
+      float:none;
+    }
+  }
+  @media screen and (min-width:769px) and (max-width:1300px) {
+    #section-rescue-be-part-of .grid__item.small--two-thirds .article__grid-meta {
+      margin-top: -80px;
+    }
+    #section-rescue-be-part-of .grid__item .image-wrap img{
+      padding: 0 10px;
+    }
+  }
+  @media screen and (max-width:768px) {
+    #section-rescue-be-part-of .grid__item.small--two-thirds .article__grid-meta {
+      margin-top: 0;
+      padding-top: 30px;
+    }
+  }
+  /*.blog-template__container .grid__item.small--one-third{
+    padding: 0 22px 0 42px;
+  }
+  .blog-template__container .grid__item.small--two-thirds .article__grid-meta{
+    border: 1px solid;
+    padding: 20px;
+    margin-top: -30px;
+  } */
+.h2 {
+  font-size: 30px;
+}
+</style>
+<script>
+  function defer(method) {
+    if (window.$)
+      method();
+    else
+      setTimeout(function() { defer(method) }, 50);
+  }
+  
+  defer(function() {
+    $('.pagination a').each(function() {
+      $(this).attr('href', $(this).attr('href') + '#blog');
+    });
+  });
+</script>

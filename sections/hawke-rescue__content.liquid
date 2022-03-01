@@ -1,0 +1,155 @@
+
+<div class="product-wrapper">
+  <section class="product-wrapper-header">
+    <div class="container">
+      <h2 class="product-wrapper-heading">{{ section.settings.text_image_heading }}</h2>
+    </div>
+  </section>
+  <section class="go-fresh">
+    <div class="container">
+      <div class="display-table">
+        <div class="display-cell"  data-aos="fade-left">
+          <div class="text-wrap"> 
+            <div class="inner-wrapper">
+
+              <h2>{{ section.settings.heading_left_first }}</h2>
+              {{ section.settings.content_left_first }}
+              <a class="btn btn-secondary" href="{{ section.settings.link_left_first }}"><span>{{ section.settings.button_caption_left_first }}</span></a>             
+            </div>
+          </div>
+        </div>
+
+        <div class="display-cell" data-aos="fade-in">
+          <div class="img-wrap v3" style="background-position:top; background-image:url( '{{ section.settings.image_first | img_url: '720x720' }}' )"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="go-fresh">
+    <div class="container">
+      <div class="display-table v2">
+        <div class="display-cell v2" data-aos="fade-in">
+          <div class="img-wrap v3" style="background-position:top; background-image:url( '{{ section.settings.image_second | img_url: '720x720' }}' )"></div>
+        </div>
+        <div class="display-cell v2" data-aos="fade-right">
+          <div class="text-wrap v2">
+            <div class="inner-wrapper">
+              <h2>{{ section.settings.heading_left_second }}</h2>  
+              {{ section.settings.content_left_second }}
+
+              <a class="btn btn-secondary" href="{{ section.settings.link_left_second }}"><span>{{ section.settings.button_caption_left_second }}</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="go-fresh">
+    <div class="container">
+      <div class="display-table">
+        <div class="display-cell" data-aos="fade-left">
+          <div class="text-wrap">
+            <div class="inner-wrapper">
+              <h2>{{ section.settings.heading_left_third }}</h2>
+              {{ section.settings.content_left_third }}
+              <a class="btn btn-secondary" href="{{ section.settings.link_left_third }}"><span>{{ section.settings.button_caption_left_third }}</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="display-cell" data-aos="fade-in">
+          <div class="img-wrap v3" style="background-position:top; background-image:url( '{{ section.settings.image_third | img_url: '720x720' }}' )"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Rescue Highlights",
+    "settings": [
+      {
+         "type":      "text",
+         "id": "text_image_heading",
+         "label":   "Text Image Heading"
+      },
+      {
+        "type": "text",
+        "id": "heading_left_first",
+        "label": "First Section Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "content_left_first",
+        "label": "First Section content"
+      },
+      {
+        "type": "url",
+        "id": "link_left_first",
+        "label": "First Section link"
+      },
+      {
+        "type": "text",
+        "id": "button_caption_left_first",
+        "label": "First Section Button Text"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_first",
+        "label": "First Section Image"
+      },
+      {
+        "type": "text",
+        "id": "heading_left_second",
+        "label": "Second Section Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "content_left_second",
+        "label": "Second Section content"
+      },
+      {
+        "type": "url",
+        "id": "link_left_second",
+        "label": "Second Section link"
+      },
+      {
+        "type": "text",
+        "id": "button_caption_left_second",
+        "label": "Second Section Button Text"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_second",
+        "label": "Second Section Image"
+      },
+      {
+        "type": "text",
+        "id": "heading_left_third",
+        "label": "Third Section Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "content_left_third",
+        "label": "Third Section content"
+      },
+      {
+        "type": "url",
+        "id": "link_left_third",
+        "label": "Third Section link"
+      },
+      {
+        "type": "text",
+        "id": "button_caption_left_third",
+        "label": "Third Section Button Text"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_third",
+        "label": "Third Section Image"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,9 +1,50 @@
-<!-- /sections/404.liquid -->
-<div class="wrapper pt2 pb4">
-  <div class="grid">
-    <div class="grid__item medium-up--two-thirds medium-up--push-one-sixth">
-      <h1 class="title text-center">{{ 'general.404.title' | t }}</h1>
-      <p class="text-center">{{ 'general.404.subtext_html' | t }}</p>
-    </div>
-  </div>
+<div class="page-width page-content">
+    <header class="section-header section-header--404">
+        <h1 class="section-header__title">{{ section.settings.title | default: 'general.404.title' }}</h1>
+        <div class="rte text-spacing">
+            {% if section.settings.image %}
+               <p> <img src="{{ section.settings.image | img_url: '1000x' }}" alt="{{ section.settings.title }}" /></p>
+            {% endif %}
+            {{ section.settings.content }}
+            <p><a href="{{ section.settings.btn_link | default: '/' }}">{{ section.settings.btn_text }}</a></p>
+        </div>
+    </header>
 </div>
+
+
+{% schema %}
+  {
+    "name": "404 content",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "404 Page Not Found"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content",
+        "default": "<p>The page you were looking for does not exist.</p>"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "Recommended image size: 1220 x 600 pixels"
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Button Text",
+        "default": "Continue shopping"
+      },
+      {
+        "type": "url",
+        "id": "btn_link",
+        "label": "Button Link"
+      }
+    ]
+  }
+{% endschema %}

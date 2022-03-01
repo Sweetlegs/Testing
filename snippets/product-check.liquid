@@ -1,0 +1,33 @@
+{% assign can_see = false %}
+<script>console.log({{product.tags | json }})</script>
+{% if customer.tags contains 'employee' %}
+	{% if product.tags contains 'treatment' or product.tags contains "standard" or product.tags contains "lifestyle"  %}
+		{% assign can_see = false %}
+	{% else %}
+		{% assign can_see = true %}
+	{% endif %}
+{% else %}
+  {% if product.tags contains 'employee' %}
+    {% if customer.tags contains 'employee' %}
+      {% assign can_see = true %}
+    {% endif %}
+  {% endif %}
+  {% if product.tags contains 'spa' %}
+    {% if customer.tags contains 'spa' %}
+      {% assign can_see = true %}
+    {% endif %}
+  {% endif %}
+  {% if product.tags contains 'retail' %}
+    {% if customer.tags contains 'retail' %}
+      {% assign can_see = true %}
+    {% endif %}
+  {% endif %}
+  {% if product.tags contains 'treatment' or product.tags contains "standard" or product.tags contains "lifestyle"  %}
+          {% assign can_see = false %}
+  {% endif %}
+  {% if product.id == 6893550633144 %}
+      {% if customer.tags contains 'woodhouse'%}
+          {% assign can_see = true %}
+      {% endif %}
+  {% endif %}
+{% endif %}

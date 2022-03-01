@@ -1,0 +1,17 @@
+<div class="BatchForm">
+    <form action="{{ routes.search_url }}" method="get" class="input-group trackBatch-form" role="search">
+        <input type="hidden" name="view" value="track-batch">
+        <input type="hidden" name="type" value="article">
+        <input type="search" value="{{ search.terms | escape | replace: 'tags:', '' }}" placeholder="{{ 'general.search.placeholder' | t }}" class="input-group-field vq" aria-label="{{ 'general.search.placeholder' | t }}">
+    
+        <input type="hidden" name="q" class="qF" value="{{ search.terms | escape | replace: 'tags:', '' }}" />
+    
+    
+        <div class="input-group-btn">
+          <button type="submit" class="{{ search_btn_style }}">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-search" viewBox="0 0 64 64"><path d="M47.16 28.58A18.58 18.58 0 1 1 28.58 10a18.58 18.58 0 0 1 18.58 18.58zM54 54L41.94 42"/></svg>
+            <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
+          </button>
+        </div>
+      </form>
+</div>

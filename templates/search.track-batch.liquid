@@ -1,0 +1,148 @@
+{% paginate search.results by 12 %}
+
+{% section 'page-tack-batch-template' %}
+
+<div class="page-width page-content">
+
+  {%- include 'breadcrumbs' -%}
+
+  <div class="searchpage-input">
+    {% include 'batch-search-form' %}
+  </div>
+
+  <div class="grid">
+    <div class="grid__item">
+
+      {% if search.performed %}
+
+        <div data-section-id="{{ section.id }}" data-section-type="collection-template">
+          <div class="section-header">
+            {% if search.results_count == 0 %}
+            	{%- section 'batch-search-noresult' -%}
+            {% else %}
+            <h2 class="section-header__title">
+              {{ 'general.search.result_count' | t: count: search.results_count }}
+            </h2>
+            {% endif %}
+          </div>
+
+          <div class="grid grid--uniform MasonGrid">
+            {% for item in search.results %}
+
+            <div class="grid__item grid-search medium-up--one-quarter small--one-half"  data-aos="row-of-3">
+                <div class="grid">
+                    <div class="grid__item small--one-whole">
+                      {% if item.image  != blank %}
+                        <a href="{{ item.url }}" class="article__grid-image">
+                          {% if fixed_aspect_ratio %}
+                            <div class="image-wrap">
+                              <img class="lazyloaded" src="{{ item.image | img_url: '600x' }}" style="width: 100%;" alt="{{ item.title | escape }}">
+                            </div>
+                          {% else %}
+                            <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: item.image.aspect_ratio }}%;">
+                              {%- assign img_url = item.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                              <img class="lazyload"
+                                  data-src="{{ img_url }}"
+                                  data-widths="[180, 360, 540, 720, 900, 1080]"
+                                  data-aspectratio="{{ item.image.aspect_ratio }}"
+                                  data-sizes="auto"
+                                  alt="{{ item.image.alt | escape }}">
+                              <noscript>
+                                <img class="lazyloaded" src="{{ item.image | img_url: '400x' }}" alt="{{ item.title | escape }}">
+                              </noscript>
+                            </div>
+                          {% endif %}
+                        </a>
+                      {% else %}
+                        <div class="article__grid-image">
+                          {% if fixed_aspect_ratio %}
+                            <div class="image-wrap">
+                              <div
+                                class="grid__image-ratio grid__image-ratio--cover grid__image-ratio--{{ image_size }} lazyload">
+                                
+                                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                              </div>
+                            </div>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="grid__item small--one-whole">
+                      <div class="article__grid-meta">
+                        <div class="inner">
+                        {% if section.settings.blog_show_date or item.tags.size > 0 or articles.comments_count > 0 %}
+                          <div class="article__date">
+                            {% if section.settings.blog_show_tags and item.tags.size > 0 %}
+                              {% for tag in item.tags %}
+                                {%- include 'filter-out-custom-tags' -%}
+                                <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a> &middot;
+                              {% endfor %}
+                            {% endif %}
+                            {% if section.settings.blog_show_comments and item.comments_count > 0 %}
+                              <a href="{{ item.url }}#comments">
+                                {{ 'blogs.comments.with_count' | t: count: item.comments_count }}
+                              </a> &middot;
+                            {% endif %}
+                            {% if section.settings.blog_show_date %}
+                              {{ item.published_at | time_tag: format: 'month_day_year' }}
+                            {% endif %}
+                          </div>
+                        {% endif %}
+                
+                        <a href="{{ item.url }}" class="article__title">{{ item.title }}</a>
+                
+                        {% if section.settings.blog_show_author %}
+                          <div class="article__author">by {{ item.author }}</div>
+                        {% endif %}
+                
+                          <div class="rte article__excerpt">
+                            {% if item.excerpt.size > 0 %}
+                              {{ item.excerpt }}
+                            {% else %}
+                              {{ item.content | strip_html | truncatewords: 40 }}
+                            {% endif %}
+                          </div>
+                        
+                        {% if template contains 'index' %}
+                          <div class="rte article__excerpt">
+                            {% if item.excerpt.size > 0 %}
+                              {{ item.excerpt }}
+                            {% else %}
+                              {{ item.content | strip_html | truncatewords: 40 }}
+                            {% endif %}
+                          </div>
+                        
+                        <a href="#" class="btn btn-secondary">
+                          Learn More
+                        </a>
+                        {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+
+            {% endfor %}
+
+            {% for item in search.results %}
+              {% if item.object_type == 'product' %}
+                {% if settings.quick_shop_enable %}
+                  {%- assign product = item -%}
+                  {% include 'quick-shop-modal' %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if paginate.pages > 1 %}
+          {% include 'pagination' %}
+        {% endif %}
+
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% endpaginate %}

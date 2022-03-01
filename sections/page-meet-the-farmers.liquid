@@ -1,0 +1,197 @@
+<div
+    id="PageHeaderSection"
+    data-section-id="{{ section.id }}"
+    data-section-type="page-header"
+   data-parallax="true">
+
+    <div class="page-hero">
+        
+          <div class="parallax-container">
+            <div
+              class="parallax-image collection-hero__image lazyload"
+              data-bgset="{% include 'bgset', image: section.settings.banner_image %}"
+              data-sizes="auto">
+            </div>
+          </div>
+      	{% if section.settings.video_url != blank %}
+      		<div class="video-player" data-plyr-provider="{{section.settings.video_url.type}}" data-plyr-embed-id="{{section.settings.video_url.id}}"></div>
+      	{% endif %}
+       
+
+        <div class="blog-hero__content">
+          <div class="page-width">
+            <header class="section-header section-header--hero">
+              <div class="section-header__noshadow">
+                <h1 class="section-header__title">
+                    {{ section.settings.banner_heading }}
+                </h1>
+              </div>
+            </header>
+          </div>
+        </div>
+    </div>
+</div>
+
+<section class="about-us">
+
+  {%- if section.settings.intro_text != blank -%}
+  <div class="container" data-aos="fade-in">
+    <div class="text-wrapper ">
+      {{ section.settings.intro_text }}
+    </div>
+    <div class="text-center"><pa></pa></div>
+    {%- if section.settings.intro_text2 != blank -%}
+    <div class="text-wrapper2 " data-aos="fade-in">
+      {{ section.settings.intro_text2 }}
+    </div>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
+
+</section>
+<div class="product-wrapper">
+<!--   	<section class="product-wrapper-header">
+      <div class="container">
+        <h2 class="product-wrapper-heading">{{ section.settings.text_image_heading }}</h2>
+      </div>
+    </section>
+   -->
+    {%- for block in section.blocks -%}
+    <section class="go-fresh" >
+      <div class="page-width">
+          <div class="container">
+              <div class="display-table v2">
+                  <div class="display-cell v2">
+                    <div class="img-wrap v3" style="background-image:url({{ block.settings.farmer_image | img_url: '720x720' }})">
+                    </div>
+                  </div>
+                  <div class="display-cell v2" data-aos="fade-right">
+                      <div class="text-wrap v2">
+                          <div class="inner-wrapper" >
+                            <h2  data-aos="fade-in" >{{ block.settings.farmer_heading }}</h2>              
+                            {{ block.settings.farmer_content }}
+                            
+                            <div class="grid">
+                              <div class="grid__item small--one-whole one-half" >
+                                <img src="{{ block.settings.quote_image | img_url: '720x720' }}" alt="Ingredients photo from {{ block.settings.heading }}"  data-aos="fade-in"  />
+                              </div>  
+                              <div class="grid__item small--one-whole one-half">
+                                <div class="quote-wrap" data-aos="fade-in" style="margin-top: 30px">
+                                  <div class="quote-content">
+                                    {{ block.settings.quote_content }}
+                                    {% if block.settings.farmer_btntext != '' %}
+                                    <div class="quote-btn" data-aos="fade-left">
+                                      <p class="text-right"><a class="btn btn-secondary" href="{{ block.settings.farmer_link }}">{{ block.settings.farmer_btntext }}</a></p>
+                                    </div>
+                                    {% endif %}  
+                                  </div>  
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section> 
+
+
+      
+
+        
+    {%- endfor -%}
+  
+  
+  
+</div>
+{% schema %}
+  {
+    "name": "Meet our Farmers",
+    "settings": [
+      {
+        "type": "text",
+        "id": "banner_heading",
+        "label": "Banner Heading"
+      },
+      {
+        "type": "image_picker",
+        "id": "banner_image",
+        "label": "Banner Image",
+		"info": "Recommended image size: 1920 x 600 pixels"
+      },
+	  {
+        "id": "video_url",
+        "type": "video_url",
+        "label": "Video URL",
+        "accept": ["youtube", "vimeo"]
+      },
+      {
+        "type": "richtext",
+        "id": "intro_text",
+        "label": "Introduction"
+      },
+      {
+        "type": "richtext",
+        "id": "intro_text2",
+        "label": "Introduction"
+      }
+
+    ],
+    "blocks": [
+      {
+        "type": "list",
+        "name": "Farmers",
+        "settings": [
+          {
+            "type": "text",
+            "id": "farmer_heading",
+            "label": "Heading"
+          },
+          {
+            "type": "richtext",
+            "id": "farmer_content",
+            "label": "Content"
+          },
+          {
+            "type": "image_picker",
+            "id": "farmer_image",
+            "label": "Image"
+          },
+          {
+              "type": "header",
+              "content": "Quote Section"
+          },
+          {
+            "type": "image_picker",
+            "id": "quote_image",
+            "label": "Quote Image"
+          },
+          {
+              "type": "richtext",
+              "id": "quote_content",
+              "label": "Quote Content"
+          },
+          {
+            "type": "url",
+            "id": "farmer_link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "farmer_btntext",
+            "label": "Button Text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+<style>
+#shopify-section-{{section.id}} .go-fresh .text-wrap.v2::after{
+  min-height: 500px;
+}
+</style>
+
+{% javascript %}
+{% endjavascript %}

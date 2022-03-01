@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+  </head>
+  <body>
+    {{ skip_to_content_link }}
+
+    <header class="banner" data-header role="banner">
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </header>
+
+    {{ order_summary_toggle }}
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main">
+          <header class="main__header" role="banner">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </header>
+          <main class="main__content" role="main">
+            {{ content_for_layout }}
+          </main>
+          <footer class="main__footer" role="contentinfo">
+            {{ content_for_footer }}
+          </footer>
+        </div>
+        <aside class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    {{ tracking_code }}
+    {% unless customer.tags contains 'net30' %}
+    <style>
+      [data-gateway-name=manual] {
+        display: none !important;
+      }
+    </style>    
+    {% endunless %}
+    <style>
+      .shipping-input {
+        display: block;
+        width: 100%;
+        background: white;
+        border: solid 1px #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+      }
+    </style>
+    <script type="text/javascript">
+      var addShippingTracking = function() {
+        var elems = document.querySelectorAll('[data-shipping-method]');
+        if (!elems.length) {
+          setTimeout(addShippingTracking, 100);
+        }
+        for (var i=0; i<elems.length; i++) {
+          var elem = elems[i];
+          if (elem.dataset && elem.dataset.shippingMethod && elem.dataset.shippingMethod.indexOf('customer') !== -1) {
+            var input = document.createElement("input");
+            input.placeholder = "Add shipping account number";
+            input.classList.add('shipping-input');
+            input.name = "checkout[attributes][shipping account number]";
+            elem.querySelector('.radio__label__primary').appendChild(input); 
+          }
+        }
+        
+        var inputRadios = document.querySelectorAll('[data-shipping-method] .input-radio');
+        
+        var update = function() {
+          for (var j=0; j<inputRadios.length; j++) {
+            var inputRadio = inputRadios[j];
+            var shippingInput = inputRadio.parentNode.parentNode.querySelector('.shipping-input');
+            if (shippingInput) {
+              if (inputRadio.checked) {
+                shippingInput.disabled = false;
+                shippingInput.required = true;
+                shippingInput.style.display = 'block';
+              } else {
+                shippingInput.disabled = true;
+                shippingInput.required = false;
+                shippingInput.style.display = 'none';     
+              }
+            }    
+          }
+        }
+        for (var i=0; i<inputRadios.length; i++) {
+          var inputRadio = inputRadios[i];
+          inputRadio.onchange = update;
+        }
+        update();
+      }
+      addShippingTracking();
+    </script>
+  </body>
+</html>

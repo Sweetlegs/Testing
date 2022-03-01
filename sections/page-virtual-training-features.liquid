@@ -1,0 +1,92 @@
+<div id="section-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="blocks">
+  <div class="page-width page-content">
+    <div class="blog-template__container">
+      <h2 class="span-head__style popitheading text-left">
+        {{section.settings.title}}
+      </h2>
+        {% for blocks in section.blocks %}
+      	<div class="grid">
+          <div class="grid__item medium-up--one-quarter"></div>
+          <div class="grid__item medium-up--one-half section-product" data-aos="row-of-3">
+            <div class="grid">
+              <div class="grid__item">   
+                {% if blocks.settings.image %}
+                {{blocks.settings.image | img_url: '1000x' | img_tag}}
+                {% endif %}
+              </div>
+              <div class="grid__item">
+                <div class="article__grid-meta">
+                  {% if blocks.settings.button_above_text %}
+                  <div class="center text-center" style="margin-bottom: 75px">
+                    <a href="#book-now" class="btn" >{{blocks.settings.btn_text}}</a>
+                  </div>
+                  {% endif %}
+                  <p  class="article__title" >{{ blocks.settings.title }}</p>
+                  {% assign content = blocks.settings.content | strip_html %}
+                  {% unless content == blank %}
+                    <div class="rte article__excerpt" style="padding-bottom: 0px">
+                      {{content}}
+                    </div>
+                  {% endunless %}
+
+                  {% unless blocks.settings.button_above_text %}
+                  <div class="center text-center" style="margin-bottom: 75px;margin-top:30px;">
+                    <a href="#book-now" class="btn" >{{blocks.settings.btn_text}}</a>
+                  </div>
+                  {% endunless %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Features",
+	"settings": [
+	  {
+		"type": "textarea",
+		"id": "title",
+		"label": "Title",
+		"default": "Virtual Training"
+	  }
+],
+    "blocks": [
+      {
+        "type": "feature",
+        "name": "Feature",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "content",
+            "type": "richtext",
+            "label": "Content"
+          },
+          {
+            "id": "button_above_text",
+            "type": "checkbox",
+            "label": "Button Above Text"
+          },
+          {
+            "id": "btn_text",
+            "type": "text",
+            "label": "Button Text",
+			"default": "Book Now"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

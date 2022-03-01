@@ -1,266 +1,118 @@
-{% assign current_variant = product.selected_or_first_available_variant %}
+{% capture form_id %}AddToCartForm-{{ section_id }}{% endcapture %}
+{% form 'product', product, id: form_id, class: 'product-single__form' %}{% if content_for_header contains '.mageworx.com\/groupedproducts\/source.js?' and product.tags contains 'mw_grouped_product' %}<div class="mw-gp-container"></div>{% endif %}
+  {% unless product.has_only_default_variant %}
+    {% for option in product.options_with_values %}
+      {% if settings.variant_type == 'button' %}
+        {% include 'variant-button', section_id: section_id, option_drop: option %}
+      {% else %}
+        {% include 'variant-dropdown', section_id: section_id %}
+      {% endif %}
+    {% endfor %}
+  {% endunless %}
 
-{%- assign buybutton_setting = block.settings.enable_payment_button -%}
-{%- if product.selling_plan_groups.size > 0 -%}
-  {% assign buybutton_setting = false -%}
-{%- endif -%}
+  <select name="id" id="ProductSelect-{{ section_id }}" class="product-single__variants no-js">
+    {% for variant in product.variants %}
+      {% if variant.available %}
+        <option {% if variant == product.selected_or_first_available_variant %}
+          selected="selected" {% endif %}
+          value="{{ variant.id }}">
+          {{ variant.title }} - {{ variant.price | money_with_currency }}
+        </option>
+      {% else %}
+        <option disabled="disabled">
+          {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+        </option>
+      {% endif %}
+    {% endfor %}
+  </select>
 
-{% assign buybutton_class = '' %}
-{% if buybutton_setting %}
-  {% assign buybutton_class = 'product__form--buybutton' %}
-{% endif %}
-
-{% if block.settings.info_page != blank %}
-  {%- capture size_translation -%}{{ 'general.size_chart.size' | t }}{%- endcapture -%}
-  {%- liquid
-    assign size_chart_index = -1
-    assign size_translation = size_translation | lstrip | rstrip | downcase
-    for option in product.options
-      assign option_san = option | lstrip | rstrip | downcase
-      if option_san contains size_translation
-        assign size_chart_index = forloop.index0
-      endif
-    endfor
-    assign size_page = pages[block.settings.info_page] 
-
-    assign action_style = 'product__info__link--inline'
-    if size_chart_index == -1
-      assign action_style = 'product__info__link'
-    endif
-  -%}
-{% endif %}
-{% capture size_chart %}
-  {% if block.settings.info_page != blank %}
-    <a href="{{ size_page.url }}" class="{{ action_style }}" data-popup-{{ block.id }}="size-{{ block.id }}">
-      {{ size_page.title }}
-    </a>
-    <div class="modal micromodal-slide" id="size-{{ block.id }}" data-modal aria-hidden="true">
-      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-        <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
-        <div class="modal__container modal__container--inline"
-          data-modal-content
-          role="dialog"
-          aria-modal="true"
-          aria-label="{{ size_page.title }}">
-          <div class="rte">{{ size_page.content }}</div>
-        </div>
-      </div>
+  {% if settings.quantity_enable %}
+    <div class="product__quantity product__quantity--{{ settings.variant_type }}">
+      <label for="Quantity-{{ section_id }}">{{ 'products.product.quantity' | t }}</label>
+      {% include 'quantity-input', id: section_id, qty: 1, min: 1 %}
     </div>
   {% endif %}
-{% endcapture %}
 
-<div class="product__form__outer {{ buybutton_class }}" {{ block.shopify_attributes }}>
-  {%- assign product_form_id = 'product-form-' | append: section.id | append: '-' | append: product.id -%}
-  {% form 'product', product, id: product_form_id, data-product-form: '', data-product-handle: product.handle %}
-
-    {% comment %} The input with name="id" submits to cart {% endcomment %} 
-    <input type="hidden" name="id" value="{{ current_variant.id }}">
-
-    {% comment %} Shop pay split payment terms {% endcomment %} 
-    <div class="shop-pay-terms">
-      {{ form | payment_terms }}
-    </div>
-
-    {% unless product.has_only_default_variant %}
-      <div class="form__selectors">
-        {% for option in product.options_with_values %}
-          {%- if settings.swatches_enable -%}
-            {% comment %} Determine if current option matches swatch handle translations {% endcomment %}
-            {%- capture swatch_translation -%}{{ 'general.swatches.color' | t }} {%- endcapture -%}
-            {%- assign translation_array = swatch_translation | append:',' | split: "," | uniq -%}
-            {%- assign is_swatch_option = false -%}
-            {%- assign option_handle = option.name | downcase | lstrip | rstrip | escape_once -%}
-            {%- for translation in translation_array -%}
-              {%- assign translation_handle = translation | downcase | lstrip | rstrip | escape_once -%}
-              {%- if translation_handle == option_handle -%}
-                {%- assign is_swatch_option = true -%}
-                {% break %}
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-          <div class="selector-wrapper js" data-split-select-wrapper data-select-label="{{ option.name }}"  data-option-position="{{ option.position }}">
-            {%- if block.settings.variant_form == "button" or is_swatch_option -%}
-              {% assign current_value = current_variant.options[forloop.index0] %}
-              <fieldset class="radio__fieldset">
-                <legend class="radio__legend">
-                  <span class="radio__legend__label">{{ option.name | escape_once }}</span>
-                  <span data-option-value>{{ current_value }}</span>
-                  {%- if size_chart_index == forloop.index0 -%}
-                    {{ size_chart }}
-                  {%- endif -%}
-                </legend>
-
-
-                {% for value in option.values %}
-                  {% capture input_id %}{{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once }}{% endcapture %}
-
-                  {%- if is_swatch_option -%}
-                    <span class="swatch__button" data-tooltip="{{ value | escape_once }}">
-                      <input type="radio"
-                          name="options[{{ option.name | escape_once }}]"
-                          value="{{ value | escape_once }}" 
-                          id="{{ input_id }}"
-                          {%- if value == current_value -%}checked{%- endif -%}>
-                      <label for="{{ input_id }}" data-swatch="{{ value | escape_once }}">
-                        <span class="visually-hidden">{{ value | escape_once }}</span>
-                      </label>
-                    </span>
-
-                  {%- else -%}
-                    {% comment %} radio button {% endcomment %}
-                    <span class="radio__button">
-                      <input
-                        type="radio"
-                        name="options[{{ option.name | escape_once }}]"
-                        value="{{ value | escape_once }}" id="{{ input_id }}"
-                        {%- if value == current_value -%}checked{%- endif -%}>
-                      <label for="{{ input_id }}">
-                        <span>{{ value | escape_once }}</span>
-                      </label>
-                    </span>
-                  {%- endif -%}
-
-                {% endfor %}
-              </fieldset>
-            {%- else -%}
-              <fieldset class="select__fieldset">
-                {% capture input_id %}{{product.id}}-option-{{ option.position }}{% endcapture %}
-                <label class="select__label" for="{{ input_id }}">
-                  {{ option.name }}
-                </label>
-                <select class="product__form__select"
-                  id="{{ input_id }}"
-                  name="options[{{ option.name | escape_once }}]">
-                  {% for value in option.values %}
-                    <option
-                      value="{{ value | escape_once }}"
-                      {% if option.selected_value == value %} selected="selected"{% endif %}>
-                      {{ value | escape_once }}
-                    </option>
-                  {% endfor %}
-                </select>
-              </fieldset>
-            {%- endif -%}
-          </div>
-        {% endfor %}
-      </div>
-    {% endunless %}
-
-    <noscript>
-      <select name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' }}">
-        {% for variant in product.variants %}
-          <option
-            {% if variant == current_variant %}selected="selected"{% endif %}
-            {% unless variant.available %}disabled="disabled"{% endunless %}
-            value="{{ variant.id }}">
-              {{ variant.title }}
-          </option>
-        {% endfor %}
-      </select>
-    </noscript>
-
-    {%- if product.selling_plan_groups.size > 0 -%}
-      {% if block.settings.subscriptions_enable_selectors %}
-        {% render 'subscription-form', product: product %}
-      {%- endif -%}
-      {% comment %} Delete the following line to block the theme from updating subscription prices {% endcomment %} 
-      <span data-subscription-watch-price></span>
+  {%- assign inventory_visible = false -%}
+  {%- if settings.inventory_enable and current_variant.inventory_management == 'shopify' -%}
+    {%- if current_variant.inventory_quantity <= settings.inventory_threshold and current_variant.inventory_quantity >= 0 -%}
+      {%- assign inventory_visible = true -%}
     {%- endif -%}
+  {%- endif -%}
+  {%- if current_variant.inventory_quantity == 0 -%}
+    {%- assign inventory_visible = false -%}
+  {%- endif -%}
 
-    {% if block.settings.show_quantity %}
-      <div class="quantity__wrapper" data-quantity-selector>
-        <button class="quantity__button quantity__button--minus" data-decrease-quantity>&minus;</button>
-        <input data-quantity-input
-          aria-label="{{ 'cart.label.quantity' | t }}"
-          class="quantity__input"
-          type="number"
-          min="1"
-          size="4"
-          pattern="[0-9]*"
-          name="quantity"
-          value="1"/>
-        <button class="quantity__button quantity__button--plus" data-increase-quantity>+</button>
-      </div>
+  <div
+    id="ProductInventory-{{ section_id }}"
+    class="product__inventory {% unless inventory_visible %}hide{% endunless %}"
+    >
+    {% if current_variant.available %}
+      {{ 'products.product.stock_label' | t: count: current_variant.inventory_quantity }}
+    {% endif %}
+  </div>
+
+  {%- if settings.inventory_transfers_enable -%}
+    <div
+      id="ProductIncomingInventory-{{ section_id }}"
+      class="product__inventory{% if inventory_visible %} hide{% endif %}">
+      {%- if current_variant.incoming and inventory_visible == false -%}
+        {%- if current_variant.next_incoming_date -%}
+          {% assign date = current_variant.next_incoming_date | date: format: 'date' %}
+          {%- if current_variant.available -%}
+            {{ 'products.product.will_not_ship_until' | t: date: date }}
+          {%- else -%}
+            {{ 'products.product.will_be_in_stock_after' | t: date: date }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'products.product.waiting_for_stock' | t }}
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- assign enable_dynamic_buttons = false -%}
+  {% if settings.enable_payment_button and template != 'product.preorder' %}
+    {%- assign enable_dynamic_buttons = true -%}
+  {% endif %}
+
+  {% if enable_dynamic_buttons %}
+    <div class="payment-buttons">
+  {% endif %}
+
+    <button
+      {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
+      name="add" {% if content_for_header contains '.mageworx.com\/groupedproducts\/source.js?' and product.tags contains 'mw_grouped_product' %}disabled="disabled"{% endif %}
+      id="AddToCart-{{ section_id }}"
+      class="btn btn--full add-to-cart{% if enable_dynamic_buttons %} btn--secondary{% endif %}"
+      {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+      <span id="AddToCartText-{{ section_id }}">
+        {% if current_variant.available %}
+          {% if template == 'product.preorder' %}
+            {{ 'products.product.preorder' | t }}
+          {% else %}
+            {{ 'products.product.add_to_cart' | t }}
+          {% endif %}
+        {% else %}
+          {{ 'products.product.sold_out' | t }}
+        {% endif %}
+      </span>
+    </button>
+
+    {% if enable_dynamic_buttons %}
+      {{ form | payment_button }}
     {% endif %}
 
-
-    {%- if block.settings.show_remaining or size_chart_index == -1 -%}
-      <div class="product__button__meta">
-
-        {%- if size_chart_index == -1 -%}
-          {{ size_chart }}
-        {%- endif -%}
-
-        {%- if block.settings.show_remaining -%}
-          {%- assign max_inventory = 10 -%}
-          {%- assign show_remaining_class = '' -%}
-          {%- assign current_inventory = 0 -%}
-
-          {%- if current_variant.inventory_policy == 'deny' and current_variant.inventory_management -%}
-            {%- if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= max_inventory -%}
-              {%- assign show_remaining_class = 'variant__countdown--show' -%}
-              {%- assign current_inventory = current_variant.inventory_quantity -%}
-            {%- endif -%}
-          {%- endif -%}
-
-          {% capture inventory %}
-            <span data-remaining-max="{{ max_inventory }}" data-remaining-count>{{ current_inventory | default: 0 }} </span>
-          {% endcapture %}
-          <p class="variant__countdown {{ show_remaining_class }}" data-remaining-wrapper>
-            {{ 'products.product.remaining_html' | t: inventory: inventory }}
-          </p>
-
-          <script data-product-remaining-json type="application/json">
-            {
-              {%- for variant in product.variants -%}
-                {%- assign maximum = 11 -%}
-                {%- assign quant = maximum | plus: 10 -%}
-                {%- if variant.inventory_policy == 'deny' and variant.inventory_management -%}
-                  {%- assign quant = variant.inventory_quantity | at_most: maximum -%}
-                {%- endif -%}
-                "{{ variant.id | json }}": "{{ quant | json }}"{%- unless forloop.last -%},{%- endunless -%}
-              {%- endfor -%}
-            }
-          </script>
-
-        {%- endif -%}
-
-      </div>
-    {%- endif -%}
-
-    <div class="product__submit">
-
-      <div data-product-add-popdown-wrapper class="product-add-popdown"></div>
-
-      {% assign button_text = 'products.product.add_to_cart' | t %}
-      {% if product.tags contains '_preorder' %}
-        {% assign button_text =  'products.product.pre_order' | t %}
-      {% endif %}
-      {% unless current_variant.available %}
-        {% assign button_text =  'products.product.sold_out' | t %}
-      {% endunless %}
-
-      <div class="product__submit__buttons">
-        <button
-          type="submit"
-          name="add"
-          class="btn--outline btn--full btn--primary uppercase btn--add-to-cart"
-          data-add-to-cart
-          {% unless current_variant.available %}disabled="disabled"{% endunless %}>
-          <span data-add-to-cart-text>
-            {{ button_text }}
-          </span>
-          <span>•</span>
-          <span data-button-price>{{ current_variant.price | money }}</span>
-        </button>
-
-        {% if buybutton_setting %}
-          <div class="product__submit__quick">
-            {{ form | payment_button }}
-          </div> 
-        {% endif %}
-
-      </div>
+  {% if enable_dynamic_buttons %}
     </div>
-  {% endform %}
-</div>
+  {% endif %}
+
+  <div id="VariantsJson-{{ section_id }}" class="hide" aria-hidden="true">
+    {{ product.variants | json }}
+  </div>
+  {% if product.options.size > 1 %}
+    <div id="CurrentVariantJson-{{ section_id }}" class="hide" aria-hidden="true">
+      {{ current_variant | json }}
+    </div>
+  {% endif %}
+{% endform %}

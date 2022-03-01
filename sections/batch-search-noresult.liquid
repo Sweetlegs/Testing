@@ -1,0 +1,33 @@
+<section class="introduction-section">
+  <div class="container">
+    <div class="introduction-content ">
+      <h3>{{ section.settings.intro_title }}</h3>
+      <p>{{ section.settings.intro_text }}</p>
+    </div>
+  </div>
+</section>
+<section class="roots-banner" style="background-image: url({{ section.settings.banner_image | img_url: '1524x' }})">
+</section>
+{% schema %}
+  {
+    "name": "Batch Code no Result Page",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "banner_image",
+        "label": "Banner Image",
+        "info": "Recommended image size: 1920 x 420 pixels"
+      },
+      {
+        "type": "text",
+        "id": "intro_title",
+        "label": "Introduction Title"
+      },
+      {
+        "type": "richtext",
+        "id": "intro_text",
+        "label": "Introduction Content"
+      }
+    ]
+  }
+{% endschema %}

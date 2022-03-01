@@ -1,0 +1,243 @@
+
+
+{%- comment -%}
+<section class="roots-banner" style="background-image: url({{ section.settings.banner_image | img_url: '1024x' }})">
+    <div class="wrapper">
+        <h1 class="heading">{{ section.settings.banner_heading }}</h1>
+    </div>
+</section>
+{%- endcomment -%}
+
+<div
+    id="PageHeaderSection"
+    data-section-id="{{ section.id }}"
+    data-section-type="page-header"
+   data-parallax="true">
+
+    <div class="page-hero">
+        
+          <div class="parallax-container">
+            <div
+              class="parallax-image collection-hero__image lazyload"
+              data-bgset="{% include 'bgset', image: section.settings.banner_image %}"
+              data-sizes="auto">
+            </div>
+          </div>
+      	{% if section.settings.video_url != blank %}
+      		<div class="video-player" data-plyr-provider="{{section.settings.video_url.type}}" data-plyr-embed-id="{{section.settings.video_url.id}}"></div>
+      	{% endif %}
+       
+
+        <div class="blog-hero__content">
+          <div class="page-width">
+            <header class="section-header section-header--hero">
+              <div class="section-header__noshadow">
+                <h1 class="section-header__title">
+                    {{ section.settings.banner_heading }}
+                </h1>
+              </div>
+            </header>
+          </div>
+        </div>
+    </div> 
+</div>
+
+<section class="about-us">
+
+    {%- if section.settings.intro_text != blank -%}
+    <div class="container" data-aos="fade-in">
+      <div class="text-wrapper ">
+        {{ section.settings.intro_text }}
+      </div>
+      <div class="text-center"><pa></pa></div>
+          {%- if section.settings.intro_text2 != blank -%}
+          <div class="text-wrapper2 " data-aos="fade-in">
+          {{ section.settings.intro_text2 }}
+          </div>
+    	{%- endif -%}
+    </div>
+    {%- endif -%}
+
+  </section>
+
+
+
+
+
+
+<div class="product-wrapper">
+  	<section class="product-wrapper-header">
+      <div class="container">
+        <h2 class="product-wrapper-heading">{{ section.settings.text_image_heading }}</h2>
+      </div>
+    </section>
+
+
+    {%- for block in section.blocks -%}
+        {%- comment -%}\
+        
+        {
+                "type": "header",
+                "content": "Estheticians Image and Text"
+            },
+            {
+                "type": "text",
+                "id": "heading",
+                "label": "Heading"
+            },
+            {
+                "type": "richtext",
+                "id": "content",
+                "label": "Content"
+            },
+            {
+                "type": "image_picker",
+                "id": "banner_image",
+                "label": "Banner Image",
+  				"info": "Recommended image size: 1920 x 600 pixels"
+            },
+            {
+                "type": "header",
+                "content": "Quote Section"
+            },
+            {
+                "type": "text",
+                "id": "quote_heading",
+                "default": "RECOMMENDED FACIAL:",
+                "label": "Quote Title"
+            },
+            {
+                "type": "richtext",
+                "id": "quote_content",
+                "label": "Quote Content"
+            },
+            {
+                "type": "text",
+                "id": "quote_btn_text",
+                "label": "Quote Button Text"
+            },
+            {
+                "type": "text",
+                "id": "quote_link",
+                "label": "Quote Button Link"
+            }
+
+        {%- endcomment -%}
+
+        <section class="go-fresh" >
+          <div class="page-width">
+              <div class="container">
+                  <div class="display-table v2">
+                      <div class="display-cell v2">
+                        <div class="img-wrap v3" style="background-image:url({{ block.settings.banner_image | img_url: '720x720' }})">
+                        </div>
+                      </div>
+                      <div class="display-cell v2" data-aos="fade-right">
+                          <div class="text-wrap v2">
+                              <div class="inner-wrapper" >
+                                  <h2  data-aos="fade-in" >{{ block.settings.heading }}</h2>              
+                                  {{ block.settings.content }}
+
+                                {% if block.settings.quote_heading != blank %}
+                                  <div class="quote-wrap" data-aos="fade-in">
+                                      <div class="quote-heading">{{ block.settings.quote_heading }}</div>
+                                      <div class="quote-content">{{ block.settings.quote_content }}</div>
+                                      <div class="quote-btn" data-aos="fade-left">
+                                          <p class="text-right"><a class="btn btn-secondary" href="{{ block.settings.quote_link }}">{{ block.settings.quote_btn_text }}</a></p>
+                                      </div>
+                                  </div>
+                                {% endif %}
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section> 
+
+       
+    {%- endfor -%}
+
+  
+  
+  
+</div>
+{% schema %}
+  {
+    "name": "Content",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Page Banner and Title"
+      },
+      {
+        "type": "text",
+        "id": "banner_heading",
+        "label": "Banner Heading"
+      },
+      {
+        "type": "image_picker",
+        "id": "banner_image",
+        "label": "Banner Image"
+      },
+	  {
+        "id": "video_url",
+        "type": "video_url",
+        "label": "Video URL",
+        "accept": ["youtube", "vimeo"]
+      },
+      {
+        "type": "header",
+        "content": "Page Introductions"
+      },
+      {
+        "type": "richtext",
+        "id": "intro_text",
+        "label": "1st line Introduction"
+      },
+      {
+        "type": "richtext",
+        "id": "intro_text2",
+        "label": "2nd line Introduction"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "list",
+        "name": "Estheticians!",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Estheticians Image and Text"
+            },
+            {
+                "type": "text",
+                "id": "heading",
+                "label": "Heading"
+            },
+            {
+                "type": "richtext",
+                "id": "content",
+                "label": "Content"
+            },
+            {
+                "type": "image_picker",
+                "id": "banner_image",
+                "label": "Banner Image",
+                "info": "Please upload a perfect square photo"
+            }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+    .roots-banner {
+        background-position: center -310px;
+    }
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
