@@ -26,7 +26,7 @@
   {%- endfor -%}
 {%- endif -%}
 
-<div class="grid__item grid-product123 {{ grid_item_width }} {% if settings.quick_shop_enable and sold_out == false %} grid-product__has-quick-shop{% endif %}" data-aos="row-of-{{ per_row }}">
+<div class="grid__item grid-product {{ grid_item_width }} {% if settings.quick_shop_enable and sold_out == false %} grid-product__has-quick-shop{% endif %}" data-aos="row-of-{{ per_row }}">
   <div class="grid-product__content">
     
     {%- assign fixed_aspect_ratio = false -%}

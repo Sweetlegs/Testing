@@ -12,6 +12,5 @@ var boostPFSInstantSearchConfig = {
   BoostPFS.inject(this);
   
   // Customize style of Suggestion box
-  SearchInput.prototype.customizeInstantSearch = function() {
-  };
+  SearchInput.prototype.customizeInstantSearch = function() {};
 })();

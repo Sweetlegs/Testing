@@ -27,7 +27,7 @@
     </div>
   {% endif %}
   <div class="collection-filter">
-    <input id="customerTag" value="{{ customer.tags | join: ', ' }}" hidden/>
+
     <div class="collection-filter__item collection-filter__item--drawer">
       <button
         type="button"
@@ -62,7 +62,17 @@
     {% when 5 %}
       {%- assign grid_item_width = 'small--one-half medium-up--one-fifth' -%}
     {% endcase %}
-
+    {%if customer %}
+    {% for product in collection.products %}
+    {% include 'product-grid-item' %}
+    {% else %}
+    <div class="grid__item">
+      <p>{{ 'collections.general.no_matches' | t }}</p>
+    </div>
+    {% endfor %}
+    {%else%}
+    <P class="not customer"> Please login Account for products <a href="/account"> Login</a> </P>
+    {%endif%}
 
   </div>
 

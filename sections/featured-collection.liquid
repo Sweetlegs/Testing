@@ -71,21 +71,7 @@
 {%- assign wsgTempProd = product -%}{%- assign wsgExclude = false -%}{%- if forloop.first == true -%}{%- assign wsgActive = false -%}{%- assign wsgActiveCustomer = false -%}
 {%- include 'wsg-status' wsgStatusAction: 'init' | strip -%}{%- endif -%}{%- if wsgActive -%}{%- include 'wsg-status' wsgStatusAction: 'col-item' | strip -%}{%- endif -%}{%- if wsgExclude -%} {%- continue -%} {%- endif -%}
 {%- comment -%} end WSG {%- endcomment -%}
-
-{%- assign showProduct = false -%}
-
-{% assign productTags = product.tags | downcase %}
-{% assign customerTags = customer.tags | downcase %}
-{% if customerTags contains 'retail' and productTags contains 'retail' %}
-	{%- assign showProduct = true -%}
-{% elsif customerTags contains 'spa' and productTags contains 'spa' %}
-	{%- assign showProduct = true -%}
-{% elsif customerTags contains 'employee' and productTags contains 'employee' %}
-	{%- assign showProduct = true -%}
-{% endif %}
-{%if showProduct%}
             {% include 'product-grid-item' %}
-        {%endif%}
           {% endfor %}
 
           {% if section.settings.view_all %}

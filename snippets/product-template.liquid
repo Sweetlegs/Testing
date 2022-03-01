@@ -1,24 +1,3 @@
-{%- if template contains 'product' %}
-{%- assign showProduct = false -%}
-{%else %}
-{%- assign showProduct = true -%}
-{%endif%}
-{% assign productTags = product.tags | downcase %}
-{% assign customerTags = customer.tags | downcase %}
-
-{% if customerTags contains 'retail' and productTags contains 'retail' %}
-	{%- assign showProduct = true -%}
-{% elsif customerTags contains 'retail product' and productTags contains 'retail product' %}
-	{%- assign showProduct = true -%}
-{% elsif customerTags contains 'spa' and productTags contains 'spa' %}
-	{%- assign showProduct = true -%}
-{% elsif customerTags contains 'employee' and productTags contains 'employee' %}
-	{%- assign showProduct = true -%}
-{% endif %}
-{%if showProduct%}
-
-<!-- 	<meta content="0; url=/collections" http-equiv="refresh" /> -->
-
 {%- unless thumbnail_position -%}
   {%- assign thumbnail_position = 'beside' -%}
 {%- endunless -%}
@@ -539,9 +518,8 @@
 
   {%- endif -%}
 {%- endif -%}
-{%elsif template contains 'product'%}
 
-{% endif %}
+
 
 
 

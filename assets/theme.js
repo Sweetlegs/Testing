@@ -2394,7 +2394,6 @@ lazySizesConfig.expFactor = 4;
           }
         }
       }).done(function(response) {
-        console.log('response', response);
         isLoading = false;
         var data = {};
         var resultCount = 0;
@@ -2443,7 +2442,7 @@ lazySizesConfig.expFactor = 4;
                 })
                 var new_filtered_results = filtered_results.filter(function(item){ if(item != 'undefined'){return item}})
                 console.debug("new_filtered_results")
-                console.debug(results)
+                console.debug(new_filtered_results)
                 data[type] = buildProducts(new_filtered_results);
               }
               break;
@@ -2460,7 +2459,7 @@ lazySizesConfig.expFactor = 4;
         }
   
         // Append result markup
-        console.log('this hit', data)
+        console.log(data)
         $(selectors.resultDiv).empty().append(resultTemplate(data));
       });
     }

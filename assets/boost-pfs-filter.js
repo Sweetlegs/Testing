@@ -1,4 +1,5 @@
 
+// Override Settings
 var boostPFSFilterConfig = {
 	general: {
 		limit: boostPFSConfig.custom.products_per_page,
@@ -60,22 +61,7 @@ var boostPFSTemplate = {
 	ProductGridItem.prototype.compileTemplate = function(data, index) {
 		if (!data) data = this.data;
       	if (!index) index = this.index;
-      	customerTags = $('#customerTag').val().toLowerCase();
-      	productTags = data.tags.map(name => name.toLowerCase());
-      	var showProduct = false;
-        if((productTags.includes("employee") && customerTags.includes("employee"))) {
-          showProduct = true;
-        } else if((productTags.includes("retail") && customerTags.includes("retail"))) {
-          showProduct = true;
-        } else if((productTags.includes("retail product") && customerTags.includes("retail product"))) {
-          showProduct = true;
-        }else if((productTags.includes("spa") && customerTags.includes("spa"))) {
-          showProduct = true;
-        }
- 	    console.log('customerTag', customerTags);
-       console.log('productTag', productTags);
 		/*** Prepare data ***/
-      if(showProduct) {
 		var images = data.images_info;
 		// Displaying price base on the policy of Shopify, have to multiple by 100
 		var soldOut = !data.available; // Check a product is out of stock
@@ -84,6 +70,7 @@ var boostPFSTemplate = {
 
 		// Get Template
 		var itemHtml = boostPFSTemplate.productGridItemHtml;
+
 		// Add Thumbnail
 		var aspectRatio = images.length > 0 ? images[0]['width'] / images[0]['height'] : '';
 		var paddingBottom = images.length > 0 ? 100 / aspectRatio : '100';
@@ -210,8 +197,6 @@ var boostPFSTemplate = {
 
 
 		return itemHtml;
-      }
-      return `<div></div>`;
 	};
 
 	// Build Swatch
@@ -385,7 +370,6 @@ var boostPFSTemplate = {
 
 	/* buildAdditionalElements */
 	FilterResult.prototype.afterRender = function(data, eventType){
-      document.querySelectorAll("[data-id]").forEach(item=> !item.getAttribute("class") && item.remove())
 		if (!data) data = this.data;
       
 		// Build total products text

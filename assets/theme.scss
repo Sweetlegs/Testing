@@ -1431,9 +1431,6 @@ html:not(.tab-outline) *:focus {
 .media-img-right img {
   display: block;
 }
-.hideMe {
-  display:none;
-}
 
 /*============================================================================
 Skip to content button
@@ -2834,7 +2831,7 @@ select,
   appearance: none;
   background-position: right center;
   background: {
-    image: url(//cdn.shopify.com/s/files/1/0530/1026/8344/t/27/assets/ico-select.svg);
+    image: url(//cdn.shopify.com/s/files/1/0530/1026/8344/t/20/assets/ico-select.svg);
     repeat: no-repeat;
     position: right 10px center;
     color: transparent;
@@ -2847,7 +2844,7 @@ select,
   color: inherit;
 
   .is-light & {
-    background-image: url(//cdn.shopify.com/s/files/1/0530/1026/8344/t/27/assets/ico-select-white.svg);
+    background-image: url(//cdn.shopify.com/s/files/1/0530/1026/8344/t/20/assets/ico-select-white.svg);
   }
 }
 
@@ -4558,7 +4555,7 @@ $color-blankstate-background: #e1e1e1;
 .site-footer {
   select,
   .faux-select {
-    background-image: url(//cdn.shopify.com/s/files/1/0530/1026/8344/t/27/assets/ico-select-footer.svg);
+    background-image: url(//cdn.shopify.com/s/files/1/0530/1026/8344/t/20/assets/ico-select-footer.svg);
   }
 }
 
@@ -14996,8 +14993,4 @@ input.bundle_var_qty {
     padding-left: 20px;
 }
 
-}
-
-#CollectionSection .grid__image-ratio {
-    background-size: contain;
 }

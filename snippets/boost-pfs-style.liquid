@@ -30,8 +30,7 @@ fMobileButtonBackgroundColor
 {%- assign boost_shop_metafields = shop.metafields.bc-sf-filter -%}
 {%- assign boost_settings = shop.metafields.bc-sf-filter.settings -%}
 {%- if boost_settings contains 'style":{' -%}
-
-  <style>
+  <style data-id="boost-pfs-style">
     .boost-pfs-filter-option-title-text {
       {%- if boost_shop_metafields.fTitleTextColor != nil and boost_shop_metafields.fTitleTextColor != blank -%}
         color: {{ boost_shop_metafields.fTitleTextColor | replace: '"','' | replace: '||',',' | strip | strip_html }};
