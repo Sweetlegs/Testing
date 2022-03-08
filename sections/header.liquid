@@ -42,11 +42,7 @@
           </a>
         </div>
       {% endif %}
-      <div class="header-currency">
-      {%- form 'localization' -%}
-      <img src="{{ form.current_currency.iso_code |  downcase | append: '.svg' | asset_url }}" alt="country-flag">
-      {%- endform -%}
-     </div>
+
       {% if section.settings.header_message != '' %}
       <div class="header-message uppercase{% if section.settings.header_enable_account or section.settings.header_enable_search %} header-message--crowded{% endif %}">
         {% if section.settings.header_message_url != blank %}
@@ -56,9 +52,9 @@
         {% endif %}
       </div>
       {% endif %}
+
       {% if section.settings.header_enable_search %}
         <div class="header-search__wrapper">
-          
           <div class="header-search">
             <form action="{{ routes.search_url }}" method="get" class="input-group search" role="search">
               {% if section.settings.search_only_products %}<input type="hidden" name="type" value="product">{% endif %}
@@ -85,13 +81,7 @@
   </header>
 </div>
 
-<script type="text/javascript">
-  $(function() {   
-    $('.header-currency').click(function(e){
-      $('.js-toggle-currency-modal').click();
-    });
-  });
-</script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",

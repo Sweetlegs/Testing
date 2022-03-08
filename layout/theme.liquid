@@ -20,9 +20,9 @@
   </title>
 
   {% if page_description %}
-  <meta name="description" content="{{ page_description | escape }}">
+  <meta name="description" content="{{ page_description | escape }}"/>
   {% endif %}
-
+ 
   <!-- Product meta ========================================================= -->
   {% include 'social-meta-tags' %}
 
@@ -33,7 +33,6 @@
 
   <!-- CSS ================================================================== -->
   {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
-  {{ 'custom.css' | asset_url | stylesheet_tag }}
 
   <!-- Vendor JS ============================================================ -->
   {{ 'vendor.js' | asset_url | script_tag }}
@@ -82,7 +81,6 @@
   <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
   {% section 'header' %}
-  {% section 'currency-popup' %}
   {% section 'newsletter-popup' %}
 
   <main class="main-content" id="MainContent" role="main">
@@ -90,8 +88,6 @@
   </main>
 
   {% section 'footer' %}
-  
-  {% section 'geolocation-popup' %}
 
   <!-- Theme Javascript ============================================================== -->
   {{ 'theme.js' | asset_url | script_tag }}

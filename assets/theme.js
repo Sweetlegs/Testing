@@ -1847,8 +1847,7 @@ theme.Popout = (function() {
   };
 
   function Popout($popout) {
-    
-    this.$container = $('.popout');
+    this.$container = $popout;
     this.$popoutList = this.$container.find(selectors.popoutList);
     this.$popoutToggle = this.$container.find(selectors.popoutToggle);
     this.$popoutInput = this.$container.find(selectors.popoutInput);
@@ -2216,25 +2215,14 @@ $(theme.init);
 
 /*================ Sections ================*/
 theme.Header = (function() {
-   var selectors = {
-    popoutLocale: '[data-popout-locale]',
-    popoutCurrency: '[data-popout-currency]'
-  };
   function Header(container) {
-
-
-    this.$popoutCurrency = $(selectors.popoutCurrency, $('body'));
-    this.popoutCurrency = {}
     this.init();
     this.stickyHeader();
   }
-  
+
   Header.prototype = _.assignIn({}, Header.prototype, {
     init: function() {
       theme.transparentLogoNoImage();
-      if (this.$popoutCurrency.length){
-        this.popoutCurrency = new theme.Popout(this.$popoutCurrency);
-      }      
     },
     stickyHeader: function() {
       var $header = $('.header__wrapper');

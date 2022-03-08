@@ -307,11 +307,11 @@ $accentFontAdjust: 1.0;
 // Icons
 @font-face {
   font-family: 'icons';
-  src: url('//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/icons.eot?v=3364567537052764893');
-  src: url('//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/icons.eot?v=3364567537052764893#iefix') format("embedded-opentype"),
-       url('//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/icons.woff?v=371582728864620814') format("woff"),
-       url('//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/icons.ttf?v=10529776329753831131') format("truetype"),
-       url('//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/icons.svg?v=8022031131045997127#timber-icons') format("svg");
+  src: url('//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/icons.eot?v=3364567537052764893');
+  src: url('//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/icons.eot?v=3364567537052764893#iefix') format("embedded-opentype"),
+       url('//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/icons.woff?v=371582728864620814') format("woff"),
+       url('//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/icons.ttf?v=10529776329753831131') format("truetype"),
+       url('//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/icons.svg?v=8022031131045997127#timber-icons') format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -1983,7 +1983,7 @@ select {
           appearance: none;
   background-position: right center;
   background: {
-    image: url('//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/ico-select.svg?v=16966175939290147815');
+    image: url('//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/ico-select.svg?v=16966175939290147815');
     repeat: no-repeat;
     position: right 10px center;
     color: transparent;
@@ -2840,7 +2840,7 @@ $infoBarPadding: 5px;
     border-top-right-radius: $radius;
     border-bottom-right-radius: $radius;
     width: 23px;
-    background: url("//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/search.svg?v=15210245778752988011");
+    background: url("//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/search.svg?v=15210245778752988011");
     background-repeat: no-repeat;
     background-position:  right 3px center;
     &:focus,
@@ -3098,17 +3098,17 @@ $infoBarPadding: 5px;
 }
 /* ie8  icon replacement*/
 .lt-ie9 .nav--mobile .header-hamburger{
-  background: url("//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/nav.png?v=5213634688747986165");
+  background: url("//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/nav.png?v=5213634688747986165");
   background-position: right center;
   background-repeat: no-repeat;
 }
 .lt-ie9 .nav--mobile .header-cart{
-  background: url("//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/cart.png?v=5567253892726684099");
+  background: url("//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/cart.png?v=5567253892726684099");
   background-position: left center;
   background-repeat: no-repeat;
 }
 .lt-ie9 .header-search .search-bar{
-  background: url("//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/search.png?v=3045914094756246733");
+  background: url("//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/search.png?v=3045914094756246733");
   background-position: right center;
   background-repeat: no-repeat;
 }
@@ -9399,9 +9399,9 @@ body:not(.focus-enabled) .shopify-model-viewer-ui .shopify-model-viewer-ui__butt
 
 @font-face {
   font-family: 'northwell';
-  src: url('//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/northwell.woff2?v=8350882228544850845') format("woff2"),
-       url('//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/northwell.woff?v=13337114122616221866') format("woff"),
-       url('//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/northwell.ttf?v=4283582820921800105') format("truetype");
+  src: url('//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/northwell.woff2?v=8350882228544850845') format("woff2"),
+       url('//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/northwell.woff?v=13337114122616221866') format("woff"),
+       url('//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/northwell.ttf?v=4283582820921800105') format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -9466,7 +9466,7 @@ h4.home__subtitle {
 }
 
 a.nav-link[href="/search"] {
- 	background: url("//cdn.shopify.com/s/files/1/1300/0459/t/35/assets/search.svg?v=15210245778752988011");
+ 	background: url("//cdn.shopify.com/s/files/1/1300/0459/t/32/assets/search.svg?v=15210245778752988011");
     background-repeat: no-repeat;
     background-position: left center;
     background-size: 14px;
