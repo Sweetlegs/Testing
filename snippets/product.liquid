@@ -1,0 +1,202 @@
+<div class="product-page">
+  <div class="wrapper" data-product-wrapper>
+
+    {% if section.settings.product_breadcrumbs %}
+      {% include 'breadcrumb' %}
+    {% endif %}
+
+    {% assign current_variant = product.selected_or_first_available_variant %}
+
+    {%- assign product_image_width = 'large--three-fifths' -%}
+    {%- assign product_description_width = 'large--two-fifths' -%}
+
+    <div class="grid product-single">
+      <div class="grid__item {{ product_image_width }}">
+        <div class="product__slides product-single__photos" data-product-slideshow data-product-single-media-group>
+          {% for media in product.media %}
+            {% include 'media', media: media, featured_media: product.featured_media, sectionkey: section.id %}
+          {% endfor %}
+        </div>
+
+        {% assign first_3d_model = product.media | where: "media_type", "model" | first %}
+        {% if first_3d_model %}
+          <button
+            class="btn btn--clear btn--ar product-single__view-in-space"
+            data-shopify-xr
+            data-shopify-model3d-id="{{ first_3d_model.id }}"
+            data-shopify-title="{{ product.title }}"
+            data-shopify-xr-hidden>
+            {% include 'icon-media-model' %}
+            <span class="product-single__view-in-space-text">{{ 'products.product.view_in_space' | t }}</span>
+          </button>
+        {% endif %}
+
+        <noscript>
+          {% for image in product.media %}
+            <img src="{{ image.preview_image | img_url: '900x' }}" alt="{{ image.alt | default: product.title  }}">
+          {% endfor %}
+        </noscript>
+        {% if product.media.size > 1 %}
+          <div data-product-thumbs class="product__thumbs--square"></div>
+        {%- endif -%}
+      </div>
+
+      <div class="grid__item {{ product_description_width }}" id="productInfo-{{ section.id }}">
+        <div class="text-left">
+          {%- if section.settings.show_price_above -%}
+          <h5 class="product__price uppercase h5{% if current_variant.compare_at_price > current_variant.price %} on-sale{% endif %}">
+            <span class="money"><span id="ProductPrice-{{ section.id }}">{{ current_variant.price | money }}</span></span>
+
+            <p class="small compare-at em" id="ComparePriceWrapper-{{ section.id }}" {% unless current_variant.compare_at_price > current_variant.price %}style="display: none"{% endunless %}>
+            <span class="money"><span id="ComparePrice-{{ section.id }}">{{ product.compare_at_price_max | money }}</span></span>
+            </p>
+          </h5>
+          {%- endif -%}
+
+          {% if section.settings.product_show_vendor and product.vendor %}
+            <p><a href="{{ product.vendor | url_for_vendor }}" class="border-bottom-link uppercase">{{ product.vendor }}</a></p>
+          {% endif %}
+          <h1 class="h2">{{ product.title }}</h1>
+          
+         
+          {%- if section.settings.form_position == 'above' -%}
+            {% include 'product-form' %}
+          {%- endif -%}
+
+          {% comment %}
+            If the product description is over 1000 characters or contains an embed code,
+            place the description in a full width container below the image and cart button.
+          {% endcomment %}
+          {% assign description_position = '' %}
+          {%- assign product_description_content = product.description -%}
+          {%- assign has_tabs = false -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == "tab_description" -%}
+              {%- assign has_tabs = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%-if has_tabs -%}
+            {%- assign product_description_content = product_description_content | split: '<h6>' | first -%}
+          {%- endif -%}
+          {% if product_description_content contains '[split]' %}
+            {% assign description_position = 'both' %}
+          {% endif  %}
+
+          <div class="product-description rte">
+            {{ product_description_content | replace: '<p>[split]</p>', '[split]' | split: '[split]' | first }}
+          </div>
+
+        </div>
+
+        {%- if section.blocks.size > 0 and section.settings.tabs_position == 'sidebar'-%}
+          <div class="tabs-wrapper productTabsWrapper">
+            {% include 'product-tabs' %}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.form_position == 'below' -%}
+          {% include 'product-form' %}
+        {%- endif -%}
+
+        {% if settings.product_social_enable %}
+          {% capture link %}{{ shop.url }}{{ product.url }}{% endcapture %}
+          {% capture shareTitle %}{{ product.title | url_param_escape }}{% endcapture %}
+          <div class="share text-center" data-permalink="{{ link }}">
+            {% if settings.share_enable_facebook %}
+              <a target="_blank" href="//www.facebook.com/sharer.php?u={{ link }}" class="share__link">
+                <span class="icon icon-facebook" aria-hidden="true"></span>
+                <span class="share__text">{{ 'general.share.facebook' | t }}</span>
+              </a>
+            {% endif %}
+            {% if settings.share_enable_twitter %}
+              <a target="_blank" href="//twitter.com/share?url={{ link }}&amp;text={{ shareTitle }}" class="share__link">
+                <span class="icon icon-twitter" aria-hidden="true"></span>
+                <span class="share__text">{{ 'general.share.twitter' | t }}</span>
+              </a>
+            {% endif %}
+            {% if settings.share_enable_pinterest %}
+              <a target="_blank" href="http://pinterest.com/pin/create/button/?url={{ link }}&amp;media={{ product.featured_media.preview_image | product_img_url: '1024x1024' | prepend: 'http:' }}&amp;description={{ shareTitle }}" class="share__link">
+                <span class="icon icon-pinterest" aria-hidden="true"></span>
+                <span class="share__text">{{ 'general.share.pinterest' | t }}</span>
+              </a>
+            {% endif %}
+            {% if settings.share_enable_google %}
+              <a target="_blank" href="//plus.google.com/share?url={{ link }}" class="share__link">
+                <span class="icon icon-google_plus" aria-hidden="true"></span>
+                <span class="share__text">{{ 'general.share.google' | t }}</span>
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    
+ 
+    
+  </div>
+</div>
+
+{% if description_position == 'both' %}
+  <div class="wrapper">
+    <div class="product-description rte">
+      {{ product_description_content | replace: '<p>[split]</p>', '[split]' | split: '[split]' | last }}
+    </div>
+  </div>
+{% endif %}
+
+{%- if section.blocks.size > 0 and section.settings.tabs_position == 'below' -%}
+  <div class="wrapper tabs-wrapper productTabsWrapper">
+    {% include 'product-tabs' %}
+  </div>
+{%- endif -%}
+
+{%- if section.settings.product_reviews_enable -%}
+  <div class="wrapper">
+    <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+  </div>
+{%- endif -%}
+
+<script id="CartDrawerTemplate--{{ section.id }}" type="text/x-handlebars-template">
+  <span class="close">×</span>
+  <div class="product__add__drawer">
+    <div class="product__add__wrapper">
+      <div class="product__add__image">
+        {% capture product_image %}{% raw %}{{ product_image }}{% endraw %}{% endcapture %}
+        <div class="product__add__image__container">
+          <img alt="{{ product_title }}" src="{{ product_image }}">
+        </div>
+
+      </div>
+      <div class="product__add__text">
+        <p class="product__add__message">{{ 'products.cart_drawer.item_added' | t }}</p>
+        {% raw %}
+          <div class="product__add__details">
+            <p class="strong">{{ product_title }}</p>
+            {{#if variant}}<p>{{ variant }}</p>{{/if}}
+            <p>{{{ properties }}}</p>
+            <p>{{{ price }}}</p>
+            <p>Quantity: {{ quantity }}</p>
+          </div>
+        {% endraw %}
+        <div class="product__add__buttons">
+          <a href="/checkout" class="btn btn--large uppercase btn--splash">{{ "products.cart_drawer.checkout" | t }}</a>
+          <a href="{{ routes.cart_url }}" class="btn btn--large uppercase btn--splash--outline">{{ "products.cart_drawer.view_cart" | t }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+<style>
+  model-viewer {
+    --progress-bar-color: {{ settings.color_body_text }};
+  }
+</style>
+
+
+<script type="application/json" id="ProductJson-{{ section.id }}">
+  {{ product | json }}
+</script>
+<script type="application/json" id="ModelJson-{{ section.id }}">
+  {{ product.media | where: 'media_type', 'model' | json }}
+</script>

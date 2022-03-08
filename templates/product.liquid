@@ -1,33 +1,42 @@
-{% if product.type == 'photography' %}
-  <meta content="0; url=/" http-equiv="refresh" />
-  {% layout none %}
-{% else %}
-{% include 'product-check' %}
+{%- if product.metafields.inventory.ShappifyHidden == 'true' -%}{%- break -%}{%- endif -%}
+{% section "product" %}
 
-  {% section 'product-template' %}
-  {% section 'product-recommendations' %}
+{% section "related" %}
 
-
-  {% if settings.enable_product_reviews and settings.reviews_layout == 'full' %}
-    <hr id="Reviews-{{ product.id }}" class="hr--clear">
-    <div class="index-section product-reviews product-reviews--full">
-      <div class="page-width">
-        <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
-      </div>
-    </div>
-  {% endif %}
-  <script>
-    // Override default values of shop.strings for each template.
-    // Alternate product templates can change values of
-    // add to cart button, sold out, and unavailable states here.
-    theme.productStrings = {
-      addToCart: {{ 'products.product.add_to_cart' | t | json }},
-      soldOut: {{ 'products.product.sold_out' | t | json }},
-      unavailable: {{ 'products.product.unavailable' | t | json }}
-    };
-  </script>
-
-  <!--Start Stamped.io Auto Installation-->
-<div id="stamped-main-widget" class="stamped-main-widget" data-widget-style="standard" data-product-id="{{ product.id }}" data-name="{{ product.title | escape }}" data-url="{{ shop.url }}{{ product.url }}" data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}" data-description="{{ product.description | escape }}" data-product-sku="{{product.handle}}" data-product-type="{{product.type}}">{{ product.metafields.stamped.reviews }}</div>
-<!--End Stamped.io Auto Installation-->
-{% endif %}
+{% assign current_variant = product.selected_or_first_available_variant %}
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "url": {{ shop.url | append: product.url | json }},
+  {%- if product.featured_media -%}
+    {%- assign image_size = product.featured_media.preview_image.width | append: 'x' -%}
+    "image": [
+      {{ product.featured_media.preview_image.src | img_url: image_size | prepend: "https:" | json }}
+    ],
+  {%- endif -%}
+  "description": {{ product.description | strip_html | json }},
+  {%- if current_variant.sku != blank -%}
+    "sku": {{ current_variant.sku | json }},
+  {%- endif -%}
+  "brand": {
+    "@type": "Thing",
+    "name": {{ product.vendor | default: shop.name | json }}
+  },
+  "offers": [
+    {%- for variant in product.variants -%}
+      {
+        "@type" : "Offer",
+        {%- if variant.sku != blank -%}
+          "sku": {{ variant.sku | json }},
+        {%- endif -%}
+        "availability" : "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+        "price" : {{ variant.price | divided_by: 100.00 | json }},
+        "priceCurrency" : {{ cart.currency.iso_code | json }},
+        "url" : {{ shop.url | append: variant.url | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>

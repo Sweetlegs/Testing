@@ -1,0 +1,79 @@
+{% assign blockList = '' %}
+{% for block in section.blocks %}
+  {% assign blockList = blockList | append: block.type | append:','  %}
+{% endfor %}
+{% assign blockArray = blockList | split: "," %}
+
+{% assign swaparoo = false %}
+{% if blockArray[0] != 'image' and  blockArray[1] == 'image' %}
+  {% assign swaparoo = true %}
+{% endif %}
+
+<div class="grid--full homepage-double equalOverflowHeight {{ section.settings.height }}{% if swaparoo %} grid--rev{% endif %}">
+  {%- if swaparoo -%}
+    {%- assign block = section.blocks[1] -%}
+    {% include 'index-double-image' %}
+  {%- endif -%}
+
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'image' %}
+        {% unless swaparoo %}
+          {% include 'index-double-image' %}
+        {% endunless %}
+      {% when 'text' %}
+        <div class="grid__item large--one-half medium--one-half double__block {{ block.settings.homepage_bg_color }} preventOverflow" {{ block.shopify_attributes }}>
+          <div class="content--centered">
+            <div class="{{ block.settings.text_align }} preventOverflowContent">
+              {% if block.settings.title != '' %}
+                <h1 class="title--flex" style="color:{{ block.settings.text_color }};">{{ block.settings.title | escape }}</h4>
+              {% endif %}
+              {% if block.settings.richtext != blank %}
+                <div class="rte rte--homepage {{ block.settings.font_size }}" style="color:{{ block.settings.text_color }};">
+                  {{ block.settings.richtext }}
+                </div>
+              {% endif %}
+              {% if block.settings.link_text != '' %}
+                <a class="{{ block.settings.button_style }} {{ block.settings.font_size }}" style="color:{{ block.settings.button_text_color }}; background-color:{{ block.settings.button_bg_color }}" href="{{ block.settings.link }}">
+                  {{ block.settings.link_text | escape }}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% when 'newsletter-campaign' %}
+        <div class="grid__item large--one-half medium--one-half double__block {{ block.settings.homepage_bg_color }} preventOverflow" {{ block.shopify_attributes }}>
+          <div class="content--centered">
+            <div class="{{ block.settings.text_align }} preventOverflowContent">
+              {% if block.settings.title != '' %}
+                <h4 class="home__subtitle">{{ block.settings.title | escape }}</h4>
+              {% endif %}
+              {% if block.settings.richtext != blank %}
+                <div class="rte rte--homepage">
+                  {{ block.settings.richtext }}
+                </div>
+              {% endif %}
+              <div class="cmApp_embedFormContainer footer" style="display:none;"></div>
+            </div>
+          </div>
+        </div>
+      {% when 'newsletter' %}
+        <div class="grid__item large--one-half medium--one-half double__block {{ block.settings.homepage_bg_color }} preventOverflow" {{ block.shopify_attributes }}>
+          <div class="content--centered">
+            <div class="{{ block.settings.text_align }} preventOverflowContent">
+              {% if block.settings.title != '' %}
+                <h4 class="home__subtitle">{{ block.settings.title | escape }}</h4>
+              {% endif %}
+              {% if block.settings.richtext != blank %}
+                <div class="rte rte--homepage">
+                  {{ block.settings.richtext }}
+                </div>
+              {% endif %}
+              {% include 'newsletter-form' %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+    {% endcase %}
+  {% endfor %}
+</div>

@@ -1,0 +1,24 @@
+<!-- /templates/page.liquid -->
+
+{% section 'page-images' %}
+
+<div class="wrapper page-margin">
+  <div class="grid">
+    <div class="grid__item large--two-thirds push--large--one-sixth">
+      <h1 class="text-center h2 templateTitle" style="display:none;">{{ page.title }}</h1>
+      <div class="rte hidden">
+        {{ page.content }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% section 'page-about-icons' %}
+{% section 'page-about-double' %}
+<div id="shipping">
+{% section 'page-about-richtext' %}
+</div>
+{% section 'page-about-richtext-2' %}
+{% section 'page-about-columns' %}
+{% section 'page-about-richtext-3' %}
+{% section 'page-about-richtext-4' %}

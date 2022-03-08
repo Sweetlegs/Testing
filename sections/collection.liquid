@@ -1,0 +1,413 @@
+<!-- /sections/collection.liquid -->
+
+{%- assign grid_offset = '' -%}
+{%- assign products_count = collection.products_count -%}
+{%- case section.settings.grid_setting_large -%}
+  {%- when 1 -%}
+    {%- assign grid_width_large = 'large--one-whole' -%}
+  {%- when 2 -%}
+    {%- assign grid_width_large = 'large--one-half' -%}
+    {%- if products_count == 1 -%}
+      {%- assign grid_offset = 'push--large--one-quarter' -%}
+    {%- endif -%}
+  {%- when 3 -%}
+    {%- assign grid_width_large = 'large--one-third' -%}
+    {%- if products_count == 1 -%}
+      {%- assign grid_offset = 'push--large--one-third' -%}
+    {%- elsif products_count == 2 -%}
+      {%- assign grid_offset = 'push--large--one-sixth' -%}
+    {%- endif -%}
+  {%- when 4 -%}
+    {%- assign grid_width_large = 'large--one-quarter' -%}
+    {%- if products_count == 1 -%}
+      {%- assign grid_offset = 'push--large--three-eighths' -%}
+    {%- elsif products_count == 2 -%}
+      {%- assign grid_offset = 'push--large--one-quarter' -%}
+    {%- elsif products_count == 3 -%}
+      {%- assign grid_offset = 'push--large--one-eighth' -%}
+    {%- endif -%}
+  {%- when 5 -%}
+    {%- assign grid_width_large = 'large--one-fifth' -%}
+    {%- if products_count == 1 -%}
+      {%- assign grid_offset = 'push--large--two-fifths' -%}
+    {%- elsif products_count == 2 -%}
+      {%- assign grid_offset = 'push--large--three-tenths' -%}
+    {%- elsif products_count == 3 -%}
+      {%- assign grid_offset = 'push--large--one-fifth' -%}
+    {%- elsif products_count == 4 -%}
+      {%- assign grid_offset = 'push--large--one-tenth' -%}
+    {%- endif -%}
+  {%- when 6 -%}
+    {%- assign grid_width_large = 'large--one-sixth' -%}
+    {%- if products_count == 1 -%}
+      {%- assign grid_offset = 'push--large--five-twelfths' -%}
+    {%- elsif products_count == 2 -%}
+      {%- assign grid_offset = 'push--large--two-sixths' -%}
+    {%- elsif products_count == 3 -%}
+      {%- assign grid_offset = 'push--large--three-twelfths' -%}
+    {%- elsif products_count == 4 -%}
+      {%- assign grid_offset = 'push--large--one-sixth' -%}
+    {%- elsif products_count == 5 -%}
+      {%- assign grid_offset = 'push--large--one-twelfth' -%}
+    {%- endif -%}
+{%- endcase -%}
+{%- case section.settings.grid_setting_medium -%}
+  {%- when 1 -%}
+    {%- assign grid_width_medium = 'medium--one-whole' -%}
+  {%- when 2 -%}
+    {%- assign grid_width_medium = 'medium--one-half' -%}
+  {%- when 3 -%}
+    {%- assign grid_width_medium = 'medium--one-third' -%}
+  {%- when 4 -%}
+    {%- assign grid_width_medium = 'medium--one-quarter' -%}
+{%- endcase -%}
+{%- case section.settings.grid_setting_small -%}
+  {%- when 1 -%}
+    {%- assign grid_width_small = 'small--one-whole' -%}
+  {%- when 2 -%}
+    {%- assign grid_width_small = 'small--one-half' -%}
+  {%- when 3 -%}
+    {%- assign grid_width_small = 'small--one-third' -%}
+{%- endcase -%}
+
+{%- assign product_count = 48 -%}
+{%- if grid_width_large == 'large--one-whole' -%}
+  {%- assign product_count = 20 -%}
+{%- elsif grid_width_large == 'large--one-half' -%}
+  {%- assign product_count = 50 -%}
+{%- elsif grid_width_large == 'large--one-third' -%}
+  {%- assign product_count = 48 -%}
+{%- elsif grid_width_large == 'large--one-quarter' -%}
+  {%- assign product_count = 48 -%}
+{%- elsif grid_width_large == 'large--one-fifth' -%}
+  {%- assign product_count = 50 -%}
+{%- endif -%}
+{%- paginate collection.products by product_count -%}
+
+{%- assign collection_sidebar = false -%}
+{%- if section.settings.collection_custom_nav_list != blank or section.settings.collection_standard_nav or section.settings.collection_tag_nav -%}
+  {%- assign collection_sidebar = true -%}
+{%- endif -%}
+
+{%- assign hide_sidebar = '' -%}
+{%- if section.settings.hide_sidebar -%}
+  {%- assign hide_sidebar = "sidebar--hidden" -%}
+{%- endif -%}
+
+<div data-section-id="{{ section.id }}" data-section-type="parallax">
+
+  {% if collection.image and section.settings.show_image %}
+    {%- assign img_url = collection.image.src | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+    <div class="homepage-image fade-in-child preventOverflow {{ section.settings.text_color }} {{ section.settings.image_height }}" id="FeaturedImage-{{ section.id }}"
+        {% if section.settings.parallax %}
+          data-parallax-src="{{ collection.image | img_url: '18x' }}"
+          data-src="{{ img_url }}"
+          data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+          data-aspectratio="{{  collection.image.aspect_ratio }}"
+          data-sizes="auto"
+          style="background-image: url('{{ section.settings.image | img_url: '1x1' }}');"
+        {% endif %}>
+      <div class="content--centered">
+        <div class="text-center preventOverflowContent">
+          {%- if section.settings.show_title and section.settings.show_title_below == false  -%}
+          <h1 class="title--flex {{ section.settings.align_text }}">{{ collection.title }}</h1>
+          {%- endif -%}
+          {% if collection.description.size > 0 and section.settings.show_description and section.settings.show_description_below == false %}
+          <div class="{{ section.settings.description_font_size }} {{ section.settings.align_text }}">{{ collection.description }}</div>{% endif %}
+        </div>
+      </div>
+      <div class="image-overlay image-overlay-{{ section.settings.overlay_opacity }}"></div>
+      {% if section.settings.image_height == 'use_image' %}
+        <div class="lazy-image" style="padding-top:{{ 1 | divided_by: collection.image.aspect_ratio | times: 100}}%; background-image: url('{{ collection.image | img_url: '1x1' }}');">
+          <img class="lazyload fade-in" {% if section.settings.parallax %} style="opacity: 0;"{% endif %}
+            alt="{{ collection.image.alt | default: collection.title }}"
+            data-src="{{ img_url }}"
+            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+            data-aspectratio="{{ collection.image.aspect_ratio }}"
+            data-parent-fit="cover"
+            data-sizes="auto"/>
+        </div>
+      {% endif %}
+      {% if section.settings.parallax == false and section.settings.image_height != 'use_image' %}
+        <div class="background-size-cover lazyload" data-bgset="{% include 'bgset', image: collection.image %}" role="img" aria-label="{{ collection.image.alt }}"></div>
+      {% endif %}
+      <noscript>
+        <img src="{{ collection.image | img_url: '1440x' }}" alt="{{ collection.image.alt | default: collection.title }}" class="responsive-wide-image"/>
+      </noscript>
+    </div>
+  {% endif %}
+
+  <div class="collection {{ hide_sidebar }}" data-sidebar-toggle>
+    <div class="wrapper">
+      <div class="collection__heading--below">
+        {%- if collection.image == nil or section.settings.show_title_below or section.settings.show_image == false -%}
+          {%- if section.settings.show_title -%}
+            <h1 class="collection__heading--below title--flex {{ section.settings.align_text }}">{{ collection.title }}</h1>
+          {%- endif -%}
+        {%- endif -%}
+        {%- if collection.image == nil or section.settings.show_description_below or section.settings.show_image == false -%}
+          {%- if section.settings.show_description and collection.description.size > 0 -%}
+            <div class="collection__heading--below {{ section.settings.description_font_size }} {{ section.settings.align_text }}">
+              {{ collection.description }}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+      {% if section.settings.collection_sorting or collection_sidebar %}
+        {% if collection_sidebar %}
+          <div class="text-left">
+            <button id="toggleFilters" class="left btn btn--clear uppercase toggle-filters">
+              {% include 'icon-filter' %}
+            </button>
+            <button id="toggleFilters--desktop" class="left btn btn--minimal uppercase toggle-filters--desktop">
+              <span class="hide-filters">Hide filters</span>
+              <span class="show-filters">Show filters</span>
+              {% include 'icon-filter' %}
+            </button>
+          </div>
+        {% endif %}
+        {% if section.settings.collection_sorting %}
+          <div class="row text-right collection__sort">
+            {% include 'collection-sorting' %}
+          </div>
+        {% endif %}
+        <hr class="hr--small">
+      {% endif %}
+      <div class="grid collection-wrapper">
+        {% if collection_sidebar %}
+          <div class="grid__item large--one-quarter collection-filters" id="collectionFilters" {% if section.settings.hide_sidebar %}style="display: none;"{% endif %}>
+            {% include 'collections-sidebar' %}
+          </div>
+        {% endif %}
+        {% if collection_sidebar %}
+          <div class="grid__item collection-content page-margin large--three-quarters" {% if section.settings.hide_sidebar %}style="width: 100%;"{% endif %}>
+        {% else  %}
+          <div class="grid__item collection-content page-margin one-whole">
+        {% endif %}
+          <div class="grid-uniform">
+            {% for product in collection.products %}
+{%- if product.metafields.inventory.ShappifyHidden == 'true' -%}{%- continue -%}{%- endif -%}
+              {% include 'product-grid-item' %}
+            {% else %}
+              {% if collection.handle == 'all' and collection.current_tags == '' %}
+                {% include 'onboarding-empty-collection' %}
+              {% else %}
+              <div class="grid__item">
+                <p>{{ 'collections.general.no_matches' | t }}</p>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% if paginate.pages > 1 %}
+          <hr>
+          <div class="text-center">
+            {% include 'pagination-custom' %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endpaginate %}
+    </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Products per row"
+    },
+    {
+      "type":    "range",
+      "id":      "grid_setting_large",
+      "min":     1,
+      "max":     6,
+      "step":    1,
+      "label":   "Desktop",
+      "default": 4
+    },
+    {
+      "type":    "range",
+      "id":      "grid_setting_medium",
+      "min":     1,
+      "max":     4,
+      "step":    1,
+      "label":   "Tablet",
+      "default": 2
+    },
+    {
+      "type":    "range",
+      "id":      "grid_setting_small",
+      "min":     1,
+      "max":     3,
+      "step":    1,
+      "label":   "Mobile",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Collection sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_sorting",
+      "label": "Show collection sorting"
+    },
+    {
+       "type": "header",
+       "content": "Layout"
+     },
+     {
+       "type": "select",
+       "id": "align_text",
+       "label": "Text alignment",
+       "default": "text-center",
+       "options": [
+         { "value": "text-left", "label": "Left"},
+         { "value": "text-center", "label": "Center"},
+         { "value": "text-right", "label": "Right"}
+       ]
+     },
+     {
+       "type": "checkbox",
+       "id": "show_title",
+       "label": "Show collection title",
+       "default": true
+     },
+     {
+       "type": "checkbox",
+       "id": "show_title_below",
+       "label": "Title below image",
+       "default": false
+     },
+     {
+       "type": "checkbox",
+       "id": "show_description",
+       "label": "Show collection description",
+       "default": true
+     },
+     {
+       "type": "checkbox",
+       "id": "show_description_below",
+       "label": "Description below image",
+       "default": false
+     },
+     {
+       "type": "select",
+       "id": "description_font_size",
+       "label": "Description text size",
+       "default": "rte rte--large",
+       "options": [
+         { "value": "rte", "label": "Regular"},
+         { "value": "rte rte--large", "label": "Large"},
+         { "value": "rte rte--xl", "label": "Extra Large"}
+       ]
+     },
+    {
+      "type": "header",
+      "content": "Feature image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show feature image",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Image height",
+      "default": "use_screen_one_third",
+      "options": [
+        { "value": "use_image", "label": "Image height"},
+        { "value": "use_screen_two_thirds", "label": "Tall"},
+        { "value": "use_screen_one_half", "label": "Medium"},
+        { "value": "use_screen_one_third", "label": "Short"},
+        { "value": "use_screen_one_fifth", "label": "Tiny"}
+      ]
+    },
+    {
+      "type":    "range",
+      "id":      "overlay_opacity",
+      "min":     0,
+      "max":     100,
+      "step":    5,
+      "label":   "Image overlay opacity",
+      "info":    "Increase contrast for legible text.",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "homepage--white",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "parallax",
+      "default": false,
+      "label": "Enable parallax scroll"
+    },
+    {
+      "type": "header",
+      "content": "Collection filters"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_sidebar",
+      "label": "Hide filters by default",
+      "info": "Customers will have the option to show them"
+    },
+    {
+      "type": "link_list",
+      "id": "collection_custom_nav_list",
+      "label": "Sidebar nav",
+      "info": "Custom list of collections"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_standard_nav",
+      "label": "Show collections",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_tag_nav",
+      "label": "Show tag filters",
+      "default": false
+    }
+    ],
+    "blocks": [
+    {
+      "type": "tag_group",
+      "name": "Tag grouping",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Group name",
+          "default": "Filter by size"
+        },
+        {
+          "type": "text",
+          "id": "group_tags",
+          "label": "Tag list",
+          "default": "Small, Medium, Large",
+          "info": "Comma separated group of tags"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

@@ -1,326 +1,340 @@
-{%- assign show_selectors = false -%}
-{%- assign currency_selector = false -%}
-{%- assign locale_selector = false -%}
+<footer class="site-footer-wrapper" role="contentinfo" data-section-id="{{ section.id }}" data-section-type="footer">
+  {% if section.settings.footer_image %}
+    <div class="footer-logo-wrapper">
+      <a href="{{ routes.root_url }}" class="footer-logo">
+        <img src="{{ section.settings.footer_image | img_url: 'x200' }}" alt="{{ section.settings.footer_image.alt | default: shop.name }}"/>
+      </a>
+    </div>
+  {% endif %}
+  <div class="wrapper site-footer">
+    <div class="grid-uniform">
 
-{%- if section.settings.show_currency_selector and shop.enabled_currencies.size > 1 -%}
-  {%- assign currency_selector = true -%}
-{%- endif -%}
+      {% case section.blocks.size %}
+        {% when 0 %}
+        {% when 1 %}
+          {% assign footer_column_width = 'large--one-half push--large--one-quarter' %}
+        {% when 2 %}
+          {% assign footer_column_width = 'large--one-half' %}
+        {% when 3 %}
+          {% assign footer_column_width = 'large--one-third' %}
+        {% when 4 %}
+            {% assign footer_column_width = 'large--one-quarter' %}
+      {% endcase %}
 
-{%- if section.settings.show_locale_selector and shop.enabled_locales.size > 1 -%}
-  {%- assign locale_selector = true -%}
-{%- endif -%}
-
-{%- if currency_selector or locale_selector -%}
-  {%- assign show_selectors = true -%}
-{%- endif -%}
-
-<footer class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer-section">
-  <div class="page-width">
-
-    <div class="grid">
-      {%- assign row_width = 0 -%}
       {% for block in section.blocks %}
-        {%- assign row_width = row_width | plus: block.settings.container_width -%}
-        {% if row_width > 100 %}
-          <div class="footer__clear small--hide"></div>
-          {%- assign row_width = row_width | minus: 100 -%}
-        {% endif %}
+        {% case block.type %}
 
-        <div {{ block.shopify_attributes }} class="grid__item footer__item--{{ block.id }}" data-type="{{ block.type }}">
-          {% style %}
-            @media only screen and (min-width: 769px) and (max-width: 959px) {
-              .footer__item--{{ block.id }} {
-                width: 50%;
-                padding-top: 40px;
-              }
-              .footer__item--{{ block.id }}:nth-child(2n + 1) {
-                clear: left;
-              }
-            }
-            @media only screen and (min-width: 960px) {
-              .footer__item--{{ block.id }} {
-                width: {{ block.settings.container_width }}%;
-              }
+          {% when 'linklist' %}
+            {% assign linklist = linklists[block.settings.linklist] %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <p class="uppercase footer__title">{{ linklist.title }}</p>
+              <hr class="hr--underline">
+              <ul class="footer-quicklinks">
+                {% for link in linklist.links %}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
 
-            }
-          {% endstyle %}
+          {% when 'page' %}
+            {% assign page = pages[block.settings.page] %}
+            {% if page == blank or page.empty? %}
+              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+                <p class="uppercase footer__title">{{ shop.name }}</p>
+                <hr class="hr--underline">
+                <div class="rte">{{ 'home_page.onboarding.no_content' | t }}</div>
+            </div>
+            {% else %}
+              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+                <p class="uppercase footer__title">{{ page.title | escape }}</p>
+                <hr class="hr--underline">
+                <div class="rte">{{ page.content }}</div>
+              </div>
+            {% endif %}
 
-          {% case block.type %}
-          {% when 'logo_social' %}
-            {% include 'footer-logo', block: block %}
-          {% when 'custom' %}
-            {% include 'footer-custom-text', block: block %}
+          {% when 'text' %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <p class="uppercase footer__title">{{ block.settings.title | escape }}</p>
+              <hr class="hr--underline">
+              <div class="rte">{{ block.settings.text }}</div>
+            </div>
+
           {% when 'newsletter' %}
-            {% include 'footer-newsletter', block: block %}
-          {% when 'social' %}
-            {% include 'footer-social', block: block %}
-          {% when 'menu' %}
-            {% include 'footer-menu', block: block %}
-          {% endcase %}
-        </div>
-      {% endfor %}
-      {% for block in section.blocks %}
-        {% if block.type == 'logo' %}
-          <div class="grid__item medium-up--hide">
-            {% include 'footer-logo', block: block %}
-          </div>
-        {% endif %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <p class="uppercase footer__title">{{ block.settings.title }}</p>
+              <hr class="hr--underline">
+              <div class="rte">
+                {{ block.settings.richtext }}
+              </div>
+              {% include 'newsletter-form' %}
+            </div>
+
+          {% when 'newsletter-campaign' %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <p class="uppercase footer__title">{{ block.settings.title }}</p>
+              <hr class="hr--underline">
+              <div class="rte">
+                {{ block.settings.richtext }}
+              </div>
+              <div class="cmApp_embedFormContainer footer" style="display:none;"></div>
+            </div>
+
+          {% else %}
+        {% endcase %}
       {% endfor %}
     </div>
 
-    {%- if show_selectors -%}
-      <div class="footer__section">
-        {%- include 'multi-selectors',
-          locale_selector: locale_selector,
-          currency_selector: currency_selector,
-          show_currency_flags: section.settings.show_currency_flags
-          location: 'footer'
-        -%}
-      </div>
-    {%- endif -%}
+    <div class="footer-secondary-wrapper">
 
-    {% if section.settings.show_payment_icons %}
-      {% unless shop.enabled_payment_types == empty %}
-        <ul class="inline-list payment-icons footer__section">
+      {%- include 'cross-border' -%}
+
+      <ul class="footer-secondary inline-list">
+          <li><a href="{{ shop.secure_url }}">&copy; {{ shop.name }} {{ 'now' | date: "%Y" }}</a></li>
+        {% for link in linklists[section.settings.footer_secondary_linklist].links %}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+        <!-- Remove the following line to remove 'Powered by Shopify' from your footer -->
+          <li>{{ powered_by_link }}</li>
+        <!-- Do not delete below this line -->
+      </ul>
+
+      {% if section.settings.footer_social_enable %}
+      <ul class="footer-social social-icons inline-list">
+        {% if settings.social_twitter_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_twitter_link }}" title="{{ shop.name }} on Twitter" target="_blank">
+              <span class="icon icon-twitter" aria-hidden="true"></span>
+              <span class="fallback-text">Twitter</span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_facebook_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_facebook_link }}" title="{{ shop.name }} on Facebook" target="_blank">
+              <span class="icon icon-facebook" aria-hidden="true"></span>
+              <span class="fallback-text">Facebook</span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_instagram_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_instagram_link }}" title="{{ shop.name }} on Instagram" target="_blank">
+              <span class="icon icon-instagram" aria-hidden="true"></span>
+              <span class="fallback-text">Instagram</span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_pinterest_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_pinterest_link }}" title="{{ shop.name }} on Pinterest" target="_blank">
+              <span class="icon icon-pinterest" aria-hidden="true"></span>
+              <span class="fallback-text">Pinterest</span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_google_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_google_link }}" title="{{ shop.name }} on Google Plus" target="_blank">
+              <span class="icon icon-google_plus" aria-hidden="true"></span>
+              <span class="fallback-text">Google Plus</span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_youtube_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_youtube_link }}" title="{{ shop.name }} on Youtube" target="_blank">
+              <span class="icon icon-youtube" aria-hidden="true"></span>
+              <span class="fallback-text">Youtube</span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_vimeo_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_vimeo_link }}" title="{{ shop.name }} on Vimeo" target="_blank">
+              <span class="icon icon-vimeo" aria-hidden="true"></span>
+              <span class="fallback-text">Vimeo</span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_tumblr_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_tumblr_link }}" title="{{ shop.name }} on Tumblr" target="_blank">
+              <span class="icon icon-tumblr" aria-hidden="true"></span>
+              <span class="fallback-text">Tumblr</span>
+            </a>
+          </li>
+        {% endif %}
+        {% if settings.social_fancy_link != blank %}
+          <li>
+            <a class="icon-fallback-text" href="{{ settings.social_fancy_link }}" title="{{ shop.name }} on Fancy" target="_blank">
+              <span class="icon icon-fancy" aria-hidden="true"></span>
+              <span class="fallback-text">Fancy</span>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+      {% endif %}
+
+      {% if section.settings.footer_payment_enable %}
+        {% unless shop.enabled_payment_types == empty %}
+        <ul class="footer-payment payment-icons inline-list">
           {% for type in shop.enabled_payment_types %}
-            <li class="icon--payment">
-              {{ type | payment_type_svg_tag }}
-            </li>
+          <li>
+            {{ type | payment_type_svg_tag: class:'payment-icon' }}
+            <span class="visually-hidden">{{ type | capitalize | replace: '_', ' ' }}</span>
+          </li>
           {% endfor %}
         </ul>
-      {% endunless %}
-    {% endif %}
+        {% endunless %}
+      {% endif %}
 
-    {% if section.settings.show_copyright %}
-      <p class="footer__small-text">
-        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
-        {% if section.settings.copyright_text != blank %}
-          {{ section.settings.copyright_text }}
-        {% endif %}
-      </p>
-    {% endif %}
-    <p class="footer__small-text">{{ powered_by_link }}</p>
-
+    </div>
   </div>
 </footer>
 
 {% schema %}
-  {
-    "name": "Footer",
-    "max_blocks": 12,
-    "settings": [
-      {
-        "type": "header",
-        "content": "Language selector",
-        "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_locale_selector",
-        "label": "Show language selector",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "Currency selector",
-        "info": "To add a currency, go to your [currency settings.](/admin/settings/payments)"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_currency_selector",
-        "label": "Show currency selector",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_currency_flags",
-        "label": "Show currency flags",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "Additional footer content"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_payment_icons",
-        "label": "Show payment icons",
-        "default": false
-      },
-      {
-        "type": "checkbox",
-        "id": "show_copyright",
-        "label": "Show copyright"
-      },
-      {
-        "type": "text",
-        "id": "copyright_text",
-        "label": "Additional copyright text"
-      }
-    ],
-    "blocks": [
-      {
-        "type": "logo_social",
-        "name": "Logo",
-        "limit": 1,
-        "settings": [
-          {
-            "type": "image_picker",
-            "id": "logo",
-            "label": "Logo image"
-          },
-          {
-            "type": "range",
-            "id": "desktop_logo_height",
-            "label": "Logo height",
-            "default": 50,
-            "min": 20,
-            "max": 120,
-            "unit": "px"
-          },
-          {
-            "type": "range",
-            "id": "container_width",
-            "label": "Column width",
-            "default": 25,
-            "min": 15,
-            "max": 95,
-            "unit": "%"
-          }
-        ]
-      },
-      {
-        "type": "menu",
-        "name": "Navigation",
-        "settings": [
-          {
-            "type": "checkbox",
-            "id": "show_footer_title",
-            "label": "Show heading"
-          },
-          {
-            "type": "link_list",
-            "id": "menu",
-            "label": "Choose a menu",
-            "default": "footer",
-            "info": "This menu won't show dropdown items"
-          },
-          {
-            "type": "range",
-            "id": "container_width",
-            "label": "Column width",
-            "default": 25,
-            "min": 15,
-            "max": 95,
-            "unit": "%"
-          }
-        ]
-      },
-	  {
-        "type": "social",
-        "name": "Social",
-		"settings": [
-          {
-            "type": "range",
-            "id": "container_width",
-            "label": "Column width",
-            "default": 25,
-            "min": 15,
-            "max": 95,
-            "unit": "%"
-          }
-		]
-	  },
-      {
-        "type": "newsletter",
-        "name": "Newsletter and social",
-        "limit": 1,
-        "settings": [
-          {
-            "type": "checkbox",
-            "id": "show_footer_title",
-            "label": "Show heading",
-            "default": true
-          },
-          {
-            "type": "paragraph",
-            "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers)."
-          },
-          {
-            "type": "text",
-            "id": "title",
-            "label": "Heading",
-            "default": "Sign up and save"
-          },
-          {
-            "type": "richtext",
-            "id": "text",
-            "label": "Text",
-            "info": "Optional",
-            "default": "<p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
-          },
-          {
-            "type": "range",
-            "id": "container_width",
-            "label": "Column width",
-            "default": 25,
-            "min": 15,
-            "max": 95,
-            "unit": "%"
-          }
-        ]
-      },
-      {
-        "type": "custom",
-        "name": "Custom text",
-        "settings": [
-          {
-            "type": "checkbox",
-            "id": "show_footer_title",
-            "label": "Show heading",
-            "default": true
-          },
-          {
-            "type": "text",
-            "id": "title",
-            "label": "Heading",
-            "default": "Custom text"
-          },
-          {
-            "type": "image_picker",
-            "id": "image",
-            "label": "Image"
-          },
-          {
-            "type": "richtext",
-            "id": "text",
-            "label": "Text",
-            "default": "<p>Add your own custom text here.</p>"
-          },
-          {
-            "type": "range",
-            "id": "container_width",
-            "label": "Column width",
-            "default": 25,
-            "min": 15,
-            "max": 95,
-            "unit": "%"
-          }
-        ]
-      }
-    ],
-    "default": {
-      "settings": {},
-      "blocks": [
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "label": "Footer logo",
+      "type": "image_picker",
+      "id": "footer_image",
+      "info": "400 x 200px .png"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_secondary_linklist",
+      "label": "Link List",
+      "info": "This menu won't show dropdown items"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_payment_enable",
+      "label": "Show payment types"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_social_enable",
+      "label": "Show social icons"
+    },
+    {
+      "type": "header",
+      "content": "language selector",
+      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_locale_selector",
+      "label": "Show language selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Currency selector",
+      "info": "To add a currency, go to your [payment settings.](/admin/settings/payments)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "Show currency selector",
+      "default": true
+    }
+  ],
+  "blocks" : [
+    {
+      "type": "linklist",
+      "name": "Link list",
+      "settings": [
         {
-          "type": "menu",
-          "settings": {}
+           "type": "link_list",
+           "id": "linklist",
+           "label": "Link list",
+           "default": "main-menu",
+           "info": "This menu won't show dropdown items"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+		  "label": "Title",
+		  "default": "Newsletter"
         },
         {
-          "type": "logo_social",
-          "settings": {}
+          "type": "paragraph",
+          "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
+        },
+        {
+          "id": "richtext",
+          "type": "richtext",
+          "label": "Newsletter description",
+          "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+        }
+      ]
+    },
+    {
+      "type": "newsletter-campaign",
+      "name": "Newsletter Campaign",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+		  "label": "Title",
+		  "default": "Newsletter"
+        },
+        {
+          "type": "paragraph",
+          "content": "Subscribers are in Campaign marketing app"
+        },
+        {
+          "id": "richtext",
+          "type": "richtext",
+          "label": "Newsletter description",
+          "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Text column"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share store details, promotions, or brand content with your customers.</p>"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "id": "page",
+          "type": "page",
+          "label": "Page"
         }
       ]
     }
-  }
+  ]
+}
 {% endschema %}

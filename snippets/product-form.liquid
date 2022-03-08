@@ -1,118 +1,188 @@
-{% capture form_id %}AddToCartForm-{{ section_id }}{% endcapture %}
-{% form 'product', product, id: form_id, class: 'product-single__form' %}{% if content_for_header contains '.mageworx.com\/groupedproducts\/source.js?' and product.tags contains 'mw_grouped_product' %}<div class="mw-gp-container"></div>{% endif %}
-  {% unless product.has_only_default_variant %}
-    {% for option in product.options_with_values %}
-      {% if settings.variant_type == 'button' %}
-        {% include 'variant-button', section_id: section_id, option_drop: option %}
-      {% else %}
-        {% include 'variant-dropdown', section_id: section_id %}
-      {% endif %}
-    {% endfor %}
-  {% endunless %}
-
-  <select name="id" id="ProductSelect-{{ section_id }}" class="product-single__variants no-js">
-    {% for variant in product.variants %}
-      {% if variant.available %}
-        <option {% if variant == product.selected_or_first_available_variant %}
-          selected="selected" {% endif %}
-          value="{{ variant.id }}">
-          {{ variant.title }} - {{ variant.price | money_with_currency }}
-        </option>
-      {% else %}
-        <option disabled="disabled">
-          {{ variant.title }} - {{ 'products.product.sold_out' | t }}
-        </option>
-      {% endif %}
-    {% endfor %}
-  </select>
-
-  {% if settings.quantity_enable %}
-    <div class="product__quantity product__quantity--{{ settings.variant_type }}">
-      <label for="Quantity-{{ section_id }}">{{ 'products.product.quantity' | t }}</label>
-      {% include 'quantity-input', id: section_id, qty: 1, min: 1 %}
+<div class="product__form">
+  {% comment %}
+    Optional size chart - controlled by Magnific Popup
+  {% endcomment %}
+  {% if section.settings.info_page != blank %}
+    {% assign size_page = pages[section.settings.info_page] %}
+    <p class="text-center">
+      <a id="toggleProductModal-{{ section.id }}" class="border-bottom-link uppercase" data-mfp-src="#ProductModal-{{ section.id }}">
+        {{ size_page.title }}
+      </a>
+    </p>
+    <div id="ProductModal-{{ section.id }}" class="product-modal mfp-hide">
+      <div class="rte">{{ size_page.content }}</div>
     </div>
   {% endif %}
 
-  {%- assign inventory_visible = false -%}
-  {%- if settings.inventory_enable and current_variant.inventory_management == 'shopify' -%}
-    {%- if current_variant.inventory_quantity <= settings.inventory_threshold and current_variant.inventory_quantity >= 0 -%}
-      {%- assign inventory_visible = true -%}
-    {%- endif -%}
-  {%- endif -%}
-  {%- if current_variant.inventory_quantity == 0 -%}
-    {%- assign inventory_visible = false -%}
-  {%- endif -%}
+  {% unless product.template_suffix contains 'charge-rabbit' %}
+    <div id="AddToCartForm-{{ section.id }}" data-section="{{ section.id }}" class="product-form-{{section.id}} product-form">
+      {% form 'product', product %}
+        {% unless product.has_only_default_variant %}
+          {% for option in product.options_with_values %}
+            <div class="selector-wrapper js">
+              <label for="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}">
+                {{ option.name }}
+              </label>
+              <select class="single-option-selector single-option-selector-{{ section.id }}" id="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}" data-section="{{ section.id }}" data-index="option{{ forloop.index }}">
+                {% for value in option.values %}
+                  {% assign variant_avialable = true %}
+                  {% if product.options.size == 1 %}
+                    {% unless product.variants[forloop.index0].available  %}
+                      {% assign variant_avialable = false %}
+                    {% endunless %}
+                  {% endif %}
+                  <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}{% unless variant_avialable %} - {{ 'products.product.sold_out' | t }}{% endunless %}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endfor %}
+        {% endunless %}
 
-  <div
-    id="ProductInventory-{{ section_id }}"
-    class="product__inventory {% unless inventory_visible %}hide{% endunless %}"
-    >
-    {% if current_variant.available %}
-      {{ 'products.product.stock_label' | t: count: current_variant.inventory_quantity }}
-    {% endif %}
-  </div>
+        <select name="id" id="ProductSelect-{{ section.id }}" data-section="{{ section.id }}" class="product-form__variants no-js">
+          {% for variant in product.variants %}
+            {% if variant.available %}
+              <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+                {{ variant.title }}
+              </option>
+            {% else %}
+              <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      
+        <div class="bold_options"></div>
 
-  {%- if settings.inventory_transfers_enable -%}
-    <div
-      id="ProductIncomingInventory-{{ section_id }}"
-      class="product__inventory{% if inventory_visible %} hide{% endif %}">
-      {%- if current_variant.incoming and inventory_visible == false -%}
-        {%- if current_variant.next_incoming_date -%}
-          {% assign date = current_variant.next_incoming_date | date: format: 'date' %}
-          {%- if current_variant.available -%}
-            {{ 'products.product.will_not_ship_until' | t: date: date }}
-          {%- else -%}
-            {{ 'products.product.will_be_in_stock_after' | t: date: date }}
-          {%- endif -%}
-        {%- else -%}
-          {{ 'products.product.waiting_for_stock' | t }}
-        {%- endif -%}
-      {%- endif -%}
-    </div>
-  {%- endif -%}
 
-  {%- assign enable_dynamic_buttons = false -%}
-  {% if settings.enable_payment_button and template != 'product.preorder' %}
-    {%- assign enable_dynamic_buttons = true -%}
-  {% endif %}
-
-  {% if enable_dynamic_buttons %}
-    <div class="payment-buttons">
-  {% endif %}
-
-    <button
-      {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
-      name="add" {% if content_for_header contains '.mageworx.com\/groupedproducts\/source.js?' and product.tags contains 'mw_grouped_product' %}disabled="disabled"{% endif %}
-      id="AddToCart-{{ section_id }}"
-      class="btn btn--full add-to-cart{% if enable_dynamic_buttons %} btn--secondary{% endif %}"
-      {% unless current_variant.available %} disabled="disabled"{% endunless %}>
-      <span id="AddToCartText-{{ section_id }}">
-        {% if current_variant.available %}
-          {% if template == 'product.preorder' %}
-            {{ 'products.product.preorder' | t }}
-          {% else %}
-            {{ 'products.product.add_to_cart' | t }}
-          {% endif %}
-        {% else %}
-          {{ 'products.product.sold_out' | t }}
+        {% assign sold_out = true %}
+        {% if current_variant.available  %}
+          {% assign sold_out = false %}
         {% endif %}
-      </span>
-    </button>
 
-    {% if enable_dynamic_buttons %}
-      {{ form | payment_button }}
-    {% endif %}
+        {% if section.settings.show_quantity %}
+          <div class="js-qty quantity-selector" id="Quantity-{{section.id}}">
+            <span class="js-qty__adjust js-qty__adjust--minus quantity__minus">&minus;</span>
+            <input class="text quantity js-qty__num quantity__input" name="quantity" value="1" min="1" aria-label="quantity" pattern="[0-9]*"/>
+            <span class="js-qty__adjust js-qty__adjust--plus quantity__plus">+</span>
+          </div>
+        {% endif %}
+      
+      <style>
+        .hidden-textbox,
+        .hidden-textbox-2,
+        .hidden-textbox-3{
+          display: none !important;
+        }
+        input[type='checkbox'].toggle-input:checked~.hidden-textbox,
+        input[type='checkbox'].toggle-input-2:checked~.hidden-textbox-2,
+        input[type='checkbox'].toggle-input-3:checked~.hidden-textbox-3{
+          display: block !important;
+        }
+      </style>
+      
+      {% unless section.settings.checkbox_tag_1 == blank %}
+        {% if product.tags contains section.settings.checkbox_tag_1 %}
+        <p>
+          <input class="toggle-input" id="free-hand-stamping" type="checkbox" name="handStampCheck" value="Yes">
+          <label class="checkbox-label" for="free-hand-stamping">{{ section.settings.checkbox_title_1 }}</label>
+          <input class="hidden-textbox" id="hand-stamping-text" placeholder="Enter {{ section.settings.checkbox_title_1 }} text" type="text" name="properties[{{ section.settings.checkbox_title_1 }}]">
+        </p>
+        {% endif %}
+      {% endunless %}
+      
+      {% unless section.settings.checkbox_tag_2 == blank %}
+        {% if product.tags contains section.settings.checkbox_tag_2 %}
+        <p>
+          <input class="toggle-input-2" id="laser-engraving" type="checkbox" name="laserEngravingCheck" value="Yes">
+          <label class="checkbox-label" for="laser-engraving">{{ section.settings.checkbox_title_2 }}</label>
+          <input class="hidden-textbox-2" id="laser-engraving-text" placeholder="Enter {{ section.settings.checkbox_title_2 }} text" type="text" name="properties[{{ section.settings.checkbox_title_2 }}]">
+        </p>
+        {% endif %}
+      {% endunless %}
 
-  {% if enable_dynamic_buttons %}
+        <div class="add-to-cart__wrapper">
+          <button type="submit" name="add" data-add-to-cart id="AddToCart-{{ section.id }}" class="btn btn--large btn--full btn--clear uppercase addToCart{% if sold_out %} disabled{% endif %}" {% if sold_out %}disabled="true"{% endif %}>
+            <span id="AddToCartText-{{ section.id }}">{% if sold_out %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}</span>
+            <span class="unicode">•</span>
+            <span class="add-to-cart__price"><span class="buttonPrice" id="ButtonPrice-{{ section.id }}" data-item-price="{{ current_variant.price }}">{{ current_variant.price | money }}</span></span>
+          </button>
+          <p class="bold_option_price_display text-center"></p>
+        </div>
+
+        {% if section.settings.enable_payment_button %}
+          {{ form | payment_button }}
+        {% endif %}
+
+      {% endform %}
     </div>
-  {% endif %}
+  {% else %}
+    <form action="{{ product.metafields.charge_rabbit.subscribe_path }}" method="get" enctype="multipart/form-data" data-section="{{ section.id }}" class="product-form-{{ section.id }} charge-rabbit-product">
+      <input type="hidden" name="customer_id" value="{{customer.id}}">
+      {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+          <div class="selector-wrapper js">
+            <label for="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}">
+              {{ option.name }}
+            </label>
+            <select class="single-option-selector single-option-selector-{{ section.id }}" id="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}" data-section="{{ section.id }}" data-index="option{{ forloop.index }}">
+              {% for value in option.values %}
+                {% assign variant_avialable = true %}
+                {% if product.options.size == 1 %}
+                  {% unless product.variants[forloop.index0].available  %}
+                    {% assign variant_avialable = false %}
+                  {% endunless %}
+                {% endif %}
+                <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}{% unless variant_avialable %} - {{ 'products.product.sold_out' | t }}{% endunless %}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endfor %}
+      {% endunless %}
 
-  <div id="VariantsJson-{{ section_id }}" class="hide" aria-hidden="true">
-    {{ product.variants | json }}
-  </div>
-  {% if product.options.size > 1 %}
-    <div id="CurrentVariantJson-{{ section_id }}" class="hide" aria-hidden="true">
-      {{ current_variant | json }}
-    </div>
-  {% endif %}
-{% endform %}
+      <select name="id" id="ProductSelect-{{ section.id }}" data-section="{{ section.id }}" class="product-form__variants no-js">
+        {% for variant in product.variants %}
+          {% if variant.available %}
+            <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+              {{ variant.title }}
+            </option>
+          {% else %}
+            <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      
+      <div class="bold_options"></div>
+
+      {% assign sold_out = true %}
+      {% if current_variant.available  %}
+        {% assign sold_out = false %}
+      {% endif %}
+
+      <div class="add-to-cart__wrapper">
+        <button type="submit" name="add" id="AddToCart-{{ section.id }}" class="btn btn--large btn--full btn--clear uppercase addToCart{% if sold_out %} disabled{% endif %}" {% if sold_out %}disabled="true"{% endif %}>
+          <span id="AddToCartText-{{ section.id }}">{% if sold_out %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.join_membership' | t }}{% endif %}</span>
+          <span class="unicode">•</span>
+          <span class="add-to-cart__price"><span class="buttonPrice" id="ButtonPrice-{{ section.id }}" data-item-price="{{ current_variant.price }}">{{ current_variant.price | money }}</span></span>
+        </button>
+        <p class="bold_option_price_display text-center"></p>
+      </div>
+    </form>
+    {% include 'membership-product-callbacks' %}
+  {% endunless %}
+</div>
+
+<div id="CartDrawerWrapper--{{ section.id }}" class="cart-drawer"></div>
+
+
+<script>
+  BOLD.common.eventEmitter.on('BOLD_OPTIONS_option_products_loaded', function(event){
+    var optionsDiv = document.querySelector('.bold_options_loaded');
+    if (optionsDiv != null) {
+      if(optionsDiv.children.length != 0){
+        var buyItNow = document.querySelector('.shopify-payment-button');
+        if(buyItNow){
+          buyItNow.remove();
+        }
+      }
+    }
+  })
+</script>

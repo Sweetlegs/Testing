@@ -1,218 +1,121 @@
 <!doctype html>
-<html class="no-js" lang="{{ request.locale.iso_code }}">
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{ shop.locale }}"> <!--<![endif]-->
 <head>
-  {% unless customer %}
-    {% if template contains 'customers' or request.path == "/challenge" or template contains 'register' %}
-        {% assign send_to_login = false %}
-    {% else %}
-        {% assign send_to_login = false %}
-    {% endif %}
-  {% endunless %}
-  {% if send_to_login %}
-  <meta content="0; url=/account/login?checkout_url=/" http-equiv="refresh" />
-  {% else %}
+  <meta name="facebook-domain-verification" content="pmj5vnuf6hnl7iswcuhthqi5uzfpzo"/>
+  <!-- ======================= Pipeline Theme V4.7.1 ========================= -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="{{ settings.color_button }}">
-  <link rel="canonical" href="{{ canonical_url }}">
-  <meta name="format-detection" content="telephone=no">
-  <link rel="stylesheet" href="https://use.typekit.net/uem5iqk.css">
 
-  {%- if settings.favicon -%}
-    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
-  {%- endif -%}
-
-  {% include 'seo-title' %}
-  <title>{{ seo_title }}</title>
-
-  {%- if page_description -%}
-  <meta name="description" content="{{ page_description | escape }}">
-  {%- endif -%}
-
-  {% include 'social-meta-tags' %}
-
-  {% include 'font-face' %}
-  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
-  {{ 'cocoen.min.css' | asset_url | stylesheet_tag }}
-  
-  {% style %}
-    .collection-item__title {
-      font-size: {{ settings.type_collection_size | times: 0.8 }}px;
-    }
-
-    @media screen and (min-width: 769px) {
-      .collection-item__title {
-        font-size: {{ settings.type_collection_size }}px;
-      }
-    }
-  {% endstyle %}
-
-  <script>
-    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
-
-    window.theme = window.theme || {};
-    theme.strings = {
-      addToCart: {{ 'products.product.add_to_cart' | t | json }},
-      soldOut: {{ 'products.product.sold_out' | t | json }},
-      unavailable: {{ 'products.product.unavailable' | t | json }},
-      stockLabel: {{ 'products.product.stock_label' | t: count: '[count]' | json }},
-      willNotShipUntil: {{ 'products.product.will_not_ship_until' | t: date: '[date]' | json }},
-      willBeInStockAfter: {{ 'products.product.will_be_in_stock_after' | t: date: '[date]' | json }},
-      waitingForStock: {{ 'products.product.waiting_for_stock' | t | json }},
-      savePrice: {{ 'products.general.save_html' | t: saved_amount: '[saved_amount]' | json }},
-      cartEmpty: {{ 'cart.general.empty' | t | json }},
-      cartTermsConfirmation: {{ 'cart.general.terms_confirm' | t | json }}
-    };
-    theme.settings = {
-      dynamicVariantsEnable: true,
-      dynamicVariantType: {{ settings.variant_type | json }},
-      cartType: {{ settings.cart_type | json }},
-      moneyFormat: {{ shop.money_format | json }},
-      saveType: {{ settings.product_save_type | json }},
-      recentlyViewedEnabled: false,
-      predictiveSearch: {{ settings.predictive_search_enabled }},
-      predictiveSearchType: {{ settings.search_type | json }},
-      inventoryThreshold: {{ settings.inventory_threshold }},
-      quickView: {{ settings.quick_shop_enable }},
-      themeName: 'Impulse',
-      themeVersion: "3.0.3"
-    };
-  </script>
-
-  {{ content_for_header }}
-
-  <script src="{{ 'vendor-scripts-v6.js' | asset_url | split: '?' | first }}" defer="defer"></script>
-  <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-  <script src="{{ 'isotope.pkgd.min.js' | asset_url }}" defer="defer"></script>
-
-  {% if shop.enabled_currencies.size > 1 %}
-    <link rel="stylesheet" href="{{ 'currency-flags.css' | asset_url }}">
+  {% if settings.favicon != blank %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
   {% endif %}
 
-  <script src="https://cdn.plyr.io/3.6.4/plyr.js"></script>
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.4/plyr.css" />
-  <script src="{{ 'cocoen.min.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  <!-- Title and description ================================================ -->
+  <title>
+  {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
 
-  {%- if request.page_type contains 'customers/' -%}
-    <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
-  {%- endif -%}
+  {% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
 
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
-{% include 'wsg-header' %}
-{% include 'wsg-exclusions' %}
-{% include 'sca.freegifts' %}
-{% include 'scapp-customerinfo' %} 
+  <!-- Product meta ========================================================= -->
+  {% include 'social-meta-tags' %}
 
-<!--begin-boost-pfs-filter-css-->
-  {% render 'boost-pfs-style' %}
-<!--end-boost-pfs-filter-css-->
+  <!-- Helpers ============================================================== -->
+  <link rel="canonical" href="{{ canonical_url }}">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_primary }}">
 
+  <!-- CSS ================================================================== -->
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'custom.css' | asset_url | stylesheet_tag }}
+
+  <!-- Vendor JS ============================================================ -->
+  {{ 'vendor.js' | asset_url | script_tag }}
+
+  <script>
+    var theme = {
+      routes: {
+        product_recommendations_url: '{{ routes.product_recommendations_url }}',
+      },
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        join: {{ 'products.product.join_membership' | t | json }}
+      },
+      info: {
+        name: 'pipeline'
+      },
+      moneyFormat: {{ shop.money_format | json }},
+      version: '4.7.1'
+    }
+  </script>
+
+  {% comment %}
+    If you store has customer accounts disabled, you can remove the following JS file
+  {% endcomment %}
+  {% if template contains 'customers' %}
+    {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {% endif %}
+  
+
+
+  <!-- Header hook for plugins ============================================== -->
+  
+  {% include 'buddha-megamenu' %}
+  {{ content_for_header }}
+{%- render 'bold-options-hybrid' -%}
+{%- render 'bold-common' -%}
+{% if template == 'product' and product.metafields.inventory.ShappifyHidden or product.type contains '_HIDDEN_' %}<meta name='robots' content='noindex'>{% endif %}
 
 </head>
 
-<body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" data-transitions="false">
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" data-animations="{{ settings.animations_enable }}">
+  
 
   <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
-  <div id="PageContainer" class="page-container">
-    <div class="transition-body">
-
-    {% section 'header' %}
-      
-      <main class="main-content" id="MainContent">
-        {{ content_for_layout }}
-      </main>
-
-      {% section 'instagram-feed'%}
-      {% section 'logo-list' %}
-      {% section 'page-virtual-consultation-text-columsn-4' %}
-      {% section 'footer-promotions' %}
-      {% section 'footer' %}
-      {% unless template contains 'cart' %}
-      {% section 'promos' %}
-      {% endunless %}
-    </div>
-  </div>
-
+  {% section 'header' %}
+  {% section 'currency-popup' %}
   {% section 'newsletter-popup' %}
 
-  {%- if settings.cart_type == 'drawer' -%}
-    {%- include 'ajax-cart-template' -%}
-  {%- endif -%}
+  <main class="main-content" id="MainContent" role="main">
+    {{ content_for_layout }}
+  </main>
 
-  {% comment %}
-    Custom markup for slider arrows using theme icons
-  {% endcomment %}
-  <div class="hide">
-    <button id="prevArrowTemplate" class="slick-prev" aria-label="{{ 'general.pagination.previous' | t }}" type="button">
-      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-left" viewBox="0 0 284.49 498.98"><path d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0z"/></svg>
-      <span class="icon__fallback-text">{{ 'general.pagination.previous' | t }}</span>
-    </button>
-    <button id="nextArrowTemplate" class="slick-next" aria-label="{{ 'general.pagination.next' | t }}" type="button">
-      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-right" viewBox="0 0 284.49 498.98"><path d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98z"/></svg>
-      <span class="icon__fallback-text">{{ 'general.pagination.next' | t }}</span>
-    </button>
-  </div>
+  {% section 'footer' %}
+  
+  {% section 'geolocation-popup' %}
 
-  {%- if settings.predictive_search_enabled -%}
-    {%- include 'predictive-template' -%}
-  {%- endif -%}
+  <!-- Theme Javascript ============================================================== -->
+  {{ 'theme.js' | asset_url | script_tag }}
 
-  {% include 'video-modal' %}
-  {% include 'photoswipe-template' %}
-  {% if template contains 'product' %}
-    {% include 'recently-viewed-product-template' %}
-  {% endif %}
-{% include 'mw_GP_objects' %}
+  <script>
+    {% if newHash %}
+      $(function() {
+        timber.updateHash('{{ newHash }}');
+      });
+    {% endif %}
+    {% if resetPassword %}
+      $(function() {
+        timber.resetPasswordSuccess();
+      });
+    {% endif %}
+  </script>
+
+  <!-- Paste popup code between comments ===================================== -->
+
+  <!-- End popup ================================================== -->
+
+
 <!-- Back in Stock helper snippet -->
 {% render 'back-in-stock-helper' %}
 <!-- End Back in Stock helper snippet -->
-  
-  
-  
-  {% render 'customer-tags' %}
-  
-<!--begin-boost-pfs-js-->
-  {% render 'boost-pfs' %}
-<!--end-boost-pfs-js-->
-
-
-<style>
-  .boost-pfs-filter-option-refine-by .boost-pfs-filter-option-item.Professional, 
-  .boost-pfs-filter-option-body-products .boost-pfs-filter-option-item.Masks,
-  .boost-pfs-filter-option-treatment-supplies,
-  .boost-pfs-filter-option-gifts .boost-pfs-filter-option-item.Miscellaneous{
-    display:none !important
-  }
-  {%if customer %}
-  {%if customer.tags contains 'spa' or customer.tags contains 'employee' %}
-  .boost-pfs-filter-option-refine-by .boost-pfs-filter-option-item.Professional, 
-  .boost-pfs-filter-option-body-products .boost-pfs-filter-option-item.Masks,
-  .boost-pfs-filter-option-treatment-supplies{
-    display:block !important
-  }
-  {%endif %}
- {%if customer.tags contains 'employee' %}
-  .boost-pfs-filter-option-gifts .boost-pfs-filter-option-item.Miscellaneous{
-    display:block !important
-  }
-  {%endif %}
-  {%endif %}
-</style>
-
-  <script src="//collections-add-to-cart.incubate.dev/js/core/main.min.js?timestamp=1643713580&shop=farmhouse-fresh-goods-wholesale.myshopify.com" defer></script>
-
-{% if content_for_header contains 'fastbundle.co' %}
-    {% render 'fast_bundle_service' %}
-{% endif %}
 </body>
-  {% endif %}
-  
-
-  <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=XJuXnF"></script>
-
 </html>
