@@ -1,1 +1,0 @@
-mmWireSlices[1]='';

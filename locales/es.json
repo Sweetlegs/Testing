@@ -1,5 +1,11 @@
 {
   "general": {
+    "swatches": {
+      "color": "Color"
+    },
+    "size_chart": {
+      "size": "Talla"
+    },
     "meta": {
       "tags": "Etiquetado \"{{ tags }}\"",
       "page": "Página {{ page }}"
@@ -13,27 +19,48 @@
       "home_link_title": "Volver a la portada"
     },
     "newsletter_form": {
+      "email": "Correo electrónico",
       "newsletter_email": "su-email@ejemplo.com",
       "submit": "Suscribir",
-      "subscribed": "Gracias por unirse a nuestra lista de correo!"
+      "subscribed": "Gracias por unirse a nuestra lista de correo!",
+      "error_message": "Este cliente ya está suscrito."
     },
     "accessibility": {
       "menu": "Menú",
+      "open_menu": "Menú abierto",
+      "expand_menu": "menú ampliar",
+      "hide_menu": "Ocultar el menú",
+      "main_menu": "Menú principal",
       "play": "Reproduce el video",
-      "skip_to_content": "Ir directamente al contenido"
+      "zoom": "Enfocar",
+      "close": "Cerrar",
+      "scroll": "Desplazar hacia abajo",
+      "unit_price_separator": "por",
+      "see_all": "Ver todo",
+      "skip_to_content": "Ir directamente al contenido",
+      "total_reviews": "reseñas totales",
+      "star_reviews_info": "{{ rating_value }} de {{ rating_max }} estrellas",
+      "toggle_with_count": {
+        "one": "Mostrar {{ count }} producto por fila",
+        "other": "Mostrar {{ count }} productos por fila"
+      }
     },
     "search": {
-      "no_results_html": "Su búsqueda de \"{{ terms }}\" no tuvo resultados.",
-      "results_for_html": "Su búsqueda de \"{{ terms }}\" muestra lo siguiente:",
+      "no_results_for": "Ningún resultado para",
+      "results_for": "Resultados para",
       "title": "Buscar productos en nuestro sitio",
       "placeholder": "buscar en nuestra tienda",
+      "placeholder_short": "Buscar...",
+      "see_all": "Ver todo",
       "submit": "Buscar"
+    },
+    "page": {
+      "pages": "Páginas"
     },
     "share": {
       "facebook": "Share",
       "twitter": "Tweet",
-      "pinterest": "Pin",
-      "google": "+1"
+      "pinterest": "Pin"
     },
     "password_page": {
       "login_form_heading": "Entrar a la tienda usando contraseña:",
@@ -51,6 +78,7 @@
   },
   "blogs": {
     "article": {
+      "articles": "Artículos",
       "author_on_date_html": "Publicado por {{ author }} en {{ date }}",
       "older_post": "Publicación más antigua",
       "newer_post": "Publicación más reciente",
@@ -88,11 +116,22 @@
       "checkout": "Finalizar pedido",
       "empty": "Su carrito actualmente está vacío.",
       "stockout": "Todos stock disponible está en el carrito",
-      "continue_browsing_html": "Continúe explorando aquí",
+      "continue_browsing": "Seguir comprando",
       "view_cart": "Ver carrito",
       "savings": "Está ahorrando",
       "with": "con",
-      "close_cart": "Cerrar carrito"
+      "close_cart": "Cerrar carrito",
+      "add_message": "Agregaste un producto: ",
+      "total_message": {
+        "one": "y tienes {{count}} producto en el carrito",
+        "other": "y tienes {{count}} productos en el carrito"
+      },
+      "qualified_shipping_message": "¡Felicidades! Su pedido está calificado para el envío libre"
+    },
+    "shipping": {
+      "estimate_shipping": "Fecha de entrega estimada",
+      "no_shipping_available": "No enviamos a este destino.",
+      "free": "Libre"
     },
     "label": {
       "price": "Precio",
@@ -105,34 +144,27 @@
       "view_all": "Ver todo",
       "no_matches": "Lo sentimos, no hay productos que coincidan con su búsqueda.",
       "link_title": "Navegue por nuestra colección {{ title }}",
+      "sort": "Ordenar",
       "grid_view": "Tabla",
       "list_view": "Lista",
-      "items_with_count": {
-        "one": "{{ count }} artículo",
-        "other": "{{ count }} artículos"
+      "catalog": "Catalogar",
+      "swatches_with_count": {
+        "one": "{{ count }}  color disponible",
+        "other": "{{ count }} colores disponibles"
       }
     },
     "sidebar": {
       "more": "Más",
       "types": "Tipos de producto",
       "vendors": "Proveedores",
-      "tags": "Filtros",
+      "filter": "Filtrar",
+      "hide_filters": "Ocultar Filtros",
       "collections": "Colecciones",
       "all_types": "Todos los Tipos",
       "all_vendors": "todos los Proveedores",
       "all_tags": "Borrar Filtros",
-      "all_collections": "Todas las Colecciones"
-    },
-    "sorting": {
-      "title": "Ordenar por",
-      "featured": "Destacados",
-      "best_selling": "Más vendidos",
-      "az": "Alfabéticamente, A-Z",
-      "za": "Alfabéticamente, Z-A",
-      "price_ascending": "Precio, menor a mayor",
-      "price_descending": "Precio, mayor a menor",
-      "date_descending": "Fecha, nuevo a antiguo",
-      "date_ascending": "Fecha, antiguo a nuevo"
+      "all_collections": "Todas las Colecciones",
+      "show_more": "Mostrar más"
     },
     "onboarding": {
       "modal_title": "Esta página mostrará todos los productos de su tienda",
@@ -187,6 +219,7 @@
       "update": "Actualizar dirección",
       "cancel": "Cancelar",
       "edit": "Editar",
+      "delete_confirm": "¿Está seguro de que desea eliminar esta dirección?",
       "delete": "Eliminar"
     },
     "login": {
@@ -268,9 +301,8 @@
       "add_product": "Añadir un producto",
       "no_collections_html": "No tiene colecciones para mostrar aquí. <a href=\"\/admin\/custom_collections\">Agregue algunas colecciones<\/a> que acompañen a la Portada por defecto.",
       "add_collection": "Añadir una colección",
-      "blog_title": "Título de tu publicación",
       "blog_excerpt": "Tu tienda no ha publicado ninguna entrada en el blog. Un blog puede ser utilizado para hablar sobre los nuevos lanzamientos del producto, consejos u otras noticias que deseas compartir con tus clientes. Puedes verificar el blog de comercio electrónico Shopify para la inspiración y consejos para tu propia tienda y blog.",
-      "blog_title": "Le titre de votre publication",
+      "blog_title": "Título de tu publicación",
       "no_content": "Esta secção não inclui de momento qualquer conteúdo. Adicione conteúdo a esta secção através da barra lateral.",
       "collection_title": "Ejemplo título de colección"
     }
@@ -299,25 +331,47 @@
   },
   "products": {
     "general": {
-      "previous_product_html": "&larr;",
-      "next_product_html": "&rarr;",
+      "products": "Productos",
+      "description": "Descripción",
+      "read_more": "Lee mas",
+      "to": "Para",
       "from": "De",
-      "from_text_html": "A partir de {{ price }}"
+      "upsell_title": "Cómpralo con",
+      "upsell_add_to_cart": "Añadir al carrito",
+      "upsell_out_of_stock": "Agotado",
+      "upsell_error_title": "Ejemplo de producto Upsell",
+      "upsell_error_info": "Agregue un producto Upsell en la configuración de su tema"
     },
     "product": {
       "sold_out": "Agotado",
-      "on_sale_from_html": "<strong>En oferta<\/strong> desde {{ price }}",
+      "pre_order": "Hacer un pedido",
+      "subscription": "Suscripción",
+      "save": "Ahorre",
+      "each": "Cada uno",
+      "one_time_purchase": "Una vez de compra",
       "sale": "Oferta",
       "new": "Nuevo",
       "unavailable": "No disponible",
       "compare_at": " Comparar en",
+      "unit_price_label": "Precio unitario",
       "quantity": "Cantidad",
       "add_to_cart": "Agregar al carrito",
+      "remaining_html": "Sólo {{ inventory }} quedan en el inventario",
       "view_in_space": "Ver en tu espacio",
-      "join_membership": "Únete Ahora"
+      "join_membership": "Únete Ahora",
+      "pickup_availability": {
+        "pickup_options": "Opciones de recogida",
+        "view_store_info": "Ver información de la tienda",
+        "check_other_stores": "Verificar disponibilidad en otras tiendas",
+        "pick_up_available": "Retiro disponible",
+        "pick_up_available_at_html": "Retiro disponible en <strong>{{ location_name }}</strong>",
+        "pick_up_unavailable_at_html": "Retiro no disponible actualmente en <strong>{{ location_name }}</strong>",
+        "unavailable": "No se pudo cargar la disponibilidad de retiro",
+        "refresh": "Actualizar"
+      }
     },
     "cart_drawer": {
-      "item_added": "Artículo agregado al carrito",
+      "item_added": "Elemento añadido",
       "checkout": "Finalizar Pedido",
       "view_cart": "Ver el Carro"
     }

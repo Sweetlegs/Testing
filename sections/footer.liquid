@@ -1,35 +1,46 @@
-<footer class="site-footer-wrapper" role="contentinfo" data-section-id="{{ section.id }}" data-section-type="footer">
+<footer class="site-footer-wrapper"
+  role="contentinfo"
+  data-section-id="{{ section.id }}"
+  data-section-type="footer">
   {% if section.settings.footer_image %}
     <div class="footer-logo-wrapper">
-      <a href="{{ routes.root_url }}" class="footer-logo">
-        <img src="{{ section.settings.footer_image | img_url: 'x200' }}" alt="{{ section.settings.footer_image.alt | default: shop.name }}"/>
+      <a href="{{ routes.root_url }}" class="footer-logo" data-footer-logo>
+        <img src="{{ section.settings.footer_image | img_url: 'x200' }}" 
+          width="{{ section.settings.footer_image.width }}"
+          height="{{ section.settings.footer_image.height }}"
+          alt="{{ section.settings.footer_image.alt | default: shop.name | strip_html | escape }}"/>
       </a>
     </div>
   {% endif %}
   <div class="wrapper site-footer">
-    <div class="grid-uniform">
+    <div class="grid grid--uniform" data-accordion-group>
 
       {% case section.blocks.size %}
         {% when 0 %}
         {% when 1 %}
-          {% assign footer_column_width = 'large--one-half push--large--one-quarter' %}
+          {% assign footer_column_width = 'medium-up--one-half medium-up--push-one-quarter' %}
         {% when 2 %}
-          {% assign footer_column_width = 'large--one-half' %}
+          {% assign footer_column_width = 'medium-up--one-half' %}
         {% when 3 %}
-          {% assign footer_column_width = 'large--one-third' %}
+          {% assign footer_column_width = 'medium-up--one-third' %}
         {% when 4 %}
-            {% assign footer_column_width = 'large--one-quarter' %}
+            {% assign footer_column_width = 'medium-up--one-quarter' %}
       {% endcase %}
 
       {% for block in section.blocks %}
         {% case block.type %}
-
           {% when 'linklist' %}
             {% assign linklist = linklists[block.settings.linklist] %}
             <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-              <p class="uppercase footer__title">{{ linklist.title }}</p>
-              <hr class="hr--underline">
-              <ul class="footer-quicklinks">
+              <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-haspopup="true" 
+                aria-expanded="true">
+                  {{ linklist.title }}
+                  {% render 'icon-arrow-medium-right' %}
+              </p>
+              <ul class="footer-quicklinks" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">
                 {% for link in linklist.links %}
                   <li><a href="{{ link.url }}">{{ link.title }}</a></li>
                 {% endfor %}
@@ -40,43 +51,60 @@
             {% assign page = pages[block.settings.page] %}
             {% if page == blank or page.empty? %}
               <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-                <p class="uppercase footer__title">{{ shop.name }}</p>
-                <hr class="hr--underline">
-                <div class="rte">{{ 'home_page.onboarding.no_content' | t }}</div>
-            </div>
+                <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                  data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-haspopup="true" 
+                  aria-expanded="true">
+                    {{ shop.name }}
+                    {% render 'icon-arrow-medium-right' %}
+                </p>
+
+                <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ 'home_page.onboarding.no_content' | t }}</div>
+              </div>
             {% else %}
               <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-                <p class="uppercase footer__title">{{ page.title | escape }}</p>
-                <hr class="hr--underline">
-                <div class="rte">{{ page.content }}</div>
+                <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                  data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-haspopup="true" 
+                  aria-expanded="true">
+                    {{ page.title | escape }}
+                    {% render 'icon-arrow-medium-right' %}
+                </p>
+
+                <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ page.content }}</div>
               </div>
             {% endif %}
 
           {% when 'text' %}
             <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-              <p class="uppercase footer__title">{{ block.settings.title | escape }}</p>
-              <hr class="hr--underline">
-              <div class="rte">{{ block.settings.text }}</div>
+              <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-haspopup="true" 
+                aria-expanded="true">
+                  {{ block.settings.title | escape }}
+                  {% render 'icon-arrow-medium-right' %}
+              </p>
+              <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ block.settings.text }}</div>
             </div>
 
           {% when 'newsletter' %}
             <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-              <p class="uppercase footer__title">{{ block.settings.title }}</p>
-              <hr class="hr--underline">
-              <div class="rte">
+              <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-haspopup="true" 
+                aria-expanded="true">
+                  {{ 'layout.footer.newsletter_title' | t }}
+                  {% render 'icon-arrow-medium-right' %}
+              </p>
+              <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">
                 {{ block.settings.richtext }}
+                
+                {% render 'newsletter-form' unique: 'footer-newsletter' %}
               </div>
-              {% include 'newsletter-form' %}
-            </div>
-
-          {% when 'newsletter-campaign' %}
-            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-              <p class="uppercase footer__title">{{ block.settings.title }}</p>
-              <hr class="hr--underline">
-              <div class="rte">
-                {{ block.settings.richtext }}
-              </div>
-              <div class="cmApp_embedFormContainer footer" style="display:none;"></div>
             </div>
 
           {% else %}
@@ -84,95 +112,50 @@
       {% endfor %}
     </div>
 
-    <div class="footer-secondary-wrapper">
+    <div class="grid footer-secondary-wrapper">
+      <div class="footer-selects">
+        {%- form 'localization', class: 'popout--footer', id: 'localization-form-footer' -%}
+          {%- if section.settings.show_locale_selector and shop.published_locales.size > 1 -%}
+            {%- render 'select-locale', form: form, unique: 'localization-form-footer', wrapper_class: 'footer__select' -%}
+          {%- endif -%}
+          {%- if section.settings.show_currency_selector and shop.enabled_currencies.size > 1 -%}
+              {%- render 'select-currency', form: form, unique: 'localization-form-footer', select_type: section.settings.currency_select_type, wrapper_class: 'footer__select' -%}
+          {%- endif -%}
+        {%- endform -%}
+      </div>
 
-      {%- include 'cross-border' -%}
 
       <ul class="footer-secondary inline-list">
-          <li><a href="{{ shop.secure_url }}">&copy; {{ shop.name }} {{ 'now' | date: "%Y" }}</a></li>
+          <li>&copy; {{ shop.name | link_to: routes.root_url }} {{ 'now' | date: "%Y" }}</li>
         {% for link in linklists[section.settings.footer_secondary_linklist].links %}
           <li><a href="{{ link.url }}">{{ link.title }}</a></li>
         {% endfor %}
-        <!-- Remove the following line to remove 'Powered by Shopify' from your footer -->
-          <li>{{ powered_by_link }}</li>
+
+
+        <!-- Remove the following line to delete 'Powered by Shopify' from your footer -->
+          <li data-powered-link>{{ powered_by_link }}</li>
         <!-- Do not delete below this line -->
+
+
       </ul>
 
       {% if section.settings.footer_social_enable %}
-      <ul class="footer-social social-icons inline-list">
-        {% if settings.social_twitter_link != blank %}
-          <li>
-            <a class="icon-fallback-text" href="{{ settings.social_twitter_link }}" title="{{ shop.name }} on Twitter" target="_blank">
-              <span class="icon icon-twitter" aria-hidden="true"></span>
-              <span class="fallback-text">Twitter</span>
-            </a>
-          </li>
-        {% endif %}
-        {% if settings.social_facebook_link != blank %}
-          <li>
-            <a class="icon-fallback-text" href="{{ settings.social_facebook_link }}" title="{{ shop.name }} on Facebook" target="_blank">
-              <span class="icon icon-facebook" aria-hidden="true"></span>
-              <span class="fallback-text">Facebook</span>
-            </a>
-          </li>
-        {% endif %}
-        {% if settings.social_instagram_link != blank %}
-          <li>
-            <a class="icon-fallback-text" href="{{ settings.social_instagram_link }}" title="{{ shop.name }} on Instagram" target="_blank">
-              <span class="icon icon-instagram" aria-hidden="true"></span>
-              <span class="fallback-text">Instagram</span>
-            </a>
-          </li>
-        {% endif %}
-        {% if settings.social_pinterest_link != blank %}
-          <li>
-            <a class="icon-fallback-text" href="{{ settings.social_pinterest_link }}" title="{{ shop.name }} on Pinterest" target="_blank">
-              <span class="icon icon-pinterest" aria-hidden="true"></span>
-              <span class="fallback-text">Pinterest</span>
-            </a>
-          </li>
-        {% endif %}
-        {% if settings.social_google_link != blank %}
-          <li>
-            <a class="icon-fallback-text" href="{{ settings.social_google_link }}" title="{{ shop.name }} on Google Plus" target="_blank">
-              <span class="icon icon-google_plus" aria-hidden="true"></span>
-              <span class="fallback-text">Google Plus</span>
-            </a>
-          </li>
-        {% endif %}
-        {% if settings.social_youtube_link != blank %}
-          <li>
-            <a class="icon-fallback-text" href="{{ settings.social_youtube_link }}" title="{{ shop.name }} on Youtube" target="_blank">
-              <span class="icon icon-youtube" aria-hidden="true"></span>
-              <span class="fallback-text">Youtube</span>
-            </a>
-          </li>
-        {% endif %}
-        {% if settings.social_vimeo_link != blank %}
-          <li>
-            <a class="icon-fallback-text" href="{{ settings.social_vimeo_link }}" title="{{ shop.name }} on Vimeo" target="_blank">
-              <span class="icon icon-vimeo" aria-hidden="true"></span>
-              <span class="fallback-text">Vimeo</span>
-            </a>
-          </li>
-        {% endif %}
-        {% if settings.social_tumblr_link != blank %}
-          <li>
-            <a class="icon-fallback-text" href="{{ settings.social_tumblr_link }}" title="{{ shop.name }} on Tumblr" target="_blank">
-              <span class="icon icon-tumblr" aria-hidden="true"></span>
-              <span class="fallback-text">Tumblr</span>
-            </a>
-          </li>
-        {% endif %}
-        {% if settings.social_fancy_link != blank %}
-          <li>
-            <a class="icon-fallback-text" href="{{ settings.social_fancy_link }}" title="{{ shop.name }} on Fancy" target="_blank">
-              <span class="icon icon-fancy" aria-hidden="true"></span>
-              <span class="fallback-text">Fancy</span>
-            </a>
-          </li>
-        {% endif %}
-      </ul>
+        <ul class="footer-social social-icons grid__item inline-list">
+          {%- assign social_accounts = 'Facebook, Twitter, Tiktok, Pinterest, Instagram, Snapchat, Tumblr, Linkedin, YouTube, Vimeo, Medium, ' | split: ', ' -%}
+          {%- for social in social_accounts -%}
+            {%- assign social_handle = social | handleize -%}
+            {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+
+            {%- if settings[social_link] != blank -%}
+              <li>
+                <a href="{{ settings[social_link] }}" title="{{ social }}">
+                  {% render 'social-icon' handle: social_handle %}
+                  <span class="visually-hidden">{{ social }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
       {% endif %}
 
       {% if section.settings.footer_payment_enable %}
@@ -180,7 +163,7 @@
         <ul class="footer-payment payment-icons inline-list">
           {% for type in shop.enabled_payment_types %}
           <li>
-            {{ type | payment_type_svg_tag: class:'payment-icon' }}
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
             <span class="visually-hidden">{{ type | capitalize | replace: '_', ' ' }}</span>
           </li>
           {% endfor %}
@@ -244,6 +227,21 @@
       "id": "show_currency_selector",
       "label": "Show currency selector",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "currency_select_type",
+      "label": "Type",
+      "options": [
+        {
+          "value": "currency",
+          "label": "Currency"
+        },
+        {
+          "value": "country",
+          "label": "Country"
+        }
+      ]
     }
   ],
   "blocks" : [
@@ -257,6 +255,16 @@
            "label": "Link list",
            "default": "main-menu",
            "info": "This menu won't show dropdown items"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
         }
       ]
     },
@@ -266,12 +274,6 @@
       "limit": 1,
       "settings": [
         {
-          "type": "text",
-          "id": "title",
-		  "label": "Title",
-		  "default": "Newsletter"
-        },
-        {
           "type": "paragraph",
           "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
         },
@@ -280,29 +282,16 @@
           "type": "richtext",
           "label": "Newsletter description",
           "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
-        }
-      ]
-    },
-    {
-      "type": "newsletter-campaign",
-      "name": "Newsletter Campaign",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-		  "label": "Title",
-		  "default": "Newsletter"
         },
         {
-          "type": "paragraph",
-          "content": "Subscribers are in Campaign marketing app"
-        },
-        {
-          "id": "richtext",
-          "type": "richtext",
-          "label": "Newsletter description",
-          "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
         }
       ]
     },
@@ -321,6 +310,16 @@
           "id": "text",
           "label": "Text",
           "default": "<p>Share store details, promotions, or brand content with your customers.</p>"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
         }
       ]
     },
@@ -332,6 +331,16 @@
           "id": "page",
           "type": "page",
           "label": "Page"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
         }
       ]
     }

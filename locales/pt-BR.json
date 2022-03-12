@@ -1,5 +1,11 @@
 {
   "general": {
+    "swatches": {
+      "color": "Cor"
+    },
+    "size_chart": {
+      "size": "Tamanho"
+    },
     "meta": {
       "tags": "Marcado \"{{ tags }}\"",
       "page": "Página {{ page }}"
@@ -13,27 +19,48 @@
       "home_link_title": "Voltar à \"Primeira Página\""
     },
     "newsletter_form": {
+      "email": "E-Mail",
       "newsletter_email": "seu_e-mail@exemplo.com",
       "submit": "Inscrever",
-      "subscribed": "Obrigado por se juntar a nossa mailing list!"
+      "subscribed": "Obrigado por se juntar a nossa mailing list!",
+      "error_message": "Este cliente já está inscrito"
     },
     "accessibility": {
-      "menu": "Menu principal",
+      "menu": "Menu",
+      "open_menu": "Abrir menu",
+      "expand_menu": "Menu Expandir",
+      "hide_menu": "esconder menu",
+      "main_menu": "Menu principal",
       "play": "Reprodução de vídeo",
-      "skip_to_content": "Pular para o conteúdo"
+      "close": "Fechar",
+      "zoom": "Ampliação",
+      "scroll": "Rolar para baixo",
+      "unit_price_separator": "por",
+      "see_all": "Veja tudo",
+      "skip_to_content": "Pular para o conteúdo",
+      "total_reviews": "análises totais",
+      "star_reviews_info": "{{rating_value}} de {{rating_max}} estrelas",
+      "toggle_with_count": {
+        "one": "Mostrar {{ count }} produto por linha",
+        "other": "Mostrar {{ count }} produtos por linha"
+      }
     },
     "search": {
-      "no_results_html": "Sua busca por \"{{ terms }}\" não gerou resultados.",
-      "results_for_html": "Sua busca por \"{{ terms }}\" encontrou os itens a seguir:",
+      "no_results_for": "Nenhum resultado para",
+      "results_for": "Resultados para",
       "title": "Buscar produtos em nosso site",
       "placeholder": "Busque em nossa loja",
+      "placeholder_short": "Buscar...",
+      "see_all": "Veja todas",
       "submit": "Buscar"
+    },
+    "page": {
+      "pages": "Páginas"
     },
     "share": {
       "facebook": "Share",
       "twitter": "Tweet",
-      "pinterest": "Pin",
-      "google": "+1"
+      "pinterest": "Pin"
     },
     "password_page": {
       "login_form_heading": "Entre na loja usando a senha:",
@@ -51,6 +78,7 @@
   },
   "blogs": {
     "article": {
+      "articles": "Artigos",
       "author_on_date_html": "Postado por{{ author }} em {{ date }}",
       "older_post": "Postagem anterior",
       "newer_post": "Postagem seguinte",
@@ -88,11 +116,22 @@
       "checkout": "Fechar pedido",
       "empty": "Seu carrinho está vazio no momento.",
       "stockout": "Todos estoque disponível está no carrinho",
-      "continue_browsing_html": "Continue navegando aqui.",
+      "continue_browsing": "Continue comprando",
       "view_cart": "Ver carrinho",
       "savings": "Você está economizando",
       "with": "com",
-      "close_cart": "Fechar carrinho"
+      "close_cart": "Fechar carrinho",
+      "add_message": "Você adicionou um produto: ",
+      "total_message": {
+        "one": "e você tem {{count}} produto no carrinho",
+        "other": "e você tem {{contagem}} produtos no carrinho"
+      },
+      "qualified_shipping_message": "Parabéns! Seu pedido é qualificado para o transporte livre"
+    },
+    "shipping": {
+      "estimate_shipping": "Estimativa de envio",
+      "no_shipping_available": "Nós não enviamos para este destino.",
+      "free": "Livre"
     },
     "label": {
       "price": "Preço",
@@ -107,32 +146,25 @@
       "link_title": "Explore a nossa coleção {{ title }}",
       "grid_view": "Grelha",
       "list_view": "Lista",
-      "items_with_count": {
-        "one": "{{ count }} item",
-        "other": "{{ count }} itens"
+      "sort": "Ordenar",
+      "catalog": "Catálogo",
+      "swatches_with_count": {
+        "one": "{{ count }} cor disponível",
+        "other": "{{ count }} cores disponíveis"
       }
     },
     "sidebar": {
       "more": "Mais",
       "types": "Tipos de produtos",
       "vendors": "Fabricantes",
-      "tags": "Filtros",
+      "filter": "Filtros",
+      "hide_filters": "Ocultar Filtros",
       "collections": "Colecções",
       "all_types": "Todos os Tipos",
       "all_vendors": "Todos os Fornecedores",
       "all_tags": "Limpar Filtros",
-      "all_collections": "Todas as Coleções"
-    },
-    "sorting": {
-      "title": "Ordenar por",
-      "featured": "Em destaque",
-      "best_selling": "Mais vendidos",
-      "az": "Ordem alfabética, A–Z",
-      "za": "Ordem alfabética, Z–A",
-      "price_ascending": "Preço, do menor ao maior",
-      "price_descending": "Preço, do maior ao menor",
-      "date_descending": "Data, mais recente primeiro",
-      "date_ascending": "Data, mais antiga primeiro"
+      "all_collections": "Todas as Coleções",
+      "show_more": "Mostre mais"
     },
     "onboarding": {
       "modal_title": "Esta página mostrará todos os produtos de sua loja",
@@ -187,6 +219,7 @@
       "update": "Atualizar endereço",
       "cancel": "Cancelar",
       "edit": "Editar",
+      "delete_confirm": "Tem certeza de que deseja excluir este endereço?",
       "delete": "Excluir"
     },
     "login": {
@@ -298,25 +331,47 @@
   },
   "products": {
     "general": {
-      "previous_product_html": "&larr;",
-      "next_product_html": "&rarr;",
+      "products": "Produtos",
+      "description": "Descrição",
+      "read_more": "Consulte Mais informação",
+      "to": "Para",
       "from": "A partir de",
-      "from_text_html": "De {{ price }}"
+      "upsell_title": "Compre com",
+      "upsell_add_to_cart": "Adicionar ao carrinho",
+      "upsell_out_of_stock": "Esgotado",
+      "upsell_error_title": "Exemplo de produto Upsell.",
+      "upsell_error_info": "Adicione um produto Upsell em suas configurações do tema"
     },
     "product": {
       "sold_out": "Esgotado",
-      "on_sale_from_html": "<strong>Em promoção<\/strong>, a partir de {{ price }}",
+      "pre_order": "Pedido antecipado",
+      "subscription": "Inscrição",
+      "save": "Economize",
+      "each": "Cada",
+      "one_time_purchase": "Compra de uma só vez",
       "sale": "Promoção",
       "new": "Novo",
       "unavailable": "Indisponível",
       "compare_at": "Preço normal:",
+      "unit_price_label": "Preço unitário",
       "quantity": "Quantidade",
       "add_to_cart": "Adicionar ao carrinho",
+      "remaining_html": "Apenas {{ inventory }} em estoque",
       "view_in_space": "Ver no seu espaço",
-      "join_membership": "Inscreva-se agora"
+      "join_membership": "Inscreva-se agora",
+      "pickup_availability": {
+        "pickup_options": "Opções de pickup",
+        "view_store_info": "Ver as informações da loja",
+        "check_other_stores": "Verificar a disponibilidade em outras lojas",
+        "pick_up_available": "Retirada disponível",
+        "pick_up_available_at_html": "Retirada disponível em <strong>{{ location_name }}</strong>",
+        "pick_up_unavailable_at_html": "Retirada em <strong>{{ location_name }}</strong> indisponível no momento",
+        "unavailable": "Não foi possível carregar a disponibilidade de retirada.",
+        "refresh": "Atualizar"
+      }
     },
     "cart_drawer": {
-      "item_added": "Item adicionado ao carrinho",
+      "item_added": "Item adicionado",
       "checkout": "Fechar Pedido",
       "view_cart": "Ver Carrinho"
     }

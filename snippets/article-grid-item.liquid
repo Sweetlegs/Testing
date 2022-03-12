@@ -1,25 +1,22 @@
-<div class="grid__item {{ blog_grid }}">
-  <a class="blog__link" href="{{ article.url }}" aria-label="{{ article.title }}">
-    <div class="blog__article blog__article--card{% if article.image %} blog__article--image{% endif %}">
-      {% if article.image %}
-        {%- assign img_object = article.image -%}
-        <div class="blog__article__overlay lazyload" data-bgset="{% include 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt }}"></div>
-        <noscript>
-          <div class="blog__article__overlay" style="background-image: url('{{ article.image | img_url: 'x540' }}')"></div>
-        </noscript>
-      {% endif %}
-      <div class="blog__article__content equalHeightColumn">
-        <h3 class="h3 blog__article__title">{{ article.title }}</h3>
-        {% unless article.image %}
-          <div class="rte blog__article__text">
-            {% if article.excerpt == blank %}
-              {{ article.content | strip_html | truncate: 200 }}
-            {% else %}
-              {{ article.excerpt | strip_html | truncate: 200 }}
-            {% endif %}
-          </div>
-        {% endunless %}
+{% comment %}
+  * An article block that fills the container with an image with overlayed title
+  {% render 'article-grid-item', article: article, aspect_ratio: 0.7, color: section.settings.color, overlay_color: section.settings.overlay_color %}
+{% endcomment %}
+<div class="article__card section--image {{ color | default: 'text--white' }}">
+
+  <a href="{{ article.url }}" class="link-over-image"  aria-label="{{ article.title | strip_html | escape }}">
+    <div class="hero__content__wrapper align--bottom-left">
+      <div class="article__card__title">
+        <h3 class="h4 mb0">{{ article.title }}</h3>
       </div>
     </div>
   </a>
+  {% if article.image %}
+    <div class="image-overlay--bottom" style="--bg:{{ overlay_color | default: '#000' }}; --opacity: 0.45;"></div>
+    {%- render 'image-fill', img_object: article.image, aspect_ratio: aspect_ratio -%}
+  {% else %}
+    <div class="image__fill"     
+        style="padding-top: {{ aspect_ratio | times: 100 }}%;
+               background: var(--muted);"></div>
+  {% endif %}
 </div>
