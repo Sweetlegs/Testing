@@ -19,7 +19,7 @@
   {%- endcapture -%}
 
   {%- capture og_image_twitter_tags -%}
-    <meta property="twitter:image" content="http:{{ product.featured_media.preview_image | img_url: '1200x1200' }}">
+    <meta property="twitter:image" content="http:{{ product.featured_media.preview_image | img_url: '1200x1200'  }}">
   {%- endcapture -%}
 
 {%- elsif template.name == 'article' -%}

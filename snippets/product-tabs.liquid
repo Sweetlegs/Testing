@@ -1,7 +1,13 @@
 <!-- /snippets/product-tabs.liquid -->
 {% comment %}
-  {% render 'product-tabs', section: section, product: product %}
+  {% render 'product-tabs', section: section, product: product  %}
 {% endcomment %}
+{%- assign product_description_stripped_html = product.description | strip_html -%}
+{%- assign product_description_content = product.description | strip -%}
+{%- assign product_description_split = product.description | replace: '<p>[split]</p>', '[split]' | replace: '[split]', '' | replace: '<h6></h6>', '' -%}
+{%- assign truncate_string = 'products.general.read_more' | t -%}
+{%- assign truncate_html = '<button type="button" class="p underline" data-truncated-button>' | append: truncate_string | append: '</button>' -%}
+
 {%- if product == nil -%}
   {%- assign product_description_content = 'home_page.onboarding.product_description' | t -%}
 {%- endif -%}
@@ -18,22 +24,16 @@
 
     {%- capture tab_contents_html -%}
       <div class="tab-content tab-content-0">
-        <div class="tab-content__holder {% if block.settings.read_more %}tab-content__holder--truncate{% endif %}" {% if block.settings.read_more %}data-truncated-holder{% endif %} >
+        <div class="tab-content__holder tab-content__holder--truncate" data-truncated-holder>
           <div class="tab-content__inner">
-            <div class="tab-content__entry" {% if block.settings.read_more %}data-truncated-content="tab-content__entry--truncate"{% endif %}>
-              {% if block.settings.read_more %}
-                {{ product_description_content }}
-              {% else %}
-                {{ product.description }}
-              {% endif %}
+            <div class="tab-content__entry" data-truncated-content="tab-content__entry--truncate">
+              {{ product_description_content }}
             </div>
           </div>
 
-          {% if block.settings.read_more %}  
-            <div class="tab-content__actions">
-              {{ truncate_html }}
-            </div>
-          {% endif %}
+          <div class="tab-content__actions">
+            {{ truncate_html }}
+          </div>
         </div>
       </div>
     {%- endcapture -%}
@@ -87,72 +87,58 @@
     </div>
   {%- endif -%}
 {%- elsif block.settings.style == 'accordions' -%}
-  <div class="product-accordion" data-accordion-group>
-    {%- assign accordion_blocks_html = '' -%}
-    
-    {%- for i in (1..5) -%}
-      {%- assign _title = 'title_' | append: forloop.index -%}
-      {%- assign _title = block.settings[_title] -%}
+  <div class="product-accordion" data-accordion data-accordion-expand="true">
+    <div class="accordion">
+      {%- assign accordion_blocks_html = '' -%}
+      {%- assign accordion_description_attr = '' -%}
+      
+      {%- for i in (1..5) -%}
+        {%- assign _title = 'title_' | append: forloop.index -%}
+        {%- assign _title = block.settings[_title] -%}
 
-      {%- assign _content = 'raw_content_' | append: forloop.index -%}
-      {%- assign _content = block.settings[_content] -%}
+        {%- assign _content = 'raw_content_' | append: forloop.index -%}
+        {%- assign _content = block.settings[_content] -%}
 
-      {% assign block_id = block.id | append: '-' | append: forloop.index %}
+        {%- if _title != '' and _content != '' -%}
+          {%- capture accordion_blocks_html -%}
+            {{ accordion_blocks_html }}
 
-      {%- if _title != '' and _content != '' -%}
-        {%- capture accordion_blocks_html -%}
-          {{ accordion_blocks_html }}
-          <div class="accordion__wrapper">
-            <button class="accordion__title"
-              data-accordion-trigger="{{ block_id }}"
-              aria-controls="{{ block_id }}"
-              aria-haspopup="true" 
-              aria-expanded="false">
-              {{ _title }}
-            </button>
+            <div class="accordion-row">
+              <p class="accordion-toggle" tabindex="0" data-focus-element data-accordion-toggle data-block-id="{{ block.id }}-{{ forloop.index }}" {{ block.shopify_attributes }}>
+                {{ _title }}
+              </p>
 
-            <div class="accordion__body" id="{{ block_id }}" data-accordion-body>
-              {{ _content }}
-            </div>
-          </div>
-        {%- endcapture -%}
-      {%- endif -%}
-    {%- endfor -%}
-    
-
-    {%- if product_description_content != blank -%}
-      {% assign block_id = block.id | append: '-main' %}
-      <div class="accordion__wrapper">
-        <button class="accordion__title accordion-is-open"
-          data-accordion-trigger="{{ block_id }}"
-          aria-controls="{{ block_id }}"
-          aria-haspopup="true" 
-          aria-expanded="false">
-          {{ 'products.general.description' | t }}
-        </button>
-
-        <div class="accordion__body" id="{{ block_id }}" data-accordion-body>
-          <div class="accordion-content__holder {% if block.settings.read_more %}accordion-content__holder--truncate{% endif %}" {% if block.settings.read_more %}data-truncated-holder{% endif %}>
-            <div class="accordion-content__inner">
-              <div class="accordion-content__entry" {% if block.settings.read_more %}data-truncated-content="accordion-content__entry--truncate"{% endif %}>
-                {% if block.settings.read_more %}
-                  {{ product_description_content }}  
-                {% else %}
-                  {{ product.description }}  
-                {% endif %}
+              <div class="accordion-content" data-accordion-body>
+                {{ _content }}
               </div>
             </div>
+          {%- endcapture -%}
+        {%- endif -%}
+      {%- endfor -%}
+      
 
-            {% if block.settings.read_more %}  
+      {%- if product_description_content != blank -%}
+        <div class="accordion-row">
+          <p class="accordion-toggle" tabindex="0" data-focus-element data-accordion-toggle {{ accordion_description_attr }}>
+            {{ 'products.general.description' | t }}
+          </p>
+
+          <div class="accordion-content" data-accordion-body>
+            <div class="accordion-content__holder accordion-content__holder--truncate" data-truncated-holder>
+              <div class="accordion-content__inner">
+                <div class="accordion-content__entry" data-truncated-content="accordion-content__entry--truncate">
+                  {{ product_description_content }}
+                </div>
+              </div>
               <div class="accordion-content__actions">
                 {{ truncate_html }}
               </div>
-            {% endif %}
+            </div>
           </div>
         </div>
-      </div>
-    {%- endif -%}
+      {%- endif -%}
 
-    {{ accordion_blocks_html }}
+      {{ accordion_blocks_html }}
+    </div>
   </div>
 {%- endif -%}

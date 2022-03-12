@@ -66,3 +66,15 @@
   // ^^ Keep your scripts inside this IIFE function call to avoid leaking your
   // variables into the global scope.
 })();
+
+(function($) {
+    $('.theme__header').bind('mouseenter', 
+        function(event){ 
+           $('.theme__header').addClass('header-hover');
+      });
+      $('.theme__header').bind('mouseleave', 
+        function(event){ 
+           $('.theme__header').removeClass('header-hover');
+      });
+})(jQuery);
+      

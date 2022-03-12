@@ -1,5 +1,4 @@
 <!-- /sections/collection-sub.liquid -->
-{%- if section.settings.show_subcollection -%}
 <section data-section-id="{{ section.id }}" data-section-type="hero">
   {%- assign sub_collections = linklists[collection.handle].links -%}
 
@@ -30,7 +29,7 @@
     </div>
   {%- endif -%}
 </section>
-{%- endif -%}
+
 
 {% schema %}
 {
@@ -41,7 +40,7 @@
       "id": "show_subcollection",
       "label": "Show subcollections",
       "default": true,
-      "info": "Create a [navigation list](/admin/menus) without nesting. Use the same name and handle as this collection and link to other collections. [Learn more](https://groupthought.com/link/pipeline/docs/subcollection)"
+      "info": "Create a [navigation list](/admin/menus) with the same name as this collection and link to other collections. [Learn more](https://groupthought.com/link/pipeline/docs/subcollection)"
     },
     {
       "type": "select",

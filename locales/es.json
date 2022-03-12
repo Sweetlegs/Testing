@@ -22,8 +22,7 @@
       "email": "Correo electrónico",
       "newsletter_email": "su-email@ejemplo.com",
       "submit": "Suscribir",
-      "subscribed": "Gracias por unirse a nuestra lista de correo!",
-      "error_message": "Este cliente ya está suscrito."
+      "subscribed": "Gracias por unirse a nuestra lista de correo!"
     },
     "accessibility": {
       "menu": "Menú",
@@ -37,13 +36,7 @@
       "scroll": "Desplazar hacia abajo",
       "unit_price_separator": "por",
       "see_all": "Ver todo",
-      "skip_to_content": "Ir directamente al contenido",
-      "total_reviews": "reseñas totales",
-      "star_reviews_info": "{{ rating_value }} de {{ rating_max }} estrellas",
-      "toggle_with_count": {
-        "one": "Mostrar {{ count }} producto por fila",
-        "other": "Mostrar {{ count }} productos por fila"
-      }
+      "skip_to_content": "Ir directamente al contenido"
     },
     "search": {
       "no_results_for": "Ningún resultado para",
@@ -121,11 +114,6 @@
       "savings": "Está ahorrando",
       "with": "con",
       "close_cart": "Cerrar carrito",
-      "add_message": "Agregaste un producto: ",
-      "total_message": {
-        "one": "y tienes {{count}} producto en el carrito",
-        "other": "y tienes {{count}} productos en el carrito"
-      },
       "qualified_shipping_message": "¡Felicidades! Su pedido está calificado para el envío libre"
     },
     "shipping": {
@@ -163,8 +151,7 @@
       "all_types": "Todos los Tipos",
       "all_vendors": "todos los Proveedores",
       "all_tags": "Borrar Filtros",
-      "all_collections": "Todas las Colecciones",
-      "show_more": "Mostrar más"
+      "all_collections": "Todas las Colecciones"
     },
     "onboarding": {
       "modal_title": "Esta página mostrará todos los productos de su tienda",
@@ -335,12 +322,7 @@
       "description": "Descripción",
       "read_more": "Lee mas",
       "to": "Para",
-      "from": "De",
-      "upsell_title": "Cómpralo con",
-      "upsell_add_to_cart": "Añadir al carrito",
-      "upsell_out_of_stock": "Agotado",
-      "upsell_error_title": "Ejemplo de producto Upsell",
-      "upsell_error_info": "Agregue un producto Upsell en la configuración de su tema"
+      "from": "De"
     },
     "product": {
       "sold_out": "Agotado",

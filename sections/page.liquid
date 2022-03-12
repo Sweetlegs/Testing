@@ -30,7 +30,7 @@
         {% endif %}
         {% if section.settings.show_content %}
           {% assign font_size_class = section.settings.text_size | plus: 1 | prepend: 'font--' %}
-          <div class="rte standard__rte {{ font_size_class }}"
+          <div class="standard__rte {{ font_size_class }} {{ justify_class }}"
             data-aos="hero"
             data-aos-anchor="{{ animation_anchor }}"
             data-aos-order="3">
@@ -131,12 +131,12 @@
       "type": "select",
       "id": "bg",
       "label": "Background color",
-      "default": "palette--light bg--neutral",
+      "default": "section bg--neutral",
       "options": [
-        { "value": "palette--light bg--neutral", "label": "Default"},
-        { "value": "palette--light bg--accent", "label": "Light"},
-        { "value": "palette--dark bg--invert", "label": "Dark"},
-        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+        { "value": "section bg--neutral", "label": "Default"},
+        { "value": "section bg--accent", "label": "Light"},
+        { "value": "section--dark bg--invert", "label": "Dark"},
+        { "value": "section--dark bg--invert--accent", "label": "Dark accent"}
       ]
     }
   ]

@@ -8,12 +8,7 @@
   {%- endif -%}
 {%- endif -%}
 
-{%- assign scroll_class = '' -%}
-{% if section.settings.height == 'use_screen_full' %}
-  {%- assign scroll_class = 'has-scroll-arrow' -%}
-{%- endif -%}
-
-<div class="section--image homepage-video fade-in-child js-overflow-container {{ scroll_class }} {{ section.settings.height }} {{ section.settings.text_color }}" 
+<div class="section--image homepage-video fade-in-child js-overflow-container {{ section.settings.height }} {{ section.settings.text_color }}" 
   data-section-id="{{ section.id }}" 
   data-section-type="video" 
   {% if video_bg_show and section.settings.height == 'use_image' %}

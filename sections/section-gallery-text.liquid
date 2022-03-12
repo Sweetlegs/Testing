@@ -7,6 +7,12 @@
     <div class="wrapper slides-mobile-outer">
       <div class="gallery slides-mobile-inner">
         {% for block in section.blocks %}
+          {%- unless block.settings.width_desktop == 'auto' -%}
+            {% capture grid_item_width_large %}medium-up--{{ block.settings.width_desktop }}{% endcapture %}
+          {%- endunless -%}
+          {%- unless block.settings.width_mobile == 'auto' -%}
+            {% capture grid_item_width_small %}small-down--{{ block.settings.width_mobile }}{% endcapture %}
+          {%- endunless -%}
           <div class="gallery__item" {{ block.shopify_attributes }}>
             <div class="gallery__text border--line {{ block.settings.text_align }} {{ block.settings.border_position }}">
               {% if block.settings.title != '' %}
@@ -36,12 +42,12 @@
       "type": "select",
       "id": "bg",
       "label": "Background color",
-      "default": "palette--light bg--neutral",
+      "default": "section bg--neutral",
       "options": [
-        { "value": "palette--light bg--neutral", "label": "Default"},
-        { "value": "palette--light bg--accent", "label": "Light"},
-        { "value": "palette--dark bg--invert", "label": "Dark"},
-        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+        { "value": "section bg--neutral", "label": "Default"},
+        { "value": "section bg--accent", "label": "Light"},
+        { "value": "section--dark bg--invert", "label": "Dark"},
+        { "value": "section--dark bg--invert--accent", "label": "Dark accent"}
       ]
     }
   ],
@@ -75,6 +81,36 @@
             { "value": "text-left", "label": "Left"},
             { "value": "text-center", "label": "Center"},
             { "value": "text-right", "label": "Right"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "width_desktop",
+          "label": "Desktop width",
+          "default": "auto",
+          "options": [
+            { "value": "auto", "label": "Auto"},
+            { "value": "one-quarter", "label": "25%"},
+            { "value": "one-third", "label": "33%"},
+            { "value": "one-half", "label": "50%"},
+            { "value": "two-thirds", "label": "66%"},
+            { "value": "three-quarters", "label": "75%"},
+            { "value": "one-whole", "label": "100%"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "width_mobile",
+          "label": "Mobile width",
+          "default": "auto",
+          "options": [
+            { "value": "auto", "label": "Auto"},
+            { "value": "one-quarter", "label": "25%"},
+            { "value": "one-third", "label": "33%"},
+            { "value": "one-half", "label": "50%"},
+            { "value": "two-thirds", "label": "66%"},
+            { "value": "three-quarters", "label": "75%"},
+            { "value": "one-whole", "label": "100%"}
           ]
         }
       ]

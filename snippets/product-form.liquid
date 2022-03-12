@@ -31,17 +31,17 @@
 {% endif %}
 {% capture size_chart %}
   {% if block.settings.info_page != blank %}
-    <a href="{{ size_page.url }}" class="{{ action_style }}" data-popup-{{ section.id }}="size-{{ section.id }}">
+    <a href="{{ size_page.url }}" class="{{ action_style }}" data-popup-{{ block.id }}="size-{{ block.id }}">
       {{ size_page.title }}
     </a>
-    <div class="modal micromodal-slide" id="size-{{ section.id }}" data-modal aria-hidden="true">
+    <div class="modal micromodal-slide" id="size-{{ block.id }}" data-modal aria-hidden="true">
       <div class="modal__overlay" tabindex="-1" data-micromodal-close>
         <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
         <div class="modal__container modal__container--inline"
           data-modal-content
           role="dialog"
           aria-modal="true"
-          aria-label="{{ size_page.title | strip_html | escape }}">
+          aria-label="{{ size_page.title }}">
           <div class="rte">{{ size_page.content }}</div>
         </div>
       </div>
@@ -49,15 +49,16 @@
   {% endif %}
 {% endcapture %}
 
-<div class="product__form__outer {{ buybutton_class }}" {{ block.shopify_attributes }}>
-  {%- assign product_form_id = 'product-form-' | append: section.id | append: '-' | append: product.id -%}
-  {% form 'product', product, id: product_form_id, data-product-form: '', data-product-handle: product.handle %}
+<div class="product__form__outer {{ buybutton_class }}">
+  {% form 'product', product, data-product-form: '', data-product-handle: product.handle %}
 
     {% comment %} The input with name="id" submits to cart {% endcomment %} 
     <input type="hidden" name="id" value="{{ current_variant.id }}">
 
     {% comment %} Shop pay split payment terms {% endcomment %} 
-    <div class="shop-pay-terms">{{- form | payment_terms -}}</div>
+    <div class="shop-pay-terms">
+      {{ form | payment_terms }}
+    </div>
 
     {% unless product.has_only_default_variant %}
       <div class="form__selectors">
@@ -65,7 +66,7 @@
           {%- if settings.swatches_enable -%}
             {% comment %} Determine if current option matches swatch handle translations {% endcomment %}
             {%- capture swatch_translation -%}{{ 'general.swatches.color' | t }} {%- endcapture -%}
-            {%- assign translation_array = swatch_translation | append: ',' | split: "," | uniq -%}
+            {%- assign translation_array = swatch_translation | append:',' | split: "," | uniq -%}
             {%- assign is_swatch_option = false -%}
             {%- assign option_handle = option.name | downcase | lstrip | rstrip | escape_once -%}
             {%- for translation in translation_array -%}
@@ -125,9 +126,6 @@
                 {% capture input_id %}{{product.id}}-option-{{ option.position }}{% endcapture %}
                 <label class="select__label" for="{{ input_id }}">
                   {{ option.name }}
-                  {%- if size_chart_index == forloop.index0 -%}
-                    {{ size_chart }}
-                  {%- endif -%}
                 </label>
                 <select class="product__form__select"
                   id="{{ input_id }}"
@@ -148,7 +146,7 @@
     {% endunless %}
 
     <noscript>
-      <select name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' | strip_html | escape }}">
+      <select name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' }}">
         {% for variant in product.variants %}
           <option
             {% if variant == current_variant %}selected="selected"{% endif %}
@@ -186,11 +184,8 @@
 
 
     {%- if block.settings.show_remaining or size_chart_index == -1 -%}
-      {% assign packed_class = '' %}
-      {%- if block.settings.show_remaining and size_chart_index == -1 -%}
-        {% assign packed_class = 'product__button__meta--packed' %}
-      {%- endif -%}
-      <div class="product__button__meta {{ packed_class }}">
+      <div class="product__button__meta">
+
         {%- if size_chart_index == -1 -%}
           {{ size_chart }}
         {%- endif -%}
@@ -232,9 +227,9 @@
       </div>
     {%- endif -%}
 
-    <div class="product__submit" data-buttons-wrapper data-add-action-wrapper>
+    <div class="product__submit">
 
-      <div data-add-action-errors class="add-action-errors"></div>
+      <div data-product-add-popdown-wrapper class="product-add-popdown"></div>
 
       {% assign button_text = 'products.product.add_to_cart' | t %}
       {% if product.tags contains '_preorder' %}
@@ -251,22 +246,11 @@
           class="btn--outline btn--full btn--primary uppercase btn--add-to-cart"
           data-add-to-cart
           {% unless current_variant.available %}disabled="disabled"{% endunless %}>
-          <span class="btn-state-ready">
-            <span data-add-to-cart-text>
-              {{ button_text }}
-            </span>
-            <span>•</span>
-            <span data-button-price>{{ current_variant.price | money }}</span>
+          <span data-add-to-cart-text>
+            {{ button_text }}
           </span>
-
-          <span class="btn-state-loading">
-            <svg height="18" width="18" class="svg-loader">
-              <circle r="7" cx="9" cy="9" />
-              <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
-            </svg>
-          </span>
-
-          <span class="btn-state-complete">&nbsp;</span>
+          <span>•</span>
+          <span data-button-price>{{ current_variant.price | money }}</span>
         </button>
 
         {% if buybutton_setting %}

@@ -1,23 +1,6 @@
-{%- liquid
-  assign show_image = false
-  if collection.image and section.settings.show_image
-    assign show_image = true
-  endif
-
-  assign title_below = false
-  if show_image == false or section.settings.show_title_below
-    assign title_below = true
-  endif
-
-  assign description_below = false
-  if show_image == false or section.settings.show_description_below
-    assign description_below = true
-  endif
--%}
-
 
 <section data-section-id="{{ section.id }}" data-section-type="hero">
-  {% if show_image %}
+  {% if collection.image and section.settings.show_image %}
     <div class="section--image fade-in-child js-overflow-container {{ section.settings.text_color }}" data-overlay-header>
       <div class="hero__content__wrapper {{ section.settings.text_align }}">
         <div class="hero__content js-overflow-content">
@@ -26,30 +9,30 @@
               {{ collection.title }}
             </h1>
           {%- endif -%}
-          {%- if collection.description.size != blank and section.settings.show_description and section.settings.show_description_below == false -%}
-            <div class="hero__description h5--body rte">
+          {% if collection.description.size > 0 and section.settings.show_description and section.settings.show_description_below == false %}
+            <div class="rte">
               {{ collection.description }}
             </div>
-          {%- endif -%}
+          {% endif %}
         </div>
       </div>
       <div class="image-overlay" style="--bg:{{ section.settings.overlay_color }}; opacity:{{ section.settings.overlay_opacity | times: 0.01 }};"></div>
       {% render 'hero', img_object: collection.image, frame_height_class: section.settings.image_height, bg_position: section.settings.bg_position %}
     </div>
-  {% endif %}
-
-  {%- if show_image == false or title_below or description_below -%} 
+  {% else %}
     <div class="wrapper">
       <div class="collection__heading {{ section.settings.text_align }}">
-        {%- if title_below and section.settings.show_title -%}
-          <h1 class="h3 standard__heading collection__heading__text">
-            {{ collection.title }}
-          </h1>
+        {%- if collection.image == nil or section.settings.show_title_below or section.settings.show_image == false -%}
+          {%- if section.settings.show_title -%}
+            <h1 class="h3 standard__heading collection__heading__text">{{ collection.title }}</h1>
+          {%- endif -%}
         {%- endif -%}
-        {%- if description_below and section.settings.show_description and collection.description != blank -%}
-          <div class="rte standard__rte collection__heading__text">
-            {{ collection.description }}
-          </div>
+        {%- if collection.image == nil or section.settings.show_description_below or section.settings.show_image == false -%}
+          {%- if section.settings.show_description and collection.description.size > 0 -%}
+            <div class="standard__rte collection__heading__text">
+              {{ collection.description }}
+            </div>
+          {%- endif -%}
         {%- endif -%}
       </div>
     </div>

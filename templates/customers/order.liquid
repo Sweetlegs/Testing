@@ -6,7 +6,7 @@
     <h1 class="account-header__left title h5--body strong">{{ 'customer.account.title' | t }}</h1>
     {% if shop.metafields.sky_pilot.enabled %}
       <div class="account-header__right">
-        <a href="{% unless routes.root_url == '/' %}{{ routes.root_url }}{% endunless %}/apps/downloads/customers/{{ customer.id }}/orders/{{ order.id }}/shopify_show" class="btn--outline uppercase">
+        <a href='/apps/downloads/customers/{{customer.id}}/orders/{{order.id}}/shopify_show' class="btn--outline uppercase">
           {{ 'customer.account.digital_goods' | t }}
         </a>
       </div>

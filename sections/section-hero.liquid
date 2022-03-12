@@ -1,15 +1,10 @@
 <!-- /sections/section-hero.liquid -->
 
-{%- assign scroll_class = '' -%}
-{% if section.settings.height == 'use_screen_full' %}
-  {%- assign scroll_class = 'has-scroll-arrow' -%}
-{%- endif -%}
-
-<div class="section--image fade-in-child js-overflow-container {{ scroll_class }} {{ section.settings.text_color }}" 
+<div class="section--image fade-in-child js-overflow-container {{ section.settings.text_color }}" 
   data-section-id="{{ section.id }}" 
   data-section-type="hero" 
   data-overlay-header>
-  <div class="hero__content__wrapper {{ section.settings.text_align }}">
+  <div class="hero__content__wrapper {{ section.settings.text_align }} {{ section.settings.class_name }}">
     <div class="hero__content js-overflow-content">
       {%- assign animation_anchor = "[data-section-id='" | append: section.id | append: "']" -%}
       {% unless section.settings.kicker == '' %}
@@ -51,22 +46,10 @@
   <div class="image-overlay" style="--bg:{{ section.settings.overlay_color }}; opacity:{{ section.settings.overlay_opacity | times: 0.01 }};"></div>
 
   {% if section.settings.link_text == '' and section.settings.link %}
-    <a class="link-over-image" href="{{ section.settings.link }}" aria-label="{{ section.settings.title | strip_html | escape }}"></a>
+    <a class="link-over-image" href="{{ section.settings.link }}" aria-label="{{ section.settings.title }}"></a>
   {% endif %}
 
-  {%- assign desktop_image_modifier = '' -%}
-  {%- assign mobile_image = '' -%}
-  {%- if section.settings.mobile_image != blank -%}
-    {%- assign desktop_image_modifier = 'desktop' -%}
-    
-    {%- capture mobile_image -%}
-      {% render 'hero', img_object: section.settings.mobile_image, frame_height_class: section.settings.height, bg_position: section.settings.bg_position, modifier: 'mobile' %}
-    {%- endcapture -%}
-  {%- endif -%}
-
-  {% render 'hero', img_object: section.settings.image, frame_height_class: section.settings.height, bg_position: section.settings.bg_position, modifier: desktop_image_modifier %}
-
-  {{ mobile_image }}
+  {% render 'hero', img_object: section.settings.image, frame_height_class: section.settings.height, bg_position: section.settings.bg_position %}
 
   {% if section.settings.height == 'use_screen_full' %}
     <div class="scroll_icon_wrap">
@@ -85,11 +68,6 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
-    },
-    {
-      "type": "image_picker",
-      "id": "mobile_image",
-      "label": "Mobile image"
     },
     {
       "type": "select",
@@ -159,6 +137,11 @@
       "id": "richtext",
       "label": "Text",
       "default": "<p>This area is used to describe your store.</p>"
+    },
+	{
+      "type": "text",
+      "id": "class_name",
+      "label": "Class Name"
     },
     {
       "type": "select",

@@ -16,7 +16,7 @@
   endif
 -%}
 
-<nav class="drawer cart__drawer {{ pop_style }} {{ hide_quantity }} {{ settings.cart_color_bg }}" 
+<nav class="drawer cart__drawer {{ pop_style }} {{ hide_quantity }}" 
   data-drawer="drawer-cart"
   aria-label="{{ 'layout.cart.title' | t }}" 
   id="drawer-cart">
@@ -59,7 +59,7 @@
     <span data-left-to-spend>{{ limit_currency | minus: cart.total_price | money_without_trailing_zeros }}</span>
   {% endcapture %}
 
-  {% assign free_shipping_message = free_shipping_text | replace: '||amount||', left_to_spend %}
+  {% assign free_shipping_message = free_shipping_text | replace: '{{ amount }}', left_to_spend %}
   {% assign qualified_shipping_message = 'cart.general.qualified_shipping_message' | t %}
   {% assign class_message = '' %}
 
@@ -88,7 +88,8 @@
         {% endfor %}
         {%- assign stroke_dashoffset = '87.96459430051421' -%}
         {%- if settings.cart_style == 'compatible' -%}
-          {%- assign math_pi = 3.14159265359 -%}
+          {%- assign math_pi = 3.14159265359-%}
+          {%- assign stroke_subtotal = 0 -%}
           {%- assign stroke_circumference = 28 | times: math_pi -%}
           {%- assign stroke_calculate = percent | times: stroke_circumference -%}
           {%- assign stroke_calculate = stroke_calculate | divided_by: 100 | divided_by: 2 -%}
@@ -97,7 +98,7 @@
         
         <svg height="18" width="18">
           <circle r="7" cx="9" cy="9" />
-          <circle class="cart__graph-progress" stroke-dasharray="87.96459430051421 87.96459430051421" style="stroke-dashoffset: {{ stroke_dashoffset }}" data-cart-progress data-percent="{{ percent }}" r="7" cx="9" cy="9" />
+          <circle class="cart__graph-progress" stroke-dasharray="87.96459430051421 87.96459430051421" style="stroke-dashoffset: {{ stroke_dashoffset }}" data-cart-progress data-percent="{{- percent -}}" r="7" cx="9" cy="9" />
         </svg>
       </small>
     {% endif %}
@@ -137,18 +138,23 @@
         </div>
       </div>
     </div>
-    <div class="drawer__bottom cart--hidden" data-cart-bottom data-accordion-group>
+    <div class="drawer__bottom cart--hidden" data-cart-bottom>
       {%- if settings.cart_notes_enable -%}
         <div class="drawer__bottom__notes drawer__accordion">
-          <button class="accordion__title"
-            data-accordion-trigger="accordion-cart-notes"
+          <button class="drawer__accordion__button"
+            data-accordion-toggle="accordion-cart-notes"
             aria-controls="accordion-{{ key }}"
             aria-haspopup="true" 
             aria-expanded="false">
-            {{ 'cart.general.note' | t }}
+            <span class="accordion__title">{{ 'cart.general.note' | t }}</span>
+            <span class="accordion__chevron">
+              {% render 'icon-arrow-medium-right' %}
+              <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+              <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+            </span>
           </button>
-          <div class="accordion__body drawer__accordion__body" 
-            data-accordion-body
+          <div class="accordion__content drawer__accordion__content" 
+            data-accordion 
             id="accordion-cart-notes">
             <label class="visually-hidden" for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
             <textarea name="note" placeholder="{{ 'cart.general.note' | t }}" class="drawer__notes__input input-full" id="CartSpecialInstructions" data-cart-note>{{ cart.note }}</textarea>
@@ -162,9 +168,18 @@
 
       <p class="drawer__bottom__meta small"><em>{{ 'cart.general.shipping_at_checkout' | t }}</em></p>
 
-      <div class="drawer__footer__subtotal" data-cart-subtotal>
-        {% render 'cart-subtotal' %}
-      </div>
+      {%- if cart.cart_level_discount_applications.size > 0 -%}
+        <p class="drawer__bottom__items">
+          <span class="cart__footer__label">{{ 'layout.cart.items_count.other' | t | capitalize }}:</span>
+          <span class="cart__footer__value">{{ cart.items_subtotal_price | money }}</span>
+        </p>
+        {%- for discount in cart.cart_level_discount_applications -%}
+          <p class="drawer__bottom__items drawer__bottom__discount">
+            <span class="cart__footer__label">{{ discount.title }}:</span>
+            <span class="cart__footer__value">-{{ discount.total_allocated_amount | money }}</span>
+          </p>
+        {%- endfor -%}
+      {%- endif -%}
 
       <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
         <button type="submit" name="checkout" class="btn btn--primary btn--large btn--full uppercase checkout__button">

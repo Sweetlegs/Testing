@@ -13,7 +13,13 @@
     {% assign blog_grid = 'medium-up--one-third' %}
 {% endcase %}
 
-<div class="homepage-blog section-{{ section.id }} {{ section.settings.bg }}">
+<style>
+  .section-{{ section.id }} .article__card{
+    min-height: {{ section.settings.height | append: 'px' }};
+  }
+</style>
+
+<div class="homepage-blog section-{{ section.id }}">
   <div class="wrapper">
       {% unless section.settings.title == '' %}
         <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
@@ -75,16 +81,10 @@
       "default": 2
     },
     {
-      "type": "select",
-      "id": "bg",
-      "label": "Background color",
-      "default": "palette--light bg--neutral",
-      "options": [
-        { "value": "palette--light bg--neutral", "label": "Default"},
-        { "value": "palette--light bg--accent", "label": "Light"},
-        { "value": "palette--dark bg--invert", "label": "Dark"},
-        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
-      ]
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000"
     },
     {
       "type": "select",
@@ -101,12 +101,6 @@
         { "value": "text--invert--secondary", "label": "Secondary dark accent"},
         { "value": "text--invert", "label": "Inverted text color"}
       ]
-    },
-    {
-      "type": "color",
-      "id": "overlay_color",
-      "label": "Overlay color",
-      "default": "#000"
     },
     {
       "type": "range",

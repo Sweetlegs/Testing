@@ -20,9 +20,22 @@
     assign sold_out = false
   endif
 
+  assign new_product = false
+  assign published_date = product.published_at | date: "%s"
+  assign now_date = 'now' | date: "%s"
+  assign age_in_days = now_date | minus: published_date | divided_by: 60 | divided_by: 60 | divided_by: 12
+  if age_in_days < settings.tag_new_limit
+    assign new_product = true
+  endif
+
   assign sellout_badge = false
   if sold_out and settings.badge_sellout
     assign sellout_badge = true
+  endif
+
+  assign new_badge = false
+  if new_product and settings.tag_new
+    assign new_badge = true
   endif
 
   assign sale_badge = false
@@ -47,7 +60,7 @@
     for tag in product.tags
       if tag contains "_badge_"
         assign custom_badge = true
-        assign custom_badge_content = tag | remove: '_badge_' | replace: '_', ' '
+        assign custom_badge_content = tag | remove: '_badge_' | replace:'_', ' '
         break
       endif
     endfor
@@ -59,7 +72,7 @@
   endif
 
   assign tagged = false
-  if sellout_badge or sale_badge or custom_badge or setting_badge
+  if sellout_badge or new_badge or sale_badge or custom_badge or setting_badge
     assign tagged = true
   endif 
 -%}
@@ -73,6 +86,8 @@
       <div class="product__badge product__badge--sold">{{ 'products.product.sold_out' | t }}</div>
     {%- elsif sale_badge -%}
       <div class="product__badge product__badge--sale">{{ sale_badge_content }}</div>
+    {%- elsif new_badge -%}
+      <div class="product__badge product__badge--new">{{ 'products.product.new' | t }}</div>
     {%- endif -%}
   {%- endif -%}
 {%- endcapture -%}
@@ -101,14 +116,14 @@
     assign double_img = true
   endif
 
-  assign product_img_ratio = product.featured_media.preview_image.aspect_ratio | default: 1
-  assign image_ratio = 1 | divided_by: product_img_ratio | times: 100
+  assign image_ratio = 1 | divided_by: product.featured_media.preview_image.aspect_ratio | times: 100
   if settings.product_grid_image == 'crop'
     assign image_ratio = settings.product_grid_aspect_ratio | times: 100
   elsif settings.product_grid_image == 'scale'
     assign multiplier = settings.product_grid_aspect_ratio
-    assign inverse_ratio = 1 | divided_by: product_img_ratio
-    assign top_offset =  1 | divided_by: product_img_ratio | times: 100 | divided_by: 2
+    assign ratio = product.featured_media.preview_image.aspect_ratio
+    assign inverse_ratio = 1 | divided_by: ratio
+    assign top_offset =  1 | divided_by: ratio | times: 100 | divided_by: 2
     assign top_offset_subtractor =  multiplier | times: 100 | divided_by: 2
   endif
 -%}
@@ -116,7 +131,7 @@
 {%- if settings.product_grid_image == 'scale' -%}
   {%- capture auto_height -%}
     {%- if inverse_ratio > multiplier -%}
-      style="width:{{ product_img_ratio | times: multiplier | times: 100 }}%; margin: 0 auto;"
+      style="width:{{ ratio | times: multiplier | times: 100 }}%; margin: 0 auto;"
     {%- else -%}
       style="padding:{{ top_offset_subtractor | minus: top_offset }}% 0;"
     {%- endif -%}
@@ -132,17 +147,10 @@
         role="img"
         aria-label="{{ product.featured_media.alt | default: product.title | strip_html | escape }}"></div>
       {% if double_img %}
-        <div class="collection__image__bottom">
-          {%- assign img_url = product.media[1].preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-          <img data-src="{{ img_url }}"
-            class="lazyload img-object-cover lazypostload-desktop"
-            width="{{ product.media[1].preview_image.width }}"
-            height="{{ product.media[1].preview_image.height }}"
-            data-widths="[110, 160, 220, 320, 480, 540, 720, 900]"
-            data-sizes="auto"
-            data-aspectratio="{{ product.media[1].preview_image.aspect_ratio }}"
-            alt="{{ product.media[1].alt | strip_html | escape }}">
-        </div>
+        <div class="collection__image__bottom lazyload lazypreload" 
+          data-bgset="{% render 'bgset', image: product.media[1].preview_image %}" 
+          role="img" 
+          aria-label="{{ product.media[1].alt | strip_html | escape }}"></div>
       {% endif %}
         <div class="product-grid-item__slide" data-grid-slide></div>
       {{ badge }}
@@ -156,25 +164,21 @@
   </noscript>
   <div class="product__grid__info product__grid__info--{{ settings.product_grid_style }} {{ text_align | default: settings.collection_text_alignment | default: 'text-center' }}">
     <a href="{{ product.url | within: collection | capitalize }}">
-      <div class="product__grid__title__wrapper">
-        <p class="product__grid__title">
-          {{ product.title }}
-        </p>
-        {%- if settings.product_grid_show_rating and product.metafields.reviews.rating.value != blank -%}
-          <div class="rating__wrapper__grid">
-            {% render 'product-rating', product: product, show_rating_count: settings.product_grid_show_rating_count %}
-          </div>
-        {%- endif -%}
-      </div>
+      <p class="product__grid__title">
+        {{ product.title }}
+      </p>
       <div class="product__grid__price">
         <span class="price{% if on_sale %} on-sale{% endif %}">
           {% if product.price_varies %}{{ 'products.general.from' | t }} {% endif %}
           {{ product.price | money }}
         </span>
+        {% if sold_out %}
+        <br /><em>{{ 'products.product.sold_out' | t }}</em>
+        {% endif %}
         {% if on_sale %}
-          <span class="compare-at">
-            {{ product.compare_at_price | money }}
-          </span>
+        <span class="compare-at">
+          {{ product.compare_at_price | money }}
+        </span>
         {% endif %}
         {% if current_variant.unit_price %}
           {% capture unit_price_separator %}
@@ -190,9 +194,11 @@
             <span class="visually-hidden">{{ 'products.product.unit_price_label' | t }}</span>
             <span class="price-per-unit">{{ current_variant.unit_price | money }}{{ unit_price_separator }}{{ unit_price_base_unit }}</span>
         {% endif %}
-        {% if sold_out %}
-          <br /><em>{{ 'products.product.sold_out' | t }}</em>
+        {% if product.metafields.spr.reviews %}
+          <br />
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
         {% endif %}
+
         {{ swatches }}
       </div>
     </a>

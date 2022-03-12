@@ -4,7 +4,10 @@
   <div class="{{ section.settings.width }}">
     <div class="text__standard {{ section.settings.align_text }}">
       {% if section.settings.title != blank %}
-        <p class="standard__kicker kicker__line">
+        <p class="standard__kicker kicker__line"
+          data-aos="hero"
+          data-aos-anchor="{{ animation_anchor }}"
+          data-aos-order="1">
           {{ section.settings.title }}
         </p>
       {% endif %}
@@ -148,7 +151,9 @@
     
                   </select>
                 </fieldset>
+              {% else %}
             {% endcase %}
+    
           {% endfor %}
     
           {% assign types = '' %}
@@ -161,14 +166,14 @@
               <label for="ContactFormEmail">{{ 'contact.form.email' | t }}</label>
               <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
             </div>
-          {% endunless %}
+          {% endunless  %}
     
           {% unless types contains "body" %}
             <div class="float__wrapper contact__block">
               <label for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
               <textarea rows="10" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
             </div>
-          {% endunless %}
+          {% endunless  %}
 
           <div class="form__legal">
             {{ 'shopify.online_store.spam_detection.disclaimer_html' | t }}
@@ -181,7 +186,8 @@
       </div>
     </div>
   </div>
-</section>
+</div>
+
 
 {% schema %}
 {
@@ -210,7 +216,7 @@
       "type": "select",
       "id": "height",
       "label": "Height",
-      "default": "margin--medium",
+      "default": "margin--small",
       "options": [
         { "value": "margin--large", "label": "Large" },
         { "value": "margin--medium", "label": "Medium" },
@@ -249,12 +255,12 @@
       "type": "select",
       "id": "bg",
       "label": "Background color",
-      "default": "palette--light bg--neutral",
+      "default": "section bg--neutral",
       "options": [
-        { "value": "palette--light bg--neutral", "label": "Default"},
-        { "value": "palette--light bg--accent", "label": "Light"},
-        { "value": "palette--dark bg--invert", "label": "Dark"},
-        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+        { "value": "section bg--neutral", "label": "Default"},
+        { "value": "section bg--accent", "label": "Light"},
+        { "value": "section--dark bg--invert", "label": "Dark"},
+        { "value": "section--dark bg--invert--accent", "label": "Dark accent"}
       ]
     }
   ],

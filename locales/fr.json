@@ -22,8 +22,7 @@
       "email": "Courriel",
       "newsletter_email": "votre-courriel@exemple.com",
       "submit": "S'inscrire",
-      "subscribed": "Merci de vous joindre à notre liste de diffusion!",
-      "error_message": "Ce client est déjà abonné"
+      "subscribed": "Merci de vous joindre à notre liste de diffusion!"
     },
     "accessibility": {
       "menu": "Menu",
@@ -37,13 +36,7 @@
       "scroll": "Défiler vers le bas",
       "unit_price_separator": "par",
       "see_all": "Voir tout",
-      "skip_to_content": "Passer au contenu",
-      "total_reviews": "total des critiques",
-      "star_reviews_info": "{{ rating_value }} sur {{ rating_max }} étoiles",
-      "toggle_with_count": {
-        "one": "Afficher {{ count }} produit par ligne",
-        "other": "Afficher {{ count }} produits par ligne"
-      }
+      "skip_to_content": "Passer au contenu"
     },
     "search": {
       "no_results_for": "Aucun résultat pour",
@@ -121,11 +114,6 @@
       "savings": "Vous économisez",
       "with": "avec",
       "close_cart": "Fermer le panier",
-      "add_message": "Vous avez ajouté un produit: ",
-      "total_message": {
-        "one": "et vous avez {{ count }} produit dans le panier",
-        "other": "et vous avez {{ count }} produits dans le panier"
-      },
       "qualified_shipping_message": "Votre commande est qualifié pour la livraison gratuite"
     },
     "shipping": {
@@ -163,8 +151,7 @@
       "all_types": "Tous les Types",
       "all_vendors": "Tous les Fournisseurs",
       "all_tags": "Effacer les Filtres",
-      "all_collections": "Tous les Collections",
-      "show_more": "Montre plus"
+      "all_collections": "Tous les Collections"
     },
     "onboarding": {
       "modal_title": "Cette page affichera tous les produits de votre magasin",
@@ -335,12 +322,7 @@
       "description": "La description",
       "read_more": "Lire la suite",
       "to": "À",
-      "from": "À partir de",
-      "upsell_title": "Achetez-le avec",
-      "upsell_add_to_cart": "Ajouter au panier",
-      "upsell_out_of_stock": "Rupture de stock",
-      "upsell_error_title": "Exemple de produit upsell",
-      "upsell_error_info": "Ajoutez un produit upsell dans vos paramètres de thème"
+      "from": "À partir de"
     },
     "product": {
       "sold_out": "Épuisé",
@@ -358,7 +340,7 @@
       "add_to_cart": "Ajouter au panier",
       "remaining_html": "Seulement {{ inventory }} en stock",
       "view_in_space": "Afficher dans votre espace",
-      "join_membership": "Rejoindre Maintenant",
+      "join_membership": "rejoindre Maintenant",
       "pickup_availability": {
         "pickup_options": "Options de ramassage",
         "view_store_info": "Afficher les informations de la boutique",

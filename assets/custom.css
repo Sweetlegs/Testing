@@ -1,0 +1,101 @@
+body {
+  letter-spacing: 2px;
+}
+.btn--neutral.btn {
+  --btn-bg: var(---color-secondary);
+}
+.home__subtitle {
+	font-size: 1.2rem;
+}
+
+.home__subtitle:after {
+  display: none;
+}
+
+.btn {
+  padding: 16px;
+}
+
+.btn--long{
+  min-width: 174px;
+}
+
+.price {
+  color: #6a6a6a;
+}
+
+.homepage-collection-grid {
+  margin: 0px var(--gutter);
+}
+
+.theme__header {
+  box-shadow: 0 -1px rgb(255 255 255 / 25%) inset;
+  padding: 5px 0px;
+/*   background-color: white!important; */
+}
+
+.js__header__stuck.js__header__stuck__backdrop .theme__header { 
+  background: white;
+}
+
+.header-hover {  
+  background-color: white!important;
+  color: black;
+}
+
+.image__fill {
+  min-height: 500px;
+}
+
+.double__image{
+  min-height: 475px;
+}
+
+.collection-grid-item .subtitle {
+  font-size: 12px;
+  margin-bottom: 1rem;
+}
+
+.homepage-newsletter {
+  background: #ddcdd3;
+}
+
+.logo_black {
+  display: none;
+}
+.logo_white {
+  display: block;
+}
+.header-hover .logo_black {
+  display: block;
+}
+
+.header-hover .logo_white {
+  display: none;
+}
+
+.js__header__stuck.js__header__stuck__backdrop .theme__header .logo_white{
+   display: none;
+}
+
+.js__header__stuck.js__header__stuck__backdrop .theme__header .logo_black{
+   display: block;
+}
+
+  
+[data-header-transparent=false]:not(.meganav--visible) .theme__header .logo_white{
+    display: none;
+}
+  
+    
+[data-header-transparent=false]:not(.meganav--visible) .theme__header .logo_black{
+    display: block;
+}
+  
+.artisanal_cnt .hero__kicker{
+  background: white;
+  color: #96a3ad;
+  font-size: 24px;
+  padding: 30px;
+  font-weight: bold;
+}

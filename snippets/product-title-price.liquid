@@ -1,22 +1,14 @@
 {% assign current_variant = product.selected_or_first_available_variant %}
 
 {% if block.settings.product_show_vendor and product.vendor %}
-  <div class="product__subheading">
-    <p><a href="{{ product.vendor | url_for_vendor }}" class="border-bottom-link uppercase">{{ product.vendor }}</a></p>
-  </div>
+  <p class="product__subheading">
+    <a href="{{ product.vendor | url_for_vendor }}" class="border-bottom-link uppercase">{{ product.vendor }}</a>
+  </p>
 {% endif %}
 
-<div class="product__headline" {{ block.shopify_attributes }}>
+<div class="product__headline">
 
-  <div class="product__title__wrapper">
-    <h1 class="product__title">{{ product.title }}</h1>
-
-    {%- if block.settings.show_rating and product.metafields.reviews.rating.value != blank -%}
-      <div class="rating__wrapper__title">
-        {% render 'product-rating', product: product, show_rating_count: block.settings.show_rating_count %}
-      </div>
-    {%- endif -%}
-  </div>
+  <h1 class="product__title">{{ product.title }}</h1>
 
   <div class="product__price__wrap">
     <div class="product__price__main" data-price-wrapper>

@@ -6,6 +6,10 @@
   data-section-type="collection"
   data-sort="{{ section.settings.collection_sorting }}">
 
+  {% if section.settings.show_subcollection %}
+    {% render 'subcollections', collection: collection, section: section %}
+  {% endif %}
+
   <div class="collection" data-sidebar-toggle>
     <div class="wrapper">
       {%- assign collection_sidebar = false -%}
@@ -41,10 +45,10 @@
           </div>
           {% if section.settings.enable_layout_toggle %}
             <div class="collection__layout">
-              <button data-focus-element aria-label="{{ 'general.accessibility.toggle_with_count' | t: count: 1 }}" data-toggle-grid="1">{% render 'icon-grid-1' %}</button>
-              <button data-focus-element aria-label="{{ 'general.accessibility.toggle_with_count' | t: count: 2 }}" data-toggle-grid="2">{% render 'icon-grid-2' %}</button>
-              <button data-focus-element aria-label="{{ 'general.accessibility.toggle_with_count' | t: count: 3 }}" data-toggle-grid="3">{% render 'icon-grid-3' %}</button>
-              <button data-focus-element aria-label="{{ 'general.accessibility.toggle_with_count' | t: count: 4 }}" data-toggle-grid="4">{% render 'icon-grid-4' %}</button>
+              <span data-toggle-grid="1">{% render 'icon-grid-1' %}</span>
+              <span data-toggle-grid="2">{% render 'icon-grid-2' %}</span>
+              <span data-toggle-grid="3">{% render 'icon-grid-3' %}</span>
+              <span data-toggle-grid="4">{% render 'icon-grid-4' %}</span>
             </div>
           {% endif %}
         </nav>
@@ -208,33 +212,6 @@
           "id": "collection_linklist",
           "label": "Sidebar navigation",
           "info": "Create a list of [navigation links](/admin/menus) to show specific collections in the sidebar."
-        }
-      ]
-    },
-    {
-      "type": "group",
-      "name": "Legacy: Tag group",
-      "settings": [
-        {
-          "type": "header",
-          "content": "Legacy feature: tag grouping"
-        },
-        {
-          "type": "paragraph",
-          "content": "This is a legacy feature that is intended to help merchants with large catalogs transition to OS2.0. Filtering by tag will be removed from Pipeline when 0S2.0 filters can fully replace their functionality. This method of tag-based product filtering cannot be combined with [OS2.0 filters](/admin/menus)."
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Group name",
-          "default": "Filter by size"
-        },
-        {
-          "type": "text",
-          "id": "group_tags",
-          "label": "Tag list",
-          "default": "Small, Medium, Large",
-          "info": "Comma separated group of tags"
         }
       ]
     }
