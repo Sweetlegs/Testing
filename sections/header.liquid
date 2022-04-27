@@ -39,25 +39,15 @@
   {%- if transparent_header and section.settings.transparent_logo != blank and section.settings.logo != blank -%}
     {%- assign has_transparent_logo = true -%}
   {%- endif -%}
-  <div class="header__logo{% if section.settings.logoBlack %} header__logo--image{% endif %}{% if has_transparent_logo %} header__logo--has-transparent{% endif %}">
+  <div class="header__logo{% if section.settings.logo %} header__logo--image{% endif %}{% if has_transparent_logo %} header__logo--has-transparent{% endif %}">
     <a class="header__logo__link" 
         href="{{ routes.root_url }}"
         style="width: {{ logo_width }};">
       {% if section.settings.logo != blank %}
         {%- assign img_url = section.settings.logo | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-      {%- assign img_url_black = section.settings.logoBlack | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-       <img data-src="{{img_url_black }}"
+        <img data-src="{{ img_url }}"
               src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-              class="lazyload logo__img logo__img--color logo_black"
-              width="{{ logo_width }}"
-              height="{{ logo_height }}"
-              data-widths="[110, 160, 220, 320, 480, 540, 720, 900]"
-              data-sizes="auto"
-              data-aspectratio="{{ section.settings.logoBlack.aspect_ratio }}"
-              alt="{{ section.settings.logoBlack.alt | default: shop.name }}">
-      <img data-src="{{ img_url }}"
-              src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-              class="lazyload logo__img logo__img--color logo_white"
+              class="lazyload logo__img logo__img--color"
               width="{{ logo_width }}"
               height="{{ logo_height }}"
               data-widths="[110, 160, 220, 320, 480, 540, 720, 900]"
@@ -65,8 +55,21 @@
               data-aspectratio="{{ section.settings.logo.aspect_ratio }}"
               alt="{{ section.settings.logo.alt | default: shop.name }}">
       {% else %}
-        {% assign title_length = shop.name | size %}
-        <div class="header__logo__text{% if title_length > 15 %} header__logo__text--long{% endif %}">
+      {% liquid
+        assign classes = ''
+        assign title_length = shop.name | size
+        assign oneword = true
+        if shop.name contains ' ' or shop.name contains '-'
+          assign oneword = false
+        endif
+        if title_length > 15
+          assign classes = classes | append: ' header__logo__text--long'
+          if oneword
+            assign classes = classes | append: ' header__logo__text--break'
+          endif
+        endif
+      %}
+        <div class="header__logo__text {{ classes }}">
           <span>{{ shop.name }}</span>
         </div>
       {% endif %}
@@ -145,9 +148,11 @@
   {%- endcapture -%}
   
   <div class="header__desktop__buttons{% if section.settings.use_icons %} header__desktop__buttons--icons{% endif %}" {{ text_wrapper }}>
+    
+    <div class="header__desktop__button gt_desktop">{% include 'gtranslate' %}</div>
 
     {%- if shop.customer_accounts_enabled and section.settings.enable_account -%}
-      <div class="header__desktop__button {% if request.path contains routes.account_url %} main-menu--active{% endif %}" {{ text_hover }}>
+      <div class="header__desktop__button  {% if request.path contains routes.account_url %} main-menu--active{% endif %}" {{ text_hover }}>
         <a href="{{ routes.account_url }}" class="navlink">
           {% if section.settings.use_icons %}
             {% render 'icon-account' %}
@@ -160,7 +165,7 @@
     {% endif %}
 
     {% if section.settings.enable_search %}
-      <div class="header__desktop__button {% if request.path contains routes.search_url %} main-menu--active{% endif %}" {{ text_hover }}>
+      <div class="header__desktop__button search {% if request.path contains routes.search_url %} main-menu--active{% endif %}" {{ text_hover }}>
         <a href="{{ routes.search_url }}" class="navlink" data-popdown-toggle="search-popdown">
           {% if section.settings.use_icons %}
             {% render 'icon-search' %}
@@ -171,6 +176,10 @@
         </a>
       </div>
     {% endif %}
+    
+    <div class="header__desktop__button">
+      <a href="#hero-wishlist" class="navlink navtext">Wishlist</a>
+    </div>
 
     <div class="header__desktop__button {% if request.path contains routes.cart_url %} main-menu--active{% endif %}" {{ text_hover }}>
       <a href="{{ routes.cart_url }}" 
@@ -412,11 +421,6 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo image"
-    },
-    {
-      "type": "image_picker",
-      "id": "logoBlack",
-      "label": "Logo Black image"
     },
     {
       "type":    "range",

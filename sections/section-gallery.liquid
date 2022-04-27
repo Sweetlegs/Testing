@@ -8,7 +8,7 @@
   {% assign has_padding_class = 'has-padding' %}
 {%- endif -%}
 
-<div class="frame {{ section.settings.bg }} frame-blocks-{{ section.blocks.size }} {{ section.settings.bg }}"
+<div class="frame frame-blocks-{{ section.blocks.size }} {{ section.settings.bg }}"
   data-section-id="{{ section.id }}"
   data-section-type="gallery">
   <div class="{{ has_padding_class }}">
@@ -41,7 +41,7 @@
                     {% render 'video-popup', video: block.settings.link, unique: block.id %}
                   </div>
                 {% elsif has_link %}
-                  <a class="link-over-image" href="{{ block.settings.link }}" aria-label="{{ block.settings.image.alt }}"></a>
+                  <a class="link-over-image" href="{{ block.settings.link }}" aria-label="{{ block.settings.image.alt | strip_html | escape }}"></a>
                 {% else %}
                   <div class="gallery__zoom">
                     {% render 'image-zoom', image: block.settings.image, unique: block.id %}
@@ -50,7 +50,7 @@
               </div>
               <noscript>
                 <img src="{{ block.settings.image | img_url: '540x' }}"
-                     alt="{{ block.settings.image.alt }}"/>
+                     alt="{{ block.settings.image.alt | strip_html | escape }}"/>
               </noscript>
             {% else %}
               {%- render 'image-fill', img_object: '', aspect_ratio: section.settings.aspect_ratio -%}
@@ -110,12 +110,12 @@
         "type": "select",
         "id": "bg",
         "label": "Background color",
-        "default": "section bg--neutral",
+        "default": "palette--light bg--neutral",
         "options": [
-          { "value": "section bg--neutral", "label": "Default"},
-          { "value": "section bg--accent", "label": "Light"},
-          { "value": "section--dark bg--invert", "label": "Dark"},
-          { "value": "section--dark bg--invert--accent", "label": "Dark accent"}
+          { "value": "palette--light bg--neutral", "label": "Default"},
+          { "value": "palette--light bg--accent", "label": "Light"},
+          { "value": "palette--dark bg--invert", "label": "Dark"},
+          { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
         ]
       }
     ],

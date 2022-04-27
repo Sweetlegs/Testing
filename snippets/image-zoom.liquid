@@ -25,7 +25,7 @@
       <div class="zoom--images">
         <img class="zoom__img"
           data-src="{{ image | img_url: 'master' }}"
-          alt="{{ image.alt | escape }}"/>
+          alt="{{ image.alt | strip_html | escape }}"/>
       </div>
     </div>
   </div>

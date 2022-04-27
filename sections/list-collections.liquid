@@ -36,7 +36,7 @@
             {%- endif -%}
             <div class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }} >
               <div class="collection-grid-item section--image">
-                <a href="{{ collection.url }}" class="link-over-image" aria-label="{{ collection.title | default: block.settings.title }}">
+                <a href="{{ collection.url }}" class="link-over-image" aria-label="{{ collection.title | default: block.settings.title | strip_html | escape }}">
                   <div class="hero__content__wrapper align--middle-center">
                     <div>
                       <div class="btn btn--small btn--white uppercase">
@@ -68,10 +68,10 @@
           {%- endif -%}
           <div class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }} >
             <div class="collection-grid-item section--image text--white">
-              <a href="{{ collection.url }}" class="link-over-image" aria-label="{{ collection.title | default: block.settings.title }}">
+              <a href="{{ collection.url }}" class="link-over-image" aria-label="{{ collection.title | default: block.settings.title | strip_html | escape }}">
                 <div class="hero__content__wrapper align--middle-center">
                   <div>
-                    <div class="btn btn--small uppercase">
+                    <div class="btn btn--small btn--white uppercase">
                       {{ collection.title | escape }}
                     </div>
                   </div>

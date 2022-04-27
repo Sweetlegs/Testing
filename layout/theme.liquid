@@ -12,7 +12,7 @@
     <link rel="canonical" href="{{ canonical_url }}">
   {%- endif -%}
 
-  <!-- ======================= Pipeline Theme V6.0.0 ========================= -->
+  <!-- ======================= Pipeline Theme V6.1.3 ========================= -->
 
   <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
   <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
@@ -23,6 +23,19 @@
   <link rel="preload" href="{{ 'vendor.js' | asset_url }}" as="script">
   <link rel="preload" href="{{ 'theme.js' | asset_url }}" as="script">
   <link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.1.2/flickity.pkgd.min.js" defer=""></script>
+  {% if product.featured_media.preview_image %}
+    {%- assign media = product.featured_media -%}
+    <link rel="preload" as="image" 
+      href="{{ media.preview_image | img_url: '550' }}" 
+      srcset="{%- if media.preview_image.width >= 550 -%}{{ media.preview_image | img_url: '550x' }} 550w,{%- endif -%}
+              {%- if media.preview_image.width >= 1100 -%}{{ media.preview_image | img_url: '1100x' }} 1100w,{%- endif -%}
+              {%- if media.preview_image.width >= 1680 -%}{{ media.preview_image | img_url: '1680x' }} 1680w,{%- endif -%}
+              {%- if media.preview_image.width >= 2048 -%}{{ media.preview_image | img_url: '2048x' }} 2048w,{%- endif -%}
+              {%- if media.preview_image.width >= 4096 -%}{{ media.preview_image | img_url: '4096x' }} 4096w{%- endif -%}"
+      sizes="(min-width: 768px), 50vw, 
+             100vw">
+  {% endif %}
 
   {%- if settings.favicon != blank -%}
     <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
@@ -38,13 +51,13 @@
     {% endif %}
     {{ title_content }}
     {%- if current_tags -%}
-      {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+      {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}
     {%- endif -%}
     {%- if current_page != 1 -%}
       &ndash; {{ 'general.meta.page' | t: page: current_page }}
     {%- endif -%}
-    {%- assign title_downcase = title_content | downcase -%}
-    {%- assign name_downcase = shop.name | downcase -%}
+    {%- assign title_downcase = title_content | downcase | strip -%}
+    {%- assign name_downcase = shop.name | downcase | strip -%}
     {%- unless title_downcase contains name_downcase -%}
       &ndash; {{ shop.name }}
     {%- endunless -%}
@@ -68,7 +81,8 @@
   {% render 'css-variables' %}
 
   {{ 'theme.css' | asset_url | stylesheet_tag }}
-  {{ 'custom.css' | asset_url | stylesheet_tag }}
+    {{ 'custom.css' | asset_url | stylesheet_tag }}
+
 
   <script>
     document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
@@ -125,8 +139,18 @@
         name: 'pipeline'
       },
       moneyFormat: {{ shop.money_format | json }},
-      version: '6.0.0'
+      version: '6.1.3'
     }
+    let windowInnerHeight = window.innerHeight;
+    document.documentElement.style.setProperty('--full-screen', `${windowInnerHeight}px`);
+    document.documentElement.style.setProperty('--three-quarters', `${windowInnerHeight * 0.75}px`);
+    document.documentElement.style.setProperty('--two-thirds', `${windowInnerHeight * 0.66}px`);
+    document.documentElement.style.setProperty('--one-half', `${windowInnerHeight * 0.5}px`);
+    document.documentElement.style.setProperty('--one-third', `${windowInnerHeight * 0.33}px`);
+    document.documentElement.style.setProperty('--one-fifth', `${windowInnerHeight * 0.2}px`);
+
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadHidden = false;
   </script>
 
   {%- if request.page_type contains 'customers/' -%}
@@ -137,7 +161,7 @@
   <script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script>
   <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'jquery.min.js' | asset_url }}" defer="defer"></script>
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 
   <script>
     (function () {
@@ -170,20 +194,25 @@
 
   <!-- Shopify app scripts =========================================================== -->
   {{ content_for_header }}
+  {% render 'wishlisthero-styles.liquid' %}
+  {% include 'judgeme_core' %}
+  {% include 'gtranslate-styles' %}
 </head>
 
-<body id="{{ page_title | handle }}" class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}{% if customer %} customer-logged-in{% endif %}">
+<body id="{{ page_title | handle }}" class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} {{ settings.default_background }}{% if customer %} customer-logged-in{% endif %}">
 
   <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
   {% section 'announcement' %}
   {% section 'header' %}
 
-  <main class="main-content" id="MainContent" role="main">
+  <main class="main-content" id="MainContent">
     {{ content_for_layout }}
   </main>
 
   {% section 'footer' %}
+
+  {% section 'popups' %}
 
   <div class="search--popdown">
     {% render 'search-predictive', version: 'search-popdown' %}
@@ -199,11 +228,58 @@
     just cut this next line and paste it outside this comment.
     <script src="{{ 'custom.js?enable_js_minification=1' | asset_url }}" defer="defer"></script>
   {%- endcomment -%}
- <script src="{{ 'custom.js?enable_js_minification=1' | asset_url }}" defer="defer"></script>
+<script src="{{ 'custom.js?enable_js_minification=1' | asset_url }}" defer="defer"></script>
   <!-- Paste popup code or third party scripts below this comment line ============== -->
 
+  <script>
+    jdgmSettings.revTabSelector = '#judgeme_widget';
+    document.addEventListener('DOMContentLoaded', function(){ 
+      jdgm.$( document ).ready(function() {
+        jdgm.$('.jdgm-preview-badge').on('click', function() {
+          jdgm.$(jdgmSettings.revTabSelector).click()
+        });
+      });
 
+      jdgm.$(document).ready( function(){ 
+        setTimeout( function() {
+          if(window.judgeme && (jdgm.$.urlParam('judgeme_token') || jdgm.$.urlParam('judgeme_follow_up_token')) ) {
+            jdgm.$(jdgmSettings.revTabSelector).click();
+          }
+        }, 100000);
+      });
+    });
+  </script>
+  
+  <script id="globaleScript">
+      (function () {
+        var reg = /showpro=(true|false)/i;
+        var showpro = ((reg.exec(document.location.search) || reg.exec(document.cookie) || [])[1] || "").toLowerCase();
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = '//gex.global-e.com/gempro/get/10000230' + (showpro ? '?showpro=' + showpro : '');
+        document.getElementsByTagName('head')[0].appendChild(s);
+        if (showpro) {
+          var cssElement = document.createElement('link');
+          cssElement.rel = 'stylesheet';
+          cssElement.id = 'GEPIStyles';
+          cssElement.href = '//gex.global-e.com/gempro/css/10000230?showpro=' + showpro;
+          document.cookie = 'showpro=' + showpro;
+          document.getElementsByTagName('head')[0].appendChild(cssElement);
+        }
+      })();
+    </script>
+  
   <!-- And above this comment line ================================================== -->
+
+<!-- This line added automatically by JSON-LD for SEO. -->{% include 'jsonld-for-seo' %}
+<script src="https://unpkg.com/@loophq/onstore-sdk@latest/dist/loop-onstore-sdk.js"></script>
+<script> 
+	LoopOnstore.init({ 
+		key: "0fb8d91d897194614aa759ba555a1e9f554ff8dc", 
+		attach: ".checkout__button" 
+	});
+</script>
 
 </body>
 </html>

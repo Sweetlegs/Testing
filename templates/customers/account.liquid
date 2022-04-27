@@ -1,3 +1,5 @@
+<!-- globale_my_account_globale_orders_list_include -->
+{% include 'globale-orders-list' %}
 <!-- /templates/customers/account.liquid -->
 {% comment %}
 
@@ -14,7 +16,7 @@
     <h1 class="account-header__left title h5--body strong">{{ 'customer.account.title' | t }}</h1>
     <div class="account-header__right">
       {% if shop.metafields.sky_pilot.enabled %}
-        <a href='/apps/downloads/orders/{{customer.id}}' class='btn--outline uppercase'>
+        <a href="{% unless routes.root_url == '/' %}{{ routes.root_url }}{% endunless %}/apps/downloads/orders/{{ customer.id }}" class='btn--outline uppercase'>
           {{ 'customer.account.digital_goods' | t }}
         </a>
       {% endif %}

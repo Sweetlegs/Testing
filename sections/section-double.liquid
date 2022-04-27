@@ -1,7 +1,7 @@
 {% liquid
   assign blockList = ''
   for block in section.blocks
-    assign blockList = blockList | append: block.type | append:','
+    assign blockList = blockList | append: block.type | append: ','
     assign blockList = blockList | replace: 'video', 'image'
   endfor
   assign blockArray = blockList | split: ","
@@ -98,7 +98,7 @@
 
               {%- if block.settings.link != blank -%}
                 {%- unless block.settings.link_text != blank -%}
-                  <a href="{{ block.settings.link }}" class="hero__content__link">&nbsp;</a>
+                  <a href="{{ block.settings.link }}" class="link-over-image" aria-label="{{ block.settings.image.alt | strip_html | escape }}"></a>
                 {%- endunless -%}
               {%- endif -%}
             </div>
@@ -179,7 +179,7 @@
           assign ratio = block.settings.bg_color | color_desaturate: 100 | color_contrast: '#ffffff'
           assign dark_class = ''
           if ratio > 4
-            assign dark_class = 'section--dark'
+            assign dark_class = 'palette--dark'
           endif
         -%}          
         <div class="brick__block {{ dark_class }}" data-prevent-transparent-header {{ block.shopify_attributes }}>
@@ -232,7 +232,7 @@
 
       {% when 'video' %}
         <div class="brick__block" data-overflow-frame {{ block.shopify_attributes }}>
-          <div class="brick__block__video {{ block.settings.text_color }}">
+          <div class="brick__block__video {{ block.settings.text_color }} {{ section.settings.height }}">
             <div class="hero__content__wrapper {{ block.settings.text_align }}">
               <div class="hero__content" data-overflow-content>
                 {% unless block.settings.kicker == '' %}
@@ -324,11 +324,11 @@
           assign dark_class = ''
           assign dark_class_accent = ''
           if ratio > 4
-            assign dark_class = 'section--dark'
+            assign dark_class = 'palette--dark'
           endif
 
           if ratio_accent > 4
-            assign dark_class_accent = 'section--dark'
+            assign dark_class_accent = 'palette--dark'
           endif
         -%}          
         <div class="brick__block {{ dark_class }}" data-prevent-transparent-header {{ block.shopify_attributes }}>
@@ -368,11 +368,11 @@
           assign dark_class = ''
           assign dark_class_accent = ''
           if ratio > 4
-            assign dark_class = 'section--dark'
+            assign dark_class = 'palette--dark'
           endif
 
           if ratio_accent > 4
-            assign dark_class_accent = 'section--dark'
+            assign dark_class_accent = 'palette--dark'
           endif
 
           assign featured_collection = collections[block.settings.collection]

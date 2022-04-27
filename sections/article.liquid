@@ -194,7 +194,7 @@
           {% if blog.all_tags != blank and section.settings.sidebar_tags %}
           <p class="uppercase small strong">{{ 'blogs.article.tags' | t }}</p>
             {% for tag in blog.all_tags %}
-              <a class="btn--soft btn--primary blog__tag" href="{{ routes.root_url }}blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
+              <a class="btn--soft btn--primary blog__tag" href="{% unless routes.root_url == '/' %}{{ routes.root_url }}{% endunless %}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</a>
             {% endfor %}
             <div class="pt1"></div>
           {% endif %}

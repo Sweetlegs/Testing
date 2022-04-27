@@ -38,11 +38,11 @@
               {%- if block.settings.enable_video -%}
                 {%- render 'video-popup', video: block.settings.video_link, unique: block.id -%}
               {%- elsif block.settings.button_label == blank and block.settings.button_link != blank -%}
-                <a class="link-over-image" href="{{ block.settings.button_link }}" aria-label="{{ block.settings.title }}"></a>
+                <a class="link-over-image" href="{{ block.settings.button_link }}" aria-label="{{ block.settings.title | strip_html | escape }}"></a>
               {%- endif -%}
             </div>
             <noscript>
-              <img src="{{ block.settings.image | img_url: '540x' }}" alt="{{ block.settings.image.alt | default: block.settings.title }}"/>
+              <img src="{{ block.settings.image | img_url: '540x' }}" alt="{{ block.settings.image.alt | default: block.settings.title | strip_html | escape }}"/>
             </noscript>
           {% endif %}
           {% if block.settings.title != blank %}
@@ -81,12 +81,12 @@
         "type": "select",
         "id": "bg",
         "label": "Background color",
-        "default": "section bg--neutral",
+        "default": "palette--light bg--neutral",
         "options": [
-          { "value": "section bg--neutral", "label": "Default"},
-          { "value": "section bg--accent", "label": "Light"},
-          { "value": "section--dark bg--invert", "label": "Dark"},
-          { "value": "section--dark bg--invert--accent", "label": "Dark accent"}
+          { "value": "palette--light bg--neutral", "label": "Default"},
+          { "value": "palette--light bg--accent", "label": "Light"},
+          { "value": "palette--dark bg--invert", "label": "Dark"},
+          { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
         ]
       },
       {

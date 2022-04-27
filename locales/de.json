@@ -22,7 +22,8 @@
       "email": "E-Mail",
       "newsletter_email": "ihre-email@beispiel.com",
       "submit": "Abonnieren",
-      "subscribed": "Vielen Dank für den Beitritt unsere Mailing-Liste!"
+      "subscribed": "Vielen Dank für den Beitritt unsere Mailing-Liste!",
+      "error_message": "Dieser Kunde ist bereits abonniert"
     },
     "accessibility": {
       "menu": "Hauptmenü",
@@ -36,7 +37,13 @@
       "scroll": "Runterscrollen",
       "unit_price_separator": "pro",
       "see_all": "Alles sehen",
-      "skip_to_content": "Direkt zum Inhalt"
+      "skip_to_content": "Direkt zum Inhalt",
+      "total_reviews": "bewertungen insgesamt",
+      "star_reviews_info": "{{ rating_value }} von {{ rating_max }} Sternen",
+      "toggle_with_count": {
+        "one": "{{ count }} produkt pro zeile anzeigen",
+        "other": "{{ count }} artikel pro zeile anzeigen"
+      }
     },
     "search": {
       "no_results_for": "Keine ergebnisse für",
@@ -114,6 +121,11 @@
       "savings": "Sie sparen",
       "with": "mit",
       "close_cart": "Einkaufswagen schließen",
+      "add_message": "Sie haben ein Produkt hinzugefügt: ",
+      "total_message": {
+        "one": "und Sie haben {{ count }} Produkt im Warenkorb",
+        "other": "und Sie haben {{ count }} Produkte im Warenkorb"
+      },
       "qualified_shipping_message": "¡Felicidades! Su pedido califica para el envío gratis"
     },
     "shipping": {
@@ -151,7 +163,8 @@
       "all_types": "Alle Typen",
       "all_vendors": "Alle Vendors",
       "all_tags": "Filter Löschen",
-      "all_collections": "Alle Collections"
+      "all_collections": "Alle Collections",
+      "show_more": "Zeig mehr"
     },
     "onboarding": {
       "modal_title": "Auf dieser Seite werden alle Produkte Ihres Geschäfts angezeigt.",
@@ -322,7 +335,12 @@
       "description": "Beschreibung",
       "read_more": "Weiterlesen",
       "to": "Zu",
-      "from": "Von"
+      "from": "Von",
+      "upsell_title": "Kaufen Sie es mit",
+      "upsell_add_to_cart": "Voeg toe aan winkelmandje",
+      "upsell_out_of_stock": "Ausverkauft",
+      "upsell_error_title": "Beispiel Upsell-Produkt.",
+      "upsell_error_info": "Fügen Sie ein Upsell-Produkt in Ihren Themeneinstellungen hinzu"
     },
     "product": {
       "sold_out": "Ausverkauft",

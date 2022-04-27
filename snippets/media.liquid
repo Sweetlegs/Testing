@@ -15,23 +15,27 @@
   data-media-slide
   data-media-id="{{ media.id }}"
   data-type="{{ media.media_type }}"
-  aria-label="{{ media.alt | escape }}"
+  aria-label="{{ media.alt | strip_html | escape }}"
   {{ data_player }}>
   {% case media.media_type %}
     {% when 'image' %}
       <div {% if media.aspect_ratio < 1 %}style="width:{{ media.aspect_ratio | times: 100 }}%; margin: 0 auto;"{% endif %}>
         <div class="lazy-image mobile-zoom-wrapper" style="padding-top:{{ 1 | divided_by: media.aspect_ratio | times: 100 }}%; background-image:  url('{{ media | img_url: '1x1' }}');">
-          {%- assign img_api = media | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-          <img data-product-image class="fade-in lazyload lazypreload"
+          <img data-product-image class="srcset"
             data-image-id="{{ media.id }}"
-            alt="{{ media.alt | escape }}"
-            aria-label="{{ media.alt | escape }}"
-            data-src="{{ img_api }}"
-            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100]"
-            data-sizes="auto"
-            {% if media.alt contains 'variant--' %}
-              data-variant="media.alt"
-            {% endif %}/>
+            alt="{{ media.alt | strip_html | escape }}"
+            srcset="{%- if media.preview_image.width >= 550 -%}{{ media.preview_image | img_url: '550x' }} 550w,{%- endif -%}
+                    {%- if media.preview_image.width >= 1100 -%}{{ media.preview_image | img_url: '1100x' }} 1100w,{%- endif -%}
+                    {%- if media.preview_image.width >= 1680 -%}{{ media.preview_image | img_url: '1680x' }} 1680w,{%- endif -%}
+                    {%- if media.preview_image.width >= 2048 -%}{{ media.preview_image | img_url: '2048x' }} 2048w,{%- endif -%}
+                    {%- if media.preview_image.width >= 4096 -%}{{ media.preview_image | img_url: '4096x' }} 4096w{%- endif -%}"
+            sizes="(min-width: 768px), 50vw, 
+                   100vw"
+            src="{{ media.preview_image | img_url: '1100x' }}"
+            loading="lazy"
+            width="1180"
+            height="{{ 1180 | divided_by: media.preview_image.aspect_ratio | ceil }}">
+
             {% if section.settings.zoom_enable %}
               <button class="media__zoom__icon" data-zoom-button>
                 {% render 'icon-zoom' %}

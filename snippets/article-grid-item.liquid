@@ -4,7 +4,7 @@
 {% endcomment %}
 <div class="article__card section--image {{ color | default: 'text--white' }}">
 
-  <a href="{{ article.url }}" class="link-over-image"  aria-label="{{ article.title }}">
+  <a href="{{ article.url }}" class="link-over-image"  aria-label="{{ article.title | strip_html | escape }}">
     <div class="hero__content__wrapper align--bottom-left">
       <div class="article__card__title">
         <h3 class="h4 mb0">{{ article.title }}</h3>

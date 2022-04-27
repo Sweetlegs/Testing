@@ -23,12 +23,12 @@
         {% endif %}
         {% if section.settings.address != blank %}
           <div class="rte rte--column">
-            <span>{{ section.settings.address }}</span>
+            {{ section.settings.address }}
           </div>
         {% endif %}
         {% if section.settings.button != blank and section.settings.map_address != blank %}
           <p>
-            <a href="https://maps.google.com?daddr={{ section.settings.map_address | escape }}" target="_blank" rel="noopener" class="{{ section.settings.button_style }} btn--small uppercase">
+            <a href="https://maps.google.com?daddr={{ section.settings.map_address | escape | replace: ' ', '+' }}" target="_blank" rel="noopener" class="{{ section.settings.button_style }} btn--small uppercase">
             {{ section.settings.button | escape }}
             </a>
           </p>
@@ -41,11 +41,11 @@
     <div class="map-section__image">
       {%- if section.settings.image -%}
         {%- assign img_object = section.settings.image -%}
-        <div class="background-size-cover lazyload" data-bgset="{% render 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt }}"></div>
+        <div class="background-size-cover lazyload" data-bgset="{% render 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt | strip_html | escape }}"></div>
       {%- else -%}
         {%- assign img_object = 'blank.svg' | asset_url -%}
         <div class="image-overlay" style="--bg: #000; opacity:0.15;"></div>
-        <div class="background-size-cover lazyload" data-bgset="{% render 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt }}"></div>
+        <div class="background-size-cover lazyload" data-bgset="{% render 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt | strip_html | escape }}"></div>
       {%- endif -%}
     </div>
     <noscript>
@@ -138,12 +138,12 @@
         "type": "select",
         "id": "bg",
         "label": "Background color",
-        "default": "section bg--neutral",
+        "default": "palette--light bg--neutral",
         "options": [
-          { "value": "section bg--neutral", "label": "Default"},
-          { "value": "section bg--accent", "label": "Light"},
-          { "value": "section--dark bg--invert", "label": "Dark"},
-          { "value": "section--dark bg--invert--accent", "label": "Dark accent"}
+          { "value": "palette--light bg--neutral", "label": "Default"},
+          { "value": "palette--light bg--accent", "label": "Light"},
+          { "value": "palette--dark bg--invert", "label": "Dark"},
+          { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
         ]
       },
       {

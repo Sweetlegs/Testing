@@ -64,9 +64,9 @@
   data-unique="{{ unique }}"
   data-video-type="{{ video_type }}"
   data-video-id="{{ video_id }}"
-  {%- if pause != 'null' -%}
+  {% if pause != 'null' %}
     data-pause="{{ pause }}"
-  {%- endif -%}
+  {% endif %}
   aria-label="{{ 'general.accessibility.play' | t }}">
   {% render 'icon-play' %}
   {% if text and text != '' %}

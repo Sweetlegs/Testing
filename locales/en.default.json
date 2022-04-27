@@ -22,7 +22,8 @@
       "email": "Email",
       "newsletter_email": "your-email@example.com",
       "submit": "Join",
-      "subscribed": "Thank you for joining our mailing list!"
+      "subscribed": "Thank you for joining our mailing list!",
+      "error_message": "This customer is already subscribed"
     },
     "accessibility": {
       "menu": "Menu",
@@ -36,7 +37,13 @@
       "scroll": "Scroll down",
       "unit_price_separator": "per",
       "see_all": "See all",
-      "skip_to_content": "Skip to content"
+      "skip_to_content": "Skip to content",
+      "total_reviews": "total reviews",
+      "star_reviews_info": "{{ rating_value }} out of {{ rating_max }} stars",
+      "toggle_with_count": {
+        "one": "Show {{ count }} product per row",
+        "other": "Show {{ count }} products per row"
+      }
     },
     "search": {
       "no_results_for": "No results for",
@@ -114,7 +121,12 @@
       "savings": "You're saving",
       "with": "with",
       "close_cart": "Close Cart",
-      "qualified_shipping_message": "Congratulations! Your order qualifies for free shipping"
+      "qualified_shipping_message": "Congratulations! Your order qualifies for free shipping",
+      "add_message": "You added a product: ",
+      "total_message": {
+        "one": "and you have {{ count }} product in the cart",
+        "other": "and you have {{ count }} products in the cart"
+      }
     },
     "shipping": {
       "estimate_shipping": "Estimate shipping",
@@ -151,7 +163,8 @@
       "all_types": "All Types",
       "all_vendors": "All Vendors",
       "all_tags": "Clear Filters",
-      "all_collections": "All Collections"
+      "all_collections": "All Collections",
+      "show_more": "Show more"
     },
     "onboarding": {
       "modal_title": "This page will show all of your store's products",
@@ -322,7 +335,12 @@
       "description": "Description",
       "read_more": "Read more",
       "to": "To",
-      "from": "From"
+      "from": "From",
+      "upsell_title": "Buy it with",
+      "upsell_add_to_cart": "Add to cart",
+      "upsell_out_of_stock": "Out of stock",
+      "upsell_error_title": "Example upsell product",
+      "upsell_error_info": "Add an upsell product in your theme settings"
     },
     "product": {
       "sold_out": "Sold Out",

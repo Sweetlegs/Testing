@@ -12,7 +12,7 @@
 {% endcase %}
 
 <div class="homepage-collection-grid {{ section.settings.bg }} section-{{ section.id }}">
-  <div>
+  <div class="wrapper">
     {% if section.settings.title != blank %}
       <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
     {% endif %}
@@ -33,16 +33,11 @@
             {%- if block.settings.button_link != blank -%}
               {% assign item_link = block.settings.button_link -%}
             {%- endif -%}
-            <a href="{{ item_link }}" class="link-over-image" aria-label="{{ collection.title | default: block.settings.title }}">
-              <div class="hero__content__wrapper align--middle-left">
-                <div style="padding: 20px">
-                  {% unless block.settings.subtitle == '' %}
-                    <p class="subtitle">
-                      {{ block.settings.subtitle | escape }}
-                    </p>
-                  {% endunless %}
+            <a href="{{ item_link }}" class="link-over-image" aria-label="{{ collection.title | default: block.settings.title | strip_html | escape }}">
+              <div class="hero__content__wrapper align--middle-center">
+                <div>
                   {% unless block.settings.title == '' %}
-                    <h2 class="hero__title h6">
+                    <h2 class="hero__title h4">
                       {{ block.settings.title | escape }}
                     </h2>
                   {% endunless %}
@@ -91,12 +86,12 @@
         "type": "select",
         "id": "bg",
         "label": "Background color",
-        "default": "section bg--neutral",
+        "default": "palette--light bg--neutral",
         "options": [
-          { "value": "section bg--neutral", "label": "Default"},
-          { "value": "section bg--accent", "label": "Light"},
-          { "value": "section--dark bg--invert", "label": "Dark"},
-          { "value": "section--dark bg--invert--accent", "label": "Dark accent"}
+          { "value": "palette--light bg--neutral", "label": "Default"},
+          { "value": "palette--light bg--accent", "label": "Light"},
+          { "value": "palette--dark bg--invert", "label": "Dark"},
+          { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
         ]
       },
       {
@@ -183,11 +178,6 @@
             "id": "title",
             "label": "Heading",
             "default": "Featured collection"
-          },
-		  {
-            "type": "text",
-            "id": "subtitle",
-            "label": "Sub Heading"
           },
           {
             "type": "text",

@@ -1,7 +1,10 @@
-<div class="cart__items" data-cart-items-total="{{ cart.total_price }}">
+{%- assign pair_products_index = '' -%}
+{%- assign cart_products = '' -%}
+
+<div class="cart__items">
   {% for line_item in cart.items %}
     <div class="cart__items__row" data-cart-item>
-      <div class="item--loadbar" style="display: none;"></div>
+      <div class="item--loadbar" style="display: none;">&nbsp;</div>
       <div class="cart__items__grid" data-item>
         <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0"
           class="cart__items__remove" 
@@ -16,14 +19,14 @@
         </a>
         <div class="cart__items__image">
           <a href="{{ line_item.url }}">
-            <img class="cart__items__img" src="{{ line_item | img_url: '180x' }}" alt="{{ line_item.title | escape }}">
+            <img class="cart__items__img" src="{{ line_item | img_url: '180x' }}" alt="{{ line_item.title | strip_html | escape }}">
           </a>
         </div>
           
         <div class="cart__items__title">
           <p>
             <a href="{{ line_item.url }}">
-            {{ line_item.product.title }}
+              {{ line_item.product.title }}
             </a>
           </p>
           <div class="cart__items__meta">
@@ -144,5 +147,30 @@
         {% endif %}
       </div>
     </div>
-  {%- endfor -%}
+
+    {%- assign cart_products = cart_products | append: line_item.product.id | append: ',' -%}
+    {%- assign upsell = line_item.product.metafields.theme.upsell -%}
+
+    {%- if upsell.value != nil and upsell.type == 'product_reference' -%}
+      {%- assign pair_products_index = pair_products_index | append: forloop.index0 | append: ',' -%}
+    {%- endif -%}
+  {% endfor %}
 </div>
+
+{%- if pair_products_index != '' -%}
+  {%- assign pair_products_index = pair_products_index | split: ',' -%}
+  {%- assign cart_products = cart_products | prepend: ',' -%}
+
+  {%- for index in pair_products_index -%}
+    {%- assign arr_index = index | plus: 0 -%}
+    {%- assign upsell_product = cart.items[arr_index].product.metafields.theme.upsell.value -%}
+    
+    {%- if cart_products contains upsell_product.id or upsell_product.available == false -%}
+      {%- continue -%}
+    {%- endif -%}
+
+    {%- render 'upsell-product' upsell_product: upsell_product -%}
+
+    {%- break -%}
+  {%- endfor -%}
+{%- endif -%}  

@@ -20,22 +20,9 @@
     assign sold_out = false
   endif
 
-  assign new_product = false
-  assign published_date = product.published_at | date: "%s"
-  assign now_date = 'now' | date: "%s"
-  assign age_in_days = now_date | minus: published_date | divided_by: 60 | divided_by: 60 | divided_by: 12
-  if age_in_days < settings.tag_new_limit
-    assign new_product = true
-  endif
-
   assign sellout_badge = false
   if sold_out and settings.badge_sellout
     assign sellout_badge = true
-  endif
-
-  assign new_badge = false
-  if new_product and settings.tag_new
-    assign new_badge = true
   endif
 
   assign sale_badge = false
@@ -60,7 +47,7 @@
     for tag in product.tags
       if tag contains "_badge_"
         assign custom_badge = true
-        assign custom_badge_content = tag | remove: '_badge_' | replace:'_', ' '
+        assign custom_badge_content = tag | remove: '_badge_' | replace: '_', ' '
         break
       endif
     endfor
@@ -72,7 +59,7 @@
   endif
 
   assign tagged = false
-  if sellout_badge or new_badge or sale_badge or custom_badge or setting_badge
+  if sellout_badge or sale_badge or custom_badge or setting_badge
     assign tagged = true
   endif 
 -%}
@@ -86,8 +73,6 @@
       <div class="product__badge product__badge--sold">{{ 'products.product.sold_out' | t }}</div>
     {%- elsif sale_badge -%}
       <div class="product__badge product__badge--sale">{{ sale_badge_content }}</div>
-    {%- elsif new_badge -%}
-      <div class="product__badge product__badge--new">{{ 'products.product.new' | t }}</div>
     {%- endif -%}
   {%- endif -%}
 {%- endcapture -%}
@@ -100,15 +85,121 @@
     {%- for label in swatch_labels -%}
       {%- assign sanitized_label = label | lstrip | rstrip -%}
       {%- if product.options_by_name[sanitized_label].values.size > 0 -%}
+
         <div class="grid__swatch__container">
-          <p class="grid__swatch__placeholder">{{ 'collections.general.swatches_with_count' | t: count: product.options_by_name[sanitized_label].values.size }}</p>
+           {% capture input_id %}{{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once }}{% endcapture %}
+
+                 
+           {% for variant in product.variants limit:5 %}
+           {% assign value = variant.options[0] %}
+       
+         {% for option in product.options_with_values %}
+            {% unless option.name == 'Size' %}
+            <div class="selector-wrapper js" data-split-select-wrapper data-select-label="{{ option.name }}"  data-option-position="{{ option.position }}">
+  
+                {% assign current_value = current_variant.options[forloop.index0] %}
+                <fieldset class="radio__fieldset">
+                  <legend class="radio__legend">
+                    <span class="radio__legend__label">{{ option.name | escape_once }}</span>
+                    <span data-option-value>{{ current_value }}</span>
+                    {%- if size_chart_index == forloop.index0 -%}
+                      {{ size_chart }}
+                    {%- endif -%}
+                  </legend>
+
+                    {% for value in option.values %}
+                      {% capture input_id %}{{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once }}{% endcapture %}
+
+                      {%- if is_swatch_option -%}
+
+                        {% assign mapped_swatch_color = value | escape_once %}
+                        {%- assign mappings = settings.swatch-mapping | split: ';' -%}
+
+                        {% for m in mappings %}
+                          {%- assign key_val = m | split: ':' -%}
+                          {%- assign key = key_val | first | downcase | lstrip | rstrip -%}
+                          {%- assign colors = key_val | last | split: ',' -%}
+                          {% assign in_mapping = false %}
+
+                          {% assign pdp_val_enc = value | downcase | lstrip | rstrip | url_encode | replace: 'amp%3B', '' %}
+                          {% for c in colors %}
+                            {% assign c_enc = c | downcase | lstrip | rstrip | url_encode %}
+                            {% if c_enc == pdp_val_enc %}
+                              {% assign in_mapping = true %}
+                            {% endif %}
+                          {% endfor %}
+
+                          {% if in_mapping %}
+                           {% assign mapped_swatch_color = key %}
+                           {% break %}
+                          {% endif %}
+                        {% endfor %}
+                        <span class="swatch__button" data-tooltip="{{ value | escape_once }}">
+                          <input type="radio"
+                              name="options[{{ option.name | escape_once }}]"
+                              value="{{ value | escape_once }}" 
+                              id="{{ input_id }}"
+                              variantId="{{option | json}}"
+                              {%- if value == current_value -%}checked{%- endif -%}>
+                          <label for="{{ input_id }}" data-value="{{ value | escape_once }}"data-swatch="{{ mapped_swatch_color }}" data-color-swatch="{{meta_color_data}}">
+                            <span class="visually-hidden">{{ value | escape_once }}</span>
+                          </label>
+                        </span>
+
+                      {%- else -%}
+                        {% comment %} radio button {% endcomment %}
+                        <span class="radio__button">
+                          <input
+                            type="radio"
+                            name="options[{{ option.name | escape_once }}]"
+                            value="{{ value | escape_once }}" id="{{ input_id }}"
+                            {%- if value == current_value -%}checked{%- endif -%}>
+                          <label for="{{ input_id }}">
+                            <span>{{ value | escape_once }}</span>
+                          </label>
+                        </span>
+                      {%- endif -%}
+
+                    {% endfor %}
+                  </fieldset>
+               
+            </div>
+          {% endunless %}
+          {% endfor %}
+          <span class="swatch__button" data-tooltip="{{ value }}">
+                          <input type="radio"
+                              name="options[{{ option.name | escape_once }}]"
+                              value="{{ value }}" 
+                              id="{{ input_id }}"
+                              variantId="{{option | json}}"
+                              {%- if value == current_value -%}checked{%- endif -%}>
+                          <label for="{{ input_id }}" data-value="{{ value | escape_once }}"data-swatch="{{ mapped_swatch_color }}" data-color-swatch="{{meta_color_data}}">
+                            <span class="visually-hidden">{{ value | escape_once }}</span>
+                          </label>
+                        </span>
+
+        {% endfor %}  
           <form class="grid__swatch__hover" data-grid-swatches data-swatch-handle="{{ product.handle }}" data-swatch-label="{{ label }}"></form>
         </div>
+ <noscript>
+      <select id="variantSelected" name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' | strip_html | escape }}">
+        {% for variant in product.variants %}
+          <option
+            {% if variant == current_variant %}selected="selected"{% endif %}
+            {% unless variant.available %}disabled="disabled"{% endunless %}
+            value="{{ variant.id }}" metafield="{{current_variant.metafields.my_fields.defects}}">
+              {{ variant.title }}
+          </option>
+        {% endfor %}
+      </select>
+ </noscript>
         {% break %}
       {%- endif -%}
     {%- endfor -%}
   {%- endif -%}
 {%- endcapture -%}
+
+
 
 {%- liquid
   assign double_img = false
@@ -116,14 +207,14 @@
     assign double_img = true
   endif
 
-  assign image_ratio = 1 | divided_by: product.featured_media.preview_image.aspect_ratio | times: 100
+  assign product_img_ratio = product.featured_media.preview_image.aspect_ratio | default: 1
+  assign image_ratio = 1 | divided_by: product_img_ratio | times: 100
   if settings.product_grid_image == 'crop'
     assign image_ratio = settings.product_grid_aspect_ratio | times: 100
   elsif settings.product_grid_image == 'scale'
     assign multiplier = settings.product_grid_aspect_ratio
-    assign ratio = product.featured_media.preview_image.aspect_ratio
-    assign inverse_ratio = 1 | divided_by: ratio
-    assign top_offset =  1 | divided_by: ratio | times: 100 | divided_by: 2
+    assign inverse_ratio = 1 | divided_by: product_img_ratio
+    assign top_offset =  1 | divided_by: product_img_ratio | times: 100 | divided_by: 2
     assign top_offset_subtractor =  multiplier | times: 100 | divided_by: 2
   endif
 -%}
@@ -131,7 +222,7 @@
 {%- if settings.product_grid_image == 'scale' -%}
   {%- capture auto_height -%}
     {%- if inverse_ratio > multiplier -%}
-      style="width:{{ ratio | times: multiplier | times: 100 }}%; margin: 0 auto;"
+      style="width:{{ product_img_ratio | times: multiplier | times: 100 }}%; margin: 0 auto;"
     {%- else -%}
       style="padding:{{ top_offset_subtractor | minus: top_offset }}% 0;"
     {%- endif -%}
@@ -146,14 +237,25 @@
         data-bgset="{% render 'bgset', image: product.featured_media.preview_image %}" 
         role="img"
         aria-label="{{ product.featured_media.alt | default: product.title | strip_html | escape }}"></div>
+      {% render 'wishlisthero-collection-product' with product: product %}
       {% if double_img %}
-        <div class="collection__image__bottom lazyload lazypreload" 
-          data-bgset="{% render 'bgset', image: product.media[1].preview_image %}" 
-          role="img" 
-          aria-label="{{ product.media[1].alt | strip_html | escape }}"></div>
+        <div class="collection__image__bottom">
+          {%- assign img_url = product.media[1].preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+          <img data-src="{{ img_url }}"
+            class="lazyload img-object-cover lazypostload-desktop"
+            width="{{ product.media[1].preview_image.width }}"
+            height="{{ product.media[1].preview_image.height }}"
+            data-widths="[110, 160, 220, 320, 480, 540, 720, 900]"
+            data-sizes="auto"
+            data-aspectratio="{{ product.media[1].preview_image.aspect_ratio }}"
+            alt="{{ product.media[1].alt | strip_html | escape }}">
+        </div>
       {% endif %}
         <div class="product-grid-item__slide" data-grid-slide></div>
       {{ badge }}
+      {% if product.variants[0].inventory_quantity <= 10 and product.variants[0].inventory_quantity >=1 %}
+      <div class="less-inventory">{{product.variants[0].inventory_quantity}} left</div>
+      {% endif %}
     </a>
   </div>
   <noscript>
@@ -164,21 +266,25 @@
   </noscript>
   <div class="product__grid__info product__grid__info--{{ settings.product_grid_style }} {{ text_align | default: settings.collection_text_alignment | default: 'text-center' }}">
     <a href="{{ product.url | within: collection | capitalize }}">
-      <p class="product__grid__title">
-        {{ product.title }}
-      </p>
+      <div class="product__grid__title__wrapper">
+        <p class="product__grid__title">
+          {{ product.title }}
+        </p>
+        {%- if settings.product_grid_show_rating and product.metafields.reviews.rating.value != blank -%}
+          <div class="rating__wrapper__grid">
+            {% render 'product-rating', product: product, show_rating_count: settings.product_grid_show_rating_count %}
+          </div>
+        {%- endif -%}
+      </div>
       <div class="product__grid__price">
         <span class="price{% if on_sale %} on-sale{% endif %}">
           {% if product.price_varies %}{{ 'products.general.from' | t }} {% endif %}
           {{ product.price | money }}
         </span>
-        {% if sold_out %}
-        <br /><em>{{ 'products.product.sold_out' | t }}</em>
-        {% endif %}
         {% if on_sale %}
-        <span class="compare-at">
-          {{ product.compare_at_price | money }}
-        </span>
+          <span class="compare-at">
+            {{ product.compare_at_price | money }}
+          </span>
         {% endif %}
         {% if current_variant.unit_price %}
           {% capture unit_price_separator %}
@@ -194,11 +300,9 @@
             <span class="visually-hidden">{{ 'products.product.unit_price_label' | t }}</span>
             <span class="price-per-unit">{{ current_variant.unit_price | money }}{{ unit_price_separator }}{{ unit_price_base_unit }}</span>
         {% endif %}
-        {% if product.metafields.spr.reviews %}
-          <br />
-          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+        {% if sold_out %}
+          <br /><em>{{ 'products.product.sold_out' | t }}</em>
         {% endif %}
-
         {{ swatches }}
       </div>
     </a>

@@ -81,7 +81,7 @@
             class="btn--outline btn--ar uppercase"
             data-shopify-xr
             data-shopify-model3d-id="{{ first_3d_model.id }}"
-            data-shopify-title="{{ product.title }}"
+            data-shopify-title="{{ product.title | strip_html | escape }}"
             data-shopify-xr-hidden>
             {% render 'icon-media-model' %}
             <span>{{ 'products.product.view_in_space' | t }}</span>
@@ -90,7 +90,7 @@
 
         <noscript>
           {% for image in product.media %}
-            <img src="{{ image.preview_image | img_url: '900x' }}" alt="{{ image.alt | default: product.title  }}">
+            <img src="{{ image.preview_image | img_url: '900x' }}" alt="{{ image.alt | default: product.title | strip_html | escape }}">
           {% endfor %}
         </noscript>
         {% if product.media.size > 1 %}
@@ -99,7 +99,7 @@
               <div class="media__thumb" 
                 data-slideshow-thumbnail 
                 data-media-select="{{ media.id }}">
-                <img alt="{{ media.alt | escape }}" src="{{ media.preview_image.src | img_url: '200x200', crop: 'center' }}">
+                <img alt="{{ media.alt | strip_html | escape }}" src="{{ media.preview_image.src | img_url: '200x200', crop: 'center' }}">
                 {%- if media.media_type == 'model' -%}
                   {% render 'icon-media-model' %}
                 {%- elsif media.media_type contains 'video' -%}
@@ -117,31 +117,56 @@
             {%- when '@app' -%}
               {% render block %}    
             {% when 'title' %}
-              {% render 'product-title-price', product: product,  block: block, section: section %}
+              {% render 'product-title-price', product: product, block: block, section: section %}
             {% when 'form' %}
               <div class="product__details">
-                {% render 'product-form', product: product,  block: block, section: section %}
+                {% render 'product-form', product: product, block: block, section: section %}
               </div>
             {% when 'description' %}
-              <div class="product-description rte rte--column">
+              <div class="product-description rte rte--column" {{ block.shopify_attributes }}>
+                {%- assign product_description_content = product.description | strip -%}
+                {%- assign truncate_string = 'products.general.read_more' | t -%}
+                {%- assign truncate_html = '<button type="button" class="p underline" data-truncated-button>' | append: truncate_string | append: '</button>' -%}
+
                 {%- if block.settings.style == 'none' -%}
-                  {{ product.description }}
+                  {% if block.settings.read_more %}
+                    <div class="product-description__holder product-description__holder--truncate" data-truncated-holder>
+                      <div class="product-description__inner">
+                        <div class="product-description__content" data-truncated-content="product-description__content--truncate">
+                          {{ product_description_content }}
+                        </div>
+                      </div>
+                      
+                      <div class="product-description__actions">
+                        {{ truncate_html }}
+                      </div>
+                    </div>
+                  {% else %}           
+                    {{ product.description }}
+                  {% endif %}
                 {% else %}
                   <div class="tabs-wrapper">
-                    {% render 'product-tabs', section: section, block: block, product: product %}
+                    {% render 'product-tabs', section: section, block: block, product: product, product_description_content: product_description_content, truncate_html: truncate_html %}
                   </div>
                 {%- endif -%}
               </div>
             {% when 'sharing' %}
-              {% render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media.preview_image %}
+              <div {{ block.shopify_attributes }}>
+                {% render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media.preview_image %}
+              </div> 
             {% when 'pickup' %}
-              <div class="product__pickup" data-store-availability-container></div>
+              <div class="product__pickup" data-store-availability-container {{ block.shopify_attributes }}></div>
             {% when 'text' %} 
               {% if block.settings.title != '' %}
-                <p class="product__subheading">
+                <div class="product__subheading" {{ block.shopify_attributes }}>
                   {{ block.settings.title }}
-                </p>
+                </div>
               {% endif %}
+            {% when 'liquid' %} 
+              {{ block.settings.custom_liquid }}
+            {% when 'upsell' %}
+              {%- assign upsell_product = all_products[block.settings.product] -%}
+              {% render 'upsell-product' upsell_product: upsell_product, show_form: true %}
           {% endcase %}
         {% endfor %}     
 
@@ -151,44 +176,6 @@
 </div>
 
 {% render 'product-info', product: product %}
-
-<script data-product-add-popdown-template type="text/x-template">
-  <div class="product__popdown__outer">
-
-    <div class="product__popdown__textbar">
-        <span class="product__popdown__title product__popdown__title--bold">
-          {% raw %}{{ it.product_title | safe }} &nbsp;{% endraw %}
-        </span>
-        <span class="product__popdown__title">
-          {% raw %}
-          {{@if(it.variant_title)}}
-            {{ it.variant_title | safe }} &nbsp;
-          {{/if}}
-          {% endraw %}
-        </span>
-        <span class="product__popdown__title product__popdown__title--bold">
-          {{ 'products.cart_drawer.item_added' | t }}
-        </span>
-    </div>
-
-    <div class="wrapper">
-      <div class="product__popdown__inner">
-        <div class="product__popdown__close">
-          <div class="popdown__close__inner" data-close-popdown>
-            {% render 'icon-close-small' %}
-          </div>
-        </div>
-        {% capture product_image %}{% raw %}{{ it.product_image }}{% endraw %}{% endcapture %}
-        <div class="product__popdown__image">
-          <img alt="{% raw %}{{ it.product_title | safe }}{% endraw %}" src="{{ product_image }}">
-        </div>
-        <div class="product__popdown__cart__wrapper">
-          <a href="{{ routes.cart_url }}" class="product__popdown__cart text-link uppercase" data-drawer-toggle="drawer-cart">{{ "products.cart_drawer.view_cart" | t }}</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</script>
 
 {% if section.settings.zoom_enable %}
   {% render 'zoom-pswp' %}
@@ -228,12 +215,12 @@
       "type": "select",
       "id": "bg",
       "label": "Background color",
-      "default": "section bg--neutral",
+      "default": "palette--light bg--neutral",
       "options": [
-        { "value": "section bg--neutral", "label": "Default"},
-        { "value": "section bg--accent", "label": "Light"},
-        { "value": "section--dark bg--invert", "label": "Dark"},
-        { "value": "section--dark bg--invert--accent", "label": "Dark accent"}
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
       ]
     },
     {
@@ -261,12 +248,6 @@
          { "value": "center", "label": "Center"},
          { "value": "left", "label": "Left"}
       ]
-    },
-    {
-      "type": "checkbox",
-      "id": "product_breadcrumbs",
-      "label": "Show breadcrumbs",
-      "default": true
     },
     {
       "type": "header",
@@ -353,6 +334,13 @@
       "name": "Product description",
       "limit": 1,
       "settings": [
+        {
+          "type": "checkbox",
+          "id": "read_more",
+          "label": "Enable read more",
+          "default": true,
+          "info": "Show the first few lines of the product description with an option to read more"
+        },
         {
           "type": "select",
           "id": "style",
@@ -455,6 +443,18 @@
           "type": "richtext",
           "id": "title",
           "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "liquid",
+      "name": "Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid",
+          "info": "Add app snippets or other Liquid code to create advanced customizations."
         }
       ]
     }

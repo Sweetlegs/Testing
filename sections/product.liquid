@@ -1,3 +1,5 @@
+<!-- product.liquid -->
+
 {%- liquid
   assign thumbs_align = section.settings.align
   assign ratio = product.media[0].preview_image.aspect_ratio
@@ -5,13 +7,14 @@
     assign thumbs_align = 'center'
   endif
 -%}
-
-<div class="product-section" 
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+<div class="product-section {{ section.settings.bg }}" 
+  data-product-handle="{{ product.handle }}"
   data-section-id="{{ section.id }}" 
   data-section-type="product"
   data-enable-video-looping="{{ section.settings.enable_video_looping }}" 
   data-thumbs-align="{{ thumbs_align }}" 
-  data-enable-history-state="true">
+  {% if product.has_only_default_variant %}data-enable-history-state="false"{% else %}data-enable-history-state="true"{% endif %}>
   
 {%- case section.settings.image_width -%}
   {%- when 'full' -%}
@@ -29,6 +32,26 @@
 {%- endcase -%}
 
 <div class="product-page">
+        {%- capture flickity_options -%}
+      {
+      "prevNextButtons": true,
+      "pageDots": {% if image_count > 999 %}true{% else %}false{% endif %},
+      "adaptiveHeight": true,
+      "wrapAround": false,
+      "watchCSS": true,
+      "draggable": true,
+      "dragThreshold": 8,
+      "ImagesLoaded": true,
+      "initialIndex": {{ initial_image_index }}
+      }
+      {%- endcapture -%}
+
+      <div class="Product__Slideshow {% if section.settings.enable_image_zoom %}Product__Slideshow--zoomable{% endif %} Carousel" data-flickity-config='{{ flickity_options }}'>
+        {{ slideshow_images }}
+      </div>
+      <div id="mobile-slideshow-thumbnails" class="hide">
+        {{ slideshow_thumbnails }}
+      </div>
   <div class="wrapper product__align-{{ section.settings.align }}">
 
     {% if section.settings.product_breadcrumbs %}
@@ -69,7 +92,7 @@
             class="btn--outline btn--ar uppercase"
             data-shopify-xr
             data-shopify-model3d-id="{{ first_3d_model.id }}"
-            data-shopify-title="{{ product.title }}"
+            data-shopify-title="{{ product.title | strip_html | escape }}"
             data-shopify-xr-hidden>
             {% render 'icon-media-model' %}
             <span>{{ 'products.product.view_in_space' | t }}</span>
@@ -78,7 +101,7 @@
 
         <noscript>
           {% for image in product.media %}
-            <img src="{{ image.preview_image | img_url: '900x' }}" alt="{{ image.alt | default: product.title  }}">
+            <img src="{{ image.preview_image | img_url: '900x' }}" alt="{{ image.alt | default: product.title | strip_html | escape }}">
           {% endfor %}
         </noscript>
         {% if product.media.size > 1 %}
@@ -87,7 +110,7 @@
               <div class="media__thumb" 
                 data-slideshow-thumbnail 
                 data-media-select="{{ media.id }}">
-                <img alt="{{ media.alt | escape }}" src="{{ media.preview_image.src | img_url: '200x200', crop: 'center' }}">
+                <img alt="{{ media.alt | strip_html | escape }}" src="{{ media.preview_image.src | img_url: '200x200', crop: 'center' }}">
                 {%- if media.media_type == 'model' -%}
                   {% render 'icon-media-model' %}
                 {%- elsif media.media_type contains 'video' -%}
@@ -105,31 +128,61 @@
             {%- when '@app' -%}
               {% render block %}    
             {% when 'title' %}
-              {% render 'product-title-price', product: product,  block: block, section: section %}
+              {% render 'product-title-price', product: product, block: block, section: section %}
             {% when 'form' %}
               <div class="product__details">
-                {% render 'product-form', product: product,  block: block, section: section %}
+                {% render 'product-form', product: product, block: block, section: section %}
+              </div>
+              <div id="delivery-timer">
+                    {%- include 'delivery-timer' -%} 
               </div>
             {% when 'description' %}
-              <div class="product-description rte rte--column">
+              <div class="product-description rte rte--column" {{ block.shopify_attributes }}>
+                {%- assign product_description_content = product.description | strip -%}
+                {%- assign truncate_string = 'products.general.read_more' | t -%}
+                {%- assign truncate_html = '<button type="button" class="p underline" data-truncated-button>' | append: truncate_string | append: '</button>' -%}
+
                 {%- if block.settings.style == 'none' -%}
-                  {{ product.description }}
+                  {% if block.settings.read_more %}
+                    <div class="product-description__holder product-description__holder--truncate" data-truncated-holder>
+                      <div class="product-description__inner">
+                        <div class="product-description__content" data-truncated-content="product-description__content--truncate">
+                          {{ product_description_content }}
+                        </div>
+                      </div>
+                      
+                      <div class="product-description__actions">
+                        {{ truncate_html }}
+                      </div>
+                    </div>
+                  {% else %}           
+                    {{ product.description }}
+                  {% endif %}
                 {% else %}
+                
+               
                   <div class="tabs-wrapper">
-                    {% render 'product-tabs', section: section, block: block, product: product %}
+                    {% render 'product-tabs', currentVariant:current_variant, section: section, block: block, product: product, product_description_content: product_description_content, truncate_html: truncate_html %}
                   </div>
                 {%- endif -%}
               </div>
             {% when 'sharing' %}
-              {% render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media.preview_image %}
+              <div {{ block.shopify_attributes }}>
+                {% render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media.preview_image %}
+              </div> 
             {% when 'pickup' %}
-              <div class="product__pickup" data-store-availability-container></div>
+              <div class="product__pickup" data-store-availability-container {{ block.shopify_attributes }}></div>
             {% when 'text' %} 
               {% if block.settings.title != '' %}
-                <p class="product__subheading">
+                <div class="product__subheading" {{ block.shopify_attributes }}>
                   {{ block.settings.title }}
-                </p>
+                </div>
               {% endif %}
+            {% when 'liquid' %} 
+              {{ block.settings.custom_liquid }}
+            {% when 'upsell' %}
+              {%- assign upsell_product = all_products[block.settings.product] -%}
+              {% render 'upsell-product' upsell_product: upsell_product, show_form: true %}
           {% endcase %}
         {% endfor %}     
 
@@ -139,44 +192,6 @@
 </div>
 
 {% render 'product-info', product: product %}
-
-<script data-product-add-popdown-template type="text/x-template">
-  <div class="product__popdown__outer">
-
-    <div class="product__popdown__textbar">
-        <span class="product__popdown__title product__popdown__title--bold">
-          {% raw %}{{ it.product_title | safe }} &nbsp;{% endraw %}
-        </span>
-        <span class="product__popdown__title">
-          {% raw %}
-          {{@if(it.variant_title)}}
-            {{ it.variant_title | safe }} &nbsp;
-          {{/if}}
-          {% endraw %}
-        </span>
-        <span class="product__popdown__title product__popdown__title--bold">
-          {{ 'products.cart_drawer.item_added' | t }}
-        </span>
-    </div>
-
-    <div class="wrapper">
-      <div class="product__popdown__inner">
-        <div class="product__popdown__close">
-          <div class="popdown__close__inner" data-close-popdown>
-            {% render 'icon-close-small' %}
-          </div>
-        </div>
-        {% capture product_image %}{% raw %}{{ it.product_image }}{% endraw %}{% endcapture %}
-        <div class="product__popdown__image">
-          <img alt="{% raw %}{{ it.product_title | safe }}{% endraw %}" src="{{ product_image }}">
-        </div>
-        <div class="product__popdown__cart__wrapper">
-          <a href="{{ routes.cart_url }}" class="product__popdown__cart text-link uppercase" data-drawer-toggle="drawer-cart">{{ "products.cart_drawer.view_cart" | t }}</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</script>
 
 {% if section.settings.zoom_enable %}
   {% render 'zoom-pswp' %}
@@ -192,7 +207,14 @@
 
 </div>
 
-{% assign current_variant = product.selected_or_first_available_variant %}
+
+
+{% comment %} Google wants to know when to check your price again {% endcomment %}
+{%- assign days_price_is_valid = 1 -%}
+{%- assign seconds_in_a_day = 86400 -%}
+{%- assign seconds_price_valid = days_price_is_valid | times: seconds_in_a_day -%}
+   
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org/",
@@ -206,11 +228,19 @@
     ],
   {%- endif -%}
   "description": {{ product.description | strip_html | json }},
-  {%- if current_variant.sku != blank -%}
-    "sku": {{ current_variant.sku | json }},
+  "sku": {{ current_variant.sku | json }},
+  "category": {{ product.type | json }},
+  {%- if product.metafields.reviews.rating.value != blank -%}
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "{{ product.metafields.reviews.rating.value }}",
+      "ratingCount": "{{ product.metafields.reviews.rating_count.value }}",
+      "bestRating": "{{ product.metafields.reviews.rating.value.scale_max }}",
+      "worstRating": "{{ product.metafields.reviews.rating.value.scale_min }}"
+    },
   {%- endif -%}
   "brand": {
-    "@type": "Thing",
+    "@type": "Organization",
     "name": {{ product.vendor | default: shop.name | json }}
   },
   "offers": [
@@ -223,6 +253,7 @@
         "availability" : "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
         "price" : {{ variant.price | divided_by: 100.00 | json }},
         "priceCurrency" : {{ cart.currency.iso_code | json }},
+        "priceValidUntil": "{{ 'now' | date: '%s' | plus: seconds_price_valid | date: '%Y-%m-%d'}}",
         "url" : {{ shop.url | append: variant.url | json }}
       }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
@@ -283,6 +314,38 @@
       "id": "zoom_enable",
       "label": "Enable image zoom",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    },
+    {
+       "type":"richtext",
+       "id":"final_sale_price",
+       "label":"Final sale message (Sale)"
+    },
+    {
+       "type":"richtext",
+       "id":"final_sale_tag",
+       "label":"Final sale message (Product Tag)"
+    },
+    {
+       "type":"header",
+       "content":"Judgeme Reviews"
+    },
+    {
+       "type":"checkbox",
+       "id":"reviews_enabled",
+       "label":"Enable",
+       "default":false
     }
   ],
   "blocks": [
@@ -353,6 +416,13 @@
       "limit": 1,
       "settings": [
         {
+          "type": "checkbox",
+          "id": "read_more",
+          "label": "Enable read more",
+          "default": true,
+          "info": "Show the first few lines of the product description with an option to read more"
+        },
+        {
           "type": "select",
           "id": "style",
           "label": "Tab style",
@@ -421,6 +491,30 @@
       ]
     },
     {
+      "type": "upsell",
+      "name": "Upsell",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "paragraph",
+          "content": "Upsell is a one-click add to cart with no variant selection.  Upsell products should have one variant. [Learn more](https://groupthought.com/link/pipeline/docs/upsell/variant)"
+        },
+        {
+          "type": "header",
+          "content": "Upsell in cart"
+        },
+        {
+          "type": "paragraph",
+          "content": "Use a dynamic source with the metafield name 'theme.upsell' to allow product upsells to follow users into the cart. Use any other name to limit this feature to the product page. [Learn more](https://groupthought.com/link/pipeline/docs/upsell/cart)"
+        }
+      ]
+    },
+    {
       "type": "sharing",
       "name": "Sharing",
       "limit": 1,
@@ -452,6 +546,23 @@
           "id": "product_show_vendor",
           "label": "Show vendor",
           "default": false
+        },
+        {
+          "type": "header",
+          "content": "Star rating",
+          "info": "Requires a product review app like [Shopify Product Reviews](https://apps.shopify.com/product-reviews) to create [standard metafields](https://shopify.dev/apps/metafields/definitions/standard-definitions) for star ratings."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Enable star rating",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating_count",
+          "label": "Show rating count",
+          "default": false
         }
       ]
     },
@@ -463,6 +574,18 @@
           "type": "richtext",
           "id": "title",
           "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "liquid",
+      "name": "Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid",
+          "info": "Add app snippets or other Liquid code to create advanced customizations."
         }
       ]
     }

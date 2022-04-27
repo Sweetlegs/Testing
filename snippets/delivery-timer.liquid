@@ -1,0 +1,78 @@
+{% if settings.delivery_timer_enabled %}
+  {% unless product.tags contains settings.delivery_cutoff_skip_tag %}
+    {% assign cutoff_hour = settings.delivery_cutoff_hour | plus: 0 %}
+	{% assign num_days = 0 %}
+
+    {% assign current_hour = "now" | date: "%H" | plus: 0 %}
+    {% assign current_day = "now" | date: "%A" | downcase %}
+
+    {% assign mins = "now" | date: "%M" | plus: 0 %}
+    {% assign mins = 60 | minus: mins | minus: 1 %}
+    {% assign hours = cutoff_hour | minus: current_hour | minus: 1 %}
+
+    {% if cutoff_hour > current_hour %}
+	  {% if current_day == 'saturday' %}
+		{% assign hours = hours | plus: 48 %}
+	  {% endif %}
+	  {% if current_day == 'sunday' %}
+		{% assign hours = hours | plus: 24 %}
+	  {% endif %}
+    {% else %}
+      {% assign num_days = num_days | plus: 1 %}
+      {% assign hours = hours | plus: 24 %}
+	  {% if current_day == 'friday' %}
+		{% assign hours = hours | plus: 48 %}
+	  {% endif %}
+	  {% if current_day == 'saturday' %}
+		{% assign hours = hours | plus: 24 %}
+	  {% endif %}
+	
+    {% endif %}
+
+    {% assign mins = hours | times: 60 | plus: mins %}
+
+    {% assign num_days_us = settings.delivery_num_days | plus: 0 %}
+    {% assign num_days_non_us = settings.delivery_num_days_non_us | plus: 0 %}
+
+	
+    {% assign seconds = num_days_us | plus: num_days | times: 24 | times: 60 | times: 60 %}
+	{% assign delivery_day = 'now' | date: "%s" | plus: seconds | date: "%A" | downcase %}
+	{% if delivery_day == 'saturday' or delivery_day == 'sunday' or delivery_day == 'monday' or delivery_day == 'tuesday' %}
+      {% assign seconds = num_days_us | plus: num_days | plus: 2 | times: 24 | times: 60 | times: 60 %}
+	{% endif %}
+	
+    {% assign target_seconds = mins | times: 60 %}
+    {% assign target = 'now' | date: "%s" | plus: target_seconds %}
+    {% assign countdown = '<span class="countdown" data-target="' | append: target | append: '">' | append: mins | append: ' minutes</span>' %}
+    {% assign deliverydate = 'now' | date: "%s" | plus: seconds | date: "%A, %B %d" %}
+
+	{% if deliverydate contains 'Saturday' %}
+ 	  {% assign deliverydate = 'now' | date: "%s" | plus: seconds | plus: 86400 | plus: 86400 | date: "%A, %B %d" %}
+	{% elsif deliverydate contains 'Sunday' %}
+	  {% assign deliverydate = 'now' | date: "%s" | plus: seconds | plus: 86400 | date: "%A, %B %d" %}
+	{% endif %}
+
+    <div class="delivery-timer us">
+      {{settings.delivery_cutoff_message_us | replace: '[countdown]', countdown | replace: '[deliverydate]', deliverydate | replace: '[numdays]', num_days_us  }}
+    </div>  
+    {% assign seconds = num_days_non_us | plus: num_days | times: 24 | times: 60 | times: 60 %}
+	{% assign delivery_day = 'now' | date: "%s" | plus: seconds | date: "%A" | downcase %}
+	{% unless delivery_day == 'friday' %}
+      {% assign seconds = num_days_non_us | plus: num_days | plus: 2 | times: 24 | times: 60 | times: 60 %}
+	{% endunless %}
+
+    {% assign target_seconds = mins | times: 60 %}
+    {% assign target = 'now' | date: "%s" | plus: target_seconds %}
+    {% assign countdown = '<span class="countdown" data-target="' | append: target | append: '">' | append: mins | append: ' minutes</span>' %}
+    {% assign deliverydate = 'now' | date: "%s" | plus: seconds | date: "%A, %B %d" %}
+	{% if deliverydate contains 'Saturday' %}
+ 	  {% assign deliverydate = 'now' | date: "%s" | plus: seconds | plus: 86400 | plus: 86400 | date: "%A, %B %d" %}
+	{% elsif deliverydate contains 'Sunday' %}
+	  {% assign deliverydate = 'now' | date: "%s" | plus: seconds | plus: 86400 | date: "%A, %B %d" %}
+	{% endif %}
+	
+    <div class="delivery-timer non-us">
+      {{settings.delivery_cutoff_message_non_us | replace: '[countdown]', countdown | replace: '[deliverydate]', deliverydate | replace: '[numdays]', num_days_non_us }}
+    </div>  
+  {% endunless %}
+{% endif %}

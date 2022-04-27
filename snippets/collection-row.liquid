@@ -4,7 +4,7 @@
     grid {int} The js grid strings
 
   Example:
-      {% render 'collection-row', collection: collection, product_limit: product_limit, grid: section.settings.grid  %}
+      {% render 'collection-row', collection: collection, product_limit: product_limit, grid: section.settings.grid %}
 {% endcomment %}
 {%- assign product_limit = product_limit | default: 4 -%}
 {%- assign grid = grid | default: 4 -%}

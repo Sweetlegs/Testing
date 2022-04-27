@@ -1,6 +1,13 @@
+<!-- /sections/section-slideshow.liquid -->
+
+{%- assign scroll_class = '' -%}
+{% if section.settings.height == 'use_screen_full' %}
+  {%- assign scroll_class = 'has-scroll-arrow' -%}
+{%- endif -%}
+
 <div class="homepage-slideshow" data-section-id="{{ section.id }}" data-section-type="slideshow">
   {% if section.blocks.size > 0 %}
-    <div class="slideshow__wrapper flickity-badge-dots" 
+    <div class="slideshow__wrapper flickity-badge-dots {{ scroll_class }}" 
       data-slideshow-wrapper
       data-slideshow-autoplay="{{ section.settings.autoplay }}"
       data-slideshow-slides="{{ section.blocks.size }}"
@@ -11,7 +18,6 @@
           id="aos-{{block.id}}"
           data-slideshow-index="{{ forloop.index0 }}"
           {{ block.shopify_attributes }}>
-          {%- assign animation_anchor = "#aos-" | append: block.id -%}
           <div class="hero__content__wrapper {{ block.settings.text_align }}">
             <div class="hero__content js-overflow-content">
               {% unless block.settings.kicker == '' %}
@@ -44,16 +50,28 @@
                 </a>
               {% endunless %}
             </div>
-            <div slide-custom-prev class="custom-prev-next-button previous"></div>
-            <div slide-custom-next class="custom-prev-next-button next"></div>
+            <div data-slide-custom-prev class="custom-prev-next-button previous"></div>
+            <div data-slide-custom-next class="custom-prev-next-button next"></div>
           </div>
 
           <div class="image-overlay" style="--bg:{{ block.settings.overlay_color }}; opacity:{{ block.settings.overlay_opacity | times: 0.01 }};"></div>
 
-          {% render 'hero', img_object: block.settings.image, frame_height_class: section.settings.height, bg_position: block.settings.bg_position %}
+          {%- assign desktop_image_modifier = '' -%}
+          {%- assign mobile_image = '' -%}
+          {%- if block.settings.mobile_image != blank -%}
+            {%- assign desktop_image_modifier = 'desktop' -%}
+            
+            {%- capture mobile_image -%}
+              {% render 'hero', img_object: block.settings.mobile_image, frame_height_class: section.settings.height, bg_position: block.settings.bg_position, modifier: 'mobile' %}
+            {%- endcapture -%}
+          {%- endif -%}
+
+          {% render 'hero', img_object: block.settings.image, frame_height_class: section.settings.height, bg_position: block.settings.bg_position, modifier: desktop_image_modifier %}
+
+          {{ mobile_image }}
 
           {% if block.settings.link_text == '' and block.settings.link %}
-            <a class="link-over-image" href="{{ block.settings.link }}" aria-label="{{ block.settings.title }}"></a>
+            <a class="link-over-image" href="{{ block.settings.link }}" aria-label="{{ block.settings.title | strip_html | escape }}"></a>
           {% endif %}
 
           {% if section.settings.height == 'use_screen_full' %}
@@ -126,6 +144,11 @@
           "id": "image",
           "label": "Image",
           "info": "Match size to other slides"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image"
         },
         {
           "type": "select",
