@@ -2555,8 +2555,8 @@ a.plyr__control::after, a.plyr__control::before {
 }
 
 /*
-  Background is added as a separate element.
-  As animating opacity is much faster than animating rgba() background-color.
+	Background is added as a separate element.
+	As animating opacity is much faster than animating rgba() background-color.
 */
 .pswp__bg {
   position: absolute;
@@ -16046,7 +16046,7 @@ Collection grid section
 /* Our galleries handle their own padding */
 .frame .wrapper, .frame .wrapper .grandparent .header__dropdown__wrapper, .wrapper .grandparent .frame .header__dropdown__wrapper {
   max-width: 1180px;
-  padding: 6px 32px 18px 32px;
+  padding: 0;
 }
 
 /* === snippets/image-fill.liquid === */
@@ -21824,20 +21824,3 @@ body:not(.focus-enabled) .plyr.plyr--full-ui.plyr--video {
 }
 
 /*! ============ Add any custom styles below this line ================== */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

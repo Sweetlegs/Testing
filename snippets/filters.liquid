@@ -1,4 +1,3 @@
-<!-- filters.liquid -->
 
 <div class="sidebar__filter__group" {% if block %}{{ block.shopify_attributes }}{% endif %}>
   <button class="sidebar__heading accordion-is-open" 
@@ -36,45 +35,21 @@
   {%- case filter.type -%}
     {%- when 'list' -%}
       <ul class="sidebar__navigation__list" data-accordion-body id="accordion-{{ filter.label | handle }}-{{ forloop.index }}">
-        {%- if is_swatch_option -%}
-          {%- assign mappings = settings.swatch-mapping | split: ';' -%}
+        {%- for filter_value in filter.values -%}
+          {%- if is_swatch_option -%}
+            <li class="swatch__button {% if forloop.index > 10 %} is-hidden{% endif %}" data-tooltip="{{ filter_value.value }}">
+              <input type="checkbox"
+                  name="{{ filter_value.param_name }}"
+                  value="{{ filter_value.value }}" 
+                  id="filter-{{ filter.label }}-{{ forloop.index }}"
+                  {% if filter_value.active -%}checked{%- endif %}
+                  {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}>
 
-          {% for m in mappings %}
-            {%- assign key_val = m | split: ':' -%}
-            {%- assign key = key_val | first | downcase | lstrip | rstrip -%}
-            {%- assign key_label = key_val | first -%}
-            {%- assign colors = key_val | last | split: ',' -%}
-            {% assign filters_url = '/collections/all?filter.v.option.color=' | append: key | append: '&' %}
-
-            {% for filter_value in filter.values %}
-              {% assign fv_enc = filter_value.value | downcase | lstrip | rstrip | url_encode | replace: 'amp%3B', '' %}
-
-              {% assign in_mapping = false %}
-              {% for c in colors %}
-                {% assign c_enc = c | downcase | lstrip | rstrip | url_encode %}
-
-                {% if c_enc == fv_enc %}
-                  {% assign in_mapping = true %}
-                {% endif %}
-              {% endfor %}
-
-              {% if in_mapping %}
-                {% assign filters_url = filters_url | append: 'filter.v.option.color=' | append: fv_enc | append: '&' %}
-              {% endif %}
-            {% endfor %}
-
-            <a class="swatch__button" href="{{ filters_url }}" data-tooltip="{{ key_label }}">
-              <input type="checkbox">
-              <label for="filter-Color-{{ forloop.index }}" data-swatch="{{ key }}">
-                <span class="visually-hidden">{{ key }}</span>
-              </label>
-            </a>
-
-          {% endfor %}
-
-        {%- else -%}
-
-          {%- for filter_value in filter.values -%}
+                <label for="filter-{{ filter.label }}-{{ forloop.index }}" data-swatch="{{ filter_value.label | escape_once }}">
+                  <span class="visually-hidden">{{ filter_value.label }}</span>
+                </label>
+            </li>
+          {%- else -%}
             <li class="filter__button {% if forloop.index > 10 %} is-hidden{% endif %}">
               <input type="checkbox"
                 name="{{ filter_value.param_name }}"
@@ -84,12 +59,11 @@
                 {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}>
               <label for="filter-{{ filter.label }}-{{ forloop.index }}">{{ filter_value.label }}{% render 'icon-box' %}{% render 'icon-reset' %}</label>
             </li>  
-          {%- endfor -%}
-
-        {% endif %}
+          {%- endif -%}
+        {%- endfor -%}
       </ul>
 
-      {% if filter.values.size > 10 and is_swatch_option == false %}
+      {% if filter.values.size > 10 %}
         <button type="button" data-show-more>{{ 'collections.sidebar.show_more' | t }}</button>
       {% endif %}
     {%- when 'price_range' -%}

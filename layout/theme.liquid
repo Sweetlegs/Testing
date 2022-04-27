@@ -195,8 +195,6 @@
   <!-- Shopify app scripts =========================================================== -->
   {{ content_for_header }}
   {% render 'wishlisthero-styles.liquid' %}
-  {% include 'judgeme_core' %}
-  {% include 'gtranslate-styles' %}
 </head>
 
 <body id="{{ page_title | handle }}" class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} {{ settings.default_background }}{% if customer %} customer-logged-in{% endif %}">
@@ -231,55 +229,8 @@
 <script src="{{ 'custom.js?enable_js_minification=1' | asset_url }}" defer="defer"></script>
   <!-- Paste popup code or third party scripts below this comment line ============== -->
 
-  <script>
-    jdgmSettings.revTabSelector = '#judgeme_widget';
-    document.addEventListener('DOMContentLoaded', function(){ 
-      jdgm.$( document ).ready(function() {
-        jdgm.$('.jdgm-preview-badge').on('click', function() {
-          jdgm.$(jdgmSettings.revTabSelector).click()
-        });
-      });
 
-      jdgm.$(document).ready( function(){ 
-        setTimeout( function() {
-          if(window.judgeme && (jdgm.$.urlParam('judgeme_token') || jdgm.$.urlParam('judgeme_follow_up_token')) ) {
-            jdgm.$(jdgmSettings.revTabSelector).click();
-          }
-        }, 100000);
-      });
-    });
-  </script>
-  
-  <script id="globaleScript">
-      (function () {
-        var reg = /showpro=(true|false)/i;
-        var showpro = ((reg.exec(document.location.search) || reg.exec(document.cookie) || [])[1] || "").toLowerCase();
-        var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.async = true;
-        s.src = '//gex.global-e.com/gempro/get/10000230' + (showpro ? '?showpro=' + showpro : '');
-        document.getElementsByTagName('head')[0].appendChild(s);
-        if (showpro) {
-          var cssElement = document.createElement('link');
-          cssElement.rel = 'stylesheet';
-          cssElement.id = 'GEPIStyles';
-          cssElement.href = '//gex.global-e.com/gempro/css/10000230?showpro=' + showpro;
-          document.cookie = 'showpro=' + showpro;
-          document.getElementsByTagName('head')[0].appendChild(cssElement);
-        }
-      })();
-    </script>
-  
   <!-- And above this comment line ================================================== -->
-
-<!-- This line added automatically by JSON-LD for SEO. -->{% include 'jsonld-for-seo' %}
-<script src="https://unpkg.com/@loophq/onstore-sdk@latest/dist/loop-onstore-sdk.js"></script>
-<script> 
-	LoopOnstore.init({ 
-		key: "0fb8d91d897194614aa759ba555a1e9f554ff8dc", 
-		attach: ".checkout__button" 
-	});
-</script>
 
 </body>
 </html>

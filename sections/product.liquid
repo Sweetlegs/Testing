@@ -1,5 +1,3 @@
-<!-- product.liquid -->
-
 {%- liquid
   assign thumbs_align = section.settings.align
   assign ratio = product.media[0].preview_image.aspect_ratio
@@ -7,7 +5,7 @@
     assign thumbs_align = 'center'
   endif
 -%}
-{%- assign current_variant = product.selected_or_first_available_variant -%}
+
 <div class="product-section {{ section.settings.bg }}" 
   data-product-handle="{{ product.handle }}"
   data-section-id="{{ section.id }}" 
@@ -133,9 +131,6 @@
               <div class="product__details">
                 {% render 'product-form', product: product, block: block, section: section %}
               </div>
-              <div id="delivery-timer">
-                    {%- include 'delivery-timer' -%} 
-              </div>
             {% when 'description' %}
               <div class="product-description rte rte--column" {{ block.shopify_attributes }}>
                 {%- assign product_description_content = product.description | strip -%}
@@ -159,10 +154,8 @@
                     {{ product.description }}
                   {% endif %}
                 {% else %}
-                
-               
                   <div class="tabs-wrapper">
-                    {% render 'product-tabs', currentVariant:current_variant, section: section, block: block, product: product, product_description_content: product_description_content, truncate_html: truncate_html %}
+                    {% render 'product-tabs', section: section, block: block, product: product, product_description_content: product_description_content, truncate_html: truncate_html %}
                   </div>
                 {%- endif -%}
               </div>
@@ -207,13 +200,12 @@
 
 </div>
 
-
+{%- assign current_variant = product.selected_or_first_available_variant -%}
 
 {% comment %} Google wants to know when to check your price again {% endcomment %}
 {%- assign days_price_is_valid = 1 -%}
 {%- assign seconds_in_a_day = 86400 -%}
 {%- assign seconds_price_valid = days_price_is_valid | times: seconds_in_a_day -%}
-   
 
 <script type="application/ld+json">
 {
@@ -326,26 +318,6 @@
         { "value": "palette--dark bg--invert", "label": "Dark"},
         { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
       ]
-    },
-    {
-       "type":"richtext",
-       "id":"final_sale_price",
-       "label":"Final sale message (Sale)"
-    },
-    {
-       "type":"richtext",
-       "id":"final_sale_tag",
-       "label":"Final sale message (Product Tag)"
-    },
-    {
-       "type":"header",
-       "content":"Judgeme Reviews"
-    },
-    {
-       "type":"checkbox",
-       "id":"reviews_enabled",
-       "label":"Enable",
-       "default":false
     }
   ],
   "blocks": [

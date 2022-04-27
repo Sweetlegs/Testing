@@ -1,21 +1,3 @@
-<!-- product-form.liquid -->
-{% capture meta_data %}
-  {% for variant in product.variants %}
-  	"{{ variant.id | json }}": {{ variant.metafields.my_fields.defects | json }}{% unless forloop.last %},{% endunless %}
-	{% endfor %}
-{% endcapture %}
-<script data-metadata-defects-json id="metafieldDefect" type="application/json">
-{ {{ meta_data }} }
-</script>
-
-{% capture meta_color_data %}
-  {% for variant in product.variants %}
-  	"{{ variant.option1 }}": "{{ variant.metafields.my_fields.color_swatch }}"{% unless forloop.last %},{% endunless %}
-	{% endfor %}
-{% endcapture %}
-<script data-metadata-color-swatch-json id="metafieldColorSwatch" type="application/json">
-{ {{ meta_color_data }} }
-</script>
 {% assign current_variant = product.selected_or_first_available_variant %}
 
 {%- assign buybutton_setting = block.settings.enable_payment_button -%}
@@ -94,111 +76,84 @@
               {%- endif -%}
             {%- endfor -%}
           {%- endif -%}
+          <div class="selector-wrapper js" data-split-select-wrapper data-select-label="{{ option.name }}"  data-option-position="{{ option.position }}">
+            {%- if block.settings.variant_form == "button" or is_swatch_option -%}
+              {% assign current_value = current_variant.options[forloop.index0] %}
+              <fieldset class="radio__fieldset">
+                <legend class="radio__legend">
+                  <span class="radio__legend__label">{{ option.name | escape_once }}</span>
+                  <span data-option-value>{{ current_value }}</span>
+                  {%- if size_chart_index == forloop.index0 -%}
+                    {{ size_chart }}
+                  {%- endif -%}
+                </legend>
 
-          {% unless option.name == 'Size' and option.values.size < 2 %}
-            <div class="selector-wrapper js" data-split-select-wrapper data-select-label="{{ option.name }}"  data-option-position="{{ option.position }}">
-              {%- if block.settings.variant_form == "button" or is_swatch_option -%}
-                {% assign current_value = current_variant.options[forloop.index0] %}
-                <fieldset class="radio__fieldset">
-                  <legend class="radio__legend">
-                    <span class="radio__legend__label">{{ option.name | escape_once }}</span>
-                    <span data-option-value>{{ current_value }}</span>
-                    {%- if size_chart_index == forloop.index0 -%}
-                      {{ size_chart }}
-                    {%- endif -%}
-                  </legend>
 
-                    {% for value in option.values %}
-                      {% capture input_id %}{{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once }}{% endcapture %}
+                {% for value in option.values %}
+                  {% capture input_id %}{{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once }}{% endcapture %}
 
-                      {%- if is_swatch_option -%}
+                  {%- if is_swatch_option -%}
+                    <span class="swatch__button" data-tooltip="{{ value | escape_once }}">
+                      <input type="radio"
+                          name="options[{{ option.name | escape_once }}]"
+                          value="{{ value | escape_once }}" 
+                          id="{{ input_id }}"
+                          {%- if value == current_value -%}checked{%- endif -%}>
+                      <label for="{{ input_id }}" data-swatch="{{ value | escape_once }}">
+                        <span class="visually-hidden">{{ value | escape_once }}</span>
+                      </label>
+                    </span>
 
-                        {% assign mapped_swatch_color = value | escape_once %}
-                        {%- assign mappings = settings.swatch-mapping | split: ';' -%}
+                  {%- else -%}
+                    {% comment %} radio button {% endcomment %}
+                    <span class="radio__button">
+                      <input
+                        type="radio"
+                        name="options[{{ option.name | escape_once }}]"
+                        value="{{ value | escape_once }}" id="{{ input_id }}"
+                        {%- if value == current_value -%}checked{%- endif -%}>
+                      <label for="{{ input_id }}">
+                        <span>{{ value | escape_once }}</span>
+                      </label>
+                    </span>
+                  {%- endif -%}
 
-                        {% for m in mappings %}
-                          {%- assign key_val = m | split: ':' -%}
-                          {%- assign key = key_val | first | downcase | lstrip | rstrip -%}
-                          {%- assign colors = key_val | last | split: ',' -%}
-                          {% assign in_mapping = false %}
-
-                          {% assign pdp_val_enc = value | downcase | lstrip | rstrip | url_encode | replace: 'amp%3B', '' %}
-                          {% for c in colors %}
-                            {% assign c_enc = c | downcase | lstrip | rstrip | url_encode %}
-                            {% if c_enc == pdp_val_enc %}
-                              {% assign in_mapping = true %}
-                            {% endif %}
-                          {% endfor %}
-
-                          {% if in_mapping %}
-                           {% assign mapped_swatch_color = key %}
-                           {% break %}
-                          {% endif %}
-                        {% endfor %}
-                        <span class="swatch__button" data-tooltip="{{ value | escape_once }}">
-                          <input type="radio"
-                              name="options[{{ option.name | escape_once }}]"
-                              value="{{ value | escape_once }}" 
-                              id="{{ input_id }}"
-                              variantId="{{option | json}}"
-                              {%- if value == current_value -%}checked{%- endif -%}>
-                          <label for="{{ input_id }}" data-value="{{ value | escape_once }}"data-swatch="{{ mapped_swatch_color }}" data-color-swatch="{{meta_color_data}}">
-                            <span class="visually-hidden">{{ value | escape_once }}</span>
-                          </label>
-                        </span>
-
-                      {%- else -%}
-                        {% comment %} radio button {% endcomment %}
-                        <span class="radio__button">
-                          <input
-                            type="radio"
-                            name="options[{{ option.name | escape_once }}]"
-                            value="{{ value | escape_once }}" id="{{ input_id }}"
-                            {%- if value == current_value -%}checked{%- endif -%}>
-                          <label for="{{ input_id }}">
-                            <span>{{ value | escape_once }}</span>
-                          </label>
-                        </span>
-                      {%- endif -%}
-
-                    {% endfor %}
-                  </fieldset>
-                {%- else -%}
-                <fieldset class="select__fieldset">
-                  {% capture input_id %}{{product.id}}-option-{{ option.position }}{% endcapture %}
-                  <label class="select__label" for="{{ input_id }}">
-                    {{ option.name }}
-                    {%- if size_chart_index == forloop.index0 -%}
-                      {{ size_chart }}
-                    {%- endif -%}
-                  </label>
-                  <select class="product__form__select"
-                    id="{{ input_id }}"
-                    name="options[{{ option.name | escape_once }}]">
-                    {% for value in option.values %}
-                      <option
-                        value="{{ value | escape_once }}"
-                        {% if option.selected_value == value %} selected="selected"{% endif %}>
-                        {{ value | escape_once }}
-                      </option>
-                    {% endfor %}
-                  </select>
-                </fieldset>
-              {%- endif -%}
-            </div>
-          {% endunless %}
-
+                {% endfor %}
+              </fieldset>
+            {%- else -%}
+              <fieldset class="select__fieldset">
+                {% capture input_id %}{{product.id}}-option-{{ option.position }}{% endcapture %}
+                <label class="select__label" for="{{ input_id }}">
+                  {{ option.name }}
+                  {%- if size_chart_index == forloop.index0 -%}
+                    {{ size_chart }}
+                  {%- endif -%}
+                </label>
+                <select class="product__form__select"
+                  id="{{ input_id }}"
+                  name="options[{{ option.name | escape_once }}]">
+                  {% for value in option.values %}
+                    <option
+                      value="{{ value | escape_once }}"
+                      {% if option.selected_value == value %} selected="selected"{% endif %}>
+                      {{ value | escape_once }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </fieldset>
+            {%- endif -%}
+          </div>
         {% endfor %}
       </div>
     {% endunless %}
 
     <noscript>
-      <select id="variantSelected" name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' | strip_html | escape }}">
+      <select name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' | strip_html | escape }}">
         {% for variant in product.variants %}
           <option
             {% if variant == current_variant %}selected="selected"{% endif %}
             {% unless variant.available %}disabled="disabled"{% endunless %}
-            value="{{ variant.id }}" metafield="{{current_variant.metafields.my_fields.defects}}">
+            value="{{ variant.id }}">
               {{ variant.title }}
           </option>
         {% endfor %}
@@ -322,20 +277,5 @@
 
       </div>
     </div>
-
-
-    <div id="FinalSalePriceMessageId" class="FinalSalePriceMessage final-sale-message" style="display: {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}block{%- else -%}none{%- endif -%};">
-      {%- unless product.tags contains 'final sale'-%}
-        {{ section.settings.final_sale_price }}
-      {%- endunless -%}
-    </div>
-   
-
-    {%- if product.tags contains 'final sale'-%}
-    <divclass="FinalSalePriceMessage final-sale-message">
-      {{ section.settings.final_sale_tag }}
-    </div>
-    {%- endif -%}
-    <p id="variantDefectMessage">{{current_variant.metafields.my_fields.defects}}</p>
   {% endform %}
 </div>

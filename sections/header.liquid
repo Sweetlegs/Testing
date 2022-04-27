@@ -148,8 +148,6 @@
   {%- endcapture -%}
   
   <div class="header__desktop__buttons{% if section.settings.use_icons %} header__desktop__buttons--icons{% endif %}" {{ text_wrapper }}>
-    
-    <div class="header__desktop__button gt_desktop">{% include 'gtranslate' %}</div>
 
     {%- if shop.customer_accounts_enabled and section.settings.enable_account -%}
       <div class="header__desktop__button  {% if request.path contains routes.account_url %} main-menu--active{% endif %}" {{ text_hover }}>

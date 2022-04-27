@@ -119,6 +119,7 @@
       {%- endif -%}
     {%- endfor -%}
     
+
     {%- if product_description_content != blank -%}
       {% assign block_id = block.id | append: '-main' %}
       <div class="accordion__wrapper">
@@ -151,37 +152,6 @@
         </div>
       </div>
     {%- endif -%}
-
-    {%- if section.settings.reviews_enabled -%}
-    {% assign block_id = block.id | append: '-reviews' %}
-    <div class="accordion__wrapper">
-      <button class="accordion__title accordion-is-open"
-        data-accordion-trigger="{{ block_id }}"
-        aria-controls="{{ block_id }}"
-        aria-haspopup="true" 
-        aria-expanded="false">
-        Reviews
-      </button>
-
-      <div class="accordion__body" id="{{ block_id }}" data-accordion-body>
-        <div class="accordion-content__holder {% if block.settings.read_more %}accordion-content__holder--truncate{% endif %}" {% if block.settings.read_more %}data-truncated-holder{% endif %}>
-          <div class="accordion-content__inner">
-            <div class="accordion-content__entry" {% if block.settings.read_more %}data-truncated-content="accordion-content__entry--truncate"{% endif %}>
-              {% if block.settings.read_more %}
-                {% render 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: false, product: product %}
-              {% endif %}
-            </div>
-          </div>
-
-          {% if block.settings.read_more %}  
-            <div class="accordion-content__actions">
-              {{ truncate_html }}
-            </div>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    {% endif %}
 
     {{ accordion_blocks_html }}
   </div>
