@@ -1,0 +1,51 @@
+<!-- /sections/page-faq.liquid-->
+
+<section class="section-collection-footer {{ section.settings.text_color }} {{ section.settings.height }} {{ section.settings.bg }} wrapper" data-section-id="{{ section.id }}" data-section-type="page-faq">
+  <div class="{{ section.settings.width }}">
+    <div class="text__standard {{ section.settings.align_text }}">
+          {% assign font_size_class = section.settings.text_size | plus: 1 | prepend: 'font--' %}
+          <div class="standard__rte {{ font_size_class }}" 
+            id="collection-footer-{{ block.id }}">
+              <p>{{collection.description}}</p>
+          </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection footer",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+   	},
+    {
+      "type": "select",
+      "id": "align_text",
+      "label": "Title alignment",
+      "default": "text-left",
+      "options": [
+        { "value": "text-left","label": "Left" },
+        { "value": "text-center","label": "Centered" }
+      ]
+    },
+    {
+      "type":  "range",
+      "id":    "text_size",
+      "label": "Text size",
+      "min":    1,
+      "max":    5,
+      "step":   1,
+      "default":1
+    }], 
+  "presets": [
+    {
+      "name": "Collection Footer",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}
