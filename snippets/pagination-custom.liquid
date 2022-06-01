@@ -7,7 +7,7 @@
 <ul class="pagination-custom">
   {% if paginate.previous %}
     <li class="pagination-custom__arr">
-      <a href="{{ paginate.previous.url }}" title="{{ paginate.previous.title }}">{% render 'icon-arrow-small-left' %}</a>
+      <a href="{{ paginate.previous.url }}" title="{{ paginate.previous.title }}" {% if enable_ajax %}data-filter-update-url{% endif %}>{% render 'icon-arrow-small-left' %}</a>
     </li>
   {% else %}
     <li class="disabled pagination-custom__arr">
@@ -18,7 +18,7 @@
   {% for part in paginate.parts %}
     {% if part.is_link %}
       <li class="pagination-custom__num">
-        <a href="{{ part.url }}" title="">{{ part.title }}</a>
+        <a href="{{ part.url }}" title="" {% if enable_ajax %}data-filter-update-url{% endif %}>{{ part.title }}</a>
       </li>
     {% else %}
       {% if part.title == paginate.current_page %}
@@ -39,7 +39,7 @@
    <li class="pagination-custom__spacer"><span>&#8203;</span></li>
   {% if paginate.next %}
     <li class="pagination-custom__arr">
-      <a href="{{ paginate.next.url }}" title="{{ paginate.next.title }}">{%- render 'icon-arrow-small-right' -%}</a>
+      <a href="{{ paginate.next.url }}" title="{{ paginate.next.title }}" {% if enable_ajax %}data-filter-update-url{% endif %}>{%- render 'icon-arrow-small-right' -%}</a>
     </li>
   {% else %}
     <li class="disabled pagination-custom__arr">

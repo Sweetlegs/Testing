@@ -34,6 +34,13 @@
       </button>
     </div>
     <div class="drawer__body" data-drawer-scrolls>
+      
+      {% if settings.cart_custom_message_enable and settings.cart_custom_message_text != blank %}  
+        <div class="cart__message cart__message--custom cart--hidden" data-cart-bar>
+          {{ settings.cart_custom_message_text }}
+        </div>
+      {% endif %}
+
       {% assign free_shipping_text = block.settings.message | default: settings.message %}
 {% assign is_enable = false %}
 {% assign show_wheel = true %}
@@ -167,13 +174,13 @@
       </div>
 
       <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
-        <button type="submit" name="checkout" class="btn btn--primary btn--large btn--full uppercase checkout__button">
+        <button type="submit" name="checkout" class="btn btn--primary btn--large btn--full uppercase checkout__button" role="button">
           {{ 'cart.general.checkout' | t }} • <span data-cart-final>{{ cart.total_price | money }}</span>
         </button>
       </form>
       {% if additional_checkout_buttons and settings.cart_show_additional_buttons %}
         <div class="drawer__checkout__additional">
-          <div class="additional-checkout-buttons">
+          <div class="additional-checkout-buttons additional-checkout-buttons--vertical">
             {{ content_for_additional_checkout_buttons }}
           </div>
         </div>

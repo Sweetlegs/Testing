@@ -4,7 +4,7 @@
 {% endcomment %}
 {%- liquid 
   assign style = style | default: 'btn'
-  assign color = color | default: 'btn--secondary'
+  assign color = color | default: 'btn--primary'
   assign translation = 'general.newsletter_form.submit' | t 
   assign text = text | default: translation
   assign class = 'newsletter--default-messages'
@@ -40,7 +40,7 @@
       <label for="mail-{{ unique }}">{{ 'general.newsletter_form.email' | t }}</label>
       <input class="input-group-field" 
         type="email" 
-        placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" 
+        placeholder="Email" 
         id="mail-{{ unique }}" 
         aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" 
         autocorrect="off" 
@@ -49,7 +49,7 @@
         data-newsletter-field />
       <span class="input-group-button">
         <button 
-          type="submit" {% unless show_icon %}class="{{ style }} {{ color }} uppercase"{% endunless %} 
+          type="submit" {% unless show_icon %}class="{{ style }}  uppercase"{% endunless %} 
           aria-label="{{ text }}"
           name="subscribe" 
           id="subscribe-{{ unique }}">
@@ -57,7 +57,7 @@
             {%- render 'icon-arrow-right-long' -%}
             {%- render 'icon-check-slim' -%}
           {%- else -%}  
-            {{ text }}
+            {%- render 'icon-arrow-right-long' -%}
           {%- endif -%}
         </button>
       </span>

@@ -14,7 +14,7 @@
       {%- endif -%}
 
       {% if collection_sidebar or section.settings.collection_sorting or section.settings.enable_layout_toggle %}
-        <nav class="collection__nav">
+        <nav class="collection__nav" data-collection-tools>
           <div class="collection__nav__buttons">
             {% if collection_sidebar %}
               {% capture current_filters_count %}
@@ -23,13 +23,13 @@
                   {%- assign filter_count = filter_count | plus: filter.active_values.size -%}
                 {%- endfor -%}
                 {%- if filter_count > 0 -%}
-                  <div class="badge">{{filter_count}}</div>
+                  <div class="badge">{{ filter_count }}</div>
                 {%- endif -%}
               {% endcapture %}
               <button class="collection__filters__toggle {{ default_show_filters }}" data-filters-toggle="filters">
                 <span class="hide-filters">{{ 'collections.sidebar.hide_filters' | t }}</span>
                 <span class="show-filters">{{ 'collections.sidebar.filter' | t }}</span>
-                {{ current_filters_count }}
+                <span data-active-filters-count>{{ current_filters_count }}</span>
                 {% render 'icon-filter' %}
               </button>
             {% endif %}
@@ -50,9 +50,11 @@
         </nav>
       {% endif %}
 
+      {% render 'filters-active' collection: collection %}
+
       <div class="collection__content">
         {% if collection_sidebar %}
-        <aside class="collection__filters__wrapper {{ default_show_filters }}" data-filters="filters" data-default-hide="{{ section.settings.hide_sidebar }}">
+        <aside class="collection__filters__wrapper {{ default_show_filters }}" data-collection-sidebar data-filters="filters" data-default-hide="{{ section.settings.hide_sidebar }}">
           <div class="collection__filters__outer">
             <div class="drawer__top">
 
@@ -78,8 +80,8 @@
         {% endif %}
 
         {%- paginate collection.products by section.settings.product_limit -%}
-          <div class="collection__products">
-            <div class="js-grid" data-grid-large="{{ section.settings.grid_setting_large }}" data-grid-small="{{ section.settings.grid_setting_small }}">
+          <div class="collection__products" data-products-grid>
+            <div class="js-grid" data-grid-large="{{ section.settings.grid_setting_large }}" data-grid-small="{{ section.settings.grid_setting_mobile }}">
               <!-- /snippets/product-grid-item.liquid -->
 
               {% for product in collection.products %}
@@ -98,7 +100,7 @@
             </div>
             {% if paginate.pages > 1 %}
               <div class="text-center">
-                {% render 'pagination-custom', paginate: paginate %}
+                {% render 'pagination-custom', paginate: paginate, enable_ajax: true %}
               </div>
             {% endif %}
           </div>
@@ -114,25 +116,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "Products per row"
-    },
-    {
-      "type":    "range",
-      "id":      "grid_setting_large",
-      "min":     1,
-      "max":     4,
-      "step":    1,
-      "label":   "Desktop",
-      "default": 3
-    },
-    {
-      "type":    "range",
-      "id":      "grid_setting_small",
-      "min":     1,
-      "max":     3,
-      "step":    1,
-      "label":   "Mobile",
-      "default": 2
+      "content": "Layout"
     },
     {
       "type":    "range",
@@ -144,9 +128,34 @@
       "default": 36
     },
     {
+      "type":    "range",
+      "id":      "grid_setting_large",
+      "min":     1,
+      "max":     4,
+      "step":    1,
+      "label":   "Desktop: products per row",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "grid_setting_mobile",
+      "label": "Mobile: products per row",
+      "options": [
+        {
+          "value": "1",
+          "label": "One"
+        },
+        {
+          "value": "2",
+          "label": "Two"
+        }
+      ],
+      "default": "2"
+    },
+    {
       "type": "checkbox",
       "id": "enable_layout_toggle",
-      "label": "Show layout options",
+      "label": "Show product layout buttons",
       "default": true
     },
     {

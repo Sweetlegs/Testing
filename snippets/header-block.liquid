@@ -31,7 +31,7 @@ Required params:
             </div>
           </div>
         {%- if block.settings.link != blank -%}</a>{%- endif -%}
-        {%- render 'image-fill', img_object: block.settings.image, aspect_ratio: block.settings.aspect_ratio -%}
+        {%- render 'image-fill', img_object: block.settings.image, aspect_ratio: block.settings.aspect_ratio, bg_position: block.settings.bg_position -%}
       </div>
     </div>
 
@@ -54,5 +54,4 @@ Required params:
     {% else %}
       {% render 'onboarding-product-grid-item', limit: block.settings.limit, block: block %}
     {% endfor %}
-  {% else %}
 {% endcase %}

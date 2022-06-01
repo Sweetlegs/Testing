@@ -11,9 +11,12 @@
   {%- assign tab_contents_html = '' -%}
   {%- assign count = 0 -%}
 
-  {%- if product_description_content != blank -%}
+  {%- if product_description_content != blank and block.settings.enable_description -%}
     {%- capture tab_links_html -%}
-      <li class="tab-link tab-link-0" data-block-id="{{ section.id | append: '-0' }}" data-focus-element data-tab="0" tabindex="0" data-attributes-placeholder>{{ 'products.general.description' | t }}</li>
+      <button type="button" class="tab-link tab-link-0" data-block-id="{{ section.id | append: '-0' }}" data-focus-element data-tab="0" tabindex="0" data-attributes-placeholder>
+        {%- render 'icons', filename: block.settings.icon_description -%}
+        {{ 'products.general.description' | t }}
+      </button>
     {%- endcapture -%}
 
     {%- capture tab_contents_html -%}
@@ -52,7 +55,11 @@
       {%- capture tab_links_html -%}
         {{ tab_links_html }}
 
-        <li class="tab-link tab-link-{{ count }}" data-focus-element data-tab="{{ count }}" data-block-id="{{ block.id }}" tabindex="0" {{ block.shopify_attributes }}>{{ _title }}</li>
+        <button type="button" class="tab-link tab-link-{{ count }}" data-focus-element data-tab="{{ count }}" data-block-id="{{ block.id }}" tabindex="0" {{ block.shopify_attributes }}>
+          {%- assign icon_name = 'icon_name_' | append: i -%}
+          {%- render 'icons', filename: block.settings[icon_name] -%}
+          {{ _title }}
+        </button>
       {%- endcapture -%}
 
       {%- capture tab_contents_html -%}
@@ -70,9 +77,9 @@
   {%- if tab_contents_html -%}  
     <div class="product-tabs" data-tabs-holder>
       <div class="tabs__head product-tabs__head">
-        <ul class="tabs product-tabs-title" data-scrollbar data-scrollbar-slider>
+        <div class="tabs product-tabs-title" data-scrollbar data-scrollbar-slider>
           {{ tab_links_html }}
-        </ul>
+        </div>
 
         <button type="button" class="tabs__arrow tabs__arrow--prev product-tabs__arrow product-tabs__arrow--prev is-hidden is-not-relative" data-scrollbar-arrow-prev>
           <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
@@ -108,6 +115,9 @@
               aria-controls="{{ block_id }}"
               aria-haspopup="true" 
               aria-expanded="false">
+              {%- assign icon_name = 'icon_name_' | append: i -%}
+              {%- render 'icons', filename: block.settings[icon_name] -%}
+
               {{ _title }}
             </button>
 
@@ -118,9 +128,8 @@
         {%- endcapture -%}
       {%- endif -%}
     {%- endfor -%}
-    
 
-    {%- if product_description_content != blank -%}
+    {%- if product_description_content != blank and block.settings.enable_description -%}
       {% assign block_id = block.id | append: '-main' %}
       <div class="accordion__wrapper">
         <button class="accordion__title accordion-is-open"
@@ -128,6 +137,7 @@
           aria-controls="{{ block_id }}"
           aria-haspopup="true" 
           aria-expanded="false">
+          {%- render 'icons', filename: block.settings.icon_description -%}
           {{ 'products.general.description' | t }}
         </button>
 

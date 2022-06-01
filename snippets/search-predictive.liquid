@@ -4,6 +4,21 @@
   -  version {string} - Sets the popdown ID and wrapper class
 {% endcomment %}
 
+{%- liquid
+  assign terms = ''
+  if settings.search_products
+    assign terms = terms | append: 'product,'
+  endif
+  if settings.search_pages
+    assign terms = terms | append: 'page,'
+  endif
+  if settings.search_articles
+    assign terms = terms | append: 'article,'
+  endif
+   assign terms = terms | split: ','
+   assign terms = terms | join: ','
+-%}
+
 <div data-search-popdown-wrap>
   <div id="{{ version }}" class="{{ version }} search__predictive" data-popdown-outer>
     <div class="item--loadbar" data-loading-indicator style="display: none;"></div>
@@ -18,6 +33,7 @@
               <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
               {% render 'icon-search' %}
             </button>
+            <input type="hidden" name="type" value="{{ terms }}">
             <input type="search"
             data-predictive-search-input
             name="q" 

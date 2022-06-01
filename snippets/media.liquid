@@ -19,8 +19,8 @@
   {{ data_player }}>
   {% case media.media_type %}
     {% when 'image' %}
-      <div {% if media.aspect_ratio < 1 %}style="width:{{ media.aspect_ratio | times: 100 }}%; margin: 0 auto;"{% endif %}>
-        <div class="lazy-image mobile-zoom-wrapper" style="padding-top:{{ 1 | divided_by: media.aspect_ratio | times: 100 }}%; background-image:  url('{{ media | img_url: '1x1' }}');">
+      <div>
+        <div class="lazy-image mobile-zoom-wrapper" style="padding-top:{{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;">
           <img data-product-image class="srcset"
             data-image-id="{{ media.id }}"
             alt="{{ media.alt | strip_html | escape }}"
@@ -28,7 +28,8 @@
                     {%- if media.preview_image.width >= 1100 -%}{{ media.preview_image | img_url: '1100x' }} 1100w,{%- endif -%}
                     {%- if media.preview_image.width >= 1680 -%}{{ media.preview_image | img_url: '1680x' }} 1680w,{%- endif -%}
                     {%- if media.preview_image.width >= 2048 -%}{{ media.preview_image | img_url: '2048x' }} 2048w,{%- endif -%}
-                    {%- if media.preview_image.width >= 4096 -%}{{ media.preview_image | img_url: '4096x' }} 4096w{%- endif -%}"
+                    {%- if media.preview_image.width >= 4096 -%}{{ media.preview_image | img_url: '4096x' }} 4096w 
+                    {%- else -%}{{ media.preview_image | img_url: 'master' }} {{ media.preview_image.width | append: 'w' }}{%- endif -%}"
             sizes="(min-width: 768px), 50vw, 
                    100vw"
             src="{{ media.preview_image | img_url: '1100x' }}"

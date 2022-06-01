@@ -26,7 +26,7 @@
           {% if block.settings.enable_image %}
             <div class="lazy-image column__image">
               {%- if section.settings.scale_image -%}
-                {%- render 'image-fill', img_object: block.settings.image, aspect_ratio: section.settings.aspect_ratio -%}
+                {%- render 'image-fill', img_object: block.settings.image, aspect_ratio: section.settings.aspect_ratio, bg_position: block.settings.bg_position -%}
               {%- else -%}
                 {%- render 'image-fill', img_object: block.settings.image -%}
               {%- endif -%}
@@ -102,6 +102,10 @@
           {
             "value": "text-center",
             "label": "Centered"
+          },
+          { 
+            "value": "text-right",
+            "label": "Right" 
           }
         ]
       },
@@ -142,6 +146,19 @@
             "type": "image_picker",
             "id": "image",
             "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "bg_position",
+            "label": "Position",
+            "default": "center-center",
+            "options": [
+              { "label": "Top", "value": "center-top" },
+              { "label": "Right", "value": "right-center" },
+              { "label": "Center", "value": "center-center" },
+              { "label": "Left", "value": "left-center" },
+              { "label": "Bottom", "value": "center-bottom" }
+            ]
           },
           {
             "type": "text",

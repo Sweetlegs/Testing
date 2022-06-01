@@ -18,6 +18,10 @@
     {%- endif -%}
   </div>
 
+  {%- if product.metafields.theme.cutline != blank and product.metafields.theme.cutline.type == 'single_line_text_field' -%}
+    <p class="product__page__cutline">{{ product.metafields.theme.cutline.value }}</p>
+  {%- endif -%}
+
   <div class="product__price__wrap">
     <div class="product__price__main" data-price-wrapper>
       <span class="product__price">

@@ -1,23 +1,4 @@
-
 <div class="sidebar__filter__group" {% if block %}{{ block.shopify_attributes }}{% endif %}>
-  <button class="sidebar__heading accordion-is-open" 
-    data-accordion-trigger="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
-    aria-controls="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
-    aria-haspopup="true" 
-    aria-expanded="true">
-    <span>{{ filter.label }}</span>
-
-    {%- if filter.active_values.size > 0 -%}
-      <span>({{ filter.active_values.size }})</span>
-    {%- endif -%}
-
-    <span class="sidebar__heading-chevron">
-      {% render 'icon-arrow-medium-right' %}
-      <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
-      <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
-    </span>
-  </button>
-
   {%- if settings.swatches_enable -%}
     {%- capture swatch_translation -%}{{ 'general.swatches.color' | t }} {%- endcapture -%}
     {%- assign translation_array = swatch_translation | append: ',' | split: "," | uniq -%}
@@ -32,12 +13,36 @@
     {%- endfor -%}
   {%- endif -%}
 
+  <button class="sidebar__heading accordion-is-open" 
+    data-accordion-trigger="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
+    aria-controls="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
+    {% if is_swatch_option %} data-swapper-wrapper {% endif %}
+    aria-haspopup="true" 
+    aria-expanded="true">
+    <span>{{ filter.label }}</span>
+    
+    {%- if is_swatch_option -%}
+      <span data-swapper-target class="sidebar__heading__color"></span>
+    {%- endif -%}
+
+    {%- if filter.active_values.size > 0 -%}
+      <span>({{ filter.active_values.size }})</span>
+    {%- endif -%}
+
+    <span class="sidebar__heading-chevron">
+      {% render 'icon-arrow-medium-right' %}
+      <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+      <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+    </span>
+  </button>
+
   {%- case filter.type -%}
-    {%- when 'list' -%}
+    {%- when 'list' or 'boolean' -%}
       <ul class="sidebar__navigation__list" data-accordion-body id="accordion-{{ filter.label | handle }}-{{ forloop.index }}">
         {%- for filter_value in filter.values -%}
           {%- if is_swatch_option -%}
-            <li class="swatch__button {% if forloop.index > 10 %} is-hidden{% endif %}" data-tooltip="{{ filter_value.value }}">
+            <li class="swatch__button {% if forloop.index > 25 %} is-hidden{% endif %}">
+              <radio-swatch>
               <input type="checkbox"
                   name="{{ filter_value.param_name }}"
                   value="{{ filter_value.value }}" 
@@ -45,7 +50,7 @@
                   {% if filter_value.active -%}checked{%- endif %}
                   {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}>
 
-                <label for="filter-{{ filter.label }}-{{ forloop.index }}" data-swatch="{{ filter_value.label | escape_once }}">
+                <label for="filter-{{ filter.label }}-{{ forloop.index }}" data-swatch="{{ filter_value.label | escape_once }}" data-swapper-hover="{{ filter_value.label | escape_once }}">
                   <span class="visually-hidden">{{ filter_value.label }}</span>
                 </label>
             </li>
@@ -57,7 +62,7 @@
                 id="filter-{{ filter.label }}-{{ forloop.index }}"
                 {% if filter_value.active -%}checked{%- endif %}
                 {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}>
-              <label for="filter-{{ filter.label }}-{{ forloop.index }}">{{ filter_value.label }}{% render 'icon-box' %}{% render 'icon-reset' %}</label>
+              <label for="filter-{{ filter.label }}-{{ forloop.index }}">{{ filter_value.label | escape }}{% render 'icon-box' %}{% render 'icon-reset' %}</label>
             </li>  
           {%- endif -%}
         {%- endfor -%}
@@ -68,18 +73,31 @@
       {% endif %}
     {%- when 'price_range' -%}
       <div class="filter__price" data-accordion-body data-range-holder id="accordion-{{ filter.label | handle }}-{{ forloop.index }}">
-        {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ',', '' -%}
+        {%- if shop.money_format contains "comma_separator" -%}
+          {%- assign filter_max_money = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' -%}
+        {%- else -%}
+          {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ',', '' -%}
+        {%- endif -%} 
+
         {%- assign filter_max_money_ceil = filter_max_money | ceil -%}
         {%- assign filter_min_value = 0 -%}
         {%- assign filter_max_value = filter_max_money_ceil -%}
 
-        {% if filter.min_value.value -%}
-          {%- assign filter_min_value = filter.min_value.value | money_without_currency | replace: ',', '' | floor -%}
-        {%- endif %}
+        {%- if filter.min_value.value -%}
+          {%- if shop.money_format contains "comma_separator" -%}
+            {%- assign filter_min_value = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | floor -%}
+          {%- else -%}
+            {%- assign filter_min_value = filter.min_value.value | money_without_currency | replace: ',', '' | floor -%}
+          {%- endif -%} 
+        {%- endif -%}
 
-        {% if filter.max_value.value -%}
-          {%- assign filter_max_value = filter.max_value.value | money_without_currency | replace: ',', '' | ceil -%}
-        {%- endif %}
+        {%- if filter.max_value.value -%}
+          {%- if shop.money_format contains "comma_separator" -%}
+            {%- assign filter_max_value = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | floor -%}
+          {%- else -%}
+            {%- assign filter_max_value = filter.max_value.value | money_without_currency | replace: ',', '' | floor -%}
+          {%- endif -%}
+        {%- endif -%}
 
         <div class="filter__price__range range" data-range-slider data-range-filter-update data-se-min="0" data-se-step="1" data-se-min-value="{{ filter_min_value }}" data-se-max-value="{{ filter_max_value }}" data-se-max="{{ filter_max_money_ceil }}">
           <div class="range__dot range__dot--left" data-range-left>
@@ -106,7 +124,7 @@
               type="number"
               placeholder="{{ filter_min_value }}"
               min="0"
-              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}">
+              max="{{ filter_max_money_ceil }}">
 
             <label for="filter-price-from-{{ filter.label }}-{{ forloop.index }}">{{ 'products.general.from' | t }}</label>
           </div>
@@ -129,6 +147,5 @@
           </div>
         </div>
       </div>
-    {%- else -%}
   {%- endcase -%}
 </div>

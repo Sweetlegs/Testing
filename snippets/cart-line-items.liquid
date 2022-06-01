@@ -110,7 +110,7 @@
 
         <div class="cart__items__quantity">
           <div class="quantity__wrapper" data-quantity-selector>
-            <button class="quantity__button quantity__button--minus" data-decrease-quantity>&minus;</button>
+            <button class="quantity__button quantity__button--minus" data-decrease-quantity type="button">&minus;</button>
             <label for="updates_{{ line_item.key }}" class="visually-hidden">{{ 'cart.label.quantity' | t }}</label>
             <input data-quantity-input
               data-update-cart="{{ line_item.key }}"
@@ -122,7 +122,7 @@
               id="updates_{{ line_item.key }}"
               name="updates[]"
               value="{{ line_item.quantity }}"/>
-            <button class="quantity__button quantity__button--plus" data-increase-quantity>+</button>
+            <button class="quantity__button quantity__button--plus" data-increase-quantity type="button">+</button>
           </div>
         </div>
 
