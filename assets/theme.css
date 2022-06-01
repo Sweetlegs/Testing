@@ -16941,9 +16941,15 @@ Collection grid section
   .brick--2 .brick__block {
     width: 50%;
   }
+  .brick--2 .brick__block_2 {
+    width: 70%;
+  }
+  .brick--2 .brick__block_1 {
+    width: 30%;
+  }
 }
 
-.brick__block {
+.brick__block, .brick__block_1, .brick__block_2 {
   width: 100%;
   height: 100%;
   position: relative;
@@ -23911,4 +23917,14 @@ body[style*="overflow: hidden"] .upsell__modal {
   }
 }
 
+  
+  .seperator {
+    border-bottom: 1px solid #D8D8D8;
+  }
+  
+  .resource-video .brick__block__text {
+    display: block;
+    padding: 0px var(--outer);
+    
+  }
 /*! ============ Add any custom styles below this line ================== */

@@ -24,7 +24,12 @@ p,.sky-pilot-access-denied h5,.sky-pilot-access-denied, .header-logo,.home__titl
   font-family: 'GothamBold'!important;
   line-height: 1.8!important;
 }
+
 @media only screen and (max-width : 800px) {
+  
+  #shopify-section-template--14461401694305__1653935819b0fd5d8b .brick__block__video {
+    padding: 0px;
+  }
   .weglot-container {
     margin-left: 0px!important;
   }
