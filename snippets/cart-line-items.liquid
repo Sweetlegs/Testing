@@ -64,6 +64,11 @@
                 {%- endif -%}
               {%- endfor -%}
             {%- endif -%}
+            {%- for property in line_item.properties -%}
+            {%- if property.last == 'Final Sale' -%}
+            <p class="cart-final-sale {{property.first}}"><a href="/pages/faq#what-does-final-sale-mean" target="_blank">FINAL SALE</a></p>
+            {%- endif -%}
+            {%- endfor -%}
           </div>
         </div>
 
@@ -107,7 +112,9 @@
             </p>
           {% endif %}
         </div>
-
+        <div>
+ 
+        </div>
         <div class="cart__items__quantity">
           <div class="quantity__wrapper" data-quantity-selector>
             <button class="quantity__button quantity__button--minus" data-decrease-quantity>&minus;</button>

@@ -43,7 +43,9 @@
 .template-cart .Section--GiftWrap .Panel__Content {
     padding: 30px;
     border: 1px solid #ddd;
-    border-top: 0;
+}
+  .cart__footer__shipping {
+    border-bottom: 1px solid #ddd;
 }
 .Section--GiftWrap  img {
     max-width: 100%;
@@ -237,32 +239,7 @@
         {{ section.settings.gift_wrap_content }}
 
         <ul class="GiftWrap__Items">
-          <li class="GiftWrap__Item">
-            <div class="GiftWrap__Item__Header">
-              <label class="GiftWrap__Label" for="GiftWrap__NoGift">
-                <input
-                       id="GiftWrap__NoGift"
-                       type="radio"
-                       name="attributes[Gift Wrap Option]"
-                       value="None"
-                       {% if cart.attributes["Gift Wrap Option"] == "None" or cart.attributes["Gift Wrap Option"] == blank %} checked{% endif %}
-                       >
-                <span class="GiftWrap__Label__Wrapper">
-                  <span class="GiftWrap__Label__Heading Heading">None</span>
-                </span>
-              </label>
-            </div>
-            <div
-               class="GiftWrap__Item__Content{% if cart.attributes["Gift Wrap Option"] == "None" or cart.attributes["Gift Wrap Option"] == blank %} in{% endif %}"
-               data-name="None"
-              >
-                <button
-                 class="gift-wrap-btn Form__Submit btn btn--primary btn--large uppercase">
-                 Save
-               </button>
-              </div>
-          </li>
-          
+    
           {%- if section.settings.enable_free_gift_message -%}
             <li class="GiftWrap__Item">
               <div class="GiftWrap__Item__Header">
@@ -482,6 +459,31 @@
                 </div>
               </li>
             {%- endcomment -%}
+   <li class="GiftWrap__Item">
+            <div class="GiftWrap__Item__Header">
+              <label class="GiftWrap__Label" for="GiftWrap__NoGift">
+                <input
+                       id="GiftWrap__NoGift"
+                       type="radio"
+                       name="attributes[Gift Wrap Option]"
+                       value="None"
+                       {% if cart.attributes["Gift Wrap Option"] == "None" or cart.attributes["Gift Wrap Option"] == blank %} checked{% endif %}
+                       >
+                <span class="GiftWrap__Label__Wrapper">
+                  <span class="GiftWrap__Label__Heading Heading">None</span>
+                </span>
+              </label>
+            </div>
+            <div
+               class="GiftWrap__Item__Content{% if cart.attributes["Gift Wrap Option"] == "None" or cart.attributes["Gift Wrap Option"] == blank %} in{% endif %}"
+               data-name="None"
+              >
+                <button
+                 class="gift-wrap-btn Form__Submit btn btn--primary btn--large uppercase">
+                 Save
+               </button>
+              </div>
+          </li>
         </ul>
       </div>
     </div>

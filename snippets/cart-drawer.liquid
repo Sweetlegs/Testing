@@ -36,7 +36,7 @@
     <div class="drawer__body" data-drawer-scrolls>
       {% assign free_shipping_text = block.settings.message | default: settings.message %}
 {% assign is_enable = false %}
-{% assign show_wheel = true %}
+{% assign show_wheel = false %}
 
 {% if block.settings.show_wheel == false %}
   {% assign show_wheel = false %}

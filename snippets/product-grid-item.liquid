@@ -157,6 +157,7 @@
 
   assign primary_img = product.featured_media.preview_image
 
+
   if on_sale
     assign lowest_price = false
 
@@ -171,7 +172,10 @@
     endfor
 
   endif
-
+  if collection.title == 'LAST EDIT' and product.metafields.custom.primary_image
+   assign primary_img = product.metafields.custom.primary_image
+   assign primary_img = primary_img | img_url
+  endif
   assign double_img = false
   if product.media[1].preview_image and settings.image_hover_enable
     assign double_img = true
@@ -207,7 +211,6 @@
     {%- endif -%}
   {%- endcapture -%}
 {%- endif -%}
-
 
 <div class="product-grid-item {{ image_classes }}{% if on_sale %} on-sale{% endif %}{% if tagged %} tagged{% endif %}" data-grid-item>
   <div {{ auto_height }}>
@@ -255,7 +258,6 @@
       </div>
       <div class="product__grid__price">
         <span class="price{% if on_sale %} on-sale{% endif %}">
-          {% if product.price_varies %}{{ 'products.general.from' | t }} {% endif %}
           {{ product.price | money }}
         </span>
         {% if on_sale %}

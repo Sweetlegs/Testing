@@ -3816,6 +3816,7 @@
     }
 
     addToCartAction(formData) {
+      console.log('this hit', formData);
       const url = `${window.theme.routes.cart}/add.js`;
       const instance = this;
       axios
