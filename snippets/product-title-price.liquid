@@ -1,3 +1,5 @@
+<!-- product-title-price.liquid  -->
+
 {% assign current_variant = product.selected_or_first_available_variant %}
 
 {% if block.settings.product_show_vendor and product.vendor %}
@@ -18,63 +20,21 @@
     {%- endif -%}
   </div>
 
-  {%- if product.metafields.theme.cutline != blank and product.metafields.theme.cutline.type == 'single_line_text_field' -%}
-    <p class="product__page__cutline">{{ product.metafields.theme.cutline.value }}</p>
-  {%- endif -%}
-
   <div class="product__price__wrap">
     <div class="product__price__main" data-price-wrapper>
-      <span class="product__price">
-        <span data-product-price {% if current_variant.compare_at_price > current_variant.price %} class="product__price--sale"{% endif %}>
-          {{ current_variant.price | money }}
-        </span>
-      </span>
 
-      <span data-price-off class="product__price--off hide">
-        <span data-price-off-type>{{ 'products.product.sale' | t }}</span>
-        <em>•</em>
-        {{ 'products.product.save' | t }}
-        <span data-price-off-amount></span>
-      </span>
-
-      {% liquid
-        assign units = product.variants | map: 'unit_price'
-        if units[0]
-          assign has_units = true
-        else
-          assign has_units = false
-        endif 
-      %}
-      {% if has_units %}
-        {% capture show_units %}
-          {%- unless current_variant.unit_price -%}style="display: none;"{%- endunless -%}
-        {% endcapture %}
-        {% capture unit_price_separator %}
-          <span aria-hidden="true">/</span><span class="visually-hidden">{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
-        {% endcapture %}
-        {% capture unit_price_base_unit %}
-          <span>
-            {% if current_variant.unit_price_measurement %}
-              {% if current_variant.unit_price_measurement.reference_value != 1 %}
-                {{ current_variant.unit_price_measurement.reference_value }}
-              {%- endif -%}
-              {{ current_variant.unit_price_measurement.reference_unit }}
-            {% endif %}
-          </span>
-        {% endcapture %}
-        <div class="product__price--unit">
-          <span data-product-unit {{ show_units }}>
-            <span class="visually-hidden visually-hidden--inline">{{ 'products.product.unit_price_label' | t }}</span>
-            <span data-product-unit-price id="unit-price-{{ block.id }}">{{ current_variant.unit_price | money }}</span>
-            {{ unit_price_separator }}
-            <span data-product-base id="unit-price-base-{{ block.id }}">{{ unit_price_base_unit }}</span>
-          </span>
-          <span data-price-each class="hide">
-            {{ 'products.product.each' | t }}
-            <span data-price-each-amount></span>
-          </span>
-        </div>
+      {% if current_variant.compare_at_price > current_variant.price %}
+        {% assign on_sale = true %}
       {% endif %}
+
+      <span class="ProductMeta__Price Price {% if on_sale %}Price--highlight{% endif %} Text--subdued u-h4" data-money-convertible data-product-price>{{ current_variant.price | money }}</span>
+      <span class="ProductMeta__Price Price Price--compareAt Text--subdued u-h4" data-money-convertible data-compare-price>{{ current_variant.compare_at_price | money }}</span>
+      <span data-compare-text></span>
+      {%- if current_variant.compare_at_price > current_variant.price -%}
+        <span class="final-sale">Final Sale</span>
+      {%- endif -%}
+
     </div>
   </div>
+
 </div>

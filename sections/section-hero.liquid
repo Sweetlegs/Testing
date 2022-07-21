@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <div class="image-overlay" style="--bg: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity | times: 0.01 }};"></div>
+  <div class="image-overlay" style="--bg:{{ section.settings.overlay_color }}; opacity:{{ section.settings.overlay_opacity | times: 0.01 }};"></div>
 
   {% if section.settings.link_text == '' and section.settings.link %}
     <a class="link-over-image" href="{{ section.settings.link }}" aria-label="{{ section.settings.title | strip_html | escape }}"></a>
@@ -71,7 +71,7 @@
   {% if section.settings.height == 'use_screen_full' %}
     <div class="scroll_icon_wrap">
       <button data-scroll-down class="scroll_link bloop" aria-label="{{ 'general.accessibility.scroll' | t }}">
-        <span class="scroll_icon">{% render 'icon-arrow-down' %}</span>
+        <span class="scroll_icon">{% render 'icon-scroll-down' %}</span>
       </button>
     </div>
   {% endif %}
@@ -79,7 +79,7 @@
 
 {% schema %}
 {
-  "name": "Image banner",
+  "name": "Banner",
   "settings": [
     {
       "type": "image_picker",
@@ -152,7 +152,7 @@
       "type": "text",
       "id": "title",
       "label": "Headline",
-      "default": "Image banner"
+      "default": "Image with text overlay"
     },
     {
       "type": "richtext",
@@ -236,7 +236,7 @@
   ],
   "presets": [
     {
-      "name": "Image banner",
+      "name": "Image with text overlay",
       "category": "Image"
     }
   ]

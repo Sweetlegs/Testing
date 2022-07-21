@@ -11,9 +11,6 @@
   if has_filters
     assign wrapper_class = 'wrapper'
   endif
-
-  assign types = search.types | join: ',' | url_encode
-  assign types = 'type=' | append: types
 -%}
 
 <section class="{{ wrapper_class }} pt2 pb4" data-section-type="search-page" data-section-id="{{ section.id }}">
@@ -42,7 +39,7 @@
           {% if filter.type == "price_range" %}
             {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
               {%- assign filter_count = filter_count | plus: 1 -%}
-              <a class="active__filters__remove" href="{{ filter.url_to_remove }}" data-filter-update-url>
+              <a class="active__filters__remove" href="{{ filter.url_to_remove }}">
                 {%- assign min_value = filter.min_value.value | default: 0 -%}
                 {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
                 {{ min_value | money_without_trailing_zeros }} - {{ max_value | money_without_trailing_zeros }} X
@@ -51,7 +48,7 @@
           {% else %}
             {%- for filter_value in filter.active_values -%}
               {%- assign filter_count = filter_count | plus: 1 -%}
-              <a class="active__filters__remove" href="{{ filter_value.url_to_remove }}" data-filter-update-url>
+              <a class="active__filters__remove" href="{{ filter_value.url_to_remove }}">
                 {{ filter_value.label }} <span class="filter__x">X</span>
               </a>
             {%- endfor -%}
@@ -59,7 +56,7 @@
         {%- endfor -%}
       {%- endcapture -%}
 
-      <nav class="collection__nav" data-collection-tools>
+      <nav class="collection__nav">
         <div class="collection__nav__buttons">
           {% if filter_count > 0 %}  
             {% capture current_filters_count %}
@@ -70,24 +67,17 @@
           <button class="collection__filters__toggle filters--default-visible drawer--visible" data-filters-toggle="filters">
             <span class="hide-filters">{{ 'collections.sidebar.hide_filters' | t }}</span>
             <span class="show-filters">{{ 'collections.sidebar.filter' | t }}</span>
-            <span data-active-filters-count>{{ current_filters_count }}</span>
+            {{ current_filters_count }}
             {% render 'icon-filter' %}
           </button>
         </div>
       </nav>
     {%- endif -%}
 
-    <div class="collection__active__filters {% unless filter_count > 0 %}is-hidden{% endunless %}" data-active-filters>
-      {%- if filter_count > 1 -%}
-      <a href="{{ routes.search_url }}?{{ types }}&q={{ search.terms | url_encode }}" class="active__filters__clear" data-filter-update-url>{{ 'collections.sidebar.all_tags' | t }}</a>
-      {%- endif -%}
-      {{ filter_clears }}
-    </div>
-
     <div class="collection__content">
 
       {%- if has_filters -%}
-        <div class="collection__filters__wrapper filters--default-visible" data-collection-sidebar data-filters="filters" data-default-hide="false">
+        <div class="collection__filters__wrapper filters--default-visible" data-filters="filters" data-default-hide="false">
           <div class="collection__filters__outer">
             <div class="drawer__top">
               <div class="drawer__top__left">
@@ -102,6 +92,16 @@
             </div>
 
             <div class="collection__filters__inner">
+              {%- if filter_count > 0 -%}
+                <div class="collection__active__filters">
+                  {%- if filter_count > 1 -%}
+                    <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}" class="active__filters__clear">{{ 'collections.sidebar.all_tags' | t }}</a>
+                  {%- endif -%}
+
+                  {{ filter_clears }}
+                </div>
+              {%- endif -%}
+
               <form data-sidebar-filter-form>
                 <input type="hidden" name="q" value="{{ search.terms }}">
 
@@ -120,7 +120,7 @@
         
       {%- endif -%}
 
-      <div class="collection__products" data-products-grid>    
+      <div class="collection__products">    
         {% paginate search.results by 10 %}    
             {% for item in search.results %}
               <div class="grid">
@@ -138,7 +138,7 @@
                 {% elsif item.object_type == 'article' and item.image %}
                   <div class="grid__item one-sixth">
                     <a href="{{ item.url }}" title="{{ item.title | escape }}">
-                      {{ item | img_url: 'medium' | img_tag: item.title }}
+                      {{ item | image_url: 'medium' | img_tag: item.title }}
                     </a>
                   </div>
 

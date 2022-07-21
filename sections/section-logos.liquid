@@ -13,19 +13,16 @@
               <a href="{{ block.settings.link }}" class="logo-bar__link" target="_blank" rel="noopener">
             {% endif %}
             {% if block.settings.image != blank %}
-              <div class="logo-bar__image lazy-image" style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;">
-                <img
-                  loading="lazy"
-                  width="{{ block.settings.image.width }}"
-                  height="{{ block.settings.image.height }}"
+              {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+              <div class="lazy-image logo-bar__image" style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%; background-image:  url('{{ block.settings.image | img_url: '1x1' }}');">
+                <img class="lazyload fade-in"
                   alt="{{ block.settings.image.alt | strip_html | escape }}"
-                  src="{{ block.settings.image | img_url: '320x320' }}"
-                  srcset="{% if block.settings.image.width >= 110 %}{{ block.settings.image | img_url: '110x' }} 110w,{% endif %}
-                  {% if block.settings.image.width >= 160 %}{{ block.settings.image | img_url: '160x' }} 160w,{% endif %}
-                  {% if block.settings.image.width >= 220 %}{{ block.settings.image | img_url: '220x' }} 220w,{% endif %}
-                  {% if block.settings.image.width >= 320 %}{{ block.settings.image | img_url: '320x' }} 320w,{% endif %}
-                  {% if block.settings.image.width >= 480 %}{{ block.settings.image | img_url: '480x' }} 480w{% endif %}"
-                  sizes="(min-width: 1200px) calc((1200px - 10rem) / 2), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw - 4rem)"/>
+                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  data-src="{{ img_url }}"
+                  data-widths="[110, 160, 220, 320, 480]"
+                  data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                  data-parent-fit="cover"
+                  data-sizes="auto"/>
               </div>
               <noscript>
                 <img src="{{ block.settings.image | img_url: '160x' }}" alt="{{ block.settings.image.alt | default: block.settings.title | strip_html | escape }}"/>
@@ -51,6 +48,7 @@
 {% schema %}
   {
     "name": "Logo list",
+    "max_blocks": 20,
     "settings": [
       {
         "type": "text",

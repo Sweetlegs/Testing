@@ -6,7 +6,7 @@
       <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
     {% endif %}
     <div class="grid {% unless section.blocks.size == 5 %}grid--uniform{% endunless %}">
-      {%- assign grid_item_width = 'medium-up--one-third small--one-third' -%}
+      {%- assign grid_item_width = 'medium-up--one-third small--one-half' -%}
       {% case section.blocks.size %}
         {% when 1 %}
           {%- assign grid_item_width = 'medium-up--one-half small--one-half' -%}
@@ -25,28 +25,30 @@
         <div class="index__column grid__item {{ column_width }} {{ section.settings.align_text }}" {{ block.shopify_attributes }}>
           {% if block.settings.enable_image %}
             <div class="lazy-image column__image">
-              {%- if section.settings.scale_image -%}
-                {%- render 'image-fill', img_object: block.settings.image, aspect_ratio: section.settings.aspect_ratio, bg_position: block.settings.bg_position -%}
-              {%- else -%}
-                {%- render 'image-fill', img_object: block.settings.image -%}
-              {%- endif -%}
-              {% comment %}
-                If there is a video add a play button over the image
-                If there is a non video link and no button label just
-                link the image to the link destination
-              {% endcomment %}
-              {%- if block.settings.enable_video -%}
-                {%- render 'video-popup', video: block.settings.video_link, unique: block.id -%}
-              {%- elsif block.settings.button_label == blank and block.settings.button_link != blank -%}
-                <a class="link-over-image" href="{{ block.settings.button_link }}" aria-label="{{ block.settings.title | strip_html | escape }}"></a>
-              {%- endif -%}
+              <a href="{{block.settings.button_link}}">
+                {%- if section.settings.scale_image -%}
+                  {%- render 'image-fill', img_object: block.settings.image, aspect_ratio: section.settings.aspect_ratio -%}
+                {%- else -%}
+                  {%- render 'image-fill', img_object: block.settings.image -%}
+                {%- endif -%}
+                {% comment %}
+                  If there is a video add a play button over the image
+                  If there is a non video link and no button label just
+                  link the image to the link destination
+                {% endcomment %}
+                {%- if block.settings.enable_video -%}
+                  {%- render 'video-popup', video: block.settings.video_link, unique: block.id -%}
+                {%- elsif block.settings.button_label == blank and block.settings.button_link != blank -%}
+                  <a class="link-over-image" href="{{ block.settings.button_link }}" aria-label="{{ block.settings.title | strip_html | escape }}"></a>
+                {%- endif -%}
+              </a>
             </div>
             <noscript>
               <img src="{{ block.settings.image | img_url: '540x' }}" alt="{{ block.settings.image.alt | default: block.settings.title | strip_html | escape }}"/>
             </noscript>
           {% endif %}
           {% if block.settings.title != blank %}
-            <h3 class="home--uppercase">{{ block.settings.title | escape }}</h3>
+          <h3 class="home--uppercase"><a href="{{ block.settings.button_link }}">{{ block.settings.title | escape }}</a></h3>
           {% endif %}
           {% if block.settings.text != blank %}
             <div class="rte rte--column">{{ block.settings.text }}</div>
@@ -102,10 +104,6 @@
           {
             "value": "text-center",
             "label": "Centered"
-          },
-          { 
-            "value": "text-right",
-            "label": "Right" 
           }
         ]
       },
@@ -146,19 +144,6 @@
             "type": "image_picker",
             "id": "image",
             "label": "Image"
-          },
-          {
-            "type": "select",
-            "id": "bg_position",
-            "label": "Position",
-            "default": "center-center",
-            "options": [
-              { "label": "Top", "value": "center-top" },
-              { "label": "Right", "value": "right-center" },
-              { "label": "Center", "value": "center-center" },
-              { "label": "Left", "value": "left-center" },
-              { "label": "Bottom", "value": "center-bottom" }
-            ]
           },
           {
             "type": "text",

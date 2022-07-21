@@ -10,7 +10,7 @@
 
 {%- liquid
   assign default_image = 'blank.svg' | asset_url
-  assign height = frame_height_class | default: 'use_image'
+  assign height = frame_height_class | default: 'image_height'
   assign image = img_object | default: default_image
   assign aspect_ratio = image.aspect_ratio | default: 1 
   assign modifier = modifier | default: ''
@@ -27,7 +27,7 @@
   <div class="image__hero__pane">
     <div class="image__hero__scale"
     {% if settings.parallax_enable %}
-        style="height: {{ 1 | divided_by: aspect_ratio | times: 100 }}vw;"
+        style="height: {{  1 | divided_by: aspect_ratio | times: 100 }}vw;"
         data-parallax-img
     {% endif %}>
       <div class="background-size-cover lazyload"

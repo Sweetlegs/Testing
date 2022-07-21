@@ -131,7 +131,7 @@
                     data-aos="hero"
                     data-aos-anchor="{{ animation_anchor }}"
                     data-aos-order="1">
-                    {{ block.settings.kicker }}
+                    {{block.settings.kicker}}
                   </p>
                 {% endif %}
 
@@ -140,7 +140,7 @@
                     data-aos="hero"
                     data-aos-anchor="{{ animation_anchor }}"
                     data-aos-order="2">
-                    {{ block.settings.title }}
+                    {{block.settings.title}}
                   </h2>
                 {% endif %}
 
@@ -192,7 +192,7 @@
                     data-aos="hero"
                     data-aos-anchor="{{ animation_anchor }}"
                     data-aos-order="1">
-                    {{ block.settings.kicker }}
+                    {{block.settings.kicker}}
                   </p>
                 {% endif %}
 
@@ -201,7 +201,7 @@
                     data-aos="hero"
                     data-aos-anchor="{{ animation_anchor }}"
                     data-aos-order="2">
-                    {{ block.settings.title }}
+                    {{block.settings.title}}
                   </h2>
                 {% endif %}
 
@@ -340,7 +340,7 @@
                     data-aos="hero"
                     data-aos-anchor="{{ animation_anchor }}"
                     data-aos-order="1">
-                    {{ block.settings.kicker }}
+                    {{block.settings.kicker}}
                   </p>
                 {% endif %}
 
@@ -386,7 +386,7 @@
                     data-aos="hero"
                     data-aos-anchor="{{ animation_anchor }}"
                     data-aos-order="1">
-                    {{ block.settings.kicker }}
+                    {{block.settings.kicker}}
                   </p>
                 {% endif %}
                 <div class="brick__collection flickity-badge-dots" data-slider data-show-dots="true">
@@ -402,116 +402,8 @@
             </div>
           </div>
         </div>
-      {% when 'article' %}          
-        <div class="brick__block" data-prevent-transparent-header {{ block.shopify_attributes }}>
-          <div class="brick__block__text brick__block__text--article {{ block.settings.text_color }} {{ block.settings.placement_text }}" data-overflow-frame style="--bg: {{ block.settings.bg_color }};">
-            <div class="brick__block__text__inner">
-              <div class="text__standard {{ block.settings.align_text }}" data-overflow-content>
-                {%- assign block_article = block.settings.article -%}
-                {%- assign elements_counter = 0 -%}
-                {%- assign show_tag = false -%}
-                {%- assign font_size_class = block.settings.text_size | plus: 1 | prepend: 'font--' -%}
 
-                {%- assign default_excerpt = 'home_page.onboarding.blog_excerpt' | t -%}
-                {%- assign default_title = 'home_page.onboarding.blog_title' | t -%}
-                {%- assign default_author = 'J. Dustice' -%}
-                {%- assign default_date = 'now' | date: '%b %d, %Y' -%}
-
-                {%- assign show_tag = false -%}
-                {%- assign font_size_class = block.settings.text_size | plus: 1 | prepend: 'font--' -%}
-
-                {%- if block.settings.show_tag and block_article.tags.size > 0 -%}
-                  {%- assign show_tag = true -%}
-                {%- endif -%}
-                
-                {%- if show_tag or block.settings.show_date -%}
-                  {%- assign elements_counter = elements_counter | plus: 1 -%}
-
-                  <div class="brick__block__meta"
-                    data-aos="hero"
-                    data-aos-anchor="{{ animation_anchor }}"
-                    data-aos-order="{{ elements_counter }}">
-                    <p>
-                      {%- if show_tag -%}
-                        <strong class="standard__kicker">{{ block_article.tags[0] }}</strong>
-
-                        {%- if block.settings.show_date != blank -%}
-                          <span>&#8226;</span>
-                        {%- endif -%}
-                      {%- endif -%}
-                      
-                      {%- if block.settings.show_date -%}
-                        {%- assign date = block_article.published_at | date: '%b %d, %Y' -%}
-                        <time>{{ date | default: default_date }}</time>
-                      {%- endif -%}
-                    </p>
-                  </div>
-                {%- endif -%}
-
-                {%- assign elements_counter = elements_counter | plus: 1 -%}
-                <h2 class="h2 standard__heading {{ font_size_class }}"
-                  data-aos="hero"
-                  data-aos-anchor="{{ animation_anchor }}"
-                  data-aos-order="{{ elements_counter }}">
-                  {{ block_article.title | default: default_title }}
-                </h2>
-
-                {%- if block.settings.show_author_image -%}
-                  {%- assign author_image = block.settings.author_image | default: article.user.image -%}
-                {%- endif -%}
-
-                {%- if author_image != blank or block.settings.show_author_name -%}
-                  {%- assign elements_counter = elements_counter | plus: 1 -%}
-
-                  <div class="brick__block__author standard__rte"
-                    data-aos="hero"
-                    data-aos-anchor="{{ animation_anchor }}"
-                    data-aos-order="{{ elements_counter }}">
-                    <p>
-                      {%- if author_image != blank -%}
-                        {%- assign author_image_alt = author_image.alt | default: block_article.author -%}
-                        <img 
-                          loading="lazy" 
-                          alt="{{ author_image_alt | strip_html | escape }}" 
-                          src="{{ author_image | img_url: '60x60', crop: 'center' }}"
-                          width="30"
-                          height="30">
-                      {%- endif -%}
-
-                      {%- if block.settings.show_author_name -%}
-                        <span>{{ 'blogs.article.by' | t }}</span>
-                        <span>{{ block_article.author | default: default_author }}</span>
-                      {%- endif -%}
-                    </p>
-                  </div>
-                {%- endif -%}
-
-                {%- if block.settings.show_excerpt -%}
-                  {%- assign elements_counter = elements_counter | plus: 1 -%}
-                  <div class="standard__rte"
-                    data-aos="hero"
-                    data-aos-anchor="{{ animation_anchor }}"
-                    data-aos-order="{{ elements_counter }}">
-                    {%- assign excerpt = block_article.excerpt_or_content | strip_html | truncatewords: 30 -%}
-                    <p>{{ excerpt | default: default_excerpt }}</p>
-                  </div>
-                {%- endif -%}
-
-                {% if block.settings.button_text != blank %}
-                  {%- assign elements_counter = elements_counter | plus: 1 -%}
-
-                  <a href="{{ block_article.url }}" 
-                    class="standard__cta {{ block.settings.button_style }} {{ block.settings.button_color }}"
-                    data-aos="hero"
-                    data-aos-anchor="{{ animation_anchor }}"
-                    data-aos-order="{{ elements_counter }}">
-                    {{ block.settings.button_text }}
-                  </a>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        </div>
+      {% else %}
     {% endcase %}
   {% endfor %}
   {% if section.blocks.size == 0 %}
@@ -747,8 +639,7 @@
         "default": "text-left",
         "options": [
           { "value": "text-left","label": "Left" },
-          { "value": "text-center","label": "Centered" },
-          { "value": "text-right","label": "Right" }
+          { "value": "text-center","label": "Centered" }
         ]
       },
       {
@@ -856,8 +747,7 @@
         "default": "text-left",
         "options": [
           { "value": "text-left","label": "Left" },
-          { "value": "text-center","label": "Centered" },
-          { "value": "text-right","label": "Right" }
+          { "value": "text-center","label": "Centered" }
         ]
       },
       {
@@ -1137,8 +1027,7 @@
         "default": "text-center",
         "options": [
           { "value": "text-left","label": "Left" },
-          { "value": "text-center","label": "Centered" },
-          { "value": "text-right","label": "Right" }
+          { "value": "text-center","label": "Centered" }
         ]
       },
       {
@@ -1201,8 +1090,7 @@
         "default": "text-center",
         "options": [
           { "value": "text-left","label": "Left" },
-          { "value": "text-center","label": "Centered" },
-          { "value": "text-right","label": "Right" }
+          { "value": "text-center","label": "Centered" }
         ]
       },
       {
@@ -1232,148 +1120,6 @@
         "id": "bg_accent",
         "label": "Background accent",
         "default": "#ffffff"
-      }
-    ]
-  },
-  {
-    "type": "article",
-    "name": "Article",
-    "settings": [
-      {
-        "type": "article",
-        "id": "article",
-        "label": "Article"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_tag",
-        "label": "Show tag",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_date",
-        "label": "Show date",
-        "default": true
-      },
-      {
-        "type":  "range",
-        "id":    "text_size",
-        "label": "Text size",
-        "min":    1,
-        "max":    5,
-        "step":   1,
-        "default": 2
-      },
-      {
-        "type": "checkbox",
-        "id": "show_excerpt",
-        "label": "Show excerpt",
-        "default": true
-      },
-      {
-        "type": "select",
-        "id": "align_text",
-        "label": "Text alignment",
-        "default": "text-left",
-        "options": [
-          { "value": "text-left","label": "Left" },
-          { "value": "text-center","label": "Centered" },
-          { "value": "text-right","label": "Right" }
-        ]
-      },
-      {
-        "type": "select",
-        "id": "placement_text",
-        "label": "Text placement",
-        "default": "middle",
-        "options": [
-          { "value": "top","label": "Top" },
-          { "value": "middle","label": "Middle" },
-          { "value": "bottom","label": "Bottom" }
-        ]
-      },
-      {
-        "type": "header",
-        "content": "Author"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_author_name",
-        "label": "Show author name",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_author_image",
-        "label": "Show author image",
-        "default": true
-      },
-      {
-        "type": "image_picker",
-        "id": "author_image",
-        "label": "Author image"
-      },
-      {
-        "type": "header",
-        "content": "Button"
-      },
-      {
-        "type":"text",
-        "id":"button_text",
-        "label":"Text",
-        "default": "Read more"
-      },
-      {
-        "type": "select",
-        "id": "button_color",
-        "label": "Color",
-        "default": "btn--neutral",
-        "options": [
-          { "value": "btn--primary", "label": "Bright accent" },
-          { "value": "btn--secondary", "label": "Secondary accent" },
-          { "value": "btn--neutral", "label": "Text color" },
-          { "value": "btn--black", "label": "Black" },
-          { "value": "btn--white", "label": "White" }
-        ]
-      },
-      {
-        "type": "select",
-        "id": "button_style",
-        "label": "Button style",
-        "default": "caps--link",
-        "options": [
-          { "value": "caps--link", "label": "Capitalized text" },
-          { "value": "btn btn--long uppercase", "label": "Solid button" },
-          { "value": "btn--soft btn--long uppercase", "label": "Soft button" },
-          { "value": "btn--outline btn--long uppercase", "label": "Outlined button" }
-        ]
-      },
-      {
-        "type": "header",
-        "content": "Style"
-      },
-      {
-        "type": "select",
-        "id": "text_color",
-        "label": "Text color",
-        "default": "text--neutral",
-        "options": [
-          { "value": "text--neutral", "label": "Normal text"},
-          { "value": "text--white", "label": "White"},
-          { "value": "text--primary", "label": "Primary accent"},
-          { "value": "text--secondary", "label": "Secondary accent"},
-          { "value": "text--black", "label": "Black"},
-          { "value": "text--invert--primary", "label": "Primary dark accent"},
-          { "value": "text--invert--secondary", "label": "Secondary dark accent"},
-          { "value": "text--invert", "label": "Inverted text color"}
-        ]
-      },
-      {
-        "type": "color",
-        "id": "bg_color",
-        "label": "Background",
-        "default": "#f7f7f7"
       }
     ]
   }

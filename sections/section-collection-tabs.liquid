@@ -1,24 +1,18 @@
-<style>
-  .feature-tab-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-</style>
+
 {%- for block in section.blocks -%}
   {%- assign featured_collection = collections[block.settings.collection] -%}
   {%- assign featured_collection_title = block.settings.title | default: featured_collection.title | default: 'Collection' -%}
 
   {%- capture tabs_navigation -%}
     {{ tabs_navigation }}
-    <button type="button" class="tab-link tab-link-{{ forloop.index0 }}"
+    <li class="tab-link tab-link-{{ forloop.index0 }}"
       data-focus-element
       data-tab="{{ forloop.index0 }}"
       data-block-id="{{ block.id }}"
       tabindex="0"
       {{ block.shopify_attributes }}>
       <span>{{ featured_collection_title }}</span>
-    </button>
+    </li>
   {%- endcapture -%}
 
   {%- capture tabs -%}
@@ -44,11 +38,13 @@
   data-section-type="collection-tabs">
   <div class="wrapper" data-tabs-holder>
     <div class="collection-tabs">
+      {% if section.settings.title != blank %}
+        <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+      {% endif %}
       <div class="tab__scroll">
-        <div class="feature-tab-heading">
-          <h6>Our Featured Products</h6>
-          <div>View All Products</div>
-        </div>
+        <ul class="tabs tabs--center tabs--pill" data-scrollbar data-scrollbar-slider>
+          {{ tabs_navigation }}
+        </ul>
   
         <button type="button" class="tabs__arrow tabs__arrow--prev tabs-collections__arrow tabs-collections__arrow--prev is-hidden" data-scrollbar-arrow-prev>
           <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>

@@ -3,9 +3,6 @@
     "swatches": {
       "color": "Farbe"
     },
-    "siblings": {
-      "label": "Farbe"
-    },
     "size_chart": {
       "size": "Größe"
     },
@@ -77,16 +74,12 @@
       "admin_link_html": "Sind Sie der Geschäftsinhaber? <a href=\"/admin\" class=\"text-link\">Melden Sie sich hier an</a>",
       "password_link": "Mit Passwort betreten",
       "powered_by_shopify": "Dieser Shop wird mit Hilfe von Shopify betrieben werden"
-    },
-    "header": {
-      "highlight_links": "Verkauf"
     }
   },
   "blogs": {
     "article": {
       "articles": "Artikel",
       "author_on_date_html": "Geposted von {{ author }} am {{ date }}",
-      "by": "Von",
       "older_post": "Älterer Post",
       "newer_post": "Neuerer Post",
       "tags": "Tags",
@@ -133,7 +126,7 @@
         "one": "und Sie haben {{ count }} Produkt im Warenkorb",
         "other": "und Sie haben {{ count }} Produkte im Warenkorb"
       },
-      "qualified_shipping_message": "Herzliche Glückwünsche! Ihre Bestellung wird kostenlos versendet"
+      "qualified_shipping_message": "¡Felicidades! Su pedido califica para el envío gratis"
     },
     "shipping": {
       "estimate_shipping": "Estimate Versand",
@@ -342,9 +335,9 @@
       "description": "Beschreibung",
       "read_more": "Weiterlesen",
       "to": "Zu",
-      "from": "Ab",
+      "from": "Von",
       "upsell_title": "Kaufen Sie es mit",
-      "upsell_add_to_cart": "In den Warenkorb legen",
+      "upsell_add_to_cart": "Voeg toe aan winkelmandje",
       "upsell_out_of_stock": "Ausverkauft",
       "upsell_error_title": "Beispiel Upsell-Produkt.",
       "upsell_error_info": "Fügen Sie ein Upsell-Produkt in Ihren Themeneinstellungen hinzu"
@@ -363,9 +356,6 @@
       "unit_price_label": "Stückpreis",
       "quantity": "Menge",
       "add_to_cart": "In den Einkaufswagen legen",
-      "in_stock": "Artikel ist auf Lager",
-      "out_of_stock": "Artikel ist vergriffen",
-      "item_unavailable": "Artikel ist nicht verfügbar",
       "remaining_html": "Nur noch {{ inventory }} stück auf lager",
       "view_in_space": "In Ihrem Bereich ansehen",
       "join_membership": "Join Now",

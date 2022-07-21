@@ -41,7 +41,7 @@
     <div class="map-section__image">
       {%- if section.settings.image -%}
         {%- assign img_object = section.settings.image -%}
-        <div class="background-size-cover lazyload" style="background-position: {{ section.settings.bg_position | replace: '-', ' ' }};" data-bgset="{% render 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt | strip_html | escape }}"></div>
+        <div class="background-size-cover lazyload" data-bgset="{% render 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt | strip_html | escape }}"></div>
       {%- else -%}
         {%- assign img_object = 'blank.svg' | asset_url -%}
         <div class="image-overlay" style="--bg: #000; opacity:0.15;"></div>
@@ -168,19 +168,6 @@
         "id": "image",
         "label": "Image",
         "info": "Displayed if the map isn’t loaded"
-      },
-      {
-        "type": "select",
-        "id": "bg_position",
-        "label": "Position",
-        "default": "center-center",
-        "options": [
-          { "label": "Top", "value": "center-top" },
-          { "label": "Right", "value": "right-center" },
-          { "label": "Center", "value": "center-center" },
-          { "label": "Left", "value": "left-center" },
-          { "label": "Bottom", "value": "center-bottom" }
-        ]
       },
       {
         "type": "header",

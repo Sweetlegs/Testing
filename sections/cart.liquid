@@ -27,6 +27,8 @@
   </div>
   {% comment %} Cart is full {% endcomment %}
   <div class="wrapper pt2 pb4 {{ full_init }}" data-cart-form data-cart-loading>
+    <div class="grid">
+    <div class="grid__item medium-up--two-thirds">
     <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
       <h3 class="h3--body">{{ 'cart.general.title' | t }}</h3>
       <div class="errors" data-form-errors style="display: none;"></div>
@@ -59,119 +61,28 @@
             {% render 'cart-line-items' %}
             </div>
         </div>
-
+       <div class="gift-wrap">
+         {% include 'cart-gift-wrap'%}
+         
+        </div>
+         <div class="cart__footer__shipping">
+            {%- if settings.cart_shipping_enable -%}
+              {% render 'cart-shipping' %}
+            {%- endif -%}
+          </div>
         <div class="template__cart__footer" data-cart-bottom>
-
+          
           <div class="cart__footer__notes">
             {%- if settings.cart_notes_enable -%}
               <label class="cart__notes__label" for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
               <textarea name="note" class="input-full" id="CartSpecialInstructions" data-cart-note>{{ cart.note }}</textarea>
             {%- endif -%}
           </div>
-          <div class="cart__footer__shipping">
-            {%- if settings.cart_shipping_enable -%}
-              {% render 'cart-shipping' %}
-            {%- endif -%}
-          </div>
-          <div class="cart__footer__total">
-            
-            <div class="cart__page__shipping">
-              {% assign free_shipping_text = block.settings.message | default: settings.message %}
-{% assign is_enable = false %}
-{% assign show_wheel = true %}
-
-{% if block.settings.show_wheel == false %}
-  {% assign show_wheel = false %}
-{% endif %}
-
-{% if block.settings.message != blank %}
-  {% assign is_enable = true %}
-{% endif %}
-
-{% if settings.show_free_shipping_message and settings.free_shipping_limit != blank and free_shipping_text != blank %}
-  {% assign is_enable = true %}
-{% endif %}
-
-{% if is_enable %}
-  {% assign limit = settings.free_shipping_limit | plus: 0 %}
-  {% assign limit_currency = limit | times: 100 %}
-  {% assign subtotal_without_currency = cart.total_price | plus: 0 | divided_by: 100 %}
-
-  {% capture left_to_spend %}
-    <span data-left-to-spend>{{ limit_currency | minus: cart.total_price | money_without_trailing_zeros }}</span>
-  {% endcapture %}
-
-  {% assign free_shipping_message = free_shipping_text | replace: '||amount||', left_to_spend %}
-  {% assign qualified_shipping_message = 'cart.general.qualified_shipping_message' | t %}
-  {% assign class_message = '' %}
-
-  {% if subtotal_without_currency >= limit %}
-    {% if qualified_shipping_message != blank %}
-      {% assign class_message = 'is-success' %}
-    {% else %}
-      {% assign class_message = 'is-hidden' %}
-    {% endif %}
-  {% elsif subtotal_without_currency == 0 %}
-    {% comment %} {% assign class_message = 'is-hidden' %} {% endcomment %}
-  {% endif %}
-
-  <p class="cart__message {{ class_message }}" data-cart-message="{% if qualified_shipping_message != blank %}true{% else %}false{% endif %}" data-limit="{{ limit }}">
-    {% if show_wheel %}  
-      {% assign percent = limit | minus: subtotal_without_currency | times: 100 | divided_by: limit %}
-      {% assign percent = 100 | minus: percent %}
-
-      {% if percent > 100 %}
-        {% assign percent = 100 %}
-      {% endif %}
-
-      <small class="cart__graph">
-        {% for i in (1..6) %}
-          <small class="cart__graph-dot cart__graph-dot--{{ i }}"></small>
-        {% endfor %}
-        {%- assign stroke_dashoffset = '87.96459430051421' -%}
-        {%- if settings.cart_style == 'compatible' -%}
-          {%- assign math_pi = 3.14159265359 -%}
-          {%- assign stroke_circumference = 28 | times: math_pi -%}
-          {%- assign stroke_calculate = percent | times: stroke_circumference -%}
-          {%- assign stroke_calculate = stroke_calculate | divided_by: 100 | divided_by: 2 -%}
-          {%- assign stroke_dashoffset = stroke_circumference | minus: stroke_calculate -%}
-        {%- endif -%}
-        
-        <svg height="18" width="18">
-          <circle r="7" cx="9" cy="9" />
-          <circle class="cart__graph-progress" stroke-dasharray="87.96459430051421 87.96459430051421" style="stroke-dashoffset: {{ stroke_dashoffset }}" data-cart-progress data-percent="{{ percent }}" r="7" cx="9" cy="9" />
-        </svg>
-      </small>
-    {% endif %}
-
-    {% if qualified_shipping_message != blank %}
-      <span class="cart__message-success">{{ qualified_shipping_message }}</span>
-    {% endif %}
-
-    <span class="cart__message-default">
-      {{ free_shipping_message }}
-    </span>
-  </p>
-{% endif %}
-            </div>
-            
-            <div class="page__footer__subtotal" data-cart-subtotal>
-              {% render 'cart-subtotal' %}
-            </div>
-
-            <p>
-              <span class="cart__footer__label">{{ 'cart.general.subtotal' | t }}</span>
-              <span class="cart__footer__value" data-cart-final>{{ cart.total_price | money }}</span>
-            </p>
-            <p class="cart__footer__small">{{ 'cart.general.shipping_at_checkout' | t }}</p>
-          </div>
+         
 
 
-          <div class="cart__footer__checkout">
-            <button type="submit" name="checkout" class="btn btn--primary btn--large uppercase checkout__button">
-              {{ 'cart.general.checkout' | t }}
-            </button>
-          </div>
+
+          
 
           <div class="cart__footer__update">
             <span class="cart__update" data-update-button>
@@ -192,5 +103,126 @@
         </div>
       </div>
     </form>
+      </div>
+    <div class="grid__item medium-up--two-sixths">
+     <div class="cart__footer__total">
+
+      <div class="cart__page__shipping">
+      </div>
+
+      <div class="page__footer__subtotal" data-cart-subtotal="">
+
+      </div>
+      <h5 class="order-summary-heading">Order Summary</h5>
+      <div class="cart-summary-content">
+          <p>
+            <span class="cart__footer__label">SUBTOTAL</span>
+            <span class="cart__footer__value" data-cart-final=""></span>
+          </p>
+        <p>
+            <span class="cart__footer__label">SHIPPING </span>
+            <span class="cart__footer__value">TBD</span>
+          </p>
+        <p>
+            <span class="cart__footer__label">ESTIMATED TAX</span>
+            <span class="cart__footer__value" data-cart-final="">TBD</span>
+         </p>
+         <p>
+            <span class="cart__footer__label">TOTAL</span>
+            <span class="cart__footer__value" data-cart-total=""></span>
+          </p>
+          <div class="cart__footer__checkout">
+          <button type="submit" name="checkout" class="btn btn--primary btn--large uppercase checkout__button">
+            Check Out
+          </button>
+        </div>
+       </div>
+    </div>
+   </div>
+   </div>
   </div>
 </div>
+
+{% schema %}
+{
+  "name": "Cart page",
+  "class": "shopify-section--bordered",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_shipping_estimator",
+      "label": "Show shipping rates calculator",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shipping_estimator_default_country",
+      "label": "Default country to use",
+      "info": "If your customer is logged-in, the country in his default shipping address will be selected.",
+      "default": "United States"
+    },
+    {
+      "type": "header",
+      "content": "Gift wrap"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_gift_wrap",
+      "label": "Enable gift wrap",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "gift_slider_text",
+      "label": "Gift slider text",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis saepe at officiis corporis maxime totam unde molestiae accusantium veritatis minus sapiente officia non a eos explicabo eveniet, harum, iusto!</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "gift_wrap_content",
+      "label": "Gift wrap content",
+      "default": "<p>Choose from one of the following options. Prices are never included on the packing slip, so it can also serve as a gift receipt.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_free_gift_message",
+      "label": "Enable free gift message",
+      "default": true
+    },
+    {
+      "type": "product",
+      "id": "product_gift_wrap_supplies",
+      "label": "Gift wrap service"
+    },
+    {
+      "type": "product",
+      "id": "product_gift_wrap_supplies_2",
+      "label": "Gift wrap supplies"
+    },
+    {
+      "type": "product",
+      "id": "product_gift_wrap_service",
+      "label": "Gift wrap supplies 2"
+    },
+    {
+      "type": "product",
+      "id": "product_gift_box_service",
+      "label": "Shipping box"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "640 x 640px .png recommended"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

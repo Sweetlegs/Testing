@@ -1,0 +1,13 @@
+<!-- GTranslate: https://gtranslate.io/ -->
+ <select onchange="doGTranslate(this);"><option value="">Select Language</option><option value="en|ar">Arabic</option><option value="en|da">Danish</option><option value="en|en">English</option><option value="en|fr">French</option><option value="en|de">German</option><option value="en|it">Italian</option><option value="en|ja">Japanese</option><option value="en|ko">Korean</option><option value="en|ru">Russian</option><option value="en|es">Spanish</option></select>
+
+<script>
+var gt_request_uri = (typeof __st != 'undefined') ? '/'+__st.pageurl.split('/').slice(1).join('/') : location.pathname+location.search;
+function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof _gaq!='undefined'){_gaq.push(['_trackEvent', 'GTranslate', lang, location.hostname+location.pathname+location.search]);}else {if(typeof ga == 'function')ga('send', 'event', 'GTranslate', lang, location.hostname+location.pathname+location.search);}var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='en';location.href=location.protocol+'//'+(lang == 'en' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '[.]'), '')+(typeof gt_request_uri != 'undefined' ? gt_request_uri : location.pathname+location.search);}
+</script>
+<style>a.glink {text-decoration:none;}
+a.glink span {margin-right:5px;font-size:15px;vertical-align:middle;}
+a.glink img {vertical-align:middle;display:inline;border:0;padding:0;margin:0;opacity:0.8;}
+a.glink:hover img {opacity:1;}
+</style>
+<script>setTimeout(function() {if(typeof window.gtranslate_installed == "undefined" && typeof console != "undefined") console.log("To uninstall GTranslate properly please follow the instructions on https://docs.gtranslate.io/how-tos/how-to-remove-gtranslate-app-from-shopify")}, 4000);</script>

@@ -12,11 +12,9 @@
         <span class="product__popdown__title product__popdown__title--bold">
           {{ product_variant.product.title | strip_html | escape }}
         </span>
-        {% unless product_variant.product.has_only_default_variant %}  
         <span class="product__popdown__title">
           {{ product_variant.title }} &nbsp;
         </span>
-        {% endunless %}
         <span class="product__popdown__title product__popdown__title--bold">
           {{ 'products.cart_drawer.item_added' | t }}
         </span>

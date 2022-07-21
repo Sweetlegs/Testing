@@ -1,7 +1,7 @@
 {%- if section.settings.product_reviews_enable -%}
-  <section data-section-id="{{ section.id }}" data-section-type="product-reviews" class="product-reviews {{ section.settings.bg }}">
+  <section data-section-id="{{ section.id }}" data-section-type="product-reviews" class="product-reviews" style="background-color: {{ section.settings.bg }}">
     <div class="wrapper">
-      <div id="shopify-product-reviews" data-id="{{ product.id }}">{{ product.metafields.spr.reviews }}</div>
+      <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
     </div>
   </section>
 {%- endif -%}
@@ -19,16 +19,10 @@
 
     },
     {
-      "type": "select",
+      "type": "color",
       "id": "bg",
       "label": "Background color",
-      "default": "palette--light bg--accent",
-      "options": [
-        { "value": "palette--light bg--neutral", "label": "Default"},
-        { "value": "palette--light bg--accent", "label": "Light"},
-        { "value": "palette--dark bg--invert", "label": "Dark"},
-        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
-      ]
+      "default": "#DCCDD2"
     }
   ]
 }

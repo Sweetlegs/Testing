@@ -3,9 +3,6 @@
     "swatches": {
       "color": "Couleur"
     },
-    "siblings": {
-      "label": "Couleur"
-    },
     "size_chart": {
       "size": "Taille"
     },
@@ -77,16 +74,12 @@
       "admin_link_html": "Êtes-vous le propriétaire de la boutique? <a href=\"/admin\" class=\"text-link\">Connectez-vous ici</a>.",
       "password_link": "Entrer avec un mot de passe",
       "powered_by_shopify": "Cette boutique sera propulsée par Shopify"
-    },
-    "header": {
-      "highlight_links": "Vente"
     }
   },
   "blogs": {
     "article": {
       "articles": "Articles",
       "author_on_date_html": "Publié par {{ author }} le {{ date }}",
-      "by": "Par",
       "older_post": "Article précédent",
       "newer_post": "Article suivant",
       "tags": "Tags",
@@ -363,9 +356,6 @@
       "unit_price_label": "Prix ​​unitaire",
       "quantity": "Quantité",
       "add_to_cart": "Ajouter au panier",
-      "in_stock": "L'article est en stock",
-      "out_of_stock": "L'article est en rupture de stock",
-      "item_unavailable": "L'article n'est pas disponible",
       "remaining_html": "Seulement {{ inventory }} en stock",
       "view_in_space": "Afficher dans votre espace",
       "join_membership": "Rejoindre Maintenant",

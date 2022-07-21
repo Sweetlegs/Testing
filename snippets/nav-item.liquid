@@ -1,10 +1,14 @@
 {%- liquid
+
+   
+   
   assign parent = false
   assign grandparent = false
   if link.levels == 1
     assign parent = true
   endif
   if link.levels == 2
+  
     assign grandparent = true
   endif
 
@@ -13,6 +17,7 @@
     assign child_count = link.links.size
     if child_count > 10
       assign child_count = 10
+      assign expand = false
     endif
   endif
 
@@ -37,10 +42,11 @@
     assign child_count = child_count | plus: 1
   endif
 
-  assign link_title_handle = link.title | handle
-  assign highlight_links = 'general.header.highlight_links' | t | strip | split: ',' | join: '___' | handle | replace: '___-', '___' | replace: '-___', '___' | split: '___' 
+
+  
 -%}
-{% capture classes %}{% if grandparent %} grandparent kids-{{ child_count }} {% elsif parent %} parent{% else %} child{% endif %}{% if link.active %} main-menu--active{% endif %}{% endcapture %}
+
+{% capture classes %}{% if grandparent %} grandparent kids-{{child_count}} {% elsif parent %} parent{% else %} child{% endif %}{% if link.active %} main-menu--active{% endif %}{% endcapture %}
 
 <div class="menu__item {{ classes }}"
   data-main-menu-text-item
@@ -50,44 +56,51 @@
     data-hover-disclosure-toggle="dropdown-{{ key }}"
     aria-controls="dropdown-{{ key }}"
   {% endif %}>
-  <a href="{{ link.url }}" data-top-link class="navlink navlink--toplevel{% if highlight_links contains link_title_handle %} highlight--link{% endif %}">
+  <a href="{{ link.url }}" data-top-link class="navlink navlink--toplevel">
     <span class="navtext">{{ link.title | escape }}</span>
   </a>
   {% if expands %}
-    <div class="header__dropdown"
+     <div class="header__dropdown"
       data-hover-disclosure
       id="dropdown-{{ key }}">
-      <div class="header__dropdown__wrapper">
+      <div class="header__dropdown__wrapper" style="padding: 0px">
         <div class="header__dropdown__inner">
           {%- if grandparent -%}
-          
-            {% if link.levels == 2 %}
+         
+          {% if link.levels == 2 %}
               {% for link in link.links %}
-                <div class="dropdown__family">
-                  {% assign link_title_handle = link.title | handle %}
-                  <a href="{{ link.url }}" data-stagger-first class="navlink navlink--child{% if link.active %} main-menu--active{% endif %}{% if highlight_links contains link_title_handle %} highlight--link{% endif %}">
+          		 
+                <div class="dropdown__family {% if link.levels == 1 %} parent-sub-menu{% endif %}" >
+                  <a href="{{ link.url }}" data-stagger-first class="navlink navlink--child{% if link.active %} main-menu--active{% endif %}">
                     <span class="navtext">{{ link.title | escape }}</span>
                   </a>
+                {% if link.levels == 1 %}
+                <div class="sub-menu">
                   {% for link in link.links %}
-                    {% assign link_title_handle = link.title | handle %}
-                    <a href="{{ link.url }}" data-stagger-second class="navlink navlink--grandchild{% if link.active %} main-menu--active{% endif %}{% if highlight_links contains link_title_handle %} highlight--link{% endif %}">
+                  
+                    <a href="{{ link.url }}" data-stagger-second class="navlink navlink--grandchild{% if link.active %} main-menu--active{% endif %}">
                       <span class="navtext">{{ link.title | escape }}</span>
                     </a>
+                  
                   {% endfor %}
+                  </div>
+              {% endif %}
                 </div>
               {% endfor %}
+          
             {% elsif link.levels == 1 %}
+          		      
               <div class="dropdown__family">
-                {% for link in link.links %}
-                  {% assign link_title_handle = link.title | handle %}
-                  <a href="{{ link.url }}" data-stagger class="navlink navlink--grandchild{% if link.active %} main-menu--active{% endif %}{% if highlight_links contains link_title_handle %} highlight--link{% endif %}">
-                    <span class="navtext">{{ link.title | escape }}</span>
+                
+                {% for sublink in sublink.links %}
+                    <a href="{{ sublink.url }}" data-stagger class="navlink navlink--grandchild{% if sublink.active %} main-menu--active{% endif %}">     
+                      <span class="navtext">{{ sublink.title | escape }}</span>fsdfsdaf
                   </a>
+         
                 {% endfor %}
-              </div>
+                 
             {% endif %}
-
-            {% for block in section.blocks %}
+             {% for block in section.blocks %}
               {% comment %} Render block content {% endcomment %}
               {%- if block.settings.position == index -%}
                 {% render 'header-block', block: block %}
@@ -95,10 +108,10 @@
             {% endfor %} 
 
           {%- else -%}
-            {% comment %} Simple dropdown {% endcomment %}
+          {% comment %} Simple dropdown {% endcomment %}
             {% for link in link.links %}
-              {% assign link_title_handle = link.title | handle %}
-              <a href="{{ link.url }}" data-stagger class="navlink navlink--child{% if link.active %} main-menu--active{% endif %}{% if highlight_links contains link_title_handle %} highlight--link{% endif %}">
+                
+              <a href="{{ link.url }}" data-stagger class="navlink navlink--child{% if link.active %} main-menu--active{% endif %}">
                 <span class="navtext">{{ link.title | escape }}</span>
               </a>
             {% endfor %} 

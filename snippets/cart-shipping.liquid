@@ -1,17 +1,24 @@
 <!-- /snippets/cart-shipping.liquid -->
-<div class="drawer__bottom__shipping drawer__accordion">
-  <button class="accordion__title"
-    data-accordion-trigger="accordion-cart-shipping"
-    aria-controls="accordion-{{ key }}"
-    aria-haspopup="true" 
-    aria-expanded="false">
-    {{ 'cart.shipping.estimate_shipping' | t }}
-  </button>
-  <div class="accordion__body drawer__accordion__body" 
-    data-accordion-body
-    id="accordion-cart-shipping">
-    <div class="shipping-calculator">
-      <div data-shipping-estimate-form>
+<div class="Section Section--GiftWrap border-top">
+    <div class="Panel">
+      <div class="panel-title">
+        <div> 
+          <p class="Panel__Title Heading Text--subdued">
+            <img src="//cdn.shopify.com/s/files/1/1991/6023/t/178/assets/Shipping_Icon.png?v=174908034734256565161653487298" alt="" class="cart-options-icon">
+            {{ 'cart.shipping.estimate_shipping' | t }}
+
+          </p>
+        </div>
+        <div class="panel-title-icon Panel__Title">
+          <svg class="Icon Icon--select-arrow" role="presentation" viewBox="0 0 19 12">
+              <polyline fill="none" stroke="currentColor" points="17 2 9.5 10 2 2" fill-rule="evenodd" stroke-width="2" stroke-linecap="square"></polyline>
+            </svg>
+        </div>
+      </div>
+
+      <div class="Panel__Content" id="accordion-cart-shipping" style="display: none;">
+            <div class="shipping-calculator">
+      <div data-shipping-estimate-form class="data-shipping-estimate-form">
 
         <div class="display-none">
           {%- comment -%}Required for Shopify address handlers{%- endcomment -%}
@@ -36,6 +43,7 @@
               data-default-fullname="{{ default_country }}"
             {% endif %}></select>
         </div>
+        
         <div class="p">
           <label class="small" for="estimate_address_province">{{ 'customer.addresses.province' | t }}</label>
           <select id="estimate_address_province" 
@@ -45,6 +53,7 @@
               data-default-fullname="{{ customer.default_address.province }}"
             {% endif %}></select>
         </div>
+  
         <div class="p">
           <label class="small" for="estimate_address_zip">{{ 'customer.addresses.zip' | t }}</label>
           <input id="estimate_address_zip" 
@@ -54,15 +63,18 @@
               value="{{ customer.default_address.zip }}"
             {% endif %} />
         </div>
+   
+        
       </div>
       
       <div data-response-wrapper aria-live="assertive"></div>
 
       <input type="button" data-submit-shipping class="btn btn--primary btn--outline btn--full uppercase shipping__rates__button" value="{{ 'cart.shipping.estimate_shipping' | t }}" />
     </div>
-</div>
-</div>
 
+      </div>
+    </div>
+  </div>
 <script data-response-template type="text/template">
   {% raw %}
     <ul class="shipping__rates {{it.class}}">

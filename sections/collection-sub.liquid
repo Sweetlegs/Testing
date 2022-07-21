@@ -5,7 +5,7 @@
 
   {%- if sub_collections.size > 0 -%}
     <div class="subcollections subcollections__grid--{{ sub_collections.size | at_most: 6 }}">
-      <div class="subcollections__inner ">
+      <div class="wrapper subcollections__inner ">
         {% for sublink in sub_collections limit: 6 %}
           {% if sublink.type == 'collection_link' %}
             {% assign sub_collection = collections[sublink.object.handle] %}

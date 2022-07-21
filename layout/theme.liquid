@@ -1,24 +1,18 @@
 <!doctype html>
-{% capture rtl_codes %},ar,arc,ckb,dv,fa,ha,he,khw,ks,ps,sd,ur,uz_AF,yi,{% endcapture %}
-{% assign is_code_separator = request.locale.iso_code | append: ',' | prepend: ',' %}
-{% assign is_rtl =  nil %}
-{% if rtl_codes contains is_code_separator %}
-  {% assign is_rtl =  true %}
-{% endif %}
-<html class="no-js" lang="{{ request.locale.iso_code }}" {% if is_rtl %} dir="rtl"{% endif %}>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
 
 {%- assign title_override = false -%}
 {%- assign default_description = false -%}
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="{{ settings.color_secondary }}">
   {%- if canonical_url != blank -%}
     <link rel="canonical" href="{{ canonical_url }}">
   {%- endif -%}
 
-  <!-- ======================= Pipeline Theme V6.2.0 ========================= -->
+  <!-- ======================= Pipeline Theme V6.1.3 ========================= -->
 
   <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
   <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
@@ -27,9 +21,10 @@
 
   <link rel="preload" href="{{ 'lazysizes.js' | asset_url }}" as="script">
   <link rel="preload" href="{{ 'vendor.js' | asset_url }}" as="script">
-  <link rel="preload" href="{{ 'theme.js' | asset_url }}" as="script">
+  <link rel="preload" href="{{ 'theme.dev.js' | asset_url }}" as="script">
   <link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style">
-
+  <script src="https://www.googleoptimize.com/optimize.js?id=OPT-WM57N3F"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.1.2/flickity.pkgd.min.js" defer=""></script>
   {% if product.featured_media.preview_image %}
     {%- assign media = product.featured_media -%}
     <link rel="preload" as="image" 
@@ -38,8 +33,7 @@
               {%- if media.preview_image.width >= 1100 -%}{{ media.preview_image | img_url: '1100x' }} 1100w,{%- endif -%}
               {%- if media.preview_image.width >= 1680 -%}{{ media.preview_image | img_url: '1680x' }} 1680w,{%- endif -%}
               {%- if media.preview_image.width >= 2048 -%}{{ media.preview_image | img_url: '2048x' }} 2048w,{%- endif -%}
-              {%- if media.preview_image.width >= 4096 -%}{{ media.preview_image | img_url: '4096x' }} 4096w
-              {%- else -%}{{ media.preview_image | img_url: 'master' }} {{ media.preview_image.width | append: 'w' }}{%- endif -%}"
+              {%- if media.preview_image.width >= 4096 -%}{{ media.preview_image | img_url: '4096x' }} 4096w{%- endif -%}"
       sizes="(min-width: 768px), 50vw, 
              100vw">
   {% endif %}
@@ -80,7 +74,6 @@
   {%- endif -%}
 
   {%- render 'social-meta-tags' -%}
-  
 
   <!-- CSS ================================================================== -->
   
@@ -89,7 +82,8 @@
   {% render 'css-variables' %}
 
   {{ 'theme.css' | asset_url | stylesheet_tag }}
-  {{ 'custom.css' | asset_url | stylesheet_tag }}
+    {{ 'custom.css' | asset_url | stylesheet_tag }}
+
 
   <script>
     document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
@@ -102,8 +96,7 @@
         root_url: root,
         cart: '{{ routes.cart_url }}',
         cart_add_url: '{{ routes.cart_add_url }}',
-        product_recommendations_url: '{{ routes.product_recommendations_url }}',
-        account_addresses_url: '{{ routes.account_addresses_url }}'
+        product_recommendations_url: '{{ routes.product_recommendations_url }}'
       },
       assets: {
         photoswipe: '{{ "photoswipe.js" | asset_url }}',
@@ -147,7 +140,7 @@
         name: 'pipeline'
       },
       moneyFormat: {{ shop.money_format | json }},
-      version: '6.2.0'
+      version: '6.1.3'
     }
     let windowInnerHeight = window.innerHeight;
     document.documentElement.style.setProperty('--full-screen', `${windowInnerHeight}px`);
@@ -168,7 +161,8 @@
   <!-- Theme Javascript ============================================================== -->
   <script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script>
   <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'theme.dev.js' | asset_url }}" defer="defer"></script>
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 
   <script>
     (function () {
@@ -201,12 +195,28 @@
 
   <!-- Shopify app scripts =========================================================== -->
   {{ content_for_header }}
-   {% render 'weglot_hreftags' %}
-  {% render 'weglot_switcher' %}
+  {% render 'wishlisthero-styles.liquid' %}
+  {% include 'judgeme_core' %}
+  {% include 'gtranslate-styles' %}
+
+<!-- START Loop OnStore CSS -->
+<style>
+#loop-onstore {
+  z-index: 10!important;
+}
+.loop-returns-activated #afterpay { display: none !important; }
+.loop-returns-activated .idme-shopify {
+    display: none;
+}
+.loop-returns-activated .afterpay-paragraph {
+    display: none;
+  }
+</style>
+<!-- END Loop OnStore CSS -->
+ 
 </head>
 
 <body id="{{ page_title | handle }}" class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} {{ settings.default_background }}{% if customer %} customer-logged-in{% endif %}">
-
   <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
   {% section 'announcement' %}
@@ -215,7 +225,7 @@
   <main class="main-content" id="MainContent">
     {{ content_for_layout }}
   </main>
-  {% include 'th-product-review' %}
+
   {% section 'footer' %}
 
   {% section 'popups' %}
@@ -224,21 +234,75 @@
     {% render 'search-predictive', version: 'search-popdown' %}
   </div>
 
+
   {% render 'template-swatch' %}
 
   <div data-modal-container></div>
-  <div data-upsell-container></div>
-  
+
   {%- comment -%}
     In order to use your custom javascript file at assets/custom.js
-    just cut and paste this next line outside this comment.
-    <script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>
+    just cut this next line and paste it outside this comment.
+    <script src="{{ 'custom.js?enable_js_minification=1' | asset_url }}" defer="defer"></script>
   {%- endcomment -%}
-
+<script src="{{ 'custom.js?enable_js_minification=1' | asset_url }}" defer="defer"></script>
   <!-- Paste popup code or third party scripts below this comment line ============== -->
 
+  <script>
+    jdgmSettings.revTabSelector = '#judgeme_widget';
+    document.addEventListener('DOMContentLoaded', function(){ 
+      jdgm.$( document ).ready(function() {
+        jdgm.$('.jdgm-preview-badge').on('click', function() {
+          jdgm.$(jdgmSettings.revTabSelector).click()
+        });
+      });
 
+      jdgm.$(document).ready( function(){ 
+        setTimeout( function() {
+          if(window.judgeme && (jdgm.$.urlParam('judgeme_token') || jdgm.$.urlParam('judgeme_follow_up_token')) ) {
+            jdgm.$(jdgmSettings.revTabSelector).click();
+          }
+        }, 100000);
+      });
+    });
+  </script>
+  
+  <script id="globaleScript">
+      (function () {
+        var reg = /showpro=(true|false)/i;
+        var showpro = ((reg.exec(document.location.search) || reg.exec(document.cookie) || [])[1] || "").toLowerCase();
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = '//gex.global-e.com/gempro/get/10000230' + (showpro ? '?showpro=' + showpro : '');
+        document.getElementsByTagName('head')[0].appendChild(s);
+        if (showpro) {
+          var cssElement = document.createElement('link');
+          cssElement.rel = 'stylesheet';
+          cssElement.id = 'GEPIStyles';
+          cssElement.href = '//gex.global-e.com/gempro/css/10000230?showpro=' + showpro;
+          document.cookie = 'showpro=' + showpro;
+          document.getElementsByTagName('head')[0].appendChild(cssElement);
+        }
+      })();
+    </script>
+  
   <!-- And above this comment line ================================================== -->
 
+<!-- This line added automatically by JSON-LD for SEO. -->{% include 'jsonld-for-seo' %}
+
+<!-- START Loop Shop Now On-Store Code -->
+<script src="https://unpkg.com/@loophq/onstore-sdk@latest/dist/loop-onstore-sdk.js"></script>
+<script> 
+	LoopOnstore.init({ 
+		key: "0fb8d91d897194614aa759ba555a1e9f554ff8dc", 
+		attach: ".checkout__button" 
+	});
+</script>
+<!-- END Loop Shop Now On-Store Code -->
+  
 </body>
 </html>
+
+// Hiding ID.me 7/13/2022
+<!-- 'idme-theme-style.css' | asset_url | stylesheet_tag }}
+ 'idme-theme-template.js' | asset_url | script_tag }} -->

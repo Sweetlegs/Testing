@@ -4,6 +4,7 @@
 {%- assign post_count = section.settings.homepage_blog_count -%}
 
 {% case post_count %}
+  {% when 0 %}
   {% when 1 %}
     {% assign blog_grid = 'medium-up--one-half medium-up--push-one-quarter' %}
   {% when 2 %}
