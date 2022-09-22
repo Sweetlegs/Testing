@@ -2763,14 +2763,14 @@ input[type=image]{
 
 select{
   background-position:100%;
-  background-image:url(//cdn.shopify.com/s/files/1/0461/5661/1749/t/16/assets/ico-select.svg);
+  background-image:url(//cdn.shopify.com/s/files/1/0461/5661/1749/t/17/assets/ico-select.svg);
   background-repeat:no-repeat;
   background-position:right 10px center;
   background-size:11px
 }
 
 .is-light select{
-    background-image:url(//cdn.shopify.com/s/files/1/0461/5661/1749/t/16/assets/ico-select-white.svg)
+    background-image:url(//cdn.shopify.com/s/files/1/0461/5661/1749/t/17/assets/ico-select-white.svg)
 }
 
 .faux-select .icon{
@@ -4021,7 +4021,7 @@ form+.footer__social{
     }
 
 .site-footer select{
-    background-image:url(//cdn.shopify.com/s/files/1/0461/5661/1749/t/16/assets/ico-select-footer.svg);
+    background-image:url(//cdn.shopify.com/s/files/1/0461/5661/1749/t/17/assets/ico-select-footer.svg);
   }
 
 [data-center-text=true] .payment-icons{
@@ -11706,4 +11706,21 @@ html[dir=rtl] .product-single__meta .rte{
 }
 .page-width-collection .collection-item__title {
   margin-left: 2rem;
+}
+
+a.site-nav__link.site-nav__link--underline {
+    letter-spacing: 0.2em;
+}
+
+a.site-nav__dropdown-link.site-nav__dropdown-link--top-level {
+letter-spacing: 0.1em;
+}
+
+.grid-product__title.grid-product__title--body {
+    letter-spacing: .0em;
+}
+
+.slideshow__slide .hero__image-wrapper, [data-aos=hero__animation] .hero__image-wrapper {
+    transform: translateX(0) !important;
+     transition: all 0s ease!important;
 }
