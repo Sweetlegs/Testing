@@ -1,355 +1,321 @@
-<footer class="site-footer-wrapper"
-  role="contentinfo"
-  data-section-id="{{ section.id }}"
-  data-section-type="footer">
-  {% if section.settings.footer_image %}
-    <div class="footer-logo-wrapper">
-      <a href="{{ routes.root_url }}" class="footer-logo" data-footer-logo>
-        <img src="{{ section.settings.footer_image | img_url: 'x200' }}" 
-          width="{{ section.settings.footer_image.width }}"
-          height="{{ section.settings.footer_image.height }}"
-          alt="{{ section.settings.footer_image.alt | default: shop.name | strip_html | escape }}"/>
-      </a>
-    </div>
-  {% endif %}
-  <div class="wrapper site-footer">
-    <div class="grid grid--uniform" data-accordion-group>
+{%- liquid
+  assign show_selectors = false
+  assign currency_selector = false
+  assign locale_selector = false
 
-      {% case section.blocks.size %}
-        {% when 0 %}
-        {% when 1 %}
-          {% assign footer_column_width = 'medium-up--one-half medium-up--push-one-quarter' %}
-        {% when 2 %}
-          {% assign footer_column_width = 'medium-up--one-half' %}
-        {% when 3 %}
-          {% assign footer_column_width = 'medium-up--one-third' %}
-        {% when 4 %}
-            {% assign footer_column_width = 'medium-up--one-quarter' %}
-      {% endcase %}
+  if section.settings.show_currency_selector and shop.enabled_currencies.size > 1
+    assign currency_selector = true
+  endif
 
-      {% for block in section.blocks %}
-        {% case block.type %}
-          {% when 'linklist' %}
-            {% assign linklist = linklists[block.settings.linklist] %}
-            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-              <p class="uppercase footer__title {{ block.settings.accordion_default }}"
-                data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
-                aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
-                aria-haspopup="true" 
-                aria-expanded="true">
-                  {{ linklist.title }}
-                  {% render 'icon-arrow-medium-right' %}
-              </p>
-              <ul class="footer-quicklinks" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">
-                {% for link in linklist.links %}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </div>
+  if section.settings.show_locale_selector and shop.enabled_locales.size > 1
+    assign locale_selector = true
+  endif
 
-          {% when 'page' %}
-            {% assign page = pages[block.settings.page] %}
-            {% if page == blank or page.empty? %}
-              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-                <p class="uppercase footer__title {{ block.settings.accordion_default }}"
-                  data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
-                  aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
-                  aria-haspopup="true" 
-                  aria-expanded="true">
-                    {{ shop.name }}
-                    {% render 'icon-arrow-medium-right' %}
-                </p>
+  if currency_selector or locale_selector
+    assign show_selectors = true
+  endif
+-%}
 
-                <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ 'home_page.onboarding.no_content' | t }}</div>
-              </div>
-            {% else %}
-              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-                <p class="uppercase footer__title {{ block.settings.accordion_default }}"
-                  data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
-                  aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
-                  aria-haspopup="true" 
-                  aria-expanded="true">
-                    {{ page.title | escape }}
-                    {% render 'icon-arrow-medium-right' %}
-                </p>
+{%- if settings.color_footer == settings.color_body_bg -%}
+  {%- style -%}
+    .site-footer {
+      border-top: 1px solid {{ settings.color_borders }};
+    }
+  {%- endstyle -%}
+{%- endif -%}
 
-                <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ page.content }}</div>
-              </div>
-            {% endif %}
+<footer class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer-section">
+  <div class="page-width">
 
-          {% when 'text' %}
-            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-              <p class="uppercase footer__title {{ block.settings.accordion_default }}"
-                data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
-                aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
-                aria-haspopup="true" 
-                aria-expanded="true">
-                  {{ block.settings.title | escape }}
-                  {% render 'icon-arrow-medium-right' %}
-              </p>
-              <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ block.settings.text }}</div>
-            </div>
+    <div class="grid">
+      {%- assign row_width = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- assign row_width = row_width | plus: block.settings.container_width -%}
+        {%- if row_width > 100 -%}
+          <div class="footer__clear small--hide"></div>
+          {%- assign row_width = row_width | minus: 100 -%}
+        {%- endif -%}
 
-          {% when 'newsletter' %}
-            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-              <p class="uppercase footer__title {{ block.settings.accordion_default }}"
-                data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
-                aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
-                aria-haspopup="true" 
-                aria-expanded="true">
-                  {{ block.settings.title }}
-                  {% render 'icon-arrow-medium-right' %}
-              </p>
-              <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">
-                {{ block.settings.richtext }}
-                
-                {% render 'newsletter-form' unique: 'footer-newsletter' %}
-              </div>
-            </div>
+        <div {{ block.shopify_attributes }} class="grid__item footer__item--{{ block.id }}" data-type="{{ block.type }}">
+          {%- style -%}
+            @media only screen and (min-width: 769px) and (max-width: 959px) {
+              .footer__item--{{ block.id }} {
+                width: 50%;
+                padding-top: 40px;
+              }
+              .footer__item--{{ block.id }}:nth-child(2n + 1) {
+                clear: left;
+              }
+            }
+            @media only screen and (min-width: 960px) {
+              .footer__item--{{ block.id }} {
+                width: {{ block.settings.container_width }}%;
+              }
 
-          {% else %}
-        {% endcase %}
-      {% endfor %}
+            }
+          {%- endstyle -%}
+
+          {%- liquid
+            case block.type
+              when 'logo_social'
+                render 'footer-logo', block: block
+              when 'custom'
+                render 'footer-custom-text', block: block
+              when 'newsletter'
+                render 'footer-newsletter', block: block
+              when 'menu'
+                render 'footer-menu', block: block
+            endcase
+          -%}
+        </div>
+      {%- endfor -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'logo' -%}
+          <div class="grid__item medium-up--hide">
+            {%- render 'footer-logo', block: block -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
     </div>
 
-    <div class="grid footer-secondary-wrapper">
-      <div class="footer-selects">
-        {%- form 'localization', class: 'popout--footer', id: 'localization-form-footer' -%}
-          {%- if section.settings.show_locale_selector and shop.published_locales.size > 1 -%}
-            {%- render 'select-locale', form: form, unique: 'localization-form-footer', wrapper_class: 'footer__select' -%}
-          {%- endif -%}
-          {%- if section.settings.show_currency_selector and shop.enabled_currencies.size > 1 -%}
-              {%- render 'select-currency', form: form, unique: 'localization-form-footer', select_type: section.settings.currency_select_type, wrapper_class: 'footer__select' -%}
-          {%- endif -%}
-        {%- endform -%}
+    {%- if show_selectors -%}
+      <div class="footer__section">
+        {%- render 'multi-selectors',
+          locale_selector: locale_selector,
+          currency_selector: currency_selector,
+          show_currency_flags: section.settings.show_currency_flags
+          location: 'footer'
+        -%}
       </div>
+    {%- endif -%}
 
-
-      <ul class="footer-secondary inline-list">
-          <li>&copy; {{ shop.name | link_to: routes.root_url }} {{ 'now' | date: "%Y" }}</li>
-        {% for link in linklists[section.settings.footer_secondary_linklist].links %}
-          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-        {% endfor %}
-
-
-        <!-- Remove the following line to delete 'Powered by Shopify' from your footer -->
-
-        <!-- Do not delete below this line -->
-
-
-      </ul>
-
-      {% if section.settings.footer_social_enable %}
-        <ul class="footer-social social-icons grid__item inline-list">
-          {%- assign social_accounts = 'Facebook, Twitter, Tiktok, Pinterest, Instagram, Snapchat, Tumblr, Linkedin, YouTube, Vimeo, Medium, ' | split: ', ' -%}
-          {%- for social in social_accounts -%}
-            {%- assign social_handle = social | handleize -%}
-            {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
-
-            {%- if settings[social_link] != blank -%}
-              <li>
-                <a href="{{ settings[social_link] }}" title="{{ social }}">
-                  {% render 'social-icon' handle: social_handle %}
-                  <span class="visually-hidden">{{ social }}</span>
-                </a>
-              </li>
-            {%- endif -%}
+    {%- if section.settings.show_payment_icons -%}
+      {%- unless shop.enabled_payment_types == empty -%}
+        <ul class="inline-list payment-icons footer__section">
+          {%- for type in shop.enabled_payment_types -%}
+            <li class="icon--payment">
+              {{ type | payment_type_svg_tag }}
+            </li>
           {%- endfor -%}
         </ul>
-      {% endif %}
+      {%- endunless -%}
+    {%- endif -%}
 
-      {% if section.settings.footer_payment_enable %}
-        {% unless shop.enabled_payment_types == empty %}
-        <ul class="footer-payment payment-icons inline-list">
-          {% for type in shop.enabled_payment_types %}
-          <li>
-            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
-            <span class="visually-hidden">{{ type | capitalize | replace: '_', ' ' }}</span>
-          </li>
-          {% endfor %}
-        </ul>
-        {% endunless %}
-      {% endif %}
+    {%- if section.settings.show_copyright -%}
+      <p class="footer__small-text">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+        {%- if section.settings.copyright_text != blank -%}
+          {{ section.settings.copyright_text }}
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+    <p class="footer__small-text">{{ powered_by_link }}</p>
 
-    </div>
   </div>
 </footer>
 
 {% schema %}
 {
-  "name": "Footer",
-  "max_blocks": 4,
+  "name": "t:sections.footer.name",
+  "max_blocks": 12,
   "settings": [
     {
-      "label": "Footer logo",
-      "type": "image_picker",
-      "id": "footer_image",
-      "info": "400 x 200px .png"
-    },
-    {
       "type": "header",
-      "content": "Bottom bar"
-    },
-    {
-      "type": "link_list",
-      "id": "footer_secondary_linklist",
-      "label": "Link List",
-      "info": "This menu won't show dropdown items"
-    },
-    {
-      "type": "checkbox",
-      "id": "footer_payment_enable",
-      "label": "Show payment types"
-    },
-    {
-      "type": "checkbox",
-      "id": "footer_social_enable",
-      "label": "Show social icons"
-    },
-    {
-      "type": "header",
-      "content": "language selector",
-      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+      "content": "t:sections.footer.settings.header_language_selector",
+      "info": "t:sections.footer.settings.header_language_selector"
     },
     {
       "type": "checkbox",
       "id": "show_locale_selector",
-      "label": "Show language selector",
+      "label": "t:sections.footer.settings.show_locale_selector.label",
       "default": true
     },
     {
       "type": "header",
-      "content": "Currency selector",
-      "info": "To add a currency, go to your [payment settings.](/admin/settings/payments)"
+      "content": "t:sections.footer.settings.header_currency_selector",
+      "info": "t:sections.footer.settings.header_currency_selector"
     },
     {
       "type": "checkbox",
       "id": "show_currency_selector",
-      "label": "Show currency selector",
+      "label": "t:sections.footer.settings.show_currency_selector.label",
       "default": true
     },
     {
-      "type": "select",
-      "id": "currency_select_type",
-      "label": "Type",
-      "options": [
-        {
-          "value": "currency",
-          "label": "Currency"
-        },
-        {
-          "value": "country",
-          "label": "Country"
-        }
-      ]
+      "type": "checkbox",
+      "id": "show_currency_flags",
+      "label": "t:sections.footer.settings.show_currency_flags.label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header_additional_footer_content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "t:sections.footer.settings.show_payment_icons.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_copyright",
+      "label": "t:sections.footer.settings.show_copyright.label"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "t:sections.footer.settings.copyright_text.label"
     }
   ],
-  "blocks" : [
+  "blocks": [
     {
-      "type": "linklist",
-      "name": "Link list",
+      "type": "logo_social",
+      "name": "t:sections.footer.blocks.logo.name",
+      "limit": 1,
       "settings": [
         {
-           "type": "link_list",
-           "id": "linklist",
-           "label": "Link list",
-           "default": "main-menu",
-           "info": "This menu won't show dropdown items"
+          "type": "image_picker",
+          "id": "logo",
+          "label": "t:sections.footer.blocks.logo.settings.logo.label"
         },
         {
-          "type": "select",
-          "id": "accordion_default",
-          "label": "Mobile accordion",
-          "default": "",
-          "options": [
-            { "value": "accordion-is-open", "label": "Open by default"},
-            { "value": "", "label": "Closed by default"}
-          ]
+          "type": "range",
+          "id": "desktop_logo_height",
+          "label": "t:sections.footer.blocks.logo.settings.desktop_logo_height.label",
+          "default": 50,
+          "min": 20,
+          "max": 120,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "container_width",
+          "label": "t:sections.footer.blocks.logo.settings.container_width.label",
+          "default": 25,
+          "min": 15,
+          "max": 95,
+          "unit": "%"
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "t:sections.footer.blocks.navigation.name",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_footer_title",
+          "label": "t:sections.footer.blocks.navigation.settings.show_footer_title.label"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "t:sections.footer.blocks.navigation.settings.menu.label",
+          "default": "footer",
+          "info": "t:sections.footer.blocks.navigation.settings.menu.info"
+        },
+        {
+          "type": "range",
+          "id": "container_width",
+          "label": "t:sections.footer.blocks.navigation.settings.container_width.label",
+          "default": 25,
+          "min": 15,
+          "max": 95,
+          "unit": "%"
         }
       ]
     },
     {
       "type": "newsletter",
-      "name": "Newsletter",
+      "name": "t:sections.footer.blocks.newsletter_and_social.name",
       "limit": 1,
       "settings": [
-	   {
-          "id": "title",
-          "type": "text",
-          "label": "Newsletter title",
-          "default": "Newsletter"
+        {
+          "type": "checkbox",
+          "id": "show_footer_title",
+          "label": "t:sections.footer.blocks.newsletter_and_social.settings.show_footer_title.label",
+          "default": true
         },
         {
           "type": "paragraph",
-          "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
+          "content": "t:sections.footer.blocks.newsletter_and_social.settings.content"
         },
-        {
-          "id": "richtext",
-          "type": "richtext",
-          "label": "Newsletter description",
-          "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
-        },
-        {
-          "type": "select",
-          "id": "accordion_default",
-          "label": "Mobile accordion",
-          "default": "",
-          "options": [
-            { "value": "accordion-is-open", "label": "Open by default"},
-            { "value": "", "label": "Closed by default"}
-          ]
-        }
-      ]
-    },
-    {
-      "type": "text",
-      "name": "Text",
-      "settings": [
         {
           "type": "text",
           "id": "title",
-          "label": "Heading",
-          "default": "Text column"
+          "label": "t:sections.footer.blocks.newsletter_and_social.settings.title.label",
+          "default": "Sign up and save"
         },
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
-          "default": "<p>Share store details, promotions, or brand content with your customers.</p>"
+          "label": "t:sections.footer.blocks.newsletter_and_social.settings.text.label",
+          "info": "t:sections.footer.blocks.newsletter_and_social.settings.text.info",
+          "default": "<p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
         },
         {
-          "type": "select",
-          "id": "accordion_default",
-          "label": "Mobile accordion",
-          "default": "",
-          "options": [
-            { "value": "accordion-is-open", "label": "Open by default"},
-            { "value": "", "label": "Closed by default"}
-          ]
+          "type": "range",
+          "id": "container_width",
+          "label": "t:sections.footer.blocks.newsletter_and_social.settings.container_width.label",
+          "default": 25,
+          "min": 15,
+          "max": 95,
+          "unit": "%"
         }
       ]
     },
     {
-      "type": "page",
-      "name": "Page",
+      "type": "custom",
+      "name": "t:sections.footer.blocks.custom_text.name",
       "settings": [
         {
-          "id": "page",
-          "type": "page",
-          "label": "Page"
+          "type": "checkbox",
+          "id": "show_footer_title",
+          "label": "t:sections.footer.blocks.custom_text.settings.show_footer_title.label",
+          "default": true
         },
         {
-          "type": "select",
-          "id": "accordion_default",
-          "label": "Mobile accordion",
-          "default": "",
-          "options": [
-            { "value": "accordion-is-open", "label": "Open by default"},
-            { "value": "", "label": "Closed by default"}
-          ]
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.footer.blocks.custom_text.settings.title.label",
+          "default": "Custom text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.footer.blocks.custom_text.settings.image.label"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.footer.blocks.custom_text.settings.text.label",
+          "default": "<p>Add your own custom text here.</p>"
+        },
+        {
+          "type": "range",
+          "id": "container_width",
+          "label": "t:sections.footer.blocks.custom_text.settings.container_width.label",
+          "default": 25,
+          "min": 15,
+          "max": 95,
+          "unit": "%"
         }
       ]
     }
-  ]
+  ],
+  "default": {
+    "settings": {},
+    "blocks": [
+      {
+        "type": "menu",
+        "settings": {}
+      },
+      {
+        "type": "logo_social",
+        "settings": {}
+      }
+    ]
+  }
 }
 {% endschema %}

@@ -1,18 +1,13 @@
-<!-- /snippets/comment.liquid -->
-{% comment %}
-  * This snippet generates the structure of a comment, including comments that were
-  * just published but not yet approved.
-  {% render 'comment', comment: comment %}
-{% endcomment %}
-
-<div class="comment">
-  <div class="rte">
-    {{ comment.content }}
+<div class="grid">
+  <div class="grid__item medium-up--one-quarter">
+    <span class="h5 comment-author">{{ comment.author }}</span>
+    <span class="comment-date">
+      {{ comment.created_at | time_tag: format: 'month_day_year' }}
+    </span>
   </div>
-
-  <span>
-    {% capture author %}<strong>{{ comment.author }}</strong>{% endcapture %}
-    {% capture date %}<strong><time datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">{{ comment.created_at | date: format: 'month_day_year' }}</time></strong>{% endcapture %}
-    {{ 'blogs.article.comment_meta_html' | t: author: author, date: date }}
-  </span>
+  <div class="grid__item medium-up--three-quarters">
+    <div class="rte">
+      {{ comment.content }}
+    </div>
+  </div>
 </div>

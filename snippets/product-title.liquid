@@ -1,0 +1,8 @@
+{% if product != blank %}
+  {% assign title = product.title | split: '-' %}
+  {% if title.size == 3 %}
+    {{title[0]}} - {{title[2]}}
+  {% else %}
+    {{product.title}}
+  {% endif %}
+{% endif %}

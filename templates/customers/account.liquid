@@ -1,120 +1,64 @@
-<!-- globale_my_account_globale_orders_list_include -->
-{% include 'globale-orders-list' %}
-<!-- /templates/customers/account.liquid -->
-{% comment %}
+{%- paginate customer.orders by 20 -%}
 
-  For all available customer liquid tags:
-    - http://docs.shopify.com/themes/liquid-variables/customer
-
-{% endcomment %}
-
-<div class="wrapper">
-
-{% paginate customer.orders by 10 %}
-
-  <header class="account-header pt2 pb0">
-    <h1 class="account-header__left title h5--body strong">{{ 'customer.account.title' | t }}</h1>
-    <div class="account-header__right">
-      {% if shop.metafields.sky_pilot.enabled %}
-        <a href="{% unless routes.root_url == '/' %}{{ routes.root_url }}{% endunless %}/apps/downloads/orders/{{ customer.id }}" class='btn--outline uppercase'>
-          {{ 'customer.account.digital_goods' | t }}
-        </a>
-      {% endif %}
-      <a href="{{ routes.account_logout_url }}" class="btn--link uppercase">{{ 'layout.customer.log_out' | t }}</a>
-    </div>
+<div class="page-width page-content">
+  <header class="section-header{% unless settings.type_headers_align_text %} section-header--with-link{% endunless %}">
+    <h1 class="section-header__title">{{ 'customer.account.title' | t }}</h1>
+    <a href="{{ routes.account_logout_url }}" class="btn btn--secondary btn--small section-header__link">{{ 'layout.customer.log_out'| t }}</a>
   </header>
-
-  <hr class="hr--small">
 
   <div class="grid">
 
-    <div class="grid__item two-thirds medium-down--one-whole">
+    <div class="grid__item medium-up--two-thirds">
+      <h2>{{ 'customer.orders.title' | t }}</h2>
 
-      <p class="uppercase strong">{{ 'customer.orders.title' | t }}</p>
+      {%- if customer.orders.size != 0 -%}
 
-      {% comment %}
-        If we have past orders, loop through each one
-      {% endcomment %}
-
-      {% if customer.orders.size != 0 %}
-
-        <div class="table-wrap">
-          <table class="full table--responsive">
-            <thead>
-              <tr>
-                <th>{{ 'customer.orders.order_number' | t }}</th>
-                <th>{{ 'customer.orders.date' | t }}</th>
-                <th>{{ 'customer.orders.payment_status' | t }}</th>
-                <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
-                <th>{{ 'customer.orders.total' | t }}</th>
+        <table class="table--responsive table--small-text">
+          <thead>
+            <tr>
+              <th>{{ 'customer.orders.order_number' | t }}</th>
+              <th>{{ 'customer.orders.date' | t }}</th>
+              <th>{{ 'customer.orders.payment_status' | t }}</th>
+              <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+              <th>{{ 'customer.orders.total' | t }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for order in customer.orders -%}
+              <tr class="table__section">
+                <td data-label="{{ 'customer.orders.order_number' | t }}">{{ order.name | link_to: order.customer_url }}</td>
+                <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | time_tag: format: 'date' }}</td>
+                <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
               </tr>
-            </thead>
-            <tbody>
-              {% for order in customer.orders %}
-                <tr>
-                  <td data-label="{{ 'customer.orders.order_number' | t }}"><strong class="text-link">{{ order.name | link_to: order.customer_url }}</strong></td>
-                  <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
-                  <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
-                  <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
-                  <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+            {%- endfor -%}
+          </tbody>
+        </table>
 
-      {% else %}
+        <hr class="hr--clear">
+
+      {%- else -%}
 
         <p>{{ 'customer.orders.none' | t }}</p>
 
-      {% endif %}
+      {%- endif -%}
     </div>
 
-    <div class="grid__item one-third medium-down--one-whole">
-      <p class="uppercase strong">{{ 'customer.account.details' | t }}</p>
+    <div class="grid__item medium-up--one-third">
+      <h3>{{ 'customer.account.details' | t }}</h3>
 
-      <p>
-      <strong>{{ customer.name }}</strong><br>
-      {% if customer.default_address != nil %}
+      <p class="h5">{{ customer.name }}</p>
 
-        {{ customer.default_address.address1 }}<br>
+      {{ customer.default_address | format_address }}
 
-        {% if customer.default_address.address2 != "" %}
-          {{ customer.default_address.address2 }}<br>
-        {% endif %}
-
-        {% if customer.default_address.city != "" %}
-          {{ customer.default_address.city }}<br>
-        {% endif %}
-
-        {% if customer.default_address.province_code != "" %}
-          {{ customer.default_address.province_code | upcase }}<br>
-        {% endif %}
-
-        {% if customer.default_address.zip != "" %}
-          {{ customer.default_address.zip | upcase }}<br>
-        {% endif %}
-
-        {% if customer.default_address.country != "" %}
-          {{ customer.default_address.country }}<br>
-        {% endif %}
-
-        {% if customer.default_address.phone != "" %}
-          {{ customer.default_address.phone }}
-        {% endif %}
-      {% endif %}
-      </p>
-
-      <p><a href="{{ routes.account_addresses_url }}">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
+      <p><a href="{{ routes.account_addresses_url }}" class="text-link">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
     </div>
 
   </div>
 
-  {% if paginate.pages > 1 %}
-    <div class="pagination">
-      {{ paginate | default_pagination: next: '&rarr;', previous: '&larr;' }}
-    </div>
-  {% endif %}
-  {% endpaginate %}
-
+  {%- if paginate.pages > 1 -%}
+    {%- render 'pagination', paginate: paginate -%}
+  {%- endif -%}
 </div>
+{%- endpaginate -%}

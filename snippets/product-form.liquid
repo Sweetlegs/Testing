@@ -1,350 +1,71 @@
-<!-- product-form.liquid -->
-{% capture meta_data %}
-  {% for variant in product.variants %}
-  	"{{ variant.id | json }}": {{ variant.metafields.my_fields.defects | json }}{% unless forloop.last %},{% endunless %}
-	{% endfor %}
-{% endcapture %}
-<script data-metadata-defects-json id="metafieldDefect" type="application/json">
-{ {{ meta_data }} }
-</script>
+{%- form 'product', product, id: form_id, class: 'product-single__form' -%}
 
-{% capture meta_color_data %}
-  {% for variant in product.variants %}
-  	"{{ variant.option1 }}": "{{ variant.metafields.my_fields.color_swatch }}"{% unless forloop.last %},{% endunless %}
-	{% endfor %}
-{% endcapture %}
-<script data-metadata-color-swatch-json id="metafieldColorSwatch" type="application/json">
-{ {{ meta_color_data }} }
-</script>
-
-{% assign current_variant = product.selected_or_first_available_variant %}
-
-
-{%- assign buybutton_setting = block.settings.enable_payment_button -%}
-{%- if product.selling_plan_groups.size > 0 -%}
-  {% assign buybutton_setting = false -%}
-{%- endif -%}
-
-{% assign buybutton_class = '' %}
-{% if buybutton_setting %}
-  {% assign buybutton_class = 'product__form--buybutton' %}
-{% endif %}
-
-{% if block.settings.info_page != blank %}
-  {%- capture size_translation -%}{{ 'general.size_chart.size' | t }}{%- endcapture -%}
   {%- liquid
-    assign size_chart_index = -1
-    assign size_translation = size_translation | lstrip | rstrip | downcase
-    for option in product.options
-      assign option_san = option | lstrip | rstrip | downcase
-      if option_san contains size_translation
-        assign size_chart_index = forloop.index0
-      endif
-    endfor
-    assign size_page = pages[block.settings.info_page] 
-
-    assign action_style = 'product__info__link--inline'
-    if size_chart_index == -1
-      assign action_style = 'product__info__link'
+    assign enable_dynamic_buttons = false
+    if show_dynamic_checkout and template != 'product.preorder'
+      assign enable_dynamic_buttons = true
     endif
   -%}
-{% endif %}
-{% capture size_chart %}
-  {% if block.settings.info_page != blank %}
-    <a href="{{ size_page.url }}" class="{{ action_style }}" data-popup-{{ section.id }}="size-{{ section.id }}">
-      {{ size_page.title }}
-    </a>
-    <div class="modal micromodal-slide" id="size-{{ section.id }}" data-modal aria-hidden="true">
-      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-        <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
-        <div class="modal__container modal__container--inline"
-          data-modal-content
-          role="dialog"
-          aria-modal="true"
-          aria-label="{{ size_page.title | strip_html | escape }}">
-          <div class="rte">{{ size_page.content }}</div>
-        </div>
-      </div>
+
+  {%- if enable_dynamic_buttons -%}
+    <div class="payment-buttons">
+  {%- endif -%}
+
+    {%- liquid
+      assign default_text = 'products.product.add_to_cart' | t
+      assign button_text = 'products.product.add_to_cart' | t
+      if template contains 'preorder'
+        assign default_text = 'products.product.preorder' | t
+        assign button_text = 'products.product.preorder' | t
+      endif
+      unless current_variant.available
+        assign button_text = 'products.product.sold_out' | t
+      endunless
+    -%}
+
+    <button
+      {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
+      name="add"
+      data-add-to-cart
+      class="btn btn--full add-to-cart{% if enable_dynamic_buttons and product.selling_plan_groups == empty %} btn--secondary{% endif %}"
+      {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+      <span data-add-to-cart-text data-default-text="{{ default_text }}">
+        {{ button_text }}
+      </span>
+    </button>
+
+    {%- if enable_dynamic_buttons -%}
+      {{ form | payment_button }}
+    {%- endif -%}
+
+  {%- if enable_dynamic_buttons -%}
     </div>
-  {% endif %}
-{% endcapture %}
+  {%- endif -%}
 
-<div class="product__form__outer {{ buybutton_class }}" {{ block.shopify_attributes }}>
-  {%- assign product_form_id = 'product-form-' | append: section.id | append: '-' | append: product.id -%}
-  {% form 'product', product, id: product_form_id, data-product-form: '', data-product-handle: product.handle %}
-	  {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price or product.tags contains 'final sale'-%}
-    	<input id="sale" type="hidden" name="properties[_LPROP]" value="Final Sale">
-      {% endif %}
-    {% comment %} The input with name="id" submits to cart {% endcomment %} 
-    <input type="hidden" name="id" value="{{ current_variant.id }}">
+  <div class="shopify-payment-terms product__policies">{{ form | payment_terms }}</div>
 
-    {% comment %} Shop pay split payment terms {% endcomment %} 
-    <div class="shop-pay-terms">{{- form | payment_terms -}}</div>
-
-    {% unless product.has_only_default_variant %}
-      <div class="form__selectors">
-        {% for option in product.options_with_values %}
-          {%- if settings.swatches_enable -%}
-            {% comment %} Determine if current option matches swatch handle translations {% endcomment %}
-            {%- capture swatch_translation -%}{{ 'general.swatches.color' | t }} {%- endcapture -%}
-            {%- assign translation_array = swatch_translation | append: ',' | split: "," | uniq -%}
-            {%- assign is_swatch_option = false -%}
-            {%- assign option_handle = option.name | downcase | lstrip | rstrip | escape_once -%}
-            {%- for translation in translation_array -%}
-              {%- assign translation_handle = translation | downcase | lstrip | rstrip | escape_once -%}
-              {%- if translation_handle == option_handle -%}
-                {%- assign is_swatch_option = true -%}
-                {% break %}
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-
-          {% unless option.name == 'Size' and option.values.size < 2 %}
-            <div class="selector-wrapper js" data-split-select-wrapper data-select-label="{{ option.name }}"  data-option-position="{{ option.position }}">
-              {%- if block.settings.variant_form == "button" or is_swatch_option -%}
-                <fieldset class="radio__fieldset">
-                  <legend class="radio__legend">
-                    <span class="radio__legend__label">{{ option.name | escape_once }}</span>
-                    <span data-option-value>{{ current_variant.option1 }}</span>
-                    {%- if size_chart_index == forloop.index0 -%}
-                      {{ size_chart }}
-                    {%- endif -%}
-                  </legend>
-
-                    {% for value in option.values %}
-                  	  {% assign variant = product.variants | where: "option1", value %}
-                      {% if variant[0].inventory_quantity >= 1 %}
-                        
-                        {% capture input_id %}{{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once }}{% endcapture %}
-
-                        {%- if is_swatch_option -%}
-
-                          {% assign mapped_swatch_color = value | escape_once %}
-                          {%- assign mappings = settings.swatch-mapping | split: ';' -%}
-
-                          {% for m in mappings %}
-                            {%- assign key_val = m | split: ':' -%}
-                            {%- assign key = key_val | first | downcase | lstrip | rstrip -%}
-                            {%- assign colors = key_val | last | split: ',' -%}
-                            {% assign in_mapping = false %}
-
-                            {% assign pdp_val_enc = value | downcase | lstrip | rstrip | url_encode | replace: 'amp%3B', '' %}
-                            {% for c in colors %}
-                              {% assign c_enc = c | downcase | lstrip | rstrip | url_encode %}
-                              {% if c_enc == pdp_val_enc %}
-                                {% assign in_mapping = true %}
-                              {% endif %}
-                            {% endfor %}
-
-                            {% if in_mapping %}
-                             {% assign mapped_swatch_color = key %}
-                             {% break %}
-                            {% endif %}
-                          {% endfor %}
-                          <span class="swatch__button" data-tooltip="{{ value | escape_once }}">
-                            
-                            <input type="radio"
-                                name="options[{{ option.name | escape_once }}]"
-                                value="{{ value | escape_once }}" 
-                                id="{{ input_id }}"
-                                variantId="{{option | json}}"
-                                vID="{{ variant[0].id }}"
-                                {%- if variant[0] == current_variant -%}checked{%- endif -%}>
-                            <label for="{{ input_id }}" data-value="{{ value | escape_once }}" data-swatch="{{ mapped_swatch_color }}" data-color-swatch="{{meta_color_data}}">
-                              <span class="visually-hidden">{{ value | escape_once }}</span>
-                            </label>
-                          </span>
-
-                        {%- else -%}
-                          {% comment %} radio button {% endcomment %}
-                          <span class="radio__button">
-                            <input
-                              type="radio"
-                              name="options[{{ option.name | escape_once }}]"
-                              value="{{ value | escape_once }}" id="{{ input_id }}"
-                              {%- if value == current_value -%}checked{%- endif -%}>
-                            <label for="{{ input_id }}">
-                              <span>{{ value | escape_once }}</span>
-                            </label>
-                          </span>
-                        {%- endif -%}
-
-                      {% endif %}
-                    {% endfor %}
-
-                  </fieldset>
-                {%- else -%}
-                <fieldset class="select__fieldset">
-                  {% capture input_id %}{{product.id}}-option-{{ option.position }}{% endcapture %}
-                  <label class="select__label" for="{{ input_id }}">
-                    {{ option.name }}
-                    {%- if size_chart_index == forloop.index0 -%}
-                      {{ size_chart }}
-                    {%- endif -%}
-                  </label>
-                  <select class="product__form__select"
-                    id="{{ input_id }}"
-                    name="options[{{ option.name | escape_once }}]">
-                    {% for value in option.values %}
-                      <option
-                        value="{{ value | escape_once }}"
-                        {% if option.selected_value == value %} selected="selected"{% endif %}>
-                        {{ value | escape_once }}
-                      </option>
-                    {% endfor %}
-                  </select>
-                </fieldset>
-              {%- endif -%}
-            </div>
-          {% endunless %}
-
-        {% endfor %}
-      </div>
-    {% endunless %}
-
-    <noscript>
-      <select id="variantSelected" name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' | strip_html | escape }}">
-        {% for variant in product.variants %}
-          <option
-            {% if variant == current_variant %}selected="selected"{% endif %}
-            {% unless variant.available %}disabled="disabled"{% endunless %}
-            value="{{ variant.id }}" metafield="{{current_variant.metafields.my_fields.defects}}">
-              {{ variant.title }}
-          </option>
-        {% endfor %}
-      </select>
-    </noscript>
-
-    {%- if product.selling_plan_groups.size > 0 -%}
-      {% if block.settings.subscriptions_enable_selectors %}
-        {% render 'subscription-form', product: product %}
+  <select name="id" data-product-select class="product-single__variants no-js">
+    {%- for variant in product.variants -%}
+      {%- if variant.available -%}
+        <option {% if variant == product.selected_or_first_available_variant %}
+          selected="selected"{% endif %}
+          value="{{ variant.id }}">
+          {{ variant.title }} - {{ variant.price | money_with_currency }}
+        </option>
+      {%- else -%}
+        <option disabled="disabled">
+          {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+        </option>
       {%- endif -%}
-      {% comment %} Delete the following line to block the theme from updating subscription prices {% endcomment %} 
-      <span data-subscription-watch-price></span>
-    {%- endif -%}
+    {%- endfor -%}
+  </select>
 
-    {% if block.settings.show_quantity %}
-      <div class="quantity__wrapper" data-quantity-selector>
-        <button class="quantity__button quantity__button--minus" data-decrease-quantity>&minus;</button>
-        <input data-quantity-input
-          aria-label="{{ 'cart.label.quantity' | t }}"
-          class="quantity__input"
-          type="number"
-          min="1"
-          size="4"
-          pattern="[0-9]*"
-          name="quantity"
-          value="1"/>
-        <button class="quantity__button quantity__button--plus" data-increase-quantity>+</button>
-      </div>
-    {% endif %}
-
-
-    {%- if block.settings.show_remaining or size_chart_index == -1 -%}
-      {% assign packed_class = '' %}
-      {%- if block.settings.show_remaining and size_chart_index == -1 -%}
-        {% assign packed_class = 'product__button__meta--packed' %}
-      {%- endif -%}
-      <div class="product__button__meta {{ packed_class }}">
-        {%- if size_chart_index == -1 -%}
-          {{ size_chart }}
-        {%- endif -%}
-
-        {%- if block.settings.show_remaining -%}
-          {%- assign max_inventory = 10 -%}
-          {%- assign show_remaining_class = '' -%}
-          {%- assign current_inventory = 0 -%}
-
-          {%- if current_variant.inventory_policy == 'deny' and current_variant.inventory_management -%}
-            {%- if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= max_inventory -%}
-              {%- assign show_remaining_class = 'variant__countdown--show' -%}
-              {%- assign current_inventory = current_variant.inventory_quantity -%}
-            {%- endif -%}
-          {%- endif -%}
-
-          {% capture inventory %}
-            <span data-remaining-max="{{ max_inventory }}" data-remaining-count>{{ current_inventory | default: 0 }} </span>
-          {% endcapture %}
-          <p class="variant__countdown {{ show_remaining_class }}" data-remaining-wrapper>
-            {{ 'products.product.remaining_html' | t: inventory: inventory }}
-          </p>
-
-          <script data-product-remaining-json type="application/json">
-            {
-              {%- for variant in product.variants -%}
-                {%- assign maximum = 11 -%}
-                {%- assign quant = maximum | plus: 10 -%}
-                {%- if variant.inventory_policy == 'deny' and variant.inventory_management -%}
-                  {%- assign quant = variant.inventory_quantity | at_most: maximum -%}
-                {%- endif -%}
-                "{{ variant.id | json }}": "{{ quant | json }}"{%- unless forloop.last -%},{%- endunless -%}
-              {%- endfor -%}
-            }
-          </script>
-
-        {%- endif -%}
-
-      </div>
-    {%- endif -%}
-
-    <div class="product__submit" data-buttons-wrapper data-add-action-wrapper>
-
-      <div data-add-action-errors class="add-action-errors"></div>
-
-      {% assign button_text = 'products.product.add_to_cart' | t %}
-      {% if product.tags contains '_preorder' %}
-        {% assign button_text =  'products.product.pre_order' | t %}
-      {% endif %}
-      {% unless current_variant.available %}
-        {% assign button_text =  'products.product.sold_out' | t %}
-      {% endunless %}
-      <div class="product__submit__buttons">
-        <button
-          type="submit"
-          name="add"
-          class="btn btn--primary btn--large uppercase btn--add-to-cart"
-          data-add-to-cart
-          {% unless current_variant.available %}disabled="disabled"{% endunless %}>
-          <span class="btn-state-ready">
-            <span data-add-to-cart-text>
-              {{ button_text }}
-            </span>
-            <span>•</span>
-            <span data-button-price>{{ current_variant.price | money }}</span>
-          </span>
-
-          <span class="btn-state-loading">
-            <svg height="18" width="18" class="svg-loader">
-              <circle r="7" cx="9" cy="9" />
-              <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
-            </svg>
-          </span>
-
-          <span class="btn-state-complete">&nbsp;</span>
-        </button>
-
-        {% if buybutton_setting %}
-          <div class="product__submit__quick">
-            {{ form | payment_button }}
-          </div> 
-        {% endif %}
-
-      </div>
-    </div>
-
-
-    <div id="FinalSalePriceMessageId" class="FinalSalePriceMessage final-sale-message" style="display: {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}block{%- else -%}none{%- endif -%};">
-      {%- unless product.tags contains 'final sale'-%}
-        {{ section.settings.final_sale_price }}
-      {%- endunless -%}
-    </div>
-   
-
-    {%- if product.tags contains 'final sale'-%}
-    <div class="FinalSalePriceMessage final-sale-message">
-      {{ section.settings.final_sale_tag }}
-    </div>
-    {%- endif -%}
-    <p id="variantDefectMessage">{{current_variant.metafields.my_fields.defects}}</p>
-  {% endform %}
-</div>
+  <textarea data-variant-json class="hide" aria-hidden="true" aria-label="Product JSON">
+    {{ product.variants | json }}
+  </textarea>
+  {%- if product.options.size > 1 -%}
+    <textarea data-current-variant-json class="hide" aria-hidden="true" aria-label="Variant JSON">
+      {{ current_variant | json }}
+    </textarea>
+  {%- endif -%}
+{%- endform -%}
