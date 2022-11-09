@@ -1,0 +1,51 @@
+{%- assign meta_position = 2 -%}
+<div id="breadcrumbs" class="{{ collection.handle }}">
+  <span property="itemListElement" typeof="ListItem">
+    <a property="item" typeof="WebPage" title="{{ 'general.breadcrumb.home' | t | escape }}" href="{{ shop.url }}" class="inactiveLink">
+      <span property="name">{{ 'general.breadcrumb.home' | t | escape }}</span>
+    </a>
+    <meta property="position" content="1" />
+  </span>
+  &gt;
+  {%- if template.name == 'search' or template.name == 'product' or collection and collection.handle != 'all' -%}
+  {%- assign meta_position = 3 -%}
+  <span property="itemListElement" typeof="ListItem">
+    <a property="item" typeof="WebPage" title="{{ 'general.breadcrumb.all_products' | t | escape }}" href="/collections/all" class="inactiveLink">
+      <span property="name">{{ 'general.breadcrumb.all_products' | t | escape }}</span>
+    </a>
+    <meta property="position" content="2" />
+  </span>
+  &gt;
+  {%- endif -%}
+  {%- if template.name == 'article' -%}
+  {%- assign meta_position = 3 -%}
+  <span property="itemListElement" typeof="ListItem">
+    <a property="item" typeof="WebPage" title="{{ blog.title }}" href="{{ blog.url }}" class="inactiveLink">
+      <span property="name">{{ blog.title }}</span>
+    </a>
+    <meta property="position" content="2" />
+  </span>
+  &gt;
+  {%- endif -%}
+  <span property="itemListElement" typeof="ListItem">
+    <span property="name">
+      {%- if collection and collection.handle == 'all' -%}
+      	{{ 'general.breadcrumb.all_products' | t | escape }}
+	  {% elsif template.name == 'collection' %}
+      	{{ collection.title }}
+      {% else %}
+      	{{ page.title }}
+      {% endif %}
+      
+    </span>
+    <meta property="position" content="{{ meta_position }}" />
+  </span>
+</div>
+
+<style>
+.inactiveLink {
+   pointer-events: none;
+   cursor: default;
+}
+
+</style>

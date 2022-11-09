@@ -1,0 +1,41 @@
+<style>
+  .maternityLogo-wrapper{
+    padding: 150px 0px;
+    background: #F5969E;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  
+  .maternityLogo-image{
+    width: 35%;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .maternityLogo-image{
+      width: auto;
+    }
+    .maternityLogo-wrapper{
+      padding: 75px 0px;
+    }
+  }
+</style>
+
+<div class="container-fluid maternityLogo-wrapper">
+  <div class="row maternityLogo-image">
+    <img data-aos="fade-up" data-aos-duration="2000" src="https://cdn.shopify.com/s/files/1/2445/2869/files/maternity-logo.png?v=1641229191" alt="SweetLegs Maternity Logo">
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Banner Logo",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

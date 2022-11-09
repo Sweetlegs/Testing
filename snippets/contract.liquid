@@ -1,0 +1,419 @@
+<style>
+  .arrow2 {
+    animation: slide2 1s ease-in-out infinite;
+    margin-top: -60px;
+  }
+  .fa-long-arrow-right:before {
+    font-size: 40px;
+    color: #ED3393;
+  }
+  .visibiltyHidden {
+    visibility: hidden;
+    height: 0px;
+  }
+  .resizeableDiv {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+  }
+  .please-wait-text {
+    color: white;
+    font-weight: bold;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    display: none;
+  }
+  .step_three_contract {   
+      text-align: center; 
+      display: none; 
+      justify-content: center; 
+      align-items: center; 
+      width: 100%;
+      margin: auto;
+     bottom: 50px;
+    left: 0px;
+  }
+  .step_three_contract .submit_text {
+    width: 100%;
+    background:#ED3393;
+    color: white;
+    height: 50px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    font-weight: bold;
+    cursor:  pointer;
+  }
+.bounce {
+  background: #ED3393;
+  animation: bounce 1s ease 3;
+}
+.smile-launcher-frame {
+  display: none;
+}
+.lds-ellipsis div {
+  background: white!important;
+}
+#layoutViewport {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+}
+#bottombar {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: red;
+  transform-origin: left bottom;
+  transform: translate(0px, 0px) scale(1);
+}
+@keyframes bounce {
+    70% { transform:translateY(0%); }
+    80% { transform:translateY(-20%); }
+    90% { transform:translateY(0%); }
+    95% { transform:translateY(-20%); }
+    97% { transform:translateY(0%); }
+    99% { transform:translateY(-5%); }
+    100% { transform:translateY(0); }
+}
+
+@keyframes slide2 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+
+  50% {
+    transform: translate(10px, 10px) rotate(45deg);
+  }
+}
+
+  @media only screen and (max-width: 800px) {
+    .resizeableDiv{
+      font-size: 10px;
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+  .resizeableDiv{
+    font-size: 6px;
+  }
+  .fa-long-arrow-right:before {
+    font-size: 30px;
+  }
+}
+
+
+</style>
+{% unless customer  %}
+<script type="text/javascript">
+  window.location = "/account/login?return_url=/pages/sign-the-contract";
+</script>
+{% endunless %}
+{%- include 'language-selector' -%}
+{%- section 'sign-contract-heading' -%}
+<div class="english-version">
+  <div id="contract-image-cnt" class="image-cnt" style="position:relative;">
+      <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/ID_contract_eng_68644db2-c732-4392-8797-d5064c4e1c8c.png?v=1666297296" id="contract-signature-pad" usemap="#image-map">
+      <map name="image-map">
+          <area class="date-area" coords="1212,446,1580,470" shape="rect">
+          <area class="name-area" coords="138,521,498,549" shape="rect">
+          <area class="address-area" coords="988,520,1700,547" shape="rect">
+          <area class="signature-area" coords="196,7606,775,7684" shape="rect">
+          <area class="name-area-footer" coords="290,7777,787,7814" shape="rect">
+      </map>
+  </div>
+</div>
+
+<div class="french-version visibiltyHidden">
+  <div id="contract-image-cnt-fr" class="image-cnt" style="position:relative;">
+      <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/ID_contract_FR.png?v=1666297832" id="contract-signature-pad-fr" usemap="#image-map-fr">
+      <map name="image-map-fr">
+          <area class="date-area" coords="1061,475,1422,504" shape="rect">
+          <area class="name-area" coords="1286,526,1645,543" shape="rect">
+          <area class="address-area" coords="573,563,1283,586" shape="rect">
+          <area class="signature-area" coords="203,8004,785,8067" shape="rect">
+          <area class="name-area-footer" coords="282,8168,787,8203,281,8158" shape="rect">
+      </map>
+  </div>
+</div>
+<div class="step_three_contract">
+  <div class="loading-container">
+      <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    <div class="please-wait-text">Please wait ...</div>
+  </div>
+      <div class="submit_text">SUBMIT</div>
+</div>
+
+ {%- include 'signature-pad-popup' -%}  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+<script>
+var portrait = window.innerWidth < window.innerHeight;
+var PleaseRotateOptions = {
+    onlyMobile: true,
+}
+const customerName = `{{ customer.name }}`;
+const customerAddress = `{{ customer.default_address.address1 | append: ', ' | append: customer.default_address.city | append: ', ' | append: customer.default_address.province_code | append: ', '  | append: customer.default_address.zip}}`;
+$(document).ready(function(e) {
+
+  
+setTimeout(function() {
+$('area').each(function( index ) {
+      let e = document.createElement('button');
+      const addClassButton = `resizeableDiv ${$(this).attr('class')}`
+      $(e).addClass(addClassButton);
+      const coordiante =  $(this).attr('coords').split(',');
+      let adjX = parseInt(coordiante[0]);
+      let adjY = parseInt(coordiante[1]);
+      let width = parseInt(coordiante[2]) - parseInt(coordiante[0]);
+      let height = parseInt(coordiante[3]) - parseInt(coordiante[1]);   
+      $(e).css("left",adjX);
+      $(e).css("top",adjY);
+       $(e).css("z-index",99999);
+      $(e).css("position",'absolute');
+      $(e).css("height", height);
+      $(e).css("width", width);
+      $(this).parent().parent().append(e);
+     if($(this).attr('class') == 'date-area') {
+       var d = new Date();
+       var datestring = (d.getMonth()+1)  + "/" + d.getDate()  + "/" + d.getFullYear();
+        $(e).html(datestring)  
+     }
+      if($(this).attr('class') == 'name-area' || $(this).attr('class') == 'name-area-footer') {
+         $(e).html(customerName)  
+      } else if($(this).attr('class') == 'address-area') {
+        $(e).html(customerAddress)
+      }
+      if($(this).attr('class') == 'signature-area') {
+        $(e).addClass('signature-pad-button');  
+        $(this).parentsUntil('.contract-image-cnt').find('.signature-area.signature-pad-button').empty().append(` <i class="fa fa-long-arrow-right arrow2" aria-hidden="true"></i>`);
+      }
+  })
+  }, 2500);
+class ImageResize {
+  /**
+   * constructor - make image maps responsive
+   * @param {Object} config - setting for responsive image map
+   */
+  constructor(config) {
+    const { width, height, element } = config;
+
+    this.imageW = width;
+    this.imageH = height;
+    this.imageMap = document.querySelector(element);
+    const mapId = this.imageMap.getAttribute('usemap');
+    const mapElem = `map[name="${mapId.substring(1, mapId.length)}"]`;
+    const area = document.querySelector(mapElem).children;
+    this.areaArray = Array.from(area);
+
+    window.addEventListener('resize', this.resizeEvent);
+    setTimeout(this.imgMap, 500);
+  }
+  /**
+   * getCoords - get image map coordinates
+   * @param  {Node} elem - area tag
+   * @return {String} - area map coordinates
+   */
+  getCoordinates = (elem) => {
+    let areaCords = elem.dataset.coords;
+
+    if (!areaCords) {
+      areaCords = elem.getAttribute('coords');
+
+      elem.dataset.coords = areaCords;
+    }
+
+    return areaCords;
+  };
+  imgMap = () => {
+    this.wPercent = this.imageMap.offsetWidth / 100;
+    this.hPercent = this.imageMap.offsetHeight / 100;
+
+    this.areaArray.forEach(this.areaLoop);
+  };
+  /**
+   * areaLoop - Loop through area tags for image map
+   * @param  {Node} area - Area tag
+   */
+  areaLoop = (area) => {
+    const coordinates = this.getCoordinates(area).split(',');
+    const coordsPercent = coordinates.map(this.mapCoords).join();
+
+    area.setAttribute('coords', coordsPercent);
+  };
+  /**
+   * mapCoords - Set new image map coordinates based on new image width and height
+   * @param  {String} coordinate - coordinates from image map array
+   * @param  {Num} index - Loop index
+   * @return {Num} - New image map coordinates
+   */
+  mapCoords = (coordinate, index) => {
+    const parseCord = parseInt(coordinate, 10);
+
+    return index % 2 === 0
+      ? this.coordinatesMath(parseCord, this.imageW, this.wPercent)
+      : this.coordinatesMath(parseCord, this.imageH, this.hPercent);
+  };
+  /**
+   * coordinatesMath Set new coordinates from original image map coordinates
+   * @param  {number} coordinates - original image map coordinate
+   * @param  {number} imgVal - Image width or height value
+   * @param  {number} percentVal - New image width or height divided by 100
+   * @return {number} - New image map coordinates
+   */
+  coordinatesMath = (coordinates, imgVal, percentVal) =>
+    (coordinates / imgVal) * 100 * percentVal;
+
+  /**
+   * resizeEvent - Resize Event
+   */
+  resizeEvent = () => {
+    this.imgMap();
+  };
+}
+
+const resizeImg = new ImageResize({
+  width: 1836,
+  height: 8170,
+  element : '#contract-signature-pad'
+})
+  
+const resizeImgFrench = new ImageResize({
+  width: 1836,
+  height: 8574,
+  element : '#contract-signature-pad-fr'
+})
+
+
+$(window).resize(function() {
+  $('.resizeableDiv').each(function(i, obj) {
+    let className = $(obj).attr('class').replace('resizeableDiv ', "");
+    className = className.replace(' signature-pad-button', "");
+    const parent = $(this);
+     setTimeout(function(){
+         const coordiante =  parent.parent().find(`area.${className}`).attr('coords').split(',');
+        let x = parseInt(coordiante[0]);
+        let y = parseInt(coordiante[1]);
+        let width = parseInt(coordiante[2]) - parseInt(coordiante[0]);
+        let height = parseInt(coordiante[3]) - parseInt(coordiante[1]);
+        $(obj).css("left",x);
+        $(obj).css("top",y);
+        $(obj).css("height", height);
+        $(obj).css("width", width);   
+     }, 500);    
+  })
+});
+
+
+function open_signature_pad(ClassName){
+    $('.wrapper').css("display", "flex");
+    let canvas = document.getElementById('signature-pad-modal');
+    function resizeCanvas() {     
+      var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+      canvas.width = canvas.offsetWidth * ratio;
+      canvas.height = canvas.offsetHeight * ratio;
+      canvas.getContext("2d").scale(ratio, ratio);
+    }
+
+    window.onresize = resizeCanvas;
+    resizeCanvas();
+
+    signaturePad = new SignaturePad(canvas, {
+      backgroundColor: 'rgb(255, 255, 255,0)'
+    });
+
+    document.getElementById('save-png').addEventListener('click', function () {    
+      const imgClassName = `img.square.${ClassName}`;
+      if($(imgClassName).length > 0) {
+        return;
+      }   
+      if (signaturePad.isEmpty()) {
+        return alert("Please provide a signature first.");
+      }
+    });
+
+    document.getElementById('clear').addEventListener('click', function () {
+      signaturePad.clear();
+    });
+    
+    // close signature pad
+    document.getElementsByClassName('svg_container')[0].addEventListener('click', function(e){
+      $('.wrapper').css("display", "none");
+    });
+  }
+
+  $('.subscribebtn').click(function() {
+       var data = signaturePad.toDataURL('image/png');
+        let e = document.createElement('img');
+        const areaClass = `area.signature-area`
+        const coordiante =  $(areaClass).attr('coords').split(',');
+        let adjX = parseInt(coordiante[0]);
+        let adjY = parseInt(coordiante[1]);
+        let width = parseInt(coordiante[2]) - parseInt(coordiante[0]);
+        let height = parseInt(coordiante[3]) - parseInt(coordiante[1]);   
+        $(e).attr('src', data);
+        $(`.signature-pad-button.signature-area`).append(e);
+       $('.step_three_contract').css("display", "flex");
+    $('.step_three_contract').addClass("bounce");
+      $('.wrapper').css("display", "none");
+  })
+
+  $(document).on("click",".signature-pad-button",function() {	
+    $('.arrow2').remove();
+    clickedBoxClass = $(this).attr('class').replace('signature-pad-button ', "");;
+    open_signature_pad($(this).attr('class'));
+});
+
+$('.step_three_contract .submit_text').on('click', function(e) {
+  $('.submit_text').css('display', 'none');
+  $('.lds-ellipsis').css('display', 'flex');
+  $('.please-wait-text').css('display', 'block');
+  
+  var domNode = document.getElementById('contract-image-cnt')
+  if(localStorage.getItem('language') == 'french') {
+    domNode = document.getElementById('contract-image-cnt-fr')
+  }
+  var scale = 1200/domNode.clientWidth;
+
+   var options = {
+           width: domNode.clientWidth * scale,
+           height: domNode.clientHeight * scale,
+           style: {
+              transform: 'scale('+scale+')',
+              transformOrigin: 'top left'
+            }
+      };
+
+   domtoimage.toJpeg(domNode, options)
+    .then(function (dataUrl) {
+      var img = new Image();
+      img.src = dataUrl;
+      customerId = `{{customer.id}}`;
+      $.ajax({
+          url : `https://sweetlegs.rocks/api/distributor-onboarding/step3/contract`,
+          type : 'POST',
+          data: {
+            customerId: customerId,
+            img: img.src
+          },
+          success : function(data) {
+              window.location = "/pages/id-sign-up-dashboard";
+         }
+    });
+     
+    })
+    .catch(function (error) {
+      console.error('oops, something went wrong!', error);
+    });
+}) 
+
+
+
+})
+</script>
+ {{ 'pleaserotate.min.js' | asset_url | script_tag }}
+

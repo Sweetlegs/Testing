@@ -1,0 +1,160 @@
+<div class="modal fade id-locator" style="background: rgba(0,0,0,0.5);" id="locatorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Map Marker Details</h5>
+        <button type="button" class="X-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form  id="id-locater">
+        <div class="modal-body">
+          <input type="hidden" id="distributorId" name="customer_id" value="{{ customer.id }}" />
+          <input type="hidden"  name="store_id" value="{{ settings.store_id }}" />
+          <div class="form-row form-row-wide hide" id="storeName">
+            <p class="minimal-form-input has-text">
+              <label for="store-name">
+                <span class="text"><span class="text-inner">Store Name</span></span>
+              </label>
+              <input type="text" class="input-text" name="store" id="store-name" value="" readonly/>
+            </p>
+          </div>
+
+          <!--     SOCIALS     -->
+          <span class="requiredText"><span class='pink'>*</span> Required Information</span>
+          <div class="form-row form-row-wide">
+            <p class="minimal-form-input has-text">
+              <label for="First Name">
+                <span class="text"><span class="text-inner pink">First Name</span></span>
+              </label>
+              <input autocomplete='off' type="text" id="firstName" name="firstName" value="{{ customer.first_name }}" />
+            </p>
+          </div>
+
+          <div class="form-row form-row-wide">
+            <p class="minimal-form-input has-text">
+              <label for="facebook">
+                <span class="text"><span class="text-inner pink">Website Link</span></span>
+              </label>
+              <input autocomplete='off' type="text" class="input-text" name="facebook" id="facebook" value="" placeholder="https://www.facebook.com/pages/" />
+            </p>
+          </div>
+
+
+          <div class="form-row form-row-wide">
+            <p class="minimal-form-input has-text">
+              <label for="new-phone">
+                <span class="text"><span class="text-inner pink">Email</span></span>
+              </label>
+              <input autocomplete='off' type="text" class="input-text" name="email" id="email" value="{{ customer.email }}" />
+            </p>
+          </div>
+
+          <div class="form-row form-row-wide">
+            <p class="minimal-form-input has-text">
+              <label for="new-phone">
+                <span class="text"><span class="text-inner pink">{{ 'customer.addresses.phone' | t }}</span></span>
+              </label>
+              <input autocomplete='off' type="text" class="input-text" name="phone" id="phone" value="{{ customer.phone }}" />
+            </p>
+          </div>
+
+
+
+          <!-- 	ADDRESSES	 -->
+          <div class="form-row form-row-wide">
+            <p class="minimal-form-input has-text">
+              <label for="address">
+                <span class="text"><span class="text-inner">Street Address</span></span>
+              </label>
+              <input autocomplete='off' type="text" class="input-text" name="address" id="address" value="{{ customer.default_address.address1 }}" />
+            </p>
+          </div>
+
+          <div class="form-row form-row-wide">
+            <p class="minimal-form-input has-text">
+              <label for="lat">
+                <span class="text"><span class="text-inner">City<span class="pink" style="padding:5px">*</span></span></span>
+              </label>
+              <input autocomplete='off' required type="text" class="input-text" name="city" id="city" value="{{ customer.default_address.city }}" />
+            </p>
+          </div>
+
+          <div class="form-row form-row-wide" style="margin-top:25px;">
+            <p class="minimal-form-input has-text">
+              <label for="AddressCountryNew">{{ 'customer.addresses.country' | t }}<span class="pink" style="padding:5px">*</span></label>
+              <span class="variation-select">
+                <select required id="country" name="country" value="{{ form.country }}"data-default="{{ form.country }}">{{ country_option_tags }}</select>
+              </span>
+            </p>
+          </div>
+
+          <div class="form-row form-row-wide">
+            <p class="minimal-form-input has-text">
+              <label for="province">
+                <span class="text"><span class="text-inner">Province<span class="pink" style="padding:5px">*</span></span></span>
+              </label>
+              <input autocomplete='off' required type="text" class="input-text" name="province" id="province" value="{{ customer.default_address.province }}" />
+            </p>
+          </div>
+
+          <div class="form-row form-row-wide">
+            <p class="minimal-form-input has-text">
+              <label for="postal-code">
+                <span class="text"><span class="text-inner">Postal Code<span class="pink" style="padding:5px">*</span></span></span>
+              </label>
+              <input autocomplete='off' required type="text" class="input-text" name="postcode" id="postal-code" value="{{ customer.default_address.zip }}" />  	
+            </p>
+            <p class="postal-code-error hideMe">Please insert the valid postal code!</p>
+          </div>
+
+          <fieldset class="LatLong">
+            <label for="toggleLatLong">Do you want to modify your pin location?</label>
+            <input autocomplete='off' class="toggleLatLong" type="checkbox" name="toggleLatLong" value="0" onchange="valueChanged()" />
+            <span class="item-text">Yes</span>
+          </fieldset>
+
+          <span class="helpText" id="helpText">Click 
+            <a target="_blank" rel="noopener" aria-label="what3word" aria-describedby="new-window-0" href="https://what3words.com/">here</a> to find your what3words.</span>
+
+          <!--    LAT LONG SSECTION      -->
+          <div class="form-row form-row-wide" id="toggleWhat3Words">
+            <p class="minimal-form-input has-text">
+              <label for="What3Words">
+                <span class="text"><span class="text-inner">What3Words<span class="pink" style="padding:5px">*</span></span></span>
+              </label>
+              <input autocomplete='off' type="text" class="input-text" name="what3words" id="what3words" value="" />
+            </p>
+          </div>
+
+
+          <!--         <button class="generateCoordinate"> Auto generate longitude and latitude</button> -->
+          <div class="form-row form-row-wide" id="toggleLat">
+            <p class="minimal-form-input has-text">
+              <label for="lat">
+                <span class="text"><span class="text-inner">Latitude<span class="pink" style="padding:5px">*</span></span></span>
+              </label>
+              <input autocomplete='off' type="number" step="any" class="input-text" name="lat" id="lat" value="" />
+            </p>
+          </div>
+
+          <div class="form-row form-row-wide" id="toggleLong">
+            <p class="minimal-form-input has-text">
+              <label for="long">
+                <span class="text"><span class="text-inner">Longitude<span class="pink" style="padding:5px">*</span></span></span>
+              </label>
+              <input autocomplete='off' type="number" step="any" class="input-text" name="long" id="long" value="" />
+            </p>
+          </div>
+
+
+
+          <div class="modal-footer">
+            <button type="sumbit" class="button saveButton">Submit</button>
+            <button type="button" class="button" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,1672 @@
+{% unless customer  %}<script type="text/javascript">
+  window.location = "/account/login/?redirect";
+</script>{% endunless %}
+{{ 'owl.carousel.min.js' | asset_url | script_tag }} 
+{{ 'owl.carousel.min.css' | asset_url | stylesheet_tag }} 
+<div id="primary" class="content-area">
+  {%- include 'page-header' -%}
+  <div id="content" class="site-content">
+    <article class="page">
+      <div class="row">
+        <div class="large-12 columns">
+          <div class="entry-content">
+            {%- include 'shortcode' load: page.content -%}
+            <div id="spinner">
+              {{ 'loading.gif' | asset_url | img_tag: 'spin', 'spin' }}
+              <p>Loading ...</p>
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col-9">
+              <div class="alert alert-danger hideMe" role="alert">
+                <i class="fas fa-exclamation-circle" style="font-size: 20px"></i><span class="staffNote"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-9">
+              <!-- Modal -->
+              <div class="modal" id="receiptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <div class="close-modal">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="receipt-action-btn">
+                        <button type="button" class="btn btn-secondary imageUpload"><span class="mobile-icon"><i class="fa fa-upload" aria-hidden="true"></i></span></button>
+                        <button type="button" class="btn btn-primary imageDelete"><span class="mobile-icon"><i class="fa fa-trash" aria-hidden="true"></i></span></button>
+                      </div>
+                    </div>
+                    <div class="modal-body">
+                      <div class="owl-container">
+                      <div class="owl-carousel owl-theme" id="owl-receipt">
+                       <div class="item"></div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>                                          
+              <form id="returnFormID" enctype="multipart/form-data">
+                <div class="ui-widget search-product">
+                  <label class="item" for="title">ADD ITEM : </label>
+                  <div class="search-input">
+                    <input class="item" placeholder="Product Name" id="title"
+                      style="font-size: 16px;text-align: left!important; height: 40px; width: 200px; padding: 10px;"
+                      onkeydown="return (event.keyCode!=13);" />
+                  </div>
+                  <button id="addRMA"><i class="fas fa-plus-circle item" style="font-size: 20px"></i>
+                    <h5 style="display: inline;">RMA#<span class="rma_no"></span></h5>
+                  </button>
+                </div>
+                <input type="hidden" name="shop" class='shop' value="{{ shop.permanent_domain }}">
+                <input type="hidden" name="customerId" class='customerId' value="{{ customer.id}}">
+                <input type="hidden" name="customerFirstName" value="{{ customer.first_name }}">
+                <input type="hidden" name="customerLastName" value="{{ customer.last_name }}">
+                <table class="return">
+                  <thead>
+                    <tr>
+                      <th class="remove"></th>
+                      <th class="docs">DOCS</th>
+                      <th class="img">IMAGE</th>
+                      <th class="order">ORDER#</th>
+                      <th class="product">PRODUCT</th>
+                      <th class="price">PRICE</th>
+                      <th class="total" style="display:none">TOTAL</th>
+                      <th class="note">RETURN REASON</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+                <div class="hideMe success-message"><i class="far fa-check-circle" style="font-size:20px"></i>Your
+                  document is uploading. This may take a few minutes depending on the document size and your internet
+                  connection speed.</div>
+                <div class="action">
+                  <div class="item save but">
+                    <button id="save" type="button" class="btn save"><span class="button-loader"></span></button>
+                  </div>
+                  <div class="item print but">
+                    <button type="button" class="btn print">PRINT</button>
+                  </div>
+                  <div class="item submit but">
+                    <button id="submit" type="button" class="btn submit" style="background: #00c3b4"><span
+                        class="button-loader"></span></button>
+                  </div>
+
+                  <div class="item info">
+                    <h6>RMA#<span class="rma_no"></span></h6>
+                    <h6>ITEMS:<span class="total-line-items-quantity" style="padding-left: 5px">0</span></h6>
+                    <h6 style="display: flex" class="subtotal"><span style="padding-right: 5px">SUBTOTAL:</span>$<input
+                        readonly type="number" name="subtotal" class="total-return-price" value="0.00"></span></h6>
+                    <p class="addNote"><a href="#">Add comments</a></p>
+                    <textarea style="" name="returnNote" class="noteText" cols="60" row="4"></textarea>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <h1 class='header'>
+      **Submit your returns to:
+      SweetLegs Distributor Returns,
+      Unit 2, 871 McCurdy Place
+      Kelowna, BC, V1X 8C8**
+    </h1>
+  </div>
+</div>
+
+
+<style>
+  #owl-container {
+    width:50%;
+    height:100%;
+    position:relative;
+ }
+  .modal {
+     background: #333333a8;
+  }
+  .carousel-control.right {
+    background-image: none !important;
+}
+
+  .modal-backdrop {
+    background: black !important;
+    z-index: 1 !important;
+  }
+
+  .closeModal {
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+    margin: 10px;
+    text-align: center;
+  }
+
+  .modal-header {
+    background-color: white;
+    font-weight: bold;
+  }
+   .owl-carousel .owl-stage {
+    display: flex;
+}
+
+.owl-carousel .owl-item embed {
+    font-family: "object-fit: cover";
+    object-fit: cover;
+    width: 100%;
+    min-height: 40vh;
+    height: auto;
+    margin: auto;
+}
+
+  .modal-content {
+    text-align: center;
+    color: black;
+    top: 0px;
+    background-color: white;
+    border: none;
+    padding: 20px;
+    width: 100%;
+    max-height: 80%;
+    overflow: scroll;
+  }
+
+  .modal-footer {
+    max-height: 70px;
+    margin-top: 0px;
+    text-align: center;
+    border-top: none;
+  }
+
+  .hideMe {
+    display: none !important;
+  }
+
+  .popUpModal {
+    height: 100%;
+    width: 100%;
+    display: none;
+    position: fixed;
+    top: 100px;
+    right: 300;
+    z-index: 999;
+  }
+
+  .modal-header {
+    background-color: white;
+    border-bottom: none;
+    max-height: 30px;
+    padding: 10px;
+  }
+
+  .modal-body {
+    margin-top: 30px;
+    padding: 10px;
+    padding-bottom: 0px;
+    text-align: left;
+    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+  }
+
+  .X-close {
+    position: relative;
+    float: right;
+    font-size: 25px;
+    z-index: 99;
+  }
+
+  .carousel-upload {
+    display: inline;
+    background: #00c3b4;
+    padding: 10px;
+  }
+
+  .modal .modal-dialog {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+  }
+
+  .imageCount {
+    position: relative;
+    left: 55px;
+    top: -10px;
+  }
+
+  .imageCountLabel {
+    background: #00c3b4 !important;
+    width: 20px;
+    border-radius: 20px;
+  }
+
+  .header {
+    font-size: 24px;
+    color: #04C3B4;
+    text-align: center;
+  }
+
+  .returnAddress p {
+    margin: 0px;
+    line-height: 1.2;
+  }
+
+  .returnAddress {
+    background: #80808024;
+    margin-bottom: 5px;
+  }
+
+  .printLabel {
+    color: #ED2B91;
+    font-weight: bold;
+  }
+
+  button.btn.submit:active:after {
+    content: 'Submitting......';
+  }
+
+  button.btn.submit:after {
+    content: 'SUBMIT';
+  }
+
+  button.btn.save:active:after {
+    content: 'Saving ......';
+  }
+
+  button.btn.save:after {
+    content: 'SAVE';
+  }
+
+  .success-message {
+    margin: 50px;
+    text-align: center;
+    font-size: 16px;
+    color: green;
+    font-weight: 500;
+  }
+
+  .addNote {
+    margin-bottom: 0px;
+  }
+
+  .addNote a {
+    border: 1px solid !important;
+    padding: 3px;
+    color: #00c4b3 !important;
+  }
+
+  /*   .site-content p a:not(.button) {
+    border-bottom: none!important;
+  } */
+  .receipt-action-btn {
+    display:flex;
+  }
+  .receipt-action-btn button {
+    border: none;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+  }
+  .receipt-action-btn .btn-primary {
+    background: #01c4b3;
+  }
+  .receipt-action-btn .btn-secondary {
+    background: #ED2B91;
+    margin-right: 10px;
+    color: white;
+  }
+  .noteText {
+    padding: 0px !important;
+    border: 1px solid #80808069 !important;
+    margin-top: 10px !important;
+    width: 90%;
+    display: none;
+    padding: 10px !important;
+  }
+
+  .addNote a {
+    color: #0278b8;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 0px;
+    text-decoration: none;
+  }
+
+  .subtotal {
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+
+  .subtotal input {
+    height: 16px !important;
+  }
+
+  .action .item {
+    position: relative;
+  }
+
+  .btn:hover,
+  .btn:focus {
+    color: white;
+    outline: none;
+  }
+
+  .save .button-loader {
+    display: none;
+    border-bottom-color: #f4f6f8;
+    position: absolute;
+    top: 15px;
+  }
+
+  .submit .button-loader {
+    display: none;
+    border: 2px solid #212b369c;
+    border-bottom-color: #f9fafb;
+    position: absolute;
+    top: 15px;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .return td {
+    padding: 10px 5px;
+  }
+
+  th.remove {
+    width: 5%;
+  }
+
+  th.docs {
+    width: 10%;
+  }
+
+  th.order {
+    width: 15%;
+  }
+
+  th.product {
+    width: 40%;
+  }
+
+  th.total,
+  th.price,
+  th.qty,
+  th.img {
+    width: 10%;
+  }
+
+  th.note {
+    width: 40%;
+  }
+
+  input.editable,
+  select.editable {
+    text-decoration: underline;
+  }
+
+  .productQuantity select {
+    width: 10%;
+  }
+
+  .uploadDoc label {
+    background: black;
+    color: white;
+    max-width: 60px;
+    margin-left: -10px;
+    text-align: center;
+  }
+
+  .uploadDoc label:hover {
+  cursor: pointer;
+  }
+
+  .uploadDoc label span {
+    color: white;
+  }
+
+  .uploadDoc label span.mobile-icon {
+    display: none;
+  }
+
+  .uploadDoc input.fileUpload {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+    width: 100px;
+  }
+  .uploadDoc input.fileUpload:hover {
+    cursor: pointer;
+  }
+
+  .banner {
+    background: #f00;
+    height: 30px;
+  }
+
+  .search-input {
+    position: relative;
+  }
+
+  .search-input i {
+    position: absolute;
+    top: 8px;
+    right: -10px;
+  }
+
+  .search-product label span {
+    font-size: 16px;
+    color: white;
+  }
+
+  .search-product label span.mobile-icon {
+    display: none;
+  }
+
+  .search-product {
+    background: #80808014;
+    display: flex;
+    padding: 20px 0px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .search-product .item {
+    margin: 5px;
+  }
+
+  .action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #80808014;
+    margin: 50px 0px;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  input::placeholder {
+    text-decoration: none !important;
+    color: grey !important;
+  }
+
+  .action button {
+    background: black;
+    color: white;
+    padding: 10px;
+    min-width: 150px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .action .item {
+    margin: 10px;
+    text-align: left;
+  }
+
+  .action h6 {
+    margin: 0px;
+  }
+
+  #spinner img {
+    max-width: 10% !important;
+  }
+
+  /*   #returnFormID input {
+    text-align: center!important;
+  }*/
+  #returnFormID th {
+    text-align: left !important;
+  }
+
+  #note {
+    border: 1px solid #80808036;
+    text-align-last: center;
+  }
+
+  #returnFormID input#title,
+  .return-quantity,
+  .quantity {
+    border: 1px solid #80808036 !important;
+  }
+
+  #spinner {
+    text-align: center;
+    margin-bottom: 100px;
+    max-height: 10px;
+  }
+
+  #spinner p {
+    color: #00c4b3;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline;
+  }
+
+  .return {
+    table-layout: fixed !important;
+  }
+
+  .fa-images:before {
+    font-size: 16px;
+  }
+/* small devices like phone */
+  @media (max-width: 780px) {
+    .imageCount {
+    position: relative;
+    left: 40px !important;
+    top: -10px;
+    }
+    .open-btn {
+    padding: 3px 6px !important;
+    }
+    .action {
+      text-align: center;
+      padding: 20px 0px;
+    }
+    .X-close {
+    margin-right: 30px;
+  }
+    .action button {
+      min-width: 100px;
+    }
+
+    .search-product {
+      display: block;
+      text-align: center;
+      padding: 20px 0px;
+    }
+
+    .search-input {
+      width: 200px;
+      margin: auto;
+    }
+
+    .search-product .item {
+      margin: 5px;
+    }
+
+    .productTotalPrice,
+    th.total {
+      display: none;
+    }
+
+    .uploadDoc .desktop-icon {
+      margin-right: 0 !important;
+      display: none;
+    }
+
+    #note {
+      overflow: hidden;
+      max-width: 100%;
+    }
+
+    .uploadDoc label span.mobile-icon {
+      display: inline-block;
+    }
+
+    .uploadDoc label {
+      width: 25px;
+    }
+
+    input.productTitle {
+      display: block !important;
+    }
+
+    .productName {
+      display: none;
+    }
+
+    #returnFormID td {
+      padding-top: 40px;
+    }
+
+    th.order {
+      width: 25%;
+    }
+
+    th.remove,
+    th.doc {
+      width: 8%;
+    }
+
+    th.total,
+    th.price,
+    th.qty,
+    th.img {
+      width: 10%;
+    }
+
+    th.product {
+      display: none;
+    }
+
+    .productQuantity select {
+      width: 40%;
+    }
+
+    #returnFormID input {
+      text-align: left !important;
+    }
+
+
+  }
+
+  @media (max-width: 540px) {
+
+    .productTotalPrice,
+    .searchListImg,
+    .product-remove,
+    th.img,
+    th.total,
+    th.remove {
+      display: none;
+    }
+
+    .action button {
+      min-width: 180px;
+    }
+
+    .action {
+      display: block;
+    }
+
+    #note {
+      padding: 0px;
+    }
+
+    .uploadDoc label {
+      width: 20px !important;
+      margin: 0px;
+    }
+
+    table.return {
+      table-layout: fixed;
+    }
+
+    th.order {
+      width: 25%;
+      padding-left: 10px;
+    }
+
+    th.qty {
+      width: 10%;
+    }
+
+    th.price {
+      width: 15%;
+    }
+
+    .action .item {
+      text-align: center;
+    }
+
+    .subtotal input {
+      width: 50px !important;
+    }
+  }
+
+  @media print {
+    .success-message {
+      display: none;
+    }
+
+    .search-product label,
+    .search-input {
+      display: none;
+    }
+
+    .search-product .rma_no {
+      font-size: 20px;
+    }
+
+    .search-product .item {
+      position: absolute;
+      right: 50px;
+      top: 40px;
+    }
+
+    .productTotalPrice,
+    th.total {
+      display: block;
+    }
+
+    .searchListImg,
+    th.img {
+      display: block;
+    }
+
+    .uploadDoc label {
+      display: none;
+    }
+
+    th.docs {
+      width: 0%;
+      opacity: 0;
+    }
+
+    th.image {
+      width: 10%;
+    }
+
+    th.order {
+      20%
+    }
+
+    th.quantity,
+    th.total {
+      width: 5%;
+    }
+
+    th.note {
+      width: 25%;
+    }
+
+    .action {
+      margin-top: 100px;
+    }
+
+    .action .but {
+      display: none;
+    }
+
+    .addNote {
+      display: none;
+    }
+
+    .item.info h6:first-child {
+      display: none;
+    }
+
+    .item.info {
+      overflow: visible !important;
+    }
+
+    .item.info h6 {
+      /*       position: absolute;
+      right: -20px; */
+    }
+
+    .noteText {
+      top: -150px;
+    }
+
+    th.remove,
+    .product-remove {
+      display: none;
+    }
+
+    th.note {
+      width: 50%;
+    }
+
+    th.order {
+      width: 20%;
+    }
+
+    /*      th.order {
+      padding-right: 10px!important;
+      text-align: left!important;
+    }
+    .btn {
+      display:none;
+    }
+    .item.info {
+/*       position: absolute;
+      right: -10px; */
+
+    /*     }
+    .item.info h6:first-child {
+      display:none;
+    }
+    .addNote {
+      display:none;
+    }
+    .noteText {
+      position: absolute;
+      top: -50px;
+      left: -200px;
+    }
+    .returnNote {
+/*       top: -30px; */
+  }
+
+  .mySlides1,
+  .mySlides2 {
+    display: none
+  }
+
+.carousel img {
+    float: left;
+    width:  500px;
+    height: 500px;
+    object-fit: cover;
+  }
+
+  /* Slideshow container */
+  .slideshow-container {
+    max-width: 1000px;
+    position: relative;
+    margin: auto;
+  }
+
+  /* Next & previous buttons */
+  .prev,
+  .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+  }
+
+  /* Position the "next button" to the right */
+  .next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+  }
+
+  /* On hover, add a grey background color */
+  .prev:hover,
+  .next:hover {
+    color: black;
+  }
+  .owl-theme .owl-nav [class*='owl-']:hover {
+    background: none;
+  }
+  .owl-theme .owl-nav [class*='owl-'] {
+    background:none;
+    margin: 0px;
+  }
+  .owl-prev, .owl-next {
+        width: 15px;
+        height: 100px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        display: block !important;
+        border:0px solid black;
+    }
+    .owl-prev { left: -20px; }
+    .owl-next { right: -20px; }
+    .owl-prev i, .owl-next i {transform : scale(2, 3); color: #00c4b3;}
+</style>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+  const nextIcon = '<img src="./right-arrow.svg" alt="right">';
+  const prevIcon = '<img src="./left-arrow.svg" alt="left" >';
+  let submitData = {
+    rma_no: '',
+    refund_items: [],
+    customer_note: '',
+    status: '',
+    customer_id: null,
+    shop_id: '',
+  }
+  let incompleteData = {};
+  let rma = 0;
+  let refundItems = [];
+  let row = 0;
+  let variants;
+  let refundableLineItems;
+  let variantNames = [];
+  let refundId;
+  let returnReasonOptionArray = ["MISLABELED / MAL ETIQUETÉ ",
+      "ONE LEG SHORTER / UNE JAMBE PLUS COURTE",
+      "TRANSPARENT",
+      "PILLING / BOULOCHAGE",
+      "DYE FLAW / DÉFAUT DE TEINTURE",
+      "INSIGNIA FLAW / DÉFAUT DU LOGO ",
+      "PRINT DEFECT / DÉFAUT DE L'IMPRIMÉ",
+      "HOLES IN BUM / TROU SUR LES FESSES",
+      "HOLE IN WAISTBAND / TROU DANS LA CEINTURE",
+      "HOLES IN LEGS / TROU DANS LES JAMBES",
+      "HOLES IN CROTCH / TROU DANS L’ENTRE-JAMBES",
+      "PRINT DEFECT / MOTIF DÉFECTUEUX",
+      "RUN / TISSU DÉFECTUEUX",
+      "FADING COLOUR / EFFACEMENT DE COULEUR ",
+      "HQ APPROVED / APPROUVÉ PAR HQ",
+      "RETIRING FROM SWEETLEGS / PREND SA RETRAITE",
+      "SEAM ISSUE / COUTURE MANQUANTE",
+      "THREAD ISSUE / FIL QUI SE DÉTACHE",
+      "OTHER / AUTRE"
+  ];
+  const manualOrders = ['ONLINE ORDER', 'EXCHANGE', 'ID TRADE', 'RETIRED ID'];
+  let manualOrdersOption = '';
+  manualOrders.forEach(function (order) {
+    manualOrdersOption += `<option>${order}</option>`;
+  });
+  //onReady Call
+    
+$(document).ready(function() {
+
+  $("#owl-receipt").owlCarousel({
+     loop:false,
+      autoplay: false,
+      autoHeight:true,
+      margin:10,
+      nav: true,
+      navText : ['<i class="fa fa-angle-left" aria-hidden="true"></i>','<i class="fa fa-angle-right" aria-hidden="true"></i>'],
+      responsive:{
+          0:{
+              items:1
+          },
+          600:{
+              items:1
+          },
+          1000:{
+              items:1
+          }
+      }
+  });
+  
+  $('#receiptModal .close').on('click', function(e) {
+    $('#receiptModal').hide();
+  });
+
+  $(document).on('click', '#recipt-upload', function (e) {
+    $('#receiptModal .imageUpload').css('display','block');
+      $("#owl-receipt").owlCarousel('destroy'); 
+      $('#owl-receipt').empty();
+      itemID = $(this).parents('tr').find('.searchListImg .refundLineItemId').val();
+      rowID = $(this).parents('tr').find('.fileUpload').attr('id');
+      let refundItemReciepts = refundItems.find(item => item.lineID == itemID).receipts;
+      if(refundItemReciepts.length > 1) {
+        $('#receiptModal .imageUpload').css('display','none');
+      }
+      var owl = $("#owl-receipt");
+         refundItemReciepts.forEach(function (receiptID) {
+          owl.append(`<div class="item"><embed item-id="${itemID}" row-id="${rowID}" receipt-id="${receiptID}" src="${proxy}/api/distributor-returns/line-items/receipts/${receiptID}"  alt="receipt-${receiptID}" height="200"/></div>`);
+      })
+         function adjustStretchHeader() {
+           $('#receiptModal').show(); 
+         }
+         
+      $("#owl-receipt").owlCarousel({
+           loop:false,
+            autoplay: false,
+            margin:10,
+            autoHeight:true,
+            nav: true,
+            navText : ['<i class="fa fa-angle-left" aria-hidden="true"></i>','<i class="fa fa-angle-right" aria-hidden="true"></i>'],
+            responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:1
+                },
+                1000:{
+                    items:1
+                }
+            },
+      }) 
+      $('#receiptModal').show(); 
+   });
+
+    
+    
+    submitData.customer_id = '{{customer.id}}';
+    proxy = '{{settings.sweetlegs_rocks_api}}'
+    incompleteData.shop_id = '{{settings.store_id}}';
+    submitData.shop_id = '{{settings.store_id}}';
+    url = window.location.href;
+    rma = url.split('?')[1];
+    if (rma != 0) {
+      incompleteData.rma_no = rma;
+    }
+    incompleteData.customer_id = '{{customer.id}}';
+    $.ajax({
+      url: `${proxy}/api/distributor-returns/line-items`,
+      type: 'GET',
+      data: incompleteData,
+      success: function (result) {
+        refundId = result.refundId;
+        let savedRefund = result.savedLineItems ? result.savedLineItems : [];
+        let savedRefundItems = result.savedLineItems ? result.savedLineItems
+          .distributor_refund_line_items : []
+        variants = result.variants
+        refundableLineItems = result.refundableLineItems
+//         $('#addRMA h5').text(`RMA # ${savedRefund.rma_no}`);
+        if (savedRefund && savedRefundItems.length > 0) {
+          //check staff note
+          if (savedRefund.staff_note) {
+            $('.alert.alert-danger').removeClass('hideMe');
+            $('.staffNote').text(savedRefund.staff_note);
+          }
+          //set the rma value to the 
+          $(".noteText").toggle();
+          $(".noteText").val(savedRefund.customer_note)
+          submitData.customer_note = $('.noteText').val();
+          $('.rma_no').val(savedRefund.rma_no);
+          $('.rma_no').text(savedRefund.rma_no);
+          submitData.rma_no = result.rma_no;
+
+          //get each item the saved refund has
+
+
+
+          //for each item in this list we want to create a new object and pass that object into a display method
+          savedRefundItems.forEach(async function (refundItem) {
+            //create a new item of the saved item to be added to our refunditem state
+            let item = {
+              id: refundItem.id,
+              lineID: refundItem.id,
+              order_name: refundItem.order_name,
+              price: refundItem.requested_price,
+              requested_price: refundItem.requested_price,
+              requested_quantity: refundItem.requested_quantity,
+              totalQuantity: null,
+              variant_id: refundItem.variant_id,
+              return_reason: refundItem.return_reason,
+              receipts: null,
+              status: 'Saved'
+            }
+            refundItem.distributor_refund_line_item_receipts.forEach((receipt) => {
+              if (item.receipts === null) {
+                item.receipts = [receipt.id]
+              } else {
+                item.receipts.push(receipt.id);
+
+              }
+
+            });
+            // push each item to our state
+            await refundItems.push(item);
+
+          })
+          //display all our refund items
+          displayRefundItems();
+          //calculate the totals
+          calculateTotals();
+        } else {
+          submitData.rma_no = result.rma_no;
+          $('.rma_no').val(result.rma_no);
+          $('.rma_no').text(result.rma_no);
+        }
+        $('#spinner').css('display', 'none');
+        variants.forEach((variant) => {
+          variantNames.push(variant.title);
+
+        });
+      }
+    })
+  });
+
+
+  function displayRefundItems() {
+    $('tbody tr').remove();
+    refundItems.forEach(function (refundItem) {
+      row = row + 1;
+      let productTitle = variants.find(variant => variant.id === refundItem.variant_id).title;
+      //get information for the html :) 
+      let imgScr = imgSrc = variants.find(variant => variant.id === refundItem.variant_id).img;
+      //choose which icon to display based on files 
+      let uploadIcon = refundItem.receipts && refundItem.receipts.length > 0 ?
+          `<div style="display: flex; justify-content: flex-start;margin-left: -20px">
+          <div class="imageCount"><label class="imageCountLabel">${refundItem.receipts.length}</label></div>
+          <button type="button" id="recipt-upload"class="btn btn-primary open-btn" style="background:black !important">
+          <i class="far fa-images"></i>
+        </button>
+        </div>` :
+        `<label for="receipt-${row}"><span class="desktop-icon">Upload</span><span class="mobile-icon"><i class="fa fa-upload" aria-hidden="true"></i></span></label>`;
+      //remove quotes around title
+      productTitle = productTitle.replace(/"/g, "&quot;");
+      // if the price is zero we need an editable field
+      let productPrice = refundItem.requested_price == 0 ?
+        `<input size="20" id="myTextBox"  min="0.00000001" name="totals[]" type="number" onClick="this.select();" class="price editable" value='${refundItem.requested_price}'">` :
+        `<input size="20" readonly name="totals[]" type="number" class="price" value='${refundItem.requested_price}'>`
+      let returnReason = refundItem.return_reason;
+      let returnReasonOption = '';
+      for (let i = 0; i < returnReasonOptionArray.length; i++) {
+        if (returnReason == returnReasonOptionArray[i]) {
+          returnReasonOption += '<option selected value="' + returnReasonOptionArray[i] + '">' +
+            returnReasonOptionArray[i] + '</option>';
+        } else {
+          returnReasonOption += '<option  value="' + returnReasonOptionArray[i] + '">' + returnReasonOptionArray[
+            i] + '</option>';
+        }
+      }
+      //one last thing we need to do is build the order selector 
+      let orderName = refundItem.order_name;
+      if (refundItem.status === 'Saved') {
+        orderNumberHtml =
+          `<input placeholder="#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" type="text" name="orderName[]" readonly value="${orderName}" style="text-align: left!important">`
+      } else {
+        if (refundItem.orderNames) {
+          let options = '';
+          for (var i = 0; i < refundItem.orderNames.length; i++) {
+              if (orderName == refundItem.orderNames[i]) {
+                  options +=
+                    `<option selected="selected" value="${refundItem.orderNames[i]}">${refundItem.orderNames[i]}</option>`;
+
+              } else {
+                 options +=
+                    `<option value="${refundItem.orderNames[i]}">${refundItem.orderNames[i]}</option>`;
+              }
+         }
+//           options = options.concat(manualOrdersOption);
+          orderNumberHtml =
+            `<select class="orderName editable" index="${i++}" name="orderName[]" id="orderNo">${options}</select>`;
+         }
+//           else {
+//           let options = '';
+//           for (var i = 0; i < manualOrders.length; i++) {
+//               if (refundItem.order_name == manualOrders[i]) {
+//                   options +=
+//                     `<option class="editable" selected="selected" value="${manualOrders[i]}">${manualOrders[i]}</option>`;
+
+//               } else {
+//                  options +=
+//                     `<option class="editable" value="${manualOrders[i]}">${manualOrders[i]}</option>`;
+//               }
+//          }
+//           orderNumberHtml =
+//             `<select class="orderName editable" index="${i++}" name="orderName[]" id="orderNo">${options}</select>`;
+//         }
+      }
+
+      //sike the last thing we need to do is build the carasoul
+
+      let receiptImages = refundItem.receipts ? refundItem.receipts : [];
+      let renderCarousel = '';
+      let renderImages = '';
+      let renderIndicators = '';
+      let addButton = refundItem.receipts && refundItem.receipts.length === 1 ?
+        `<div><div class="carousel-upload"><input id="receipt-${row}" class="fileUpload carousel-image" type="file" multiple name="receipts-${row}[]" accept="image/*,.pdf"><i class="fas fa-plus"></i> Upload </input></div></div>` :
+        ``
+
+      $('.return tbody').prepend(`
+		<tr>
+        <td class="product-remove"><button><i class="fas fa-times"></i></button></td>
+        <td class="uploadDoc" style="position: relative">
+          ${uploadIcon}
+          <input id="receipt-${row}" class="fileUpload" type="file" multiple name="receipts-${row}[]"
+            accept="image/*,.pdf" />
+ 		  <input readonly class="hideMe productTitle" size="20" type="text" value="${productTitle}"  style="font-weight: bold; position:absolute; width:80vw; top: -5px;">
+        </td>
+        <td class="searchListImg">
+          <img src="${imgSrc}" style="max-width: none" />
+          <input class="lineItemId" type="hidden" name="lineItemId[]" value="${refundItem.id}" />
+		  <input class="variantId" type="hidden" name="lineItemId[]" value="${refundItem.variant_id}" />
+          <input class="refundLineItemId" type="hidden" name="refundLineItemId[]" value="${refundItem.lineID}" />
+        </td>
+        <td>
+          ${orderNumberHtml}
+        </td>
+        <td class="productName w-25"><input class="title" readonly size="20" type="text" value="${productTitle}"
+            name="productTitles[]"></td>
+        <td class="productPrice">${productPrice}</td>
+        <td>
+          <select id="reason" name="reasons[]" required>
+            <option value="">- REASON -</option>
+            ${returnReasonOption}
+          </select>
+        </td>
+      </tr>`);
+    })
+
+  }
+  
+  // function to tally up all the totals 
+  function calculateTotals() {
+    let total = 0.00;
+    let quantity = refundItems.length;
+    for (let i = 0; i < refundItems.length; i++) {
+
+      total = total + parseFloat(refundItems[i].requested_price)
+    }
+    $('.total-return-price').val(total.toFixed(2));
+    $('.total-line-items-quantity').text(quantity);
+
+  }
+  // 
+  //  Document Functions Below
+  // 
+
+
+  //add a new return item
+  $("input#title").autocomplete({
+    autoFocus: true,
+    source: variantNames,
+    change: function () {
+        let productTitle = $(this).val();
+      // find the image source
+      let variantMatch = variants.filter(item => item.title === productTitle);
+      let variantIds = variantMatch.map(a => a.id);
+      let variantID = variantMatch[variantMatch.length - 1].id;
+      //change to variant ID when going live
+      let itemRefundableOrders = refundableLineItems.filter(function(item) {
+        quantity = 0;
+         if(refundItems.length > 0) {
+              refundItemTemp = refundItems.filter(refundItem => refundItem.line_item_id == item.lineItemId);
+              quantity = refundItemTemp ? refundItemTemp.length : 0;
+      	  }
+        
+         return (variantIds.includes(item.variant_id) && (item.totalQantity - quantity > 0));
+  	  });
+      orderNames = itemRefundableOrders.map(a => a.name).concat(manualOrders);
+      console.log(itemRefundableOrders);
+      //get a list of order names where this product tile exists
+//       let orderNames = [];
+//         console.log(variantID);
+//       refundableLineItems.forEach((item) => {
+//         let quantity = 0;
+//         if (item.variant_id === variantID) {  
+          
+//           if(refundItems.length > 0) {
+//             console.log(item.lineItemId);
+//             console.log(refundItems);
+//               refundItemTemp = refundItems.filter(refundItem => refundItem.line_item_id == item.lineItemId);
+//               console.log(refundItemTemp);
+//               quantity = refundItemTemp ? refundItemTemp.length : 0;
+//       	  }
+//           console.log(quantity);
+//           if(item.totalQantity - quantity > 0) {
+//             orderNames.push(item.name);
+//           } 
+//           quantity = 0;
+//         }
+//       })
+	  
+//       if (itemRefundableOrder) {
+//         console.log('itemRefundableOrder');
+//         console.log(itemRefundableOrders);
+          let item = {
+            id: null,
+            lineID: itemRefundableOrders.length > 0 ? itemRefundableOrders[0].id : Math.floor(Math.random() * 10000000000),
+            order_name: itemRefundableOrders.length > 0 ? itemRefundableOrders[0].name : 'ONLINE ORDER',
+            line_item_id: itemRefundableOrders.length > 0 ? itemRefundableOrders[0].lineItemId : null,
+            price: itemRefundableOrders.length > 0 ? itemRefundableOrders[0].price : 0,
+            requested_price: itemRefundableOrders.length > 0 ? itemRefundableOrders[0].price : 0,
+            requested_quantity: 1,
+            variant_id: itemRefundableOrders.length > 0 ? itemRefundableOrders[0].variant_id : variantID,
+            return_reason: '',
+            receipts: null,
+            orderNames: orderNames,
+          }
+          console.log(variantID);
+          console.log('item');
+          console.log(item);
+         
+//         let count = 0;
+
+//         function getOccurrence(value) {
+//           refundItems.forEach((v) => (v.lineID === value && count++));
+//           return count;
+//         }
+//         getOccurrence(item.lineID);
+
+//         if (variantID != undefined && count < item.totalQuantity && count < item.savedQuantity) {
+//           refundItems.push(item);
+//           $(this).val('');
+
+//         } else {
+//           item.order_name = 'ONLINE ORDER'
+//           refundItems.push(item);
+//           $(this).val('');
+//         }
+//         displayRefundItems();
+//         $(this).val('');
+//       } else {
+//         let item = {
+//           id: null,
+//           lineID: Math.floor(Math.random() * 10000000000),
+//           order_name: 'ONLINE ORDER',
+//           line_item_id: null,
+//           price: 0,
+//           requested_price: 0,
+//           requested_quantity: 1,
+//           totalQuantity: 0,
+//           variant_id: variantID,
+//           return_reason: '',
+//           receipts: null,
+//         }
+//         if (variantID != undefined) {
+//           refundItems.push(item);
+//           $(this).val('');
+//         }
+        refundItems.push(item);
+        $(this).val('');
+        displayRefundItems();
+        calculateTotals();
+
+//       }
+//       // get all the info we need to build a table item
+    }
+
+
+  });
+
+
+  // change the price 
+  $(document).on('change paste keyup', '#myTextBox', function (e) {
+    itemID = $(this).parents('tr').find('.searchListImg .refundLineItemId').val();
+    if ($(this).val() > 50) {
+      alert("Please Enter A Valid Price");
+      $(this).val(0);
+    } else {
+      refundItems.find(item => item.lineID == itemID).requested_price = parseFloat($(this).val()).toFixed(2);
+    }
+
+    calculateTotals();
+  });
+
+
+
+  // change the reason 
+  $(document).on('change', '#reason', function (e) {
+    itemID = $(this).parents('tr').find('.searchListImg .refundLineItemId').val();
+    refundItems.find(item => item.lineID == itemID).return_reason = $(this).val();
+  });
+
+  // change the order 
+  $(document).on('change', '#orderNo', function (e) {
+     var $row = $(this).closest("tr"); // Get the .closest Row
+  	rowIndex = $row.index();
+    itemID = $(this).parents('tr').find('.searchListImg .refundLineItemId').val();
+    variantID = $(this).parents('tr').find('.searchListImg .variantId').val();
+    let newOrderName = $(this).val();
+    let newOrder = refundableLineItems.find(item => item.name == newOrderName && item.variant_id == variantID);
+    if (newOrder != undefined) {
+      refundItems[refundItems.length-1-rowIndex].requested_price = newOrder.price;
+      refundItems[refundItems.length-1-rowIndex].order_name = newOrder.name;
+	   refundItems[refundItems.length-1-rowIndex].line_item_id = newOrder.lineItemId;
+      refundItems[refundItems.length-1-rowIndex].variant_id = newOrder.variant_id;
+    } else {
+      refundItems[refundItems.length-1-rowIndex].order_name = $(this).val();
+      refundItems[refundItems.length-1-rowIndex].line_item_id = null;
+      refundItems[refundItems.length-1-rowIndex].requested_price = 0;
+    }
+    displayRefundItems();
+    calculateTotals();
+  });
+
+
+  // function to delete a product from table
+  $(document).on('click touchstart', '.product-remove', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (confirm("Are you sure you want to delete this?")) {
+      var index = $(this).parents('tr').find('.orderName').attr('index');
+      if ($(this).parents('tr').find('.searchListImg .refundLineItemId').val() == 'undefined') {
+        $(this).parents('tr').remove();
+      } else {
+        $(this).parents('tr').addClass('hideMe');
+        $(this).parents('tr').find('.status').val('Delete');
+      }
+      let refundLineItemId = $(this).parents('tr').find(
+        '.searchListImg .refundLineItemId').val();
+      let lineItemId = $(this).parents('tr').find(
+        '.searchListImg .lineItemId').val();
+      let result = refundItems.filter(item => item.lineID != refundLineItemId);
+      if(lineItemId !== 'null') {
+        $.ajax({
+            url: `${proxy}/api/distributor-returns/line-items/${lineItemId}`,
+            type: 'DELETE',
+            success: function (result) {
+                console.log(result);
+            }
+        });
+        
+      }
+      refundItems = result;
+      calculateTotals();
+    } else {
+      return false;
+    }
+  });
+  //  print the page
+  $(".btn.print").click(function (e) {
+    window.print();
+  });
+
+  //   toggle note 
+  $(".addNote a").click(function () {
+    $(".noteText").toggle();
+  });
+
+  //   toggle note 
+  $('.noteText').change(function () {
+    submitData.customer_note = $('.noteText').val();
+  });
+
+
+  // function to add rma to table on click
+  $(document).on('click', '#addRMA', function (e) {
+    e.preventDefault();
+    displayRefundItems();
+  });
+
+  // CREATE status= submit function 
+  $(document).on('click', '#submit', function (e) {
+    e.preventDefault();
+    $("#submit").attr("disabled", true);
+    if (refundItems.length > 0) {
+      submitData.refund_items = refundItems;
+      submitData.status = "Pending";
+      $.ajax({
+        type: "POST",
+        url: `${proxy}/api/distributor-returns/${refundId}`,
+        data: JSON.stringify(submitData),
+        contentType: 'application/json; charset=utf-8',
+        success: function (result) {
+          window.location.href = "/account?refund";
+        },
+      });
+    } else {
+      alert("You Have Nothing In Your RMA to submit , please try saving or add something below.")
+    }
+  });
+  //SAVE BUTTTON
+  $(document).on('click', '#save', function (e) {
+    $("#save").attr("disabled", true);
+    e.preventDefault();
+    if (refundItems.length > 0) {
+      submitData.refund_items = refundItems;
+      submitData.status = "Saved";
+      $.ajax({
+        type: "POST",
+        url: `${proxy}/api/distributor-returns/${refundId}`,
+        data: JSON.stringify(submitData),
+        contentType: 'application/json; charset=utf-8',
+        success: function (result) {
+          window.location.href = "/account?refund";
+        },
+        error: function (xht) {
+          $("#save").attr("disabled", false);
+          console.log(xht);          
+        }
+      });
+    } else {
+      alert("You Have Nothing In Your RMA to submit , please try saving or add something below.")
+    }
+  });
+  
+   function resizeImg(files) {
+      const promises = [];
+
+      for (i = 0; i < files.length; i++) {
+        if ( files[i].type === 'application/pdf' ) {
+           promises.push(files[i]);
+        } else {
+           promises.push(resizeImage({
+              file: files[i],
+              maxSize: 1000
+           }));
+        }
+       
+      }
+
+      Promise.all(promises)
+        .then((results) => {
+          for (i = 0; i < results.length; i++) {
+            formData.append(`file[]`, results[i]);
+          }
+
+          $.ajax({
+            url: `${proxy}/api/distributor-returns/line-items/receipts`,
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            timeout: 0,
+            success: function (responses) {
+
+              responses.forEach((response) => {
+
+                if (refundItems.find(item => item.lineID == itemID).receipts !== null) {
+                  if (refundItems.find(item => item.lineID == itemID).receipts.length < 2) {
+                    refundItems.find(item => item.lineID == itemID).receipts.push(response);
+                    displayRefundItems();
+                  } else {
+                    alert("Cant Upload More Than 2 Images")
+                  }
+                } else {
+                  refundItems.find(item => item.lineID == itemID).receipts = [response];
+                  displayRefundItems();
+                }
+
+				 $('#receiptModal').hide();
+              });
+            },
+            error: function (xmlhttprequest, textstatus, message) {
+              alert(textstatus);
+              if (textstatus === "error") {
+                console.log(message);
+              } else {
+                alert(textstatus);
+              }
+            }
+          });
+        })
+        .catch((e) => {
+          // Handle errors here
+        });
+
+  }
+
+  //   file uplod onchange event
+  $(document).on('change', '.fileUpload', function (e) {
+    formData = new FormData();
+    formData.append('total', this.files.length);
+    files = this.files;
+    itemID = $(this).parents('tr').find('.searchListImg .refundLineItemId').val();
+    resizeImg(files);
+  });
+  
+  $('#receiptModal .imageUpload').on('click', function(e) {
+     rowId = $('.owl-item.active embed').attr('row-id');
+    $(`#${rowId}`).trigger('click'); 
+    
+  });
+
+
+  //   delete image from saved storage
+  $(document).on('click', '.imageDelete', function (e) {
+    if (confirm("Are you sure you want to delete this?")) {
+      imageID = $('.owl-item.active embed').attr('receipt-id');
+      itemID = $('.owl-item.active embed').attr('item-id');;
+      let refundItem = refundItems.find(item => item.lineID == itemID)
+      $.ajax({
+      	url: `${proxy}/api/distributor-returns/line-items/receipts/${imageID}`,
+      	type: 'DELETE',
+      	success: function (result) {
+        	console.log("item deleted");
+        	newReceipts = refundItem.receipts.filter(item => item != imageID)
+        	refundItem.receipts = newReceipts;
+        	displayRefundItems();
+        	$('#receiptModal').hide();
+      	}
+    });
+     
+    } else {
+      return false;
+    }
+  });
+
+
+  var resizeImage = function (settings) {
+    var file = settings.file;
+    var maxSize = settings.maxSize;
+    var reader = new FileReader();
+    var image = new Image();
+    var canvas = document.createElement('canvas');
+    var dataURItoBlob = function (dataURI) {
+      var bytes = dataURI.split(',')[0].indexOf('base64') >= 0 ?
+        atob(dataURI.split(',')[1]) :
+        unescape(dataURI.split(',')[1]);
+      var mime = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      var max = bytes.length;
+      var ia = new Uint8Array(max);
+      for (var i = 0; i < max; i++)
+        ia[i] = bytes.charCodeAt(i);
+      return new Blob([ia], {
+        type: mime
+      });
+    };
+    var resize = function () {
+      var width = image.width;
+      var height = image.height;
+      if (width > height) {
+        if (width > maxSize) {
+          height *= maxSize / width;
+          width = maxSize;
+        }
+      } else {
+        if (height > maxSize) {
+          width *= maxSize / height;
+          height = maxSize;
+        }
+      }
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+      var dataUrl = canvas.toDataURL('image/jpeg');
+      return dataURItoBlob(dataUrl);
+    };
+    return new Promise(function (ok, no) {
+      if (!file.type.match(/image.*/)) {
+        no(new Error("Not an image"));
+        return;
+      }
+      reader.onload = function (readerEvent) {
+        image.onload = function () {
+          return ok(resize());
+        };
+        image.src = readerEvent.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+</script>

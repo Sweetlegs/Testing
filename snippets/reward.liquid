@@ -1,0 +1,3080 @@
+<input type="hidden" name="metafield" class='vipTier' value='{{customer.metafields.vipTier['tier']}}'>
+<input type="hidden" name="metafield" class='customerEmail' value='{{customer.email}}'>
+<input type="hidden" name="customerId" class='customerId' value='{{customer.id}}'>
+<input type="hidden" name="shop" class="store" value="{{ shop.permanent_domain }}" />
+
+<div class="container">
+  <div id="smile-reward-sweetlegs">
+    <div class="banner">
+      <img src={{ 'SHOPIFY-OCTOBER-2018-2.png' | asset_img_url: '5000x' }} alt="Banner-Image">
+      {% if customer %}
+      <div class="user-login">
+        <ul class="user-points" style="align-items: center; display: flex">
+          <li class="user-points-list earn">
+            <div class="points">
+              <a href="#" data-st-intent="st:points:rules" class="btn-default">EARN POINTS</a>
+            </div>
+          </li>
+          <hr align="left" width="50%;" style="border-bottom: 1px solid #00c4b3">
+          <li class="user-points-list history">
+            <div class="user-points-image">
+              <h5 class="green"
+                style="line-height: 1; margin: 3px; white-space: nowrap;font-size: calc(20px + (30 - 20) * ((100vw - 300px) / (2000 - 300))); font-weight: 700 ">
+                {{customer.first_name | upcase}}, YOU HAVE</h5>
+              <h3
+                style="line-height: 1; margin: 3px; font-size: calc(50px + (96 - 50) * ((100vw - 300px) / (2000 - 300)));">
+                <span class="sweettooth-points-balance" style="color: black"></span></h3>
+              <h5 class="pink"
+                style="line-height: 1; margin: 3px;     font-size: calc(30px + (40 - 30) * ((100vw - 300px) / (2000 - 300))); font-weight: bold">
+                POINTS</h5>
+            </div>
+          </li>
+          <hr align="left" width="50%;" style="border-bottom: 1px solid #00c4b3">
+          <li class="user-points-list redeeme">
+            <div class="points">
+              <div></div>
+              <a href="#" class="btn-default smile-history-link" data-st-intent="st:points:rewards">REDEEM POINTS</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      {% else %}
+      <div class="banner-content">
+        <div class="pink title">WE WANT TO THANK YOU FOR BEING AMAZING!</div>
+        <div class="title light">EARN POINTS FOR SPENDING, REFERRING FRIENDS AND MORE</div>
+        <div class="green title medium">SIGN UP TODAY AND GET 250 POINTS ON US!</div>
+      </div>
+      <div class="sign-up">
+        <img src={{ 'SHOPIFY-OCTOBER-2018-2.png' | asset_img_url: '5000x' }} alt="Banner-Image"
+          style="transform: rotate(180deg);position: relative">
+        <div class="sign-up-button">
+          <div class="content">
+            <div class="register"><a href="/account/register" style="color: white; font-weight: 700">SIGN UP</a></div>
+            <div style="font-size: 12px; color: grey;margin-top: 5px"><a
+                style="font-size: calc(12px + (18 - 12) * ((100vw - 300px) / (2000 - 300))); font-weight: 200"
+                href="/account/login">Already have an account?Log in</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="join-rule">
+        <div class="flex-item">
+          <div class="step">
+            <div class="circle">1</div>
+          </div>
+          <div class="title pink">Join.</div>
+          <div class="discription">Join the SWEETLEGS rewards program and get a bonus 250 points on us!</div>
+        </div>
+        <div class="flex-item">
+          <div class="step">
+            <div class="circle">2</div>
+          </div>
+          <div class="title pink">Earn.</div>
+          <div class="discription" style="padding-left: 10px;">Earn 5 or more points for every $1 you spend when you
+            refer and more!</div>
+        </div>
+        <div class="flex-item">
+          <div class="step">
+            <div class="circle">3</div>
+          </div>
+          <div class="title pink">Redeem.</div>
+          <div class="discription" style="padding-left: 10px;">Redeem points for exclusive discounts and your favourite
+            products!</div>
+        </div>
+      </div>
+      {% endif %}
+
+
+      <div class="smile-referral">
+        <div class="smile-referral-content-container">
+          {% if customer.tags contains "distributor" or customer.tags contains"Distributor" %}
+          <div class="smile-referral-content-main code">
+            <div class="smile-referral-refer">
+              <div class="smile-heading" style="margin-bottom: 22px">
+                <i style="font-size: 40px;" class="fas fa-alicorn"></i>
+                <div class="smile-referral-form-wrapper" style="width: 100%">
+                  <div class="referral-link referral-link-a">
+                    <input type="text" placeholder='Make or update your own referral code....' class="referral-code"
+                      value="">
+                    <button onclick="saveReferralCode()" class="edit-referral-code">&nbsp;OK&nbsp;</button>
+                  </div>
+                  <div class="success"></div>
+                </div>
+              </div>
+              <p class="smile-referral-details"></p>
+              <div class="smile-referral-media-wrapper refferalCode">
+                <ul class="smile-referral-media-list">
+                  <li
+                    style="font-size: calc(10px + (14 - 10) * ((100vw - 300px) / (2000 - 300))); color: white;font-weight: 500; line-height: 1; text-align: left; width: 40%">
+                    Create a fun referral code and share it with the world!</li>
+
+                  <div class="__ref__code" style="white-space: nowrap">
+
+                  </div>
+                </ul>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div class="smile-referral-content-sidebar top">
+            <div class="smile-referral-sidebar-details top">
+              <span class="smile-referral-sidebar-details-action" style="display: flex;">
+                <div><i style="color: #1ec4b3; padding-right:10px; font-size: 40px" class="fa">&#xf06b;</i></div>
+                <div>
+                  <h3 class="smile-sidebar-title title" style=" ">Tell a friend. Earn points!</h3>
+                  <p class="smile-sidebar-detail">Give your friends $5 off their first purchase and earn 250 points for
+                    yourself!</p>
+                </div>
+              </span>
+              <span class="smile-referral-sidebar-details-reward"></span>
+            </div>
+          </div>
+          {% endif %}
+          <div class="smile-referral-content-main">
+            <div class="smile-referral-refer">
+              <div class="smile-heading"><i style="font-size: 40px;" class="fas fa-bullhorn"></i>
+                {% if customer %}
+                <div class="smile-referral-form-wrapper" style="width: 100%">
+                  <div class="referral-link referral-link-a">
+                    <input type="text" readonly="" class="sweettooth-referral-url" value="....">
+                    <button onclick='copyToClipboard("sweettooth-referral-url", "copy-button")'
+                      class="copy-button">COPY</button>
+                  </div>
+                </div>
+                {% else %}
+                <span style="margin: auto 0px; ">Get your own referral link & share it with ease!<span>
+                    {% endif %}
+              </div>
+              <p class="smile-referral-details"></p>
+              <div class="smile-referral-media-wrapper" style="padding-top: 15px">
+                <ul class="smile-referral-media-list">
+                  <li
+                    style="font-size: calc(10px + (14 - 10) * ((100vw - 300px) / (2000 - 300))); color: white;font-weight: 500; line-height: 1; text-align: left; width: 30%">
+                    Share your link with everyone you know!</li>
+                  <li class="smile-referral-medium smile-share-referral-facebook">
+                    <div class="smile-referral-medium-content">
+                      <button class="referral-media-icon facebook"><span style="line-height: 1"><i
+                            class="fab fa-facebook-f" style="font-size: 14px"></i>Share</span></button>
+                    </div>
+                  </li>
+                  <li class="smile-referral-medium smile-share-referral-twitter">
+                    <div class="smile-referral-medium-content">
+                      <button class="referral-media-icon twitter"><span style="line-height: 1"><i class="fab fa-twitter"
+                            style="font-size: 14px"></i>Twitter</span></button </span> </div> </li> <li
+                        class="smile-referral-medium smile-share-referral-copy">
+                      <div class="smile-referral-medium-content">
+                        <button class="referral-media-icon email"><span style="line-height: 1"><i
+                              class="fas fa-envelope" style="font-size: 14px"></i></i>Email</span></button>
+                      </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="vip-tiers">
+        <div class="vip-tiers-table">
+          <div class="table-responsive" style="border: none; width: 100%; overflow: visible;">
+            <div class="table-heading">Spend More, Earn More.</div>
+            <table class="smile-tier-table">
+              <thead>
+                <tr>
+                  <th style="width:20%">VIP Level</th>
+                  <th style="width:35%">Spend</th>
+                  <th style="width:20%">EARN/$1</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="Member"> Member</td>
+                  <td style="width:40%">$0-$199</td>
+                  <td style="width:10%">5 Points </td>
+                </tr>
+                <tr>
+                  <td class="Insider">Insider</td>
+                  <td>$200-$749</td>
+                  <td> 6 Points</td>
+                </tr>
+                <tr>
+                  <td class="SuperFan">Super Fan</td>
+                  <td>$750-$1999</td>
+                  <td> 7 Points</td>
+                </tr>
+                <tr class="distributor">
+                  <td class="RisingStar">Rising Star*</td>
+                  <td>$2,000-$19999</td>
+                  <td> 13 Points</td>
+                </tr>
+                <tr class="distributor">
+                  <td class="Superstar">Superstar*</td>
+                  <td>$20,000-$74999</td>
+                  <td> 15 Points</td>
+                </tr>
+                <tr class="distributor">
+                  <td class="BossBabe">Boss Babe*</td>
+                  <td>$75,000-$114999</td>
+                  <td> 17 Points</td>
+                </tr>
+                <tr class="distributor">
+                  <td class="SweetElite">SweetElite*</td>
+                  <td>$115,000+</td>
+                  <td> 20 Points</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>* Only Sweetlegs Distributors are eligible. <a href="/pages/join-our-team" class="table-sign-up">Join our
+                team</a></p>
+          </div>
+        </div>
+        <div style="padding: 40px" class="slTier">
+
+        </div>
+        <img class="vip-tier-image" src={{ 'REWARD-FIREWORK.png' | asset_img_url: '5000x' }} alt="Banner-Image"
+          style="">
+      </div>
+
+      <div class="campaign-section logged-in-user" style="float: left">
+        <ul class="smile-campaign-list">
+          <li class="smile-campaign image" style="  align-items: normal;">
+            <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389359"
+              style="padding: 0px">
+              <div class="smile-campaign-type heading">
+                So Many Ways To Earn Points.
+              </div>
+
+            </div>
+          </li>
+          <li class="smile-campaign">
+            <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389359">
+              <div class="smile-campaign-image">
+                <i class="far fa-money-bill-wave"></i>
+              </div>
+              <div class="smile-campaign-value">
+                <span class="smile-campaign-value-content">5+ POINTS</span>
+              </div>
+              <div class="smile-campaign-type">
+                <span class="smile-campaign-type-content">Every $1 you spend</span>
+              </div>
+              <div class="smile-campaign-detail">
+                <span class="smile-campaign-detail-content"></span>
+              </div>
+            </div>
+          </li>
+          <li class="smile-campaign">
+            <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389354">
+              <div class="smile-campaign-image">
+                <i class="fas fa-user-alt"></i>
+              </div>
+              <div class="smile-campaign-value">
+                <span class="smile-campaign-value-content">250 POINTS</span>
+              </div>
+              <div class="smile-campaign-type">
+                <span class="smile-campaign-type-content">Create an Account</span>
+              </div>
+              <div class="smile-campaign-detail">
+                <span class="smile-campaign-detail-content"></span>
+              </div>
+            </div>
+          </li>
+          <li class="smile-campaign">
+            <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389355">
+              <div class="smile-campaign-image">
+                <i class="fas fa-gift"></i>
+              </div>
+              <div class="smile-campaign-value">
+                <span class="smile-campaign-value-content">500 POINTS</span>
+              </div>
+              <div class="smile-campaign-type">
+                <span class="smile-campaign-type-content">On your birthday!</span>
+              </div>
+              <div class="smile-campaign-detail">
+                <span class="smile-campaign-detail-content"></span>
+              </div>
+            </div>
+          </li>
+
+          <li class="smile-campaign">
+            <div class="campaign review">
+              <div class="flex-item" style="display:flex; flex-direction: row; justify-content: start">
+                <div class="icon"><i class="fal fa-pencil-alt"></i> </div>
+                <div class="content1">
+                  <h3>150 POINTS</h3>
+                  <P>Write a review</P>
+                </div>
+              </div>
+              <hr>
+              <div class="flex-item" style="display:flex; flex-direction: row; justify-content: start">
+                <div class="icon"><i class="far fa-images"></i></div>
+                <div class="content1">
+                  <h3>250 POINTS</h3>
+                  <P>Write a review w/photo</P>
+                </div>
+              </div>
+              <hr>
+              <div class="flex-item" style="display:flex; flex-direction: row; justify-content: start">
+                <div class="icon"><i class="fas fa-video"></i></div>
+                <div class="content1">
+                  <h3>250 POINTS</h3>
+                  <P>Write a review w/video</P>
+                </div>
+              </div>
+
+            </div>
+          </li>
+          <li class="smile-campaign">
+            <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389357">
+              <div class="smile-campaign-image">
+                <i class="fab fa-facebook-square"></i>
+              </div>
+              <div class="smile-campaign-value">
+                <span class="smile-campaign-value-content multiplier">50 POINTS</span>
+              </div>
+              <div class="smile-campaign-type">
+                <span class="smile-campaign-type-content">Share on Facebook</span>
+              </div>
+              <div class="smile-campaign-detail">
+                <span class="smile-campaign-detail-content"></span>
+              </div>
+            </div>
+          </li>
+          <li class="smile-campaign">
+            <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389358">
+              <div class="smile-campaign-image">
+                <i class="fab fa-instagram"></i>
+                <div class="smile-campaign-value">
+                  <span class="smile-campaign-value-content">50 POINTS</span>
+                </div>
+                <div class="smile-campaign-type">
+                  <span class="smile-campaign-type-content">Share On Instagram</span>
+                </div>
+                <div class="smile-campaign-detail">
+                  <span class="smile-campaign-detail-content"></span>
+                </div>
+              </div>
+          </li>
+          <li class="smile-campaign">
+            <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389359">
+              <div class="smile-campaign-image">
+                <i class="fab fa-twitter"></i>
+              </div>
+              <div class="smile-campaign-value">
+                <span class="smile-campaign-value-content">50 POINTS</span>
+              </div>
+              <div class="smile-campaign-type">
+                <span class="smile-campaign-type-content">Retweet via Twitter</span>
+              </div>
+              <div class="smile-campaign-detail">
+                <span class="smile-campaign-detail-content"></span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <style>
+    .tierValue {
+      padding-left: 30px;
+      margin-top: -20px;
+    }
+
+    .slTier {
+      display: flex;
+      width: 50%
+    }
+
+    .copyRefCode {
+      background: white;
+      padding: 5px 20px;
+      border-radius: 5px;
+      margin-left: 10px;
+      color: #ed2b91;
+      font-weight: 600;
+    }
+
+    .refCodeValue {
+      color: white !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      display: inline-block !important;
+      overflow: visible !important;
+      text-align: right !important;
+      width: 200px !important;
+      padding: 0px !important;
+      height: 22px !important;
+    }
+
+    .smile-referral-content-main.code {
+      background: #ED2B91 !important;
+    }
+
+    input::placeholder {
+      color: black !important;
+      text-decoration: underline;
+      text-decoration: none !important;
+      color: grey !important;
+    }
+
+    .success {
+      display: none;
+      font-size: 16px;
+      color: #white !important;
+      padding-top: 15px;
+    }
+
+    * {
+      word-break: keep-all;
+    }
+
+    .container {
+      /*     -webkit-text-stroke: .025em; */
+    }
+
+    .campaign.review {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5px;
+      height: 100%;
+      width: 100%;
+    }
+
+    .campaign.review .flex-item {
+      flex-basis: 20%;
+    }
+
+    .campaign.review hr {
+      margin: 0px auto;
+      width: 90%;
+    }
+
+    .campaign.review h3 {
+      line-height: 1;
+      font-size: calc(16px + (28 - 16) * ((100vw - 300px) / (2000 - 300)));
+      color: #00c4b3;
+      margin: 0px;
+      text-align: left;
+    }
+
+    .campaign.review .flex-item .content1 {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      vertical-align: middle;
+    }
+
+    .campaign.review p {
+      line-height: 1;
+      font-size: calc(10px + (16 - 12) * ((100vw - 300px) / (2000 - 300)));
+      font-weight: 700;
+      margin: 0px;
+      text-align: left;
+    }
+
+    .campaign.review .icon {
+      font-size: calc(18px + (20 - 18) * ((100vw - 300px) / (2000 - 300)));
+      flex-basis: 15%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .column,
+    .columns {
+      padding: 0 0.25rem;
+    }
+
+    .fa-star-half-o:before,
+    .fa-star-o:before,
+    .fa-star:before,
+    .stamped-fa-star-half-o:before,
+    .stamped-fa-star-o:before,
+    .stamped-fa-star:before {
+      font-size: 24px;
+    }
+
+    .vertical-line {
+      border-right: 1px solid #01c2b0;
+      margin: 30px;
+      margin-right: -13px;
+    }
+
+    /*! CSS Used from: https://cdn-stamped-io.azureedge.net/files/widget.min.css */
+    .fa {
+      display: inline-block;
+      font-style: normal;
+    }
+
+    [class*=" fa-"]:before {
+      font-style: normal;
+      font-weight: 400;
+      speak: none;
+      text-decoration: inherit;
+      width: 1em;
+      margin-right: .2em;
+      text-align: center;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1em;
+    }
+
+    .fa-twitter:before {
+      content: '\f099';
+    }
+
+    .fa-facebook:before {
+      content: '\f09a';
+    }
+
+    /*! CSS Used from: https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css ; media=all */
+    @media all {
+      .currentTier {
+        line-height: 0.9;
+        font-size: 30px;
+        color: #00c4b3;
+        margin: 0px;
+      }
+
+      .currentTierValue {
+        font-size: 50px;
+        line-height: 0.9;
+        margin: 0px;
+      }
+
+      .distributor {
+        color: grey;
+      }
+
+      button.referral-media-icon {
+        right: 11px;
+        color: #1ec4b3;
+        top: 50%;
+        padding: 10px 5px;
+        background: #fff;
+        font-size: .75em;
+        font-weight: 500;
+        outline: none;
+        border: 0;
+        border-radius: 10px;
+        width: 100%;
+        display: flex;
+        vertical-align: middle;
+        justify-content: center;
+        font-weight: 700;
+        font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (2000 - 300)));
+      }
+
+      .smile-campaign.image {
+        background-size: cover;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        background: white url({{ 'REWARD-BLOCK-no-text.png' | asset_url }});
+        center center no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+      }
+
+      table td:first-child {
+        padding-left: 28px;
+      }
+
+      a {
+        background: 0 0;
+      }
+
+      a:active,
+      a:hover {
+        outline: 0;
+      }
+
+      img {
+        border: 0;
+      }
+
+      input {
+        color: inherit;
+        font: inherit;
+        margin: 0;
+      }
+
+      input[type=submit] {
+        -webkit-appearance: button;
+        cursor: pointer;
+      }
+
+      input::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+      }
+
+      input {
+        line-height: normal;
+      }
+
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+
+      td,
+      th {
+        padding: 0;
+      }
+
+      @media print {
+        * {
+          text-shadow: none !important;
+          color: #000 !important;
+          background: transparent !important;
+          box-shadow: none !important;
+        }
+
+        a,
+        a:visited {
+          text-decoration: underline;
+        }
+
+        a[href]:after {
+          content: " ("attr(href) ")";
+        }
+
+        a[href^="javascript:"]:after {
+          content: "";
+        }
+
+        thead {
+          display: table-header-group;
+        }
+
+        tr,
+        img {
+          page-break-inside: avoid;
+        }
+
+        img {
+          max-width: 100% !important;
+        }
+
+        p,
+        h2,
+        h3 {
+          orphans: 3;
+          widows: 3;
+        }
+
+        h2,
+        h3 {
+          page-break-after: avoid;
+        }
+      }
+
+      * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      :before,
+      :after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      input {
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+      }
+
+      a {
+        color: #428bca;
+        text-decoration: none;
+      }
+
+      a:hover,
+      a:focus {
+        color: #2a6496;
+        text-decoration: underline;
+      }
+
+      a:focus {
+        outline: thin dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: -2px;
+      }
+
+      img {
+        vertical-align: middle;
+      }
+
+      h2,
+      h3,
+      h5 {
+        font-family: inherit;
+        font-weight: 500;
+        line-height: 1.1;
+        color: inherit;
+      }
+
+      h2,
+      h3 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+
+      h5 {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        font-size: 30px;
+      }
+
+      h3 {
+        font-size: 24px;
+      }
+
+      h5 {
+        font-size: 14px;
+      }
+
+      p {
+        margin: 0 0 10px;
+      }
+
+      ul {
+        margin-top: 0;
+        margin-bottom: 10px;
+      }
+
+      .container {
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      @media (min-width:768px) {
+        .container {
+          width: 100%;
+        }
+
+        .copyRefCode {
+          font-size: 10px;
+        }
+      }
+
+      @media (min-width:992px) {
+        .container {
+          width: 100%;
+        }
+      }
+
+      @media (min-width:1200px) {
+        .container {
+          width: 1170px;
+        }
+      }
+
+      table {
+        max-width: 100%;
+        background-color: transparent;
+      }
+
+      th {
+        text-align: left;
+      }
+
+      @media (max-width:767px) {
+        .table-responsive {
+          width: 95%;
+          margin-bottom: 15px;
+          overflow-y: hidden;
+          overflow-x: scroll;
+          -ms-overflow-style: -ms-autohiding-scrollbar;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+
+      .btn-default {
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+      }
+
+      .btn-default:hover,
+      .btn-default:focus,
+      .btn-default:active {
+        color: #333;
+        background-color: #ebebeb;
+        border-color: #adadad;
+      }
+
+      .btn-default:active {
+        background-image: none;
+      }
+
+      .container:before,
+      .container:after {
+        content: " ";
+        display: table;
+      }
+
+      .container:after {
+        clear: both;
+      }
+    }
+
+    /*! CSS Used from: https://cdn.shopify.com/s/files/1/2445/2869/t/28/assets/rt-application.scss.css?7415568910032185997 ; media=all */
+    @media all {
+      a {
+        text-decoration: none !important;
+      }
+
+      *,
+      ::before,
+      ::after {
+        box-sizing: inherit;
+      }
+
+      p,
+      a {
+        letter-spacing: 0;
+      }
+
+      h2,
+      h3,
+      h5 {
+        position: relative;
+        font-weight: 500;
+      }
+
+      a {
+        text-decoration: none;
+        color: #000;
+        outline: none;
+        -moz-transition: all .3s ease;
+        -o-transition: all .3s ease;
+        -webkit-transition: all .3s ease;
+        transition: all .3s ease;
+      }
+
+      a:hover,
+      a:focus {
+        color: #000;
+        outline: none;
+      }
+
+      a {
+        background-color: transparent;
+      }
+
+      a:active,
+      a:hover {
+        outline: 0;
+      }
+
+      img {
+        border: 0;
+      }
+
+      input {
+        color: inherit;
+        font: inherit;
+        margin: 0;
+      }
+
+      input[type="submit"] {
+        -webkit-appearance: button;
+        cursor: pointer;
+      }
+
+      input::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+      }
+
+      input {
+        line-height: normal;
+      }
+
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+      }
+
+      td,
+      th {
+        padding: 0;
+      }
+
+      table tr {
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      table thead th {
+        padding: 1.25rem 0;
+      }
+
+      table th {
+        font-weight: 400;
+        text-transform: uppercase;
+        font-size: .875rem;
+        font-weight: 600;
+        text-align: left;
+        color: #000;
+        padding: 1.25rem 0;
+      }
+
+      table td {
+        padding: 1.25rem 0;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        -ms-interpolation-mode: bicubic;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      div,
+      ul,
+      li,
+      h2,
+      h3,
+      h5,
+      form,
+      p,
+      th,
+      td {
+        margin: 0;
+        padding: 0;
+      }
+
+      p {
+        font-size: 1rem;
+        line-height: 1.7;
+        margin-bottom: 1rem;
+        text-rendering: optimizeLegibility;
+      }
+
+      i {
+        font-style: italic;
+        line-height: inherit;
+      }
+
+      .smile-campaign-image i {
+        font-size: 50px;
+        padding-bottom: 20px
+      }
+
+      .bonus i {
+        font-size: 20px;
+        padding-right: 10px;
+      }
+
+      h2,
+      h3,
+      h5 {
+        font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        color: inherit;
+        text-rendering: optimizeLegibility;
+        margin-top: 0;
+        margin-bottom: .5rem;
+        line-height: 1.4;
+      }
+
+      h2 {
+        font-size: 1.25rem;
+      }
+
+      h3 {
+        font-size: 1.1875rem;
+      }
+
+      h5 {
+        font-size: 1.0625rem;
+      }
+
+      @media screen and (min-width: 40em) {
+        h2 {
+          font-size: 2.5rem;
+        }
+
+        h3 {
+          font-size: 1.9375rem;
+        }
+
+        h5 {
+          font-size: 1.25rem;
+        }
+      }
+
+      ul {
+        line-height: 1.6;
+        list-style-position: outside;
+      }
+
+      li {
+        font-size: inherit;
+      }
+
+      ul {
+        list-style-type: disc;
+        margin-left: 1.25rem;
+      }
+
+      @media print {
+        * {
+          background: transparent !important;
+          color: #000 !important;
+          box-shadow: none !important;
+          text-shadow: none !important;
+        }
+
+        a,
+        a:visited {
+          text-decoration: underline;
+        }
+
+        a[href]:after {
+          content: " ("attr(href) ")";
+        }
+
+        a[href^='javascript:']:after {
+          content: '';
+        }
+
+        thead {
+          display: table-header-group;
+        }
+
+        tr,
+        img {
+          page-break-inside: avoid;
+        }
+
+        img {
+          max-width: 100% !important;
+        }
+
+        p,
+        h2,
+        h3 {
+          orphans: 3;
+          widows: 3;
+        }
+
+        h2,
+        h3 {
+          page-break-after: avoid;
+        }
+      }
+
+      [type='text'] {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        height: 2.4375rem;
+        padding: .5rem;
+        border: 1px solid #cacaca;
+        margin: 0 0 1rem;
+        font-family: inherit;
+        font-size: 1rem;
+        color: #0a0a0a;
+        background-color: #fefefe;
+        box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+        border-radius: 0;
+        transition: box-shadow 0.5s, border-color .25s ease-in-out;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+      }
+
+      [type='text']:focus {
+        border: 1px solid #8a8a8a;
+        background-color: #fefefe;
+        outline: none;
+        box-shadow: 0 0 5px #cacaca;
+        transition: box-shadow 0.5s, border-color .25s ease-in-out;
+      }
+
+      input::placeholder {
+        color: #0a0a0a;
+      }
+
+      input:disabled {
+        background-color: #e6e6e6;
+        cursor: default;
+      }
+
+      [type='submit'] {
+        border-radius: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+      }
+
+      [class*=" icon-"] {
+        font-family: "icomoon" !important;
+        speak: none;
+        font-style: normal;
+        font-weight: 400;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .fa-twitter:before {
+        content: "\f099";
+      }
+
+      .fa-facebook:before {
+        content: "\f09a";
+      }
+
+      :focus {
+        outline: none;
+      }
+
+      form {
+        margin: 0;
+      }
+
+      input[type="text"] {
+        font-size: 1rem;
+        -webkit-appearance: none;
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+        -ms-border-radius: 0;
+        border-radius: 0;
+        background-clip: padding-box;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        -moz-transition: all .2s linear;
+        -o-transition: all .2s linear;
+        -webkit-transition: all .2s linear;
+        transition: all .2s linear;
+        border-color: #e5e5e5;
+      }
+
+      input[type="text"]:hover,
+      input[type="text"]:focus {
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        border-color: #ccc;
+      }
+
+      input[type=submit] {
+        background-color: #a8e8e2;
+        padding: .9375rem 1.875rem;
+        border: none;
+        color: #000;
+        cursor: pointer;
+        -moz-transition: all 0.45s cubic-bezier(0.25, 1, 0.33, 1);
+        -o-transition: all 0.45s cubic-bezier(0.25, 1, 0.33, 1);
+        -webkit-transition: all 0.45s cubic-bezier(0.25, 1, 0.33, 1);
+        transition: all 0.45s cubic-bezier(0.25, 1, 0.33, 1);
+        width: auto;
+        font-size: .75rem;
+        line-height: 1.125rem;
+        font-weight: 600;
+        letter-spacing: .125rem;
+        text-transform: uppercase;
+      }
+
+      body[data-form-style="minimal"] input::-webkit-input-placeholder {
+        color: transparent;
+      }
+
+      body[data-form-style="minimal"] input::-moz-placeholder {
+        color: transparent;
+      }
+
+      body[data-form-style="minimal"] input:-moz-placeholder {
+        color: transparent;
+      }
+
+      body[data-form-style="minimal"] input:-ms-input-placeholder {
+        color: transparent;
+      }
+
+      body[data-form-style="minimal"] input[type="text"] {
+        position: relative;
+        font-size: 14px;
+        font-weight: 500;
+        background-color: transparent;
+        margin: 0;
+        border: none;
+        height: 3.125rem;
+        padding: 5px;
+        font-family: roboto;
+      }
+    }
+
+    /*! CSS Used from: https://cdn.shopify.com/s/files/1/2445/2869/t/28/assets/rt-custom.scss.css?7415568910032185997 ; media=all */
+    @media all {
+
+      p,
+      a {
+        font-family: "Roboto", Helvetica, Arial, sans-serif;
+        letter-spacing: 0.5px;
+        font-weight: 300;
+        font-style: normal;
+      }
+
+      h2,
+      h3,
+      h5 {
+        font-family: "Roboto", Helvetica, Arial, sans-serif;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        font-style: normal;
+      }
+
+      input[type="submit"] {
+        background-color: #00c4b3;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #00deca;
+      }
+
+      table th {
+        text-align: center;
+      }
+
+      @media print {
+        a[href]:after {
+          content: none !important;
+        }
+
+        table td {
+          padding: 5px;
+          font-size: 12px;
+        }
+
+        p {
+          font-size: 1rem;
+          line-height: 1;
+        }
+      }
+    }
+
+    /*! CSS Used from: https://cdn.shopify.com/s/files/1/2445/2869/t/28/assets/smile-rewards.css?7415568910032185997 ; media=all */
+    @media all {
+
+      *,
+      ::before,
+      ::after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      h3:not(:first-child) {
+        margin-top: 0;
+      }
+
+      [class*=" icon-"] {
+        font-family: 'icomoon' !important;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .icon-link-icon:before {
+        content: "\e123";
+      }
+
+      #smile-reward-sweetlegs {
+        margin-top: -100px;
+      }
+
+      #smile-reward-sweetlegs h2 {
+        font-size: 38px;
+        font-weight: bold;
+        text-align: center;
+        color: #000;
+        margin-bottom: 30px;
+      }
+
+      #smile-reward-sweetlegs ul {
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+        list-style-type: none;
+        margin-left: 0;
+      }
+
+      #smile-reward-sweetlegs a {
+        text-underline-position: under;
+      }
+
+      #smile-reward-sweetlegs a:hover {
+        opacity: 1;
+      }
+
+      #smile-reward-sweetlegs img {
+        margin: 0 auto;
+      }
+
+      #smile-reward-sweetlegs .container {
+        width: 1170px;
+        margin: 0 auto;
+      }
+
+      #smile-reward-sweetlegs .desktop {
+        display: block;
+      }
+
+      #smile-reward-sweetlegs .mobile {
+        display: none;
+      }
+
+      #smile-reward-sweetlegs .user-login,
+      #smile-reward-sweetlegs .smile-referral,
+      #smile-reward-sweetlegs .campaign-section,
+      #smile-reward-sweetlegs .vip-tiers,
+      #smile-reward-sweetlegs .redeem,
+      #smile-reward-sweetlegs .heading-holder {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      #smile-reward-sweetlegs .banner {
+        width: 100%;
+        position: relative;
+      }
+
+      #smile-reward-sweetlegs .banner .banner-image {
+        min-height: 430px;
+      }
+
+      #smile-reward-sweetlegs .banner .banner-holder {
+        max-width: 500px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        padding: 35px 0;
+        min-height: 400px;
+      }
+
+      #smile-reward-sweetlegs .banner .banner-content img {
+        margin-bottom: 40px;
+      }
+
+      #smile-reward-sweetlegs .banner .banner-content .logo-image {
+        width: 50%;
+        margin-bottom: 15px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points,
+      #smile-reward-sweetlegs .user-login .user-level {
+        margin: 30px 0;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list,
+      #smile-reward-sweetlegs .user-login .user-level-list {
+        vertical-align: middle;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .btn-default {
+        margin: 0 auto;
+        width: 16vw;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 250px;
+        max-width: 300px;
+        background-color: #fff;
+        color: #00c4b3;
+        border: 1px solid #00c4b3;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image {
+        position: relative;
+        font-weight: 700;
+        min-width: 255px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image img {
+        width: 70%;
+        margin: 0 auto;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image .points {
+        position: absolute;
+        top: 40%;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image .points h3 {
+        font-size: 50px;
+        font-weight: bold;
+        color: #fff;
+        line-height: 34px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image .points h5 {
+        font-size: 20px;
+        font-weight: bold;
+        color: #000;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .current-level,
+      #smile-reward-sweetlegs .user-login .user-level-list .next-level {
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        display: block;
+        margin-bottom: 20px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .star-image {
+        width: 20%;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list h3 {
+        font-size: 30px;
+        font-weight: bold;
+        color: #000;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list p {
+        font-size: 14px;
+        font-weight: bold;
+        color: #000;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more {
+        position: relative;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more:before,
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        border-bottom: 2px solid #000;
+        width: 50px;
+        height: 3px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more:before {
+        top: -40px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more:after {
+        bottom: -40px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more p {
+        font-size: 24px;
+        font-weight: bold;
+        color: #000;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-content-container {
+        display: flex;
+        width: 100%;
+        position: relative;
+        min-height: 240px
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-content-sidebar,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-content-main {
+        width: 50%;
+        display: inline-flex;
+        align-items: center;
+        vertical-align: top;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-content-sidebar {
+        text-align: left;
+        background-color: #f4f4f4;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-sidebar-image {
+        width: 150px;
+        margin-bottom: 10px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-sidebar-detail {
+        text-align: left;
+        font-weight: 300;
+        font-size: calc(12px + (22 - 12) * ((100vw - 300px) / (2000 - 300)));
+        margin: 0px;
+        line-height: 1;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-content-main {
+        background: #00c4b3;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-heading,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-details,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-field-details,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-sidebar-details-reward {
+        display: none;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-refer,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-sidebar-details {
+        padding: 30px 60px;
+        width: 100%;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-header-details,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-details {
+        font-size: 16px;
+        margin-bottom: 15px;
+        color: #fff;
+        text-align: left;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-list-field {
+        display: block;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-list-field-input {
+        width: 100%;
+        padding: 14px 20px;
+        outline: 1px solid #fff;
+        margin-bottom: 10px;
+        background-color: #1fc4b3;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-list-field-input::placeholder {
+        color: #fff;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-list-submit {
+        width: 100%;
+        padding: 14px 0;
+        background-color: #fff;
+        color: #1fc4b3;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-details {
+        text-align: center;
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-medium {
+        width: 20%;
+        font-weight: 800;
+        cursor: pointer;
+        color: #fff;
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-icon {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-share-referral-copy .smile-referral-media-icon {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers {
+        background-color: #f4f4f4;
+        display: flex;
+        margin-bottom: 02px
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .vip-tiers-table,
+      #smile-reward-sweetlegs .vip-tiers .vip-tiers-image {
+        display: inline-flex;
+        align-items: center;
+        width: 50%;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .vip-tiers-image {
+        width: 30%;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive {
+        display: block;
+        width: 100%;
+        padding: 25px 20px 20px 50px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table {
+        margin-bottom: 10px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr,
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table tbody tr {
+        border-color: #eee;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr {
+        border-bottom: 1px solid #eee;
+        color: #ed2b91;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr th {
+        color: #ed2b91;
+        font-weight: bold;
+        font-size: 22px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr th,
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table tbody tr td {
+        font-size: 16px;
+        padding: 5px;
+        text-align: left;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr th:nth-child(2),
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table tbody tr td:nth-child(2) {
+        padding-left: 40px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr th:last-child,
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table tbody tr td:last-child {
+        text-align: center;
+        border-right: 0;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr:last-child th,
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table tbody tr td .green-circle {
+        width: 10px;
+        height: 10px;
+        background-color: #1fc4b3;
+        border-radius: 50%;
+        display: block;
+        float: right;
+        margin-top: 4%;
+        margin-right: 25px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive p {
+        color: grey;
+        font-weight: bold;
+        font-size: 12px;
+        text-align: left;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive p a {
+        color: black;
+        border-bottom: 1px solid #1fc4b3;
+        font-weight: bold;
+      }
+
+      #smile-reward-sweetlegs .campaign-section.logged-in-user .smile-campaign-list .smile-campaign {
+        cursor: default;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign {
+        width: 23.5%;
+        display: inline-flex;
+        align-items: center;
+        vertical-align: top;
+        background-color: #f8f8f8;
+        margin: 10px 0px;
+        min-height: 227px;
+        position: relative;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-content {
+        margin: 0 auto;
+        width: 100%;
+        padding: 20px 0;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-image img {
+        max-width: 50px;
+        height: 50px;
+        margin-bottom: 15px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-value-content {
+        font-weight: bold;
+        font-size: calc(20px + (34 - 20) * ((100vw - 300px) / (2000 - 300)));
+        color: #1fc4b3;
+        display: block;
+        line-height: 26px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-type-content {
+        font-size: calc(14px + (20 - 14) * ((100vw - 300px) / (2000 - 300)));
+        font-weight: 700;
+        margin-bottom: 0;
+        display: block;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-detail-content {
+        font-size: 14px;
+        font-weight: bold;
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .campaign-image {
+        width: 95%;
+        margin-right: 0;
+      }
+
+      #smile-reward-sweetlegs .redeem .heading-holder {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      #smile-reward-sweetlegs .redeem .heading-holder h2 {
+        margin-bottom: 10px;
+      }
+
+      #smile-reward-sweetlegs .referral-table {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      #smile-reward-sweetlegs .referral-table h2 {
+        margin-bottom: 20px;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive {
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 220px;
+        min-height: 220px;
+        max-width: 700px;
+        margin: 0 auto;
+        border: none;
+        font-size: 16px;
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive::-webkit-scrollbar-track {
+        border-radius: 10px;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive::-webkit-scrollbar-thumb {
+        background: #1fc4b3;
+        border-radius: 10px;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive::-webkit-scrollbar-track {
+        background: #ebebeb;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive thead tr th {
+        color: #ED2B91;
+        font-weight: bold;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive thead tr th,
+      #smile-reward-sweetlegs .referral-table .table-responsive tbody tr td {
+        background-color: transparent;
+        border-bottom: 1px solid #e0e0e0;
+        border-left: 0;
+        border-right: 0;
+        border-top: none;
+        padding: 10px;
+        text-align: left;
+        color: #919396;
+        word-break: break-all;
+        max-width: 150px;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive tbody tr td span {
+        color: #1fc4b3;
+        font-weight: bold;
+      }
+
+      #smile-reward-sweetlegs .banner-content {
+        margin: 25px 0px 15px 0px;
+        text-align: center;
+        padding: 25px 0px;
+        background: #f8f8f8e0;
+        line-height: 1;
+      }
+
+      #smile-reward-sweetlegs .sign-up {
+        position: relative;
+      }
+
+      #smile-reward-sweetlegs .sign-up-button {
+        position: absolute;
+        top: 0px;
+        width: 100%;
+        font-size: 10px;
+        text-align: center;
+      }
+
+      .sign-up-button .content {
+        width: 30%;
+        margin: 0 auto;
+        background: white;
+      }
+
+
+      #smile-reward-sweetlegs .register {
+        background: #01c2b0;
+        width: 12vw;
+        min-width: 150px;
+        line-height: 1;
+        height: 46px;
+        color: white;
+        margin: auto;
+        font-weight: 700;
+        font-size: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .step {
+        border-bottom: 1.5px solid black;
+        width: 48px;
+        padding-bottom: 5px;
+        margin: auto;
+      }
+
+      .circle {
+        border-radius: 50%;
+        background: black;
+        height: 48px;
+        width: 48px;
+        color: white;
+        font-weight: 700;
+        font-size: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+      }
+
+      .flex-item {
+        flex-basis: 25%;
+        margin: 10px;
+      }
+
+      .join-rule {
+        text-align: center;
+        margin-bottom: 30px;
+        display: flex;
+        margin-top: -30px;
+        justify-content: center;
+      }
+
+      .discription {
+        font-size: calc(14px + (18 - 14) * ((100vw - 300px) / (2000 - 300)));
+        line-height: 1;
+        font-weight: 200;
+        text-align: left;
+      }
+
+      .title {
+        font-size: calc(18px + (32 - 18) * ((100vw - 300px) / (2000 - 300)));
+        font-weight: 700;
+
+      }
+
+      .title.light {
+        font-weight: 200;
+      }
+
+      .title.medium {
+        font-weight: 500;
+      }
+
+      .pink {
+        color: #ed2b91;
+      }
+
+      .green {
+        color: #00c4b3;
+      }
+
+      .smile-sidebar-title {
+        display: inline;
+        color: #ed2b91;
+      }
+
+      .smile-sidebar-title.title {
+        color: #ED2b91;
+        font-size: calc(16px + (32 - 20) * ((100vw - 300px) / (2000 - 300)));
+      }
+
+      .bonus {
+        width: 80%;
+      }
+
+      .smile-heading {
+        font-size: calc(18px + (30 - 18) * ((100vw - 300px) / (2000 - 300)));
+        text-align: left;
+        color: white;
+        font-weight: 800;
+        line-height: 1;
+        padding: 5px 0px;
+        border-bottom: 2px solid white;
+        display: flex;
+        padding-bottom: 15px;
+      }
+
+      .table-heading {
+        text-align: left;
+        font-size: calc(28px + (36 - 28) * ((100vw - 300px) / (2000 - 300)));
+        font-weight: 700;
+        color: #00c4b3;
+      }
+
+      .tr {
+        border-bottom: 1px solid grey;
+      }
+
+      .table-discription {
+        width: 100%;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: normal;
+        padding-right: 20%;
+        position: relative;
+      }
+
+      .bonus span {
+        color: #00c4b3;
+        font-weight: 700;
+        font-size: calc(18px + (20 - 18) * ((100vw - 300px) / (2000 - 300)));
+      }
+
+      #smile-reward-sweetlegs .bonus p {
+        font-size: 14px;
+        padding-left: 40px;
+        font-weight: 200;
+        line-height: 1;
+        font-size: calc(16px + (18 - 16) * ((100vw - 300px) / (2000 - 300)));
+      }
+
+      .smile-campaign-type-content.heading {
+        color: white;
+        text-align: left;
+        padding: 20px 30px;
+        line-height: 1;
+        font-size: 22px;
+      }
+
+      .page-header.spacing .title-section {
+        margin-top: -0px;
+      }
+
+      .ribbon {
+        position: relative;
+      }
+
+      .ribbon:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 100%;
+        width: 0;
+        height: 0;
+        border-top: 17px solid #00c4b3;
+        border-bottom: 17px solid #00c4b3;
+        border-right: 17px solid #f4f4f4;
+      }
+
+      .ribbonStart {
+        position: relative;
+      }
+
+      .ribbonStart:before {
+        display: block;
+        width: 10px;
+        height: 0px;
+        position: absolute;
+        bottom: -10px;
+        left: -60px;
+        content: "";
+        border-bottom: 10px solid transparent;
+        border-right: 10px solid rgba(1, 196, 178, 0.5);
+      }
+
+      .ribbonStart:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -60px;
+        width: 60px;
+        height: 0;
+        border-top: 17px solid #00c4b3;
+        border-bottom: 17px solid #00c4b3;
+      }
+
+      .referral-link .copy-button,
+      .edit-referral-code {
+        position: absolute;
+        right: 11px;
+        color: white;
+        top: 50%;
+        margin-top: -12px;
+        padding: 8px 20px;
+        background: #000;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: roboto;
+        outline: none;
+        border: 0;
+        border-radius: 5px;
+      }
+
+      .smile-campaign:after {
+        content: "";
+        display: block;
+        padding-bottom: 100%;
+      }
+
+      .smile-campaign-list {
+        flex-wrap: wrap;
+        margin-block-start: 0;
+      }
+
+      .smile-campaign-type.heading {
+        font-size: calc(18px + (30 - 18) * ((100vw - 300px) / (2000 - 300)));
+        text-align: left;
+        font-weight: 700;
+        line-height: 1;
+        color: white;
+        padding: 15% 10%;
+      }
+
+      .vip-tier-image {
+        max-width: 20%;
+        position: absolute;
+        right: 0px;
+        bottom: 0px;
+        max-height: 100%
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .slTier {
+        width: 100%;
+      }
+
+      .table-discription {
+        width: 100%;
+        padding: 20px;
+        margin-top: 30px
+      }
+
+      .bonus {
+        margin-bottom: 50px;
+        width: 50%;
+        margin-left: -2px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers {
+        display: block;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .vip-tiers-table {
+        width: 100%;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign {
+        width: 23%;
+        min-height: 178px;
+      }
+
+      .table-discription {
+        display: block;
+      }
+
+      .vertical-line {
+        border-right: 1px solid #01c2b0;
+        margin: 30px;
+        margin-right: -30px;
+      }
+
+    }
+
+    @media (max-width: 768px) {
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-share-referral-copy .smile-referral-media-icon {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs h2 {
+        font-size: 24px;
+      }
+
+      #smile-reward-sweetlegs .container {
+        width: 100%;
+      }
+
+      #smile-reward-sweetlegs .desktop {
+        display: none;
+      }
+
+      #smile-reward-sweetlegs .mobile {
+        display: block;
+      }
+
+      #smile-reward-sweetlegs .banner .banner-image {
+        min-height: 500px;
+      }
+
+      #smile-reward-sweetlegs .banner .banner-holder {
+        padding: 70px 0;
+        min-height: 500px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image .points h3 {
+        font-size: 40px;
+        line-height: 22px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image .points h5 {
+        font-size: 18px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more p {
+        font-size: 19px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-content-container,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-content-sidebar,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-content-main {
+        width: 100%;
+        display: block;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-header-details,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-details,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-list-field-input,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-medium {
+        font-size: 16px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-details {
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-icon {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .vip-tiers-table,
+      #smile-reward-sweetlegs .vip-tiers .vip-tiers-image {
+        width: 100%;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .vip-tiers-image {
+        display: none;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive {
+        padding: 30px;
+        margin-bottom: 0;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr th,
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table tbody tr td {
+        font-size: 16px;
+        white-space: nowrap;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr th:nth-child(2),
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table tbody tr td:nth-child(2) {
+        padding-left: 10px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive p {
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign {
+        width: 48%;
+        min-height: 260px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign:nth-child(2),
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign:nth-child(4),
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign:nth-child(6),
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign:nth-child(8) {
+        margin-right: 0;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-content {
+        padding: 20px 0;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-image img {
+        max-width: 50px;
+        height: 50px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-value-content {
+        font-size: 30px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-type-content {
+        font-size: 18px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-detail-content {
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .campaign-image {
+        width: 75%;
+      }
+
+      #smile-reward-sweetlegs .redeem .heading-holder p {
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive {
+        max-width: 100%;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers {
+        display: block;
+      }
+
+      #smile-reward-sweetlegs .user-points {
+        display: block;
+      }
+
+      .user-login {
+        height: 300px;
+      }
+
+      .user-points {
+        position: relative;
+      }
+
+      .user-points-list.earn {
+        position: absolute;
+        top: 160px;
+        left: 0px;
+        right: 0px;
+      }
+
+      .user-points-list.redeeme {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        top: 250px;
+      }
+
+      body[data-form-style="minimal"] input[type="text"] {
+        font-size: 12px;
+      }
+
+      .ribbonStart:after {
+        left: -40px;
+        width: 40px;
+      }
+
+      .ribbonStart:before {
+        left: -40px;
+      }
+
+      #smile-reward-sweetlegs img {
+        max-width: 150%;
+        margin-left: -200px;
+      }
+
+      .user-login {
+        min-height: 350px;
+      }
+
+      .smile-campaign-type.heading {
+        font-size: calc(16px + (36 - 18) * ((100vw - 300px) / (768 - 300)));
+      }
+
+      .campaign.review .icon {
+        font-size: calc(18px + (30 - 18) * ((100vw - 300px) / (2000 - 300)));
+      }
+
+      .smile-sidebar-title.title {
+        white-space: nowrap;
+        font-size: calc(16px + (32 - 16) * ((100vw - 300px) / (760 - 300)));
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-sidebar-detail {
+        font-size: calc(14px + (22 - 14) * ((100vw - 300px) / (760 - 300)));
+      }
+
+      .copyRefCode {
+        font-size: 10px;
+      }
+
+      .refCodeValue {
+        width: 300px !important;
+      }
+
+      .vip-tier-image {
+        max-width: 32% !important;
+      }
+
+      .slTier {
+        padding-top: 0px !important;
+      }
+
+    }
+
+    @media (max-width: 580px) {
+      .currentTier {
+        font-size: 20px;
+      }
+
+      .currentTierValue {
+        font-size: 25px;
+      }
+
+      .currentTierValue.line {
+        padding-bottom: 10px !important;
+      }
+
+      .refCodeValue {
+        font-size: 12px !important;
+        width: 120px !important;
+      }
+
+      .success {
+        font-size: 12px;
+      }
+
+      .table-discription {
+        padding: 0px;
+        margin-top: 0px;
+      }
+
+      #smile-reward-sweetlegs h2 {
+        font-size: 22px;
+      }
+
+      #smile-reward-sweetlegs .banner .banner-image {
+        min-height: 415px;
+      }
+
+      #smile-reward-sweetlegs .banner .banner-holder {
+        padding: 50px 0 0;
+        max-width: 360px;
+        min-height: 350px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image .points h3 {
+        font-size: 26px;
+        line-height: 12px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image .points h5 {
+        font-size: 13px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .current-level,
+      #smile-reward-sweetlegs .user-login .user-level-list .next-level {
+        font-size: 10px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list h3 {
+        font-size: 24px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list p {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more:before,
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more:after {
+        width: 35px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more:before {
+        top: -30px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more:after {
+        bottom: -30px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more p {
+        font-size: 13px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-sidebar-image {
+        width: 100px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-refer {
+        padding: 30px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-sidebar-details {
+        padding: 30px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-header-details,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-details,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-list-field-input,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-medium {
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-details {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-icon {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive {
+        padding: 20px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr th,
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table tbody tr td {
+        font-size: 16px;
+        padding: 5px 0px;
+        width: 100%;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive p {
+        font-size: 10px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign {
+        min-height: 160px;
+        width: 48.5%
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-value-content {
+        font-size: 24px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-type-content {
+        font-size: 16px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-detail-content {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .redeem .heading-holder {
+        max-width: 400px;
+      }
+
+      #smile-reward-sweetlegs .redeem .heading-holder p {
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs button.referral-media-icon {
+        width: 50px;
+      }
+
+      #smile-reward-sweetlegs img {
+        max-width: 200%;
+        /*     margin: 0 -120px; */
+      }
+
+      .smile-heading {
+        max-width: 100%;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper {
+        max-width: 100%;
+      }
+
+      .sign-up-button .content {
+        width: 220px;
+      }
+
+      .bonus {
+        width: 100%;
+      }
+
+      #smile-reward-sweetlegs table {
+        table-layout: fixed;
+        width: 99%;
+      }
+
+      .ribbonStart:after {
+        left: -30px;
+        width: 30px;
+      }
+
+      .ribbonStart:before {
+        left: -30px;
+      }
+
+      .flex-item {
+        flex-basis: 50% margin:0 3px;
+      }
+
+      .campaign.review .flex-item {
+        flex-basis: 30%;
+      }
+
+      .campaign.review {
+        justify-content: space-between;
+      }
+
+      .vip-tier-image {
+        max-width: 45% !important;
+      }
+    }
+
+    @media (max-width: 430px) {
+      #smile-reward-sweetlegs h2 {
+        font-size: 20px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral,
+      #smile-reward-sweetlegs .campaign-section,
+      #smile-reward-sweetlegs .vip-tiers,
+      #smile-reward-sweetlegs .redeem,
+      #smile-reward-sweetlegs .heading-holder {
+        margin-bottom: 30px;
+      }
+
+      #smile-reward-sweetlegs .banner .banner-image {
+        min-height: 350px;
+      }
+
+      #smile-reward-sweetlegs .banner .banner-holder {
+        padding: 30px 0 0;
+        max-width: 300px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image img {
+        max-width: 150px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .current-level,
+      #smile-reward-sweetlegs .user-login .user-level-list .next-level {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list h3 {
+        font-size: 28px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list p {
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more {
+        margin: 40px 0;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-level-list .spend-more p {
+        font-size: 18px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-sidebar-image {
+        width: 70px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-refer {
+        padding: 20px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-sidebar-details {
+        padding: 0px 20px
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-header-details,
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-details {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-form-wrapper .smile-referral-form-list-field-input {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-details {
+        font-size: 11px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-medium {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-referral-media-icon {
+        font-size: 12 px;
+        margin-right: 0;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive {
+        padding: 10px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table thead tr th,
+      #smile-reward-sweetlegs .vip-tiers .table-responsive table tbody tr td {
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs .vip-tiers .table-responsive p {
+        font-size: 8px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign {
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-image img {
+        max-width: 50px;
+        height: 50px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-value-content {
+        font-size: 22px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-type-content {
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-detail-content {
+        font-size: 14px;
+      }
+
+      #smile-reward-sweetlegs .redeem .heading-holder {
+        max-width: 90%;
+      }
+
+      #smile-reward-sweetlegs .redeem .heading-holder p {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .referral-table .table-responsive {
+        font-size: 12px;
+      }
+
+      #smile-reward-sweetlegs .smile-referral .smile-referral-media-wrapper .smile-share-referral-copy .smile-referral-media-icon {
+        font-size: 12px;
+      }
+
+      .smile-campaign-type-content.heading {
+        padding: 10px;
+      }
+
+      .ribbon:after {
+        border-top: 14px solid #00c4b3;
+      }
+
+      .smile-referral-sidebar-details-action i {
+        padding: 0px !important;
+      }
+
+      .smile-referral-sidebar-details-action p {
+        padding: 0px 10px !important;
+      }
+
+      .table-heading {
+        font-size: 24px;
+        white-space: nowrap;
+      }
+
+      .ribbonStart:after {
+        left: -15px;
+        width: 15px;
+        border-top: 14px solid #00c4b3;
+      }
+
+      .ribbonStart:before {
+        bottom: -8px;
+        left: -17px;
+        border-bottom: 8px solid transparent;
+        border-right: 8px solid rgba(1, 196, 178, 0.5);
+        z-index: -111;
+      }
+
+      .title {
+        padding: 0px 10px;
+      }
+
+      .flex-item {
+        flex-basis: 32%;
+        margin: 0px;
+      }
+
+      .join-rule {
+        justify-content: space-between;
+      }
+
+      #smile-reward-sweetlegs .user-login .user-points-list .user-points-image {
+        min-width: 200px;
+      }
+
+      .referral-link .copy-button,
+      .edit-referral-code {
+        width: 60px;
+        right: 5px;
+      }
+
+      .ribbon:after {
+        left: 90%;
+      }
+    }
+    }
+
+    @font-face {
+      font-family: 'icomoon';
+      src: url(//cdn.shopify.com/s/files/1/2445/2869/t/28/assets/icomoon.eot?f9m9tx&4498367728053364873);
+      src: url(//cdn.shopify.com/s/files/1/2445/2869/t/28/assets/icomoon.eot?f9m9tx%23iefix&4498367728053364873) format("embedded-opentype"), url(//cdn.shopify.com/s/files/1/2445/2869/t/28/assets/icomoon.ttf?f9m9tx&4498367728053364873) format("truetype"), url(//cdn.shopify.com/s/files/1/2445/2869/t/28/assets/icomoon.woff?f9m9tx&4498367728053364873) format("woff"), url(//cdn.shopify.com/s/files/1/2445/2869/t/28/assets/icomoon.svg?f9m9tx%23icomoon&4498367728053364873) format("svg");
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    /*! CSS Used from: https://cdn.shopify.com/s/files/1/0071/3552/t/84/assets/theme.min.css?11426186038105567143 ; media=all */
+    @media all {
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button,
+      input {
+        overflow: visible;
+      }
+
+      button,
+      input {
+        margin: 0;
+      }
+
+      button {
+        text-transform: none;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      button {
+        -webkit-appearance: button;
+      }
+
+      button::-moz-focus-inner,
+      input::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+      }
+
+      button:-moz-focusring,
+      input:-moz-focusring {
+        outline: 1px dotted ButtonText;
+      }
+
+      input[type="text"] {
+        background-color: #EFEFEF;
+        border: none;
+        outline: none;
+        display: block;
+        width: 100%;
+        padding: 10px 12px;
+        box-sizing: border-box;
+        margin: 4px 0;
+        -webkit-appearance: none;
+        -webkit-border-radius: 0;
+      }
+
+      .referral-link {
+        position: relative;
+        border: 1px solid #EAEBEB;
+        background: #FFF;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-family: monospace;
+      }
+
+      .referral-link .sweettooth-referral-url {
+        padding: 0;
+        margin: 0;
+        background: none;
+      }
+
+    }
+  </style>
+  <script>
+    var smileCustomer;
+    $(document).on('smile-shopify-loaded', function () {
+      customerName = null;
+      SmileShopify.ready().then(function (SmileShopify) {
+//         if (!$('.sweettooth-points-balance').text()) {
+//           $('.sweettooth-points-balance').text('0');
+//         }
+        var smile = SmileShopify.smile;
+ 
+        smile.fetchCustomer({
+          include: 'vip_tier'
+        }).then((customer) => {
+          $('.sweettooth-points-balance').text(customer.points_balance);
+          $('.sweettooth-referral-url').val(customer.referral_url);
+          customerName = customer.first_name;
+          referralUrl = customer.referral_url;
+          var vip_tier = customer.vip_tier.name.replace(/\s/g, '').toLowerCase();
+          vip_tier = $('.vipTier').val().replace(/ /g, '');
+          if (!vip_tier) {
+            $(`.${vip_tier}`).parent().css({
+              "background": "#00c4b3",
+              "color": "white"
+            });
+            $(`.${vip_tier}`).parent().find('td:last-child').addClass('ribbon');
+            $(`.${vip_tier}`).parent().find('td:first-child').addClass('ribbonStart');
+          }
+        });
+      }).catch(err => {
+         alert('Smile error. Please refresh the browser');
+      });
+      $('button.facebook').click(function (e) {
+        if (customerName) {
+          url = $('.sweettooth-referral-url').val();
+          url = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+          window.open(url, '_blank');
+        } else {
+          e.preventDefault();
+        }
+      });
+
+      $('button.twitter').click(function (e) {
+        if (customerName) {
+          url = $('.sweettooth-referral-url').val();
+          text = 'Visit Sweetlegs Clothing Inc to receive your free gift!';
+          url = `https://twitter.com/intent/tweet?text=${text}&url=${url}Twitter`;
+          window.open(url, '_blank');
+        } else {
+          e.preventDefault();
+        }
+      });
+
+      $('button.email').click(function (e) {
+        if (customerName) {
+          body =
+            `Lucky you, ${customerName} has sent you $5 OFF for your first order on sweetlegs.ca! Just use the following link: ${referralUrl}`;
+          subject = `${customerName} has sent you 5$ OFF!`;
+          window.location = `mailto:?subject=${subject}&body=${body}`;
+        } else {
+          e.preventDefault();
+        }
+
+      });
+
+
+    });
+  </script>
+
+
+
+
+  <script>
+  function saveReferralCode() {
+    $email = $('.customerEmail').val();
+    $referralCode = $('.referral-code').val(); 
+    console.log($referralCode);
+    if($referralCode) {
+      let api = `{{ settings.sweetlegs_rocks_api}}`;
+      $store = {{ settings.store_id}};
+      $customerId = '{{customer.id}}';
+         $.ajax({
+                  type: 'POST',
+           url: `${api}/api/distributor-rewards/referral-codes`,
+           data: {referral_code: $referralCode, store_id: $store, customer_id: $customerId},
+                  success: function(resultData) {
+                    $('.success').css('display','block');
+                    $('.success').text('Successfully created your referral code !!');
+                    $('.__ref__code').html(`
+                      <li><input type="text" readonly="" class="refCodeValue"
+                                    value='${$referralCode}'><button class="copyRefCode"
+                                    onclick='copyToClipboard("refCodeValue", "copyRefCode")'>COPY</button></li>
+                    `)
+                  },
+                  error: function() {
+                    $('.success').css('display','block');
+                    $('.success').text('Referral code already taken, try another.');
+                  }
+            });
+    }
+  }
+
+    function copyToClipboard(refCodeValue, copyButton) {
+      el = `.${refCodeValue}`;
+      // resolve the element
+      el = (typeof el === 'string') ? document.querySelector(el) : el;
+
+      // handle iOS as a special case
+      if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+
+        // save current contentEditable/readOnly status
+        var editable = el.contentEditable;
+        var readOnly = el.readOnly;
+
+        // convert to editable with readonly to stop iOS keyboard opening
+        el.contentEditable = true;
+        el.readOnly = true;
+
+        // create a selectable range
+        var range = document.createRange();
+        range.selectNodeContents(el);
+
+        // select the range
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        el.setSelectionRange(0, 999999);
+
+        // restore contentEditable/readOnly to original state
+        el.contentEditable = editable;
+        el.readOnly = readOnly;
+      } else {
+        el.select();
+      }
+
+      // execute copy command
+      try {
+        document.execCommand('copy');
+        btn = `.${copyButton}`;
+        $(btn).html('Copied!');
+        setTimeout(function () {
+          $(btn).html('Copy!');
+        }, 3000)
+      } catch (e) {}
+    }
+  </script>
+
+
+  <script>
+    $(document).ready(function (e) {
+      let customerTEST = {};
+
+      let data = {};
+      data.store_id = '{{settings.store_id}}';
+      data.customer_id = '{{customer.id}}';
+      let api = '{{settings.sweetlegs_rocks_api}}';
+      $.ajax({
+        type: 'GET',
+        url: `${api}/api/distributor-rewards`,
+        data: data,
+        success: function (resultData) {
+          customer = resultData;
+          // we need to move this into the ajax call after
+          if (customer.sl_vip_tier) {
+            $('.slTier').html(`<div class="table-discription" style="background: white">
+            <div class="tier" style="padding:30px">
+              <h3 class="currentTier">CURRENT TIER:</h3>
+              <h3 class="currentTierValue line"
+                style="border-bottom: 2px solid #00c4b3;padding-bottom: 20px;width: 80%">
+                ${customer.sl_vip_tier  ? customer.sl_vip_tier : customer.smile_vip_tier}</h3>
+            </div>
+            <div class="tierValue">
+              <h3 class="currentTier">SPEND</h3>
+              <h3 class="currentTierValue">${customer.spend_more ? customer.spend_more : customer.spend_more_shopify}</h3>
+              <h3 class="currentTier">TO REACH</h3>
+              <h3 class="currentTierValue" style="color:#ED2B91;padding-bottom: 30px">NEXT TIER</h3>
+            </div>
+          </div>`);
+          }else if (customer.smile_vip_tier) {
+             $('.slTier').html(`<div class="table-discription" style="background: white">
+            <div class="tier" style="padding:30px">
+              <h3 class="currentTier">CURRENT TIER:</h3>
+              <h3 class="currentTierValue line"
+                style="border-bottom: 2px solid #00c4b3;padding-bottom: 20px;width: 80%">
+                ${customer.sl_vip_tier  ? customer.sl_vip_tier : customer.smile_vip_tier}</h3>
+            </div>
+          </div>`);
+
+          } else {
+            $('.slTier').html(`<div style="display: flex" >
+          	<div class="vertical-line"></div>
+            <div class="table-discription"> 
+              <div class="bonus"><i class="fas fa-star" style="font-size: 24px; color: black !important"></i><span>Bonus Points!</span><p>Earn bonus points and PERKS as you move up!</p></div>
+              <div class="bonus"><i class="fas fa-hands-heart"></i><span>Redeem anytime!</span><p>Redeeming points is easy, use our slider directly at checkout anytime!</p></div>
+              <div class="bonus"><i class="fas fa-handshake-alt"></i><span>Become a Distributor!</span><p>Move up tiers quickly and earn points for every referral!</p></div>
+          </div>`)
+          };
+          vip_tier = customer.sl_vip_tier ? customer.sl_vip_tier.replace(/ /g, '') : customer.smile_vip_tier.replace(/ /g, '');
+      if (vip_tier) {
+        $(`.${vip_tier}`).parent().css({
+          "background": "#00c4b3",
+          "color": "white"
+        });
+        $(`.${vip_tier}`).parent().find('td:last-child').addClass('ribbon');
+        $(`.${vip_tier}`).parent().find('td:first-child').addClass('ribbonStart');
+      }
+
+          if (customer.referral_code) {
+            $('.__ref__code').html(`
+          <li><input type="text" readonly="" class="refCodeValue"
+                        value='${customer.referral_code}'><button class="copyRefCode"
+                        onclick='copyToClipboard("refCodeValue", "copyRefCode")'>COPY</button></li>
+          `)
+          }
+        },
+        error: function () {
+          $('.success').css('display', 'block');
+          $('.success').text('Refferal Code already taken use the different one.');
+        }
+      });
+
+
+    });
+  </script>
