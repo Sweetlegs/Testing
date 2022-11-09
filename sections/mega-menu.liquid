@@ -171,13 +171,14 @@
                     {%- if sublink.active -%}
                     {%- assign _subactive  = true-%}
                     {%- endif -%}
-                        {%- if _sub_name == 'Ultra Soft Open Cardigan' or _sub_name == 'Everyday Raglan Pullover' -%} 
+                      
+                    {%- if _sub_name == 'Ultra Soft Open Cardigan' or  _sub_name == 'Everyday Raglan Pullover' -%} 
                       {% assign className = 'new-tag-sub-mega-menu' %}
                       {% else  %}
                       {% assign className = '' %}
                     {% endif %}
                     {% capture newTag %}
-                            {%- if _sub_name == 'Ultra Soft Open Cardigan'  or _sub_name == 'Everyday Raglan Pullover' -%}
+                             {%- if _sub_name == 'Ultra Soft Open Cardigan' or  _sub_name == 'Everyday Raglan Pullover' -%} 
                           	<div class="new-icon-container crops"><span class="new-icon">New</span></div>
                           {% endif %}   
                         {%- if _sub_name == 'Super V-Neck Tee' -%}
@@ -192,12 +193,12 @@
                     {% endcapture %}
                     <li class="menu-item{% if _subactive %} current-menu-item{% endif %}">
                       <a href="{{ sublink.url }}">
-                              <span class="{{ className }}">
-                          {%- if _sub_name == 'Ultra Soft Open Cardigan' or _sub_name == 'Everyday Raglan Pullover' %}
+                          <span class="{{ className }}">
+                           {%- if _sub_name == 'Ultra Soft Open Cardigan' or  _sub_name == 'Everyday Raglan Pullover' -%} 
                              {{ newTag }}
                           {% endif %}
                           <small>{{- _sub_name -}}</small>
-                         {%- unless _sub_name == 'Ultra Soft Open Cardigan' or _sub_name == 'Everyday Raglan Pullover' %}
+                            {%- unless _sub_name == 'Ultra Soft Open Cardigan' or  _sub_name == 'Everyday Raglan Pullover' -%} 
                              {{ newTag }}
                           {% endunless %}
                         </span>

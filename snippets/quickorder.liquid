@@ -21,16 +21,12 @@
 					{% else %}
 					  {% assign vault = '' %} 
                     {% endif %}
-					{% assign product_tags_string = product.tags | join: ' ' %}
+					
                     <tr class="{{ vault }}" data-filter-name="{{ title | downcase }}" data-name="{{ title | downcase }}" data-tag-array="{{ product.tags | join: "," | downcase }}" data-tag="{{ product.tags | join: "" | downcase  }}">
                       <td class="prodListImg">
                         {% if product.type  == 'Shorts'  %}
                        		<img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >
-                        {% elsif product.tags contains 'show-image-1' %}
-    						<img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >
-                        {% elsif product.tags contains 'show-image-2' %}
-    						<img src={{ product.images[2] | img_url: '50*50' }} alt={{product.title}} >
-						{% else %}
+                        {% else %}
                         	<img src={{ product.featured_image | img_url: '50*50' }} alt={{product.title}} >
                         {% endif %}
                       </td>
@@ -69,15 +65,11 @@
                 {% endfor %}
 			 {% else %}
                     <tr class="parent" data-filter-name="{{ title | downcase }}" data-name="{{ title | downcase }}" data-tag-array="{{ product.tags | join: "," | downcase }}" data-tag="{{ product.tags | join: "" | downcase }}">
-                     <td class="prodListImg">
+                      <td class="prodListImg">
                         {% if product.type  == 'Shorts'  %}
-                       		<img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >
-                        {% elsif product.tags contains 'show-image-1' %}
-    						<img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >
-                        {% elsif product.tags contains 'show-image-2' %}
-    						<img src={{ product.images[2] | img_url: '50*50' }} alt={{product.title}} >
-						{% else %}
-                        	<img src={{ product.featured_image | img_url: '50*50' }} alt={{product.title}} >
+                        <img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >
+                        {% else %}
+                        <img src={{ product.featured_image | img_url: '50*50' }} alt={{product.title}} >
                         {% endif %}
                       </td>
                       <td class="title" colspan="3">
@@ -96,13 +88,9 @@
                     <tr class="sub" data-filter-name="{{ title | downcase }}" data-name="{{ title | downcase }} - {{ variant.title | downcase }}" data-tag-array="{{ product.tags | join: "," | downcase }}" data-tag="{{ product.tags | join: "" | downcase }}">
                       <td class="prodListImg">
                         {% if product.type  == 'Shorts'  %}
-                       		<img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >
-                        {% elsif product.tags contains 'show-image-1' %}
-    						<img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >
-                        {% elsif product.tags contains 'show-image-2' %}
-    						<img src={{ product.images[2] | img_url: '50*50' }} alt={{product.title}} >
-						{% else %}
-                        	<img src={{ product.featured_image | img_url: '50*50' }} alt={{product.title}} >
+                        <img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >
+                        {% else %}
+                        <img src={{ product.featured_image | img_url: '50*50' }} alt={{product.title}} >
                         {% endif %}
                       </td>
                       <td class="title">

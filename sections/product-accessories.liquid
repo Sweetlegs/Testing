@@ -1,5 +1,5 @@
 {% comment %}<!--WE COMMENTED THIS OUT FOR MAKE A SELECTION {% assign current_variant = product.selected_or_first_available_variant %} -->{% endcomment %}
-{{ 'product-tempate.js' | asset_url | script_tag }} 
+
 {% if product.variants.size == 1 and product.has_only_default_variant %}
   {% assign current_variant = product.first_available_variant %}
 {% else %}
@@ -24,8 +24,8 @@
 {%- assign pwrapper_item_class = 'photoswipe-item' -%}
 {%- assign modal_class = 'zoom_enabled' -%}
 {%- endif -%}
-{{ 'addToCart.js' | asset_url | script_tag }} 
-{{ 'product-template.js' | asset_url | script_tag }} 
+{{ 'addToCart.js' | asset_url | script_tag }}
+{{ 'product-template.js' | asset_url | script_tag }}
 
 {% assign published_at = product.published_at | date: '%s' | convert: "number" %}
 {% assign current_time = 'now' | date: '%s' | convert: "number" %}
@@ -37,17 +37,12 @@
 	{% include 'alertMessageLineItem' %}
 {% endif %}
 
+
 {% assign customerTags = customer.tags | downcase %} 
 
 
-{% if product.type == 'Marketing Materials'%}
-  {% if customerTags contains "distributor" %}
-	{% else %}
-		<script>
-  			window.location.replace( '/' );
-		</script>
-	{%- endif -%}
-{%- endif -%}
+
+
 
 <style>
   .description-section {
@@ -132,7 +127,7 @@
                           <div{% if images_slider %} id="product-images-carousel-{{ section.id }}"{% endif %} class="{{ pwrapper_class }}{% if images_slider %} product-images-carousel owl-carousel owl-theme{% endif %}"{% if images_slider %} data-slider-id="1"{% endif %}>
                             <div id="FeaturedImageZoom-{{ section.id }}" class="{{ zoom_class }} {{ pwrapper_item_class }}{% if product_design == 'images_scroll' %} module{% endif %}">
                               <a class="{{ modal_class }} zoom FeaturedImage-{{ section.id }}" href="{{ featured_image | img_url: 'master' }}" data-size="{{ featured_image.width }}x{{ featured_image.height }}">
-
+                                
                              {% if current_variant.compare_at_price > current_variant.price %}
                                   <div class="instabadge-badge sale"></div>     
                              {% elsif product.tags contains "crops" %}
@@ -141,6 +136,8 @@
                                   <div class="instabadge-badge limited"></div>
                               {% elsif product.tags contains "vault" %}
                                   <div class="instabadge-badge vault"></div>
+                              {% elsif product.type contains "Gift Cards" %}
+                                <div class="instabadge-badge"></div>
                               {% elsif days_lapsed <= 14 %}
                                   <div class="instabadge-badge new"></div>
                               {% endif %}
@@ -188,29 +185,6 @@
        
                           </div>
                           <h1 itemprop="name" class="product_title entry-title">{{ product.title | escape }}</h1>
-                          {%- assign review_rating = false -%}
-                          {% if product.metafields.spr.reviews %}
-                            {% capture review_data %}{{ product.metafields.spr.reviews }}{% endcapture %}
-
-                            {%- assign rating_keyword = '"ratingValue":' -%}
-                            {%- assign rd_a1 = review_data | split: rating_keyword -%}
-                            {%- assign rd_a2 = rd_a1[1] | split: "," -%}
-                            {%- assign rd_a3 = rd_a2[0] | replace: '"', "" -%}
-                            {%- assign review_rating = rd_a3 | plus: 1 | minus: 1 -%}
-
-                            {%- assign count_keyword = '"reviewCount":' -%}
-                            {%- assign rd_a1 = review_data | split: count_keyword -%}
-                            {%- assign rd_a2 = rd_a1[1] | split: "," -%}
-                            {%- assign rd_a3 = rd_a2[0] | replace: '"', "" -%}
-                            {%- assign review_count = rd_a3 | plus: 1 | minus: 1 -%}
-                          {% endif %}
-
-                          {%- if review_rating %}
-                            <div itemprop="aggregateRating" itemscope="" itemtype="https://schema.org/AggregateRating">
-                              <meta itemprop="ratingValue" content="{{ review_rating }}">
-                              <meta itemprop="reviewCount" content="{{ review_count }}">
-                            </div>
-                          {%- endif -%}
                         </div>
                         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                           {%- if product.price_varies -%}
@@ -228,7 +202,6 @@
                           {%- endif -%}
                           <meta itemprop="price" content="{{ product.price | divided_by:100.00 }}" />
                           <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
-                          <meta itemprop="priceValidUntil" content="{{ "today" | date: '%s' | plus: 2592000 | date: "%Y-%m-%d" | json }}" />
                           <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}" />
                         </div>
                         <div itemprop="description">
@@ -310,7 +283,7 @@
                           </div>
                           {%- endif -%}
 
-                          <div>                            
+                          <div class="variation-ava">                            
                             {%- if current_variant -%}
                               {%- if current_variant.available -%}
                                 {%- if current_variant.inventory_management == "shopify" and current_variant.inventory_policy != "continue" -%}
@@ -406,8 +379,6 @@
                             </a>
                           </div>
                           {%- endif -%}
-             
-
                           {%- assign my_product = product -%}
                           {%- include 'wishlist' -%}
                           <div class="clear"></div>								
@@ -421,35 +392,34 @@
           </div>
         </div>
         {% if product.title != "Virtual Gift Card" %}
-           <div class="row">
-          <div class="large-12 large-centered columns description-section">
-            <div class="product-tabs">
-              <ul class="tabs">
-                 <li class="reviews_tab active">
-                  <a href="#tab-reviews">{{ 'products.product.reviews' | t | escape }}</a>
-                </li>
+          <div class="row">
+            <div class="large-12 large-centered columns description-section">
+              <div class="product-tabs">
+                <ul class="tabs">
+                   <li class="reviews_tab active">
+                    <a href="#tab-reviews">{{ 'products.product.reviews' | t | escape }}</a>
+                  </li>
 
-              </ul>
- 
-              <div class="panel" id="tab-reviews" style="display:block">
-                
-  <div id="stamped-main-widget" class="stamped-main-widget"
-        data-product-id="{{ product.id }}"
-        data-name="{{ product.title | escape }}"
-        data-url="{{ shop.url }}{{ product.url }}"
-        data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}"
-        data-description="{{ product.description | escape }}"
-        data-product-sku="{{product.handle}}">
+                </ul>
 
-          {{ product.metafields.stamped.reviews }}
- 
-        </div>
+                <div class="panel" id="tab-reviews" style="display:block">
+
+    <div id="stamped-main-widget" class="stamped-main-widget"
+          data-product-id="{{ product.id }}"
+          data-name="{{ product.title | escape }}"
+          data-url="{{ shop.url }}{{ product.url }}"
+          data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}"
+          data-description="{{ product.description | escape }}"
+          data-product-sku="{{product.handle}}">
+
+            {{ product.metafields.stamped.reviews }}
+
+          </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-{% endif %}
-
+       {% endif %}
       </div>
     </div>
     
@@ -500,7 +470,7 @@
     </div>
     {%- endif -%}
   </div>
-
+  
   {%- if product_design == 'sidebar' -%}
   <div id="product-upsells-{{ section.id }}" class="product-upsells">
     <div class="products-carousel">

@@ -1,26 +1,16 @@
 {{ 'quick-order.css' | asset_url | stylesheet_tag }} 
   {% for item in cart.items %}
       <script type="text/javascript">
-        itemProductType = '{{item.product.type | downcase}}';   
-        if(customerTags.includes("new")) {
-          checkProductType = itemProductType.includes('sweetlegs') ||  itemProductType.includes('shorts');
-        } else {
-          checkProductType = itemProductType.includes('sweetlegs') || itemProductType.includes('sweettops') || itemProductType.includes('shorts');
-        }
-        if (checkProductType){ 
+        if( '{{item.product.type}}' == "SweetLegs Petite" || '{{item.product.type}}' == "SweetLegs Plus" || '{{item.product.type}}' == "ID Only Prints" ||'{{item.product.type}}' == "SweetLegs Plus2" || '{{item.product.type}}' == "SweetLegs One Size" ||'{{item.product.type}}' == "SweetLegs Kids") {
            if(window.discountableItem) {
-              discountableItem = discountableItem + parseInt(`{{item.quantity}}`);
+          discountableItem = discountableItem + parseInt(`{{item.quantity}}`);
             } else {
               window.discountableItem = 0;
                discountableItem = discountableItem + parseInt(`{{item.quantity}}`);
             }
-        } else { 
-          if(window.discountableItem) {
-              discountableItem = window.discountableItem;
-            } else {
-              window.discountableItem = 0;
-               discountableItem = window.discountableItem;
-            }
+        } else {
+          
+          window.discountableItem ? discountableItem : 0;
         }
           
         if(window.carts) {         
@@ -52,6 +42,7 @@
       <div class="row">
         <div class="large-12 columns">
           <div class="entry-content">
+            {%- include 'shortcode' load: page.content -%}
           </div>  
     </div>
    </div>       
@@ -104,19 +95,20 @@ Source: https://gist.github.com/carolineschnapp/9122054
                 <select class="catFilter">  
                      <option selected value></option>
                       <option value="Accessories">Accessories</option>
-                      <option value="shorts">Biker Shorts</option>
+                  	  <option value="shorts">Biker Shorts</option>
                       <option value="Sweetlegs One Size">SweetLegs one size</option>
                       <option value="Sweetlegs Plus">SweetLegs Plus</option>
-                      <option value="Sweetlegs Plus2">SweetLegs Plus2</option>
+                  	  <option value="Sweetlegs Plus2">SweetLegs Plus2</option>
                       <option value="Sweetlegs Petite">SweetLegs Petite</option>
                       <option value="Sweetlegs Kids">SweetLegs Kids</option>
-                      <option value="Sweetlegs Athleisure">SweetLegs Athleisure</option>
-                      <option value="Sweetlegs Maternity">SweetLegs Maternity</option>
-                      <option value="sunglasses">Sunglasses</option>
-                      <option value="sweettops">SweetTops</option>
-                      <option value="marketing">Marketing Materials</option>
-                      <option value="crops">Crops</option>    
-                      <option value="sale-">ID Sale Prints</option>        
+                  	  <option value="sunglasses">Sunglasses</option>
+                  	  <option value="sweettops">SweetTops</option>
+                  	  <option value="marketing">Marketing Materials</option>
+                      <option value="bag">Bags</option>
+                  	  <option value="towel">Towels</option>
+                      <option value="jewelry">Jewelry</option>
+                      <option value="crops">Crops</option>
+                  	  <option value="sale-">ID Sale Prints</option>        
                </select>
             </div>
             <div class="fBox subs">
@@ -220,7 +212,7 @@ Source: https://gist.github.com/carolineschnapp/9122054
             if(typeof carts != 'undefined') {
               setTimeout(function(e) {displayQty()}, 0);
               setTimeout(function(e) {
-                showDiscount(discountableItem, page - 50);
+                showDiscount(window.discountableItem, page - 50);
               }, 0);
             } else {
               $("#spinner").css('display','none'); 
@@ -267,7 +259,7 @@ Source: https://gist.github.com/carolineschnapp/9122054
                     $("#spinner").css('display','none'); 
                       setTimeout(function(e) {displayQty()}, 0);
                       setTimeout(function(e) {
-                        showDiscount(discountableItem, page - 50);
+                        showDiscount(window.discountableItem, page - 50);
                       }, 0);
                     }else {
                       $("#spinner").css('display','none');  
@@ -564,14 +556,9 @@ $(document).ready(function(){
       	totalPrice += parseFloat(pricePerItem[pricePerItem.length-1]) * qty; 
       }
       });
-     let lineItemCount = 25;
-    if(customerTags.includes("new")) {
-      lineItemCount = 50;
-    }
-    
-     if(initialdiscountableitem < lineItemCount && discountableItem >= lineItemCount) { 
+     if(initialdiscountableitem < 25 && discountableItem >= 25) { 
       showDiscount(discountableItem);  
-    } else if (initialdiscountableitem >= lineItemCount && discountableItem < lineItemCount){
+    } else if (initialdiscountableitem >= 25 && discountableItem < 25){
       showDiscount(discountableItem);           
     }
     $('.cart_items_number.counter_number.animated.rubberBand').text(sum);
@@ -579,7 +566,7 @@ $(document).ready(function(){
     $('span.money').text('$'+ totalPrice.toFixed(2));
     var check = true;
     var max = parseInt($(this).parent().find('.quantity.field').attr('max'), 10);
-    if(max >= 25) {
+     if(max >= 25) {
       max = 25;
     }
     var value = parseInt($(this).parent().find('.quantity.field').val(), 10) || 0;

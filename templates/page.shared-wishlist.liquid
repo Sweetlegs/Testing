@@ -30,21 +30,18 @@
 </div>
 <script>
  totalProductsCount = "{{collections['quick-order'].all_products_count}}";
- var addToCart, imgSrc, wishlist,variantId =5, variantTitle, price, current_variant_price,inventoryQuantity, status = ` <span class="stock out-of-stock">Out of stock.</span>`, current_variant_compare_at_price;
-  let data = {};
-  data.customerId = window.location.href.substring(47);
+ var addToCart, imgSrc, wishlist,variantId =5, variantTitle, price, current_variant_price,inventoryQuantity, status = ` <span class="stock out-of-stock">Out of stock.</span>`, current_variant_compare_at_price;  
   $(document).ready(function(e) {
-      customerId = window.location.href.substring(47);
-      if(window.location.href.split("?").pop()== 'redirected_us') {
-        data.storeId = {{ settings.store_id_us}};
+    customerId = window.location.href.substring(44);
+      if(window.location.href.split("?").pop()== 'redirected_ca') {
+        $url = `https://rewards.sweetlegs.biz/cad-wishlist/${customerId}`
+        ;
       }else {
-        data.storeId = {{ settings.store_id_cad}};
-      }
-      let api = `{{ settings.sweetlegs_rocks_api}}`;
+        $url = `https://rewards.sweetlegs.biz/us-wishlist/${customerId}`
+      }	
       $.ajax({
         type: 'GET',
-        url: `${api}/api/wishlists`,
-        data: data,
+        url: $url,
         success: function(response) {
           pageTitle = `${response.customerName}'s wishlist`;
           if(!response.customerName) {
@@ -70,7 +67,7 @@
                 success: function(response) {
                    response.products.forEach(function(product) { 
                       product_id = wishlists.find(function(wishlist) {
-                        return wishlist.value == product.handle;
+                        return wishlist.key == product.id;
                       });
                       var index = product.images[0].src.indexOf('.jpg');
                       handle = product.handle;

@@ -27,7 +27,7 @@
   </span>
   &gt;
   {%- endif -%}
-  <span property="itemListElement" typeof="ListItem">
+   <span property="itemListElement" typeof="ListItem">
     <span property="name">
       {%- if collection and collection.handle == 'all' -%}
       	{{ 'general.breadcrumb.all_products' | t | escape }}
@@ -46,6 +46,9 @@
 .inactiveLink {
    pointer-events: none;
    cursor: default;
+}
+#breadcrumbs.halloween-shop span  {
+  color: white;
 }
 
 </style>

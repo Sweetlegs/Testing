@@ -52,6 +52,8 @@
                 data-description="{{ product.description | escape }}"
                 data-product-sku="{{product.handle}}">
 
+                  
+ 
                 </div>
               </div>
             </div>
@@ -86,6 +88,7 @@
                   data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}"
                   data-description="{{ product.description | escape }}"
                   data-product-sku="{{product.handle}}">
+                  
                 </div>
             </div>
         </div>
@@ -147,13 +150,7 @@
                   </tr>
 
                   <tr>
-                    <td><strong>Material</strong></td><td>
-                    {% if product.type == 'SweetLegs Athleisure' %}
-                    	70% polyester/30% elastane blend
-                    {% else %}
-                    	Polyester & Spandex Blend
-                    {% endif %}
-                    </td>
+                    <td><strong>Material</strong></td><td>Polyester & Spandex Blend</td>
                   </tr>
 
                   <tr>
@@ -304,7 +301,6 @@ $('.tab-link').click( function() {
 
 var url = window.location.href;
 var result = false;
-  console.log(url.includes("#stamped-main-widget"));
 if (url.includes("#stamped-main-widget")){
 result = true ;
 }
@@ -317,11 +313,16 @@ var InfoTitle = document.getElementById('info-title');
 
 $( document ).ready(function() {
   if(result == true){
+  
      info.style.display = 'none';
      reviews.style.display = 'block';
      ReviewTitle.style.color = "black";
      InfoTitle.style.color = "#999";
-     $('.stamped-summary-actions-newreview').css('visibility', 'visible');
+
+
+     
+     
+
   }
     console.log( "ready!",url,result, reviews);
 

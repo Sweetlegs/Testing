@@ -1217,7 +1217,6 @@ function onYouTubeIframeAPIReady() {
       I.length
         ? (Shopify.queryParams.constraint = I.join("+"))
         : delete Shopify.queryParams.constraint, this._filterAjaxClick();
-      window.offcanvas_close()
     },
     onUnload: function() {
       this.$sortSelect.off(
@@ -1363,7 +1362,7 @@ function gm_authFailure() {
     }), $("#ProductJson-" + C).html() &&
       ((this.productSingleObject = JSON.parse(
         document.getElementById("ProductJson-" + C).innerHTML
-      )), this._initCountDown(), this._initFeature(), this._stringOverrides(), this._initVariants(), this._initSwatches(), this._initImages(), this._initImagesScroll(), this._initImagesCarousel(), this._initGallery(), this._initTab(), this._socialSharing(), this._relatedProducts(), this._stickUpSells(), this._upsellProducts());
+      )), this._initCountDown(), this._initFeature(), this._stringOverrides(), this._initVariants(), this._initSwatches(), this._initImages(), this._initImagesScroll(), this._initImagesCarousel(), this._initGallery(), this._initTab(), this._socialSharing(), this._initInstagram(), this._relatedProducts(), this._stickUpSells(), this._upsellProducts());
   }
   return (p.prototype = _.assignIn({}, p.prototype, {
     _stringOverrides: function() {
@@ -1554,6 +1553,27 @@ function gm_authFailure() {
         animation: "launchpadReverse",
         blur: !0
       });
+    },
+    _initInstagram: function() {
+      if (0 < $("#product-instagram").length) {
+        var v = $("#product-instagram"),
+          y = v.attr("data-id"),
+          C = v.attr("data-token"),
+          k = v.attr("data-limit"),
+          x = new Instafeed({
+            get: "user",
+            target: "product-instagram",
+            accessToken: C,
+            userId: parseInt(y),
+            limit: parseInt(k),
+            resolution: "thumbnail",
+            resolution2: "thumbnail",
+            template: '<li><a target="_blank" href="{{link}}"><img src="{{image}}" alt="{{caption}}" /></a></li>',
+            after: function() {
+            }
+          });
+        x.run();
+      }
     },
     _initGallery: function() {
       (function(y) {
@@ -2140,7 +2160,7 @@ function gm_authFailure() {
           responsive: {
             0: { margin: 20, items: 2, nav: !1 },
             600: { margin: 25, items: 3, nav: !1 },
-            1e3: { items: 4, nav: !0, dots: !1 },
+            1e3: { items: 3, nav: !0, dots: !1 },
             1200: { items: v, nav: !0, dots: !1 }
           }
         });
@@ -2218,7 +2238,7 @@ function gm_authFailure() {
           responsive: {
             0: { margin: 20, items: 2, nav: !1 },
             600: { margin: 25, items: 3, nav: !1 },
-            1e3: { items: 4, nav: !0, dots: !1 },
+            1e3: { items: 3, nav: !0, dots: !1 },
             1200: { items: v, nav: !0, dots: !1 }
           }
         });
@@ -2264,7 +2284,39 @@ function gm_authFailure() {
       $(this.slideshow).slick("slickPlay");
     }
   }
-));
+)), (theme.FooterSection = (function() {
+  function p(v) {
+    var y = (this.$container = $(v)), C = y.attr("data-section-id");
+    (this.settings = {
+      instagram: "#site-footer-" + C + " #footer-instagram"
+    }), this._initInstagram();
+  }
+  return (p.prototype = _.assignIn({}, p.prototype, {
+    _initInstagram: function() {
+      if ($(this.settings.instagram).length) {
+        var v = $(this.settings.instagram),
+          y = v.attr("data-id"),
+          C = v.attr("data-token"),
+          k = v.attr("data-limit"),
+          x = new Instafeed({
+            get: "user",
+            target: "footer-instagram",
+            accessToken: C,
+            userId: parseInt(y),
+            limit: parseInt(k),
+            resolution: "thumbnail",
+            resolution2: "thumbnail",
+            template: '<li><a target="_blank" href="{{link}}"><img src="{{image}}" alt="{{caption}}" /></a></li>',
+            after: function() {
+            }
+          });
+        x.run();
+      }
+    },
+    onUnload: function() {},
+    onBlockSelect: function() {}
+  })), p;
+})());
 var $special, resizeTimeout, $event = $.event;
 $special = $event.special.debouncedresize = {
   setup: function() {
@@ -2952,7 +3004,7 @@ var BLANK =
             )
               .removeClass("blurcontent-off")
               .addClass("blurcontent");
-            
+           
           },
           success: function() {
             O();
@@ -4020,6 +4072,7 @@ $(document).ready(function() {
   } else if(window.location.href.includes("10-to-12")) {
     val = 'Large - ages 10 to 12';
   }
+  
   if( typeof(productOptions ) != "undefined" ){
     for(i=0;i<productOptions.length;i++) {
       $('.single-option-selector-product-template:eq('+ i +')')
@@ -4033,19 +4086,19 @@ $(document).ready(function() {
   }
 });
 
-// $(document).ready(function() {
-//   if( typeof(productOptions ) != "undefined" ){
-//     for(i=0;i<productOptions.length;i++) {
-//       $('.single-option-selector-product-accessories:eq('+ i +')')
-//       .filter(function() {
-//         const option = $(this).parent().parent().find('label').text();
-//         if(option != 'Colour') {
-//           return $(this).find('option').length > 1
-//         }      
-//       })
-//       .prepend('<option value="">Pick a ' + productOptions[i][i] + '</option>')
-//       .val('')
-//       .trigger('change');
-//     }
-//   }
-// });
+$(document).ready(function() {
+  if( typeof(productOptions ) != "undefined" ){
+    for(i=0;i<productOptions.length;i++) {
+      $('.single-option-selector-product-accessories:eq('+ i +')')
+      .filter(function() {
+        const option = $(this).parent().parent().find('label').text();
+        if(option != 'Colour') {
+          return $(this).find('option').length > 1
+        }      
+      })
+      .prepend('<option value="">Pick a ' + productOptions[i][i] + '</option>')
+      .val('')
+      .trigger('change');
+    }
+  }
+});

@@ -82,7 +82,10 @@
     color: #777;
   }
   
-    
+
+  .page-title {
+    white-space: pre-wrap !important;
+  }
   
 @media(max-width: 500px){
   .stamped-ratings-wrapper{
@@ -131,11 +134,11 @@
 <script>
 
  page = 1;
-lastCall = false;
+ lastCall = false;
 var $loading = $('#loadingDiv').hide();
   function getDataFromSmile() {
        $.ajax({
-         url:`https://stamped.io/api/widget/reviews?page=${page}&storeUrl=sweetlegs-cad.myshopify.com&apiKey=pubkey-l47V85Gah31UV70ZD6V08K451U1iC2&productIds=4295232159767&productIds=4319680299031&productIds=4319684132887&productIds=4364851445783&productIds=4493564542999&productIds=4530085920791&productIds=4530100404247&productIds=4530106368023&productIds=6187443683501&productIds=6583353409709`,
+         url:`https://stamped.io/api/widget/reviews?page=${page}&storeUrl=sweetlegs-usd.myshopify.com&apiKey=pubkey-l47V85Gah31UV70ZD6V08K451U1iC2&productIds=4295232159767&productIds=4319680299031&productIds=4319684132887&productIds=4364851445783&productIds=4493564542999&productIds=4530085920791&productIds=4530100404247&productIds=4530106368023&productIds=6187443683501&productIds=6583353409709`,
           type:'get',
 
           beforeSend: function() {
@@ -256,7 +259,6 @@ var $loading = $('#loadingDiv').hide();
       if(!lastCall) {
         getDataFromSmile();
       }
-      
     }
 
 });

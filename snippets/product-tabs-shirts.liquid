@@ -32,17 +32,13 @@
 		{% else %}
                     <span class="info">
             <span class="info-header">SIGNATURE FABRIC:</span>
-                      {% if product.title contains 'V-Neck' %}
-                        This signature fabric is made from a viscose and polyester blend. With added spandex, this blend is durable and will retain its shape beautifully.
-                      {% else %}
-                        We have developed our own signature fabric made from a luxuriously soft blend of rayon, polyester, and spandex. This combination results in a garment that drapes beautifully and breathes naturally.
-                      {% endif %}
-            
+            We have developed our own signature fabric made from a luxuriously soft blend of rayon, polyester, and spandex. This combination results in a garment that drapes beautifully and breathes naturally.
           </span>
 		{% endif %}
       </div>
             <img src="https://cdn.shopify.com/s/files/1/0949/8004/files/tops-fabric_1.jpg?15982">
     </div>
+
 
 
 {%- if product.type == 'SweetTops' -%}
@@ -259,10 +255,6 @@ and (-webkit-device-pixel-ratio : 3) {
 and (min-device-width : 375px) 
 and (max-device-width : 812px)
 and (-webkit-device-pixel-ratio : 3) { 
-    img{
-        max-width: 185%;
-
-    }
     .container{
         margin-left: -12% !important; 
         margin-bottom: 121% !important; 
@@ -301,22 +293,18 @@ and (-webkit-device-pixel-ratio : 3) {
 @media only screen 
 and (min-device-width : 375px) 
 and (max-device-width : 667px) { 
-
-img{
-        max-width: 185%;
-
-    }
     .container{
-        margin-left: 18% !important; 
+        margin-left: -12% !important; 
         margin-bottom: 121% !important; 
 
 
     }
     .tag{
     padding: 10% !important;
-    width: 100% !important;
-    margin: 5px -85px;
+    width: 90% !important;
+    margin-left: 10%;
     padding-right: 9% !important;
+    
     }
     .info{
     font-size:15px !important; 
@@ -334,7 +322,7 @@ img{
 
     #tab-add-info > div:nth-child(2) > img {
     position: relative;
-    right: 48%;
+    right: 59%;
     }
 
     
@@ -344,12 +332,12 @@ img{
 @media only screen 
 and (min-device-width : 768px) 
 and (max-device-width : 1024px)  { 
-    img{
+/*     img{
         max-width: 185%;
 
-    }
+    } */
     .container{
-        margin-left: 23% !important; 
+        margin-left: -12% !important; 
         margin-bottom:27% !important; 
 
 
@@ -357,7 +345,7 @@ and (max-device-width : 1024px)  {
     .tag{
     padding: 10% !important;
     width: 90% !important;
-    margin-left: -23%;
+    margin-left: 10%;
     padding-right: 9% !important;
     
     }

@@ -1,5 +1,5 @@
 {% comment %}<!--WE COMMENTED THIS OUT FOR MAKE A SELECTION {% assign current_variant = product.selected_or_first_available_variant %} -->{% endcomment %}
-{{ 'product-tempate.js' | asset_url | script_tag }} 
+
 {% if product.variants.size == 1 and product.has_only_default_variant %}
   {% assign current_variant = product.first_available_variant %}
 {% else %}
@@ -24,7 +24,7 @@
 {%- assign pwrapper_item_class = 'photoswipe-item' -%}
 {%- assign modal_class = 'zoom_enabled' -%}
 {%- endif -%}
-{{ 'addToCart.js' | asset_url | script_tag }} 
+{{ 'addToCart.js' | asset_url | script_tag }}
 {{ 'product-template.js' | asset_url | script_tag }}
 
 {% assign published_at = product.published_at | date: '%s' | convert: "number" %}
@@ -50,8 +50,7 @@
   <div id="primary" class="content-area">
     <div id="content" class="site-content">
       <div class="page-header"></div>
-      <!--<div itemscope itemtype="http://schema.org/Product" id="product-{{ product.id }}" class="product">-->
-      <div class="product">
+      <div itemscope itemtype="http://schema.org/Product" id="product-{{ product.id }}" class="product">
         <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
         <meta itemprop="image" content="{{ product.featured_image.src | img_url: '650x' }}" />
         <div class="product_wrapper">
@@ -117,29 +116,28 @@
                           {%- assign images_slider = false -%}
                           {%- if 'default,sidebar' contains product_design -%}
                           {%- assign images_slider = true -%}
+                          {%- assign product_tag = product.tags | downcase -%}
                           {%- endif -%}
                           <div{% if images_slider %} id="product-images-carousel-{{ section.id }}"{% endif %} class="{{ pwrapper_class }}{% if images_slider %} product-images-carousel owl-carousel owl-theme{% endif %}"{% if images_slider %} data-slider-id="1"{% endif %}>
                             <div id="FeaturedImageZoom-{{ section.id }}" class="{{ zoom_class }} {{ pwrapper_item_class }}{% if product_design == 'images_scroll' %} module{% endif %}">
                               <a class="{{ modal_class }} zoom FeaturedImage-{{ section.id }}" href="{{ featured_image | img_url: 'master' }}" data-size="{{ featured_image.width }}x{{ featured_image.height }}">
-
                              {% if current_variant.compare_at_price > current_variant.price %}
                                   <div class="instabadge-badge sale"></div>     
                              {% elsif product.tags contains "crops" %}
                                 {% if days_lapsed <= 14 %}
-                                <div class="instabadge-badge new"></div>
+                                	<div class="instabadge-badge new"></div>
                                 {% endif %}
                                   <div class="instabadge-badge crops"></div>       
                               {% elsif product.tags contains "limited" %}
                                   <div class="instabadge-badge limited"></div>
                               {% elsif product.tags contains "vault" %}
                                   <div class="instabadge-badge vault"></div>
-                              {% elsif product.tags contains "featured" %}
+                              {% elsif product.tags  contains "featured" %}
                                   <div class="instabadge-badge featured"></div>
                               {% elsif days_lapsed <= 14 %}
                                 {% unless product.title == 'Black Licorice' %}
-                                  <div class="instabadge-badge new"></div>
-                                {%endunless%}
-
+                                    <div class="instabadge-badge new"></div>
+                                  {%endunless%}
                               {% endif %}
 
 
@@ -185,10 +183,9 @@
                             </a>
        
                           </div>
-                          <h1 itemprop="name" class="product_title entry-title">{{ product.title }}</h1>
+                          <h1 itemprop="name" class="product_title entry-title">{{ product.title | escape }}</h1>
                         </div>
                         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-
                           {%- if product.price_varies -%}
                           <p class="price">
                             <span class="price-new"><span class="money">{{ product.price_min | money }}</span></span> - <span class="price-new"><span class="money">{{ product.price_max | money }}</span></span>
@@ -208,7 +205,7 @@
                         </div>
                         <div itemprop="description">
                           <p>
-                             {%- include 'shortcode' load: product.description -%}
+                             {{ product.description }}
                           </p>
                           <div class="clearfix">
                             {%- if section.settings.product_message != '' -%}{{ section.settings.product_message }}{%- endif -%}
@@ -263,7 +260,7 @@
 
 
 
-                          <div class="">                            
+                          <div class="variation-ava">                            
                             {%- if current_variant -%}
                               {%- if current_variant.available -%}
                                 {%- if current_variant.inventory_management == "shopify" and current_variant.inventory_policy != "continue" -%}
@@ -317,7 +314,7 @@
                             <div class="variations_button">
                               <div class="quantity proQty">
                                 <span class="prodMinus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                  <input type="number" tags="{{product.tags | join: "," | downcase }}" step="1" min="1" max="20" name="quantity" value="1" title="Qty" onfocus="this.select()" type="tel" onClick="this.setSelectionRange(0, this.value.length)" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric" />
+                                  <input tags={{product.tags | join: "," | downcase }} type="number" step="1" min="1" max="20" name="quantity" value="1" title="Qty" onfocus="this.select()" type="tel" onClick="this.setSelectionRange(0, this.value.length)" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric" />
                                 <span class="prodPlus"><i class="fa fa-plus" aria-hidden="true"></i></span>
                               </div>
                               <button id="AddToCart-{{ section.id }}" type="submit" class="add_to_cart_button button btn1 bshadow alt{% unless current_variant.available %} hide{% endunless %}" {% unless current_variant.available %}disabled="disabled"{% endunless %}>
@@ -385,6 +382,7 @@
         </div>
         <div class="row">
           <div class="large-12 large-centered columns description-section">
+
          {% include 'product-tabs' %}           
             </div>
           </div>

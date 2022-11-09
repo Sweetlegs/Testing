@@ -18,11 +18,11 @@
       <li class="mini_cart_item ">
         <a href="#" class="remove-product remove" data-id="{{ item.variant_id }}" data-line="{{ forloop.index }}" title="{{ 'header.cart.remove_this_item' | t | escape }}"><i class="fa fa-times" aria-hidden="true"></i></a>
         <a href="{{ item.url | within: collections.all }}">
-           {% if item.product.type  == 'Shorts'  %}
+          {% if item.product.type  == 'Shorts'  %}
                 <img class="short-img" src={{ item.product.images[1] | img_url: '150x150' }} alt={{item.title}} >
             {% else %}
           		<img width="150" height="150" src="{{ item | img_url: '150x150', crop: 'center' }}" alt="{{ item.title | escape }}" srcset="{{ item | img_url: '150x150', crop: 'center' | scale: 2 }} 2x" />
-          {% endif %}													
+          {% endif %}
           {{ item.product.title }}
         </a>
         {%- if item.product.variants.size > 1 -%}
@@ -31,12 +31,12 @@
         </div>
         <div style="margin-top: 0; font-size: 10px;" class="limit-one">
           {% assign tags = item.product.tags | join: ", " %}
-          {% if tags contains 'limit' %}
-          {%- for tag in item.product.tags -%}
-          {% if tag contains 'limit' %}
-          Limit {{ tag | remove: "limit" }}
-          {% endif %}
-          {% endfor %}  
+            {% if tags contains 'limit' %}
+              {%- for tag in item.product.tags -%}
+                {% if tag contains 'limit' %}
+                  Limit {{ tag | remove: "limit" }}
+                {% endif %}
+              {% endfor %}  
           {% endif %}
         </div>
         {%- endif -%}
@@ -54,3 +54,4 @@
     {%- endif -%}
   </div>
 </div>
+

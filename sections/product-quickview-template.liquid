@@ -1,4 +1,3 @@
-
 <div id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product-quickview-template" data-enable-history-state="false" data-product_swatch_color="{{ settings.product_swatch_color }}" data-product_swatch_size="{{ settings.product_swatch_size }}">
   <div id="product-{{ product.id }}" class="product">
     <a href="#0" class="cd-close"></a>
@@ -55,15 +54,7 @@
             {%- if product.price_varies -%}
             <p class="price">
               <span class="price-new"><span class="money">{{ product.price_min | money }}</span></span> - <span class="price-new"><span class="money">{{ product.price_max | money }}</span></span>
-            </p>
-            <!-- elsif is custom code -->
-            {% elsif customer.tags contains "distributor" or customer.tags contains "Distributor" and product.price != final_price%}
-              <div class="product-single__price-{{ section.id }}">
-              <p class="price">
-                <span id="ComparePrice-{{ section.id }}" class="price-old"><span class="money">{{ product.price | money }}</span></span>
-                <span id="ProductPrice-{{ section.id }}" class="price-new"><span class="money">{{ final_price | money }}</span></span>
-              </p>
-            </div>                       
+            </p>                  
             <!-- elsif end custom code -->
             {%- else -%}
             <div class="product-single__price-{{ section.id }}">
@@ -155,7 +146,7 @@
             	{% else %}
                 <div class="variations_button">
                   <div class="quantity">
-                    <input type="number" tags="{{product.tags | join: "," | downcase }}" step="1" min="1" max="20" name="quantity" value="1" title="Qty" onfocus="this.select()" type="tel" onClick="this.setSelectionRange(0, this.value.length)" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric" />
+                    <input type="number" step="1" min="1" max="20" name="quantity" value="1" title="Qty" onfocus="this.select()" type="tel" onClick="this.setSelectionRange(0, this.value.length)" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric" />
                   </div>
                   <button id="AddToCart-{{ section.id }}" type="submit" class="add_to_cart_button button btn1 bshadow alt{% unless current_variant.available %} hide{% endunless %}" {% unless current_variant.available %}disabled="disabled"{% endunless %}>
                     <span id="AddToCartText-{{ section.id }}">
@@ -168,12 +159,11 @@
                     <i class="button-loader"></i>
                   </button>
                 </div>
-          <div class="limit-cnt"></div>
           	{% endif %}
           {% else %}
               <div class="variations_button">
                 <div class="quantity">
-                  <input type="number" tags="{{product.tags | join: "," | downcase }}" step="1" min="1" max="20" name="quantity" value="1" title="Qty" onfocus="this.select()" type="tel" onClick="this.setSelectionRange(0, this.value.length)" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric" />
+                  <input type="number" step="1" min="1" max="20" name="quantity" value="1" title="Qty" onfocus="this.select()" type="tel" onClick="this.setSelectionRange(0, this.value.length)" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric" />
                 </div>
                 <button id="AddToCart-{{ section.id }}" type="submit" class="add_to_cart_button button btn1 bshadow alt{% unless current_variant.available %} hide{% endunless %}" {% unless current_variant.available %}disabled="disabled"{% endunless %}>
                   <span id="AddToCartText-{{ section.id }}">
@@ -186,7 +176,6 @@
                   <i class="button-loader"></i>
                 </button>
               </div>
-          <div class="limit-cnt"></div>
           {% endunless %}
           
           

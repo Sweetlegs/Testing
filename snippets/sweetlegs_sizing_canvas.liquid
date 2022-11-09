@@ -640,9 +640,7 @@
      product_type = 'The Weekender Dress'
   }
   window.Measeurement_In_CM = false;
-  let mySizeCookie = localStorage.getItem('mySize') ? localStorage.getItem('mySize') : '{{customer.metafields.my_fields.my_size}}';
-  console.log('mysize', mySizeCookie);
-  
+  let mySizeCookie = localStorage.getItem('mySize');
   var rangeSlider = function(){
     var slider = $('.range-slider'),
         range = $('.range-slider__range'),
@@ -694,6 +692,7 @@
   
   rangeSlider();
   function myConvertor(e){
+//     $('.accordiance-container').toggleClass('show');
     rangeSlider();
     if(e == "CM"){
       Measeurement_In_CM = true;
@@ -806,11 +805,9 @@
         $('.recommended_result > *').css("opacity", "1");
         $('.recommended_result > *').css("height", "100%");
       });
-    
-    var mySize;
     let check_value_for_cookie = $('.convert_inches');      
     if(check_value_for_cookie.hasClass('active')){
-      mySize = {
+      const mySize = {
         bust: selected_inches_values[0],
         weist: selected_inches_values[1],
         hip: selected_inches_values[2],
@@ -818,7 +815,7 @@
       };
         localStorage.setItem('mySize', JSON.stringify(mySize));
     } else{
-      mySize = {
+      const mySize = {
         bust: selected_cm_values[0],
         weist: selected_cm_values[1],
         hip: selected_cm_values[2],
@@ -829,26 +826,7 @@
       function range(start, end, step = 1) {
         const len = Math.floor((end - start) / step) + 1
         return Array(len).fill().map((_, idx) => start + (idx * step))
-      }   
-    
-      //  
-      {% if customer %}
-      var customerId = {{customer.id}};
-      var Sizing_Data = {
-        mySize: JSON.stringify(mySize),
-        customerId: customerId
-      };
-      $.ajax({
-        type: "POST",
-        url: "https://sweetlegs.rocks/api/customer/metafield",
-        data: Sizing_Data,
-        dataType: "json",
-        encode: true,
-      }).done(function (data) {
-        console.log(data);
-      });
-      {% endif %}
-      //   
+      }    
       recommendSize();
     
   });
@@ -878,8 +856,10 @@
         $('.recommended_result > *').css("opacity", "1");
         $('.recommended_result > *').css("height", "100%");
       });
+      
 
-
+      
+    
       function range(start, end, step = 1) {
         const len = Math.floor((end - start) / step) + 1
         return Array(len).fill().map((_, idx) => start + (idx * step))
@@ -1528,7 +1508,7 @@
             else if(calculated_value[2] == "3X"){
               $('#recommendedsize').text("PLUS2");
               $('#dynamic_message').html('');
-              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+              $('#dynamic_message').text("This recommendation is based on your Hip measurement.");
             }
           }
         }        
@@ -2059,7 +2039,7 @@
         if(product_type == "SweetTops") {
         	$('.sizing_message').text('Every SweetTop has been designed for a different fit, and this recommendation should help you find the most ideal size. Please refer to the product descriptions for each specific style for additional recommendations.  Please note that the way a fabric drapes may be impacted by choosing a size outside of the recommendation above.');
           } else {
-                                      $('.sizing_message').text('The recommended size best lines up with how this garment has been designed to fit. This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared for comfort and ease of movement.');
+            $('.sizing_message').text('The recommended size best lines up with how this garment has been designed to fit. This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared for comfort and ease of movement.');
           }
         // Calculated Value
         var calculated_value = [];

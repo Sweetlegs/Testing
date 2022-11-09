@@ -28,7 +28,7 @@
 	{%- if count >= 25 and count <= 49 -%}
 
 		{%- if product.type == "SweetTops" -%}
-			{% assign discount_percent = 0.35 %}
+			{% assign discount_percent = 0.15 %}
 			{% assign new_price = product.price | times: discount_percent %}
 			{% assign final_price = product.price | minus: new_price %}
 			{%- for my_tag in product.tags -%}
@@ -45,7 +45,7 @@
 			
 		{% else %}
 
-			{% assign discount_percent = 0.5 %}
+			{% assign discount_percent = 0.4 %}
 			{% assign new_price = product.price | times: discount_percent %}
 			{% assign final_price = product.price | minus: new_price %}	
 			{%- for my_tag in product.tags -%}

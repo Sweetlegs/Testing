@@ -1,5 +1,4 @@
 function addToCart($url, $id, inputQty) {
-  console.log('this hit', $url)
   var check = true;
   var $cartItems = $('.cart_items_number.counter_number.animated.rubberBand');
   var $cartItemsVal = parseInt($cartItems.text());
@@ -8,6 +7,7 @@ function addToCart($url, $id, inputQty) {
       url:'/cart.js',
       dataType: 'json',
       success: function(cart){
+        console.log(cart);
         item = cart.items.filter(item => item.variant_id == $id);
         index = cart.items.findIndex(item => item.variant_id == $id);
         if(item.length == 0) {
@@ -21,6 +21,7 @@ function addToCart($url, $id, inputQty) {
         cache: false,
         dataType: 'json',
         success: function(cart) {
+          console.log(cart);
           var tags = cart.product.tags.split(',');           
           tags.forEach(tag => {   
             if(tag.trim().startsWith("limit")){
@@ -82,8 +83,10 @@ function addToCart($url, $id, inputQty) {
         type: "POST",
         url: '/cart/change.js',
         data: data,
-        success: function(cart){   
+        success: function(cart){
+          console.log(cart);        
           $('.cart_items_number.counter_number.animated.rubberBand').text(cart.quantity);
+          console.log(cart.quantity);
           $cartItems.text(cart.item_count);
           if(cart.items.length > 250) {
              $(".modal-body").text("You have hit the maximum line items allowed in your cart, please checkout to avoid any issues."); 

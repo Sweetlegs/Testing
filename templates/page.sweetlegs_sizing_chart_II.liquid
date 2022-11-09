@@ -143,9 +143,9 @@
   </div>
 </div>
 
-<script>   
+<script>  
   window.Measeurement_In_CM = false;
-  let mySizeCookie = localStorage.getItem('mySize_cookie') ? localStorage.getItem('mySize_cookie') : '{{customer.metafields.my_fields.my_size}}';
+  let mySizeCookie = localStorage.getItem('mySize_cookie');
   
   if(mySizeCookie) {
     let  mySizeCookies = JSON.parse(mySizeCookie);
@@ -262,10 +262,9 @@
         $('.recommended_result > *').css("height", "100%");
       });
       
-      let check_value_for_cookie = $('.convert_inches');
-      var mySize_cookie;
+      let check_value_for_cookie = $('.convert_inches');      
       if(check_value_for_cookie.hasClass('active')){
-      mySize_cookie = {
+      const mySize_cookie = {
         bust: selected_inches_values[0],
         waist: selected_inches_values[1],
         hip: selected_inches_values[2],
@@ -274,7 +273,7 @@
       };
         localStorage.setItem('mySize_cookie', JSON.stringify(mySize_cookie));
       }else{
-      mySize_cookie = {
+        const mySize_cookie = {
           bust: selected_cm_values[0],
           waist: selected_cm_values[1],
           hip: selected_cm_values[2],
@@ -283,26 +282,8 @@
         };
         localStorage.setItem('mySize_cookie', JSON.stringify(mySize_cookie));
       }
-      
-      //  
-      {% if customer %}
-      var customerId = {{customer.id}};
-      var Sizing_Data = {
-        mySize: JSON.stringify(mySize_cookie),
-        customerId: customerId
-      };
-      $.ajax({
-        type: "POST",
-        url: "https://sweetlegs.rocks/api/customer/metafield",
-        data: Sizing_Data,
-        dataType: "json",
-        encode: true,
-      }).done(function (data) {
-        console.log(data);
-      });
-      {% endif %}
-      //  
-    
+
+           
       var product_type = document.querySelector(".text-box").value;
       function range(start, end, step = 1) {
         const len = Math.floor((end - start) / step) + 1

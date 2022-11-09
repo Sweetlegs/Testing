@@ -27,6 +27,7 @@
 {{ 'addToCart.js' | asset_url | script_tag }} 
 {{ 'product-template.js' | asset_url | script_tag }}
 
+
 {% assign published_at = product.published_at | date: '%s' | convert: "number" %}
 {% assign current_time = 'now' | date: '%s' | convert: "number" %}
 {% assign time_lapsed = current_time | minus: published_at %}
@@ -257,7 +258,7 @@
                             <div class="variations_button">
                               <div class="quantity proQty">
                                 <span class="prodMinus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                  <input type="number" tags="{{product.tags | join: "," | downcase }}" step="1" min="1" max="20" name="quantity" value="1" title="Qty" onfocus="this.select()" type="tel" onClick="this.setSelectionRange(0, this.value.length)" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric" />
+                                  <input type="number" tags={{product.tags | join: "," | downcase }} step="1" min="1" max="20" name="quantity" value="1" title="Qty" onfocus="this.select()" type="tel" onClick="this.setSelectionRange(0, this.value.length)" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric" />
                                 <span class="prodPlus"><i class="fa fa-plus" aria-hidden="true"></i></span>
                               </div>
                               <button id="AddToCart-{{ section.id }}" type="submit" class="add_to_cart_button button btn1 bshadow alt{% unless current_variant.available %} hide{% endunless %}" {% unless current_variant.available %}disabled="disabled"{% endunless %}>
@@ -303,7 +304,7 @@
                           {% endunless %}
                           
                           
-                            <div class="">                            
+                            <div class="variation-ava">                            
                             {%- if current_variant -%}
                               {%- if current_variant.available -%}
                                 {%- if current_variant.inventory_management == "shopify" and current_variant.inventory_policy != "continue" -%}

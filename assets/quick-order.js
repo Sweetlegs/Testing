@@ -20,7 +20,6 @@ var idDiscount = {
   },
 };
 
-
 if($(window).width() > 600){
   $(document).on("mouseenter", ".prodListImg", function(le) {
     const imgSrc = $(this).find('img').attr('src').replace('_small','_200x');
@@ -54,8 +53,7 @@ function countDiscountableItem() {
   $('input.quantity.field').each(function() {
     if(Number($(this).val()) > 0) {
        var productType = $(this).parent('td').parent('tr').find('.productPrice').attr("data-type");
-      checkProductType = productType.includes('sweetlegs') || productType.includes('sweettops') || productType.includes('shorts');
-       if (checkProductType){ 
+       if (productType.includes('sweetlegs') || productType.includes('sweettops') || productType.includes('shorts')){ 
             totalDiscountableItem += Number($(this).val()); 
        }
     }
@@ -114,10 +112,6 @@ function postToCart(data , href, errorHappen) {
 
 
 function showDiscount(discountableItem, page) {
-    let lineItemCount = 25;
-    if(customerTags.includes("new")) {
-      lineItemCount = 50;
-    }
 	if($('.customerTag').val().toLowerCase().includes('distributor')){   
       $('table').find('td.productPrice').slice(page).each(function(i, pp) {
         var compareAtPrice =$(pp).data('compare').split("$")[1];
@@ -127,7 +121,7 @@ function showDiscount(discountableItem, page) {
         var tags = $(pp).data('tag-array');
         var salePrice = $(pp).data('sale-price');
         var clearancePrice = null;
-        if(discountableItem < lineItemCount) {
+        if(discountableItem < 25) {
             var discountableType = 'legacyDiscount';
         } else {
             var discountableType = 'regularDiscount';
@@ -138,30 +132,22 @@ function showDiscount(discountableItem, page) {
           clearancePrice = parseFloat(tags.split(",")[clearanceIndex].slice(5))
         }
              
-        if(clearancePrice && discountableItem >= lineItemCount){ 
+        if(clearancePrice && discountableItem >= 25){ 
           $(pp).text('');
           $(pp).append(`<span class="price-old">$${oldPrice}</span>`);
           var newPrice ="$"+ (compareAtPrice - parseInt(compareAtPrice) * 0.6).toFixed(2);
           $(pp).append(`<span class="newPrice">$${clearancePrice.toFixed(2)}</span>`);
           flag = false;
         } else if(type !== 'marketing materials') {
-            if(customerTags.includes("new") && discountableItem <50 ) {
-                  $(pp).find('.price-old').remove();
-                  $(pp).find('.price-new').remove();
-                  $(pp).html(`$${compareAtPrice}`);
-            } else {
-                  var newPrice = (compareAtPrice - parseInt(compareAtPrice) * idDiscount[discountableType][type]).toFixed(2);
-                if(newPrice < salePrice/100) {
-                  $(pp).text('');
-                  finalPrice = newPrice;
-                  $(pp).append(`<span class="price-old">$${oldPrice}</span>`);
-                  $(pp).append(`<span class="newPrice">$${finalPrice}</span>`);
-            } else {
-              finalPrice = (salePrice/100).toFixed(2);
-            } 
-              
-            }
-                             
+          var newPrice = (compareAtPrice - parseInt(compareAtPrice) * idDiscount[discountableType][type]).toFixed(2);
+          if(newPrice < salePrice/100) {
+            $(pp).text('');
+            finalPrice = newPrice;
+            $(pp).append(`<span class="price-old">$${oldPrice}</span>`);
+            $(pp).append(`<span class="newPrice">$${finalPrice}</span>`);
+          } else {
+            finalPrice = (salePrice/100).toFixed(2);
+          }                  
         } 
    })
   }

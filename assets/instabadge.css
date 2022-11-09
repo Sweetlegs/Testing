@@ -1,61 +1,48 @@
 .instabadge {
-  position:relative;
+  position:initial ;
 }
 
 .instabadge .instabadge-badge {
-  width: 19.90740740740741%!important;
-    max-width: 19.90740740740741%!important;
-    background-color: transparent!important;
-    border: none!important;
-    position: absolute!important;
-    max-width: 30%!important;
-    max-height: 30%!important;
-    top: -5px!important;
-    left: 8.179012345679013%!important;
-    z-index: 30!important;
-    transform: inherit!important;
-    content: ''!important;
-    opacity: 1!important;
-    background-size: contain!important;
-    background-repeat: no-repeat!important;
-    height: 100%;
-    width: 100%;
+  background-color:transparent!important;
+  border: none!important;
+  position:absolute!important;
+  max-width: 30%!important;
+  max-height: 30%!important;
+  top:0!important;
+  left:0!important;
+  z-index: 1!important;
+  transform: inherit!important;
+  content:''!important;
 }
-.instabadge-badge.sale{
-  background: url( //cdn.shopify.com/s/files/1/2445/2869/t/480/assets/instabadge-20709.png?v=181648475927427682501667928059)
-} 
-.instabadge-badge.new{
-background: url( //cdn.shopify.com/s/files/1/2445/2869/t/480/assets/instabadge-20710.png?v=33163165611208136341667928060)
-}  
-.instabadge-39587-type_collection .instabadge-badge, .instabadge-successful-truck-type_collection .instabadge-badge {
-width: 21.295907335907334%!important;
-max-width: 21.295907335907334%!important;
+.instabadge-20709-type_collection .instabadge-badge {
+width: 21.363636363636363%!important;
+max-width: 21.363636363636363%!important;
 top: 0%!important;
-left: 9.10472972972973%!important;
-background: url('//cdn.shopify.com/s/files/1/2445/2869/t/480/assets/instabadge-39587_150x.png?v=181648475927427682501667928060');
+left: 9.162679425837322%!important;
+content: url('//cdn.shopify.com/s/files/1/2448/4493/t/353/assets/instabadge-20709_150x.png?v=181648475927427682501667928136')!important;
 }
 
-.instabadge-39587-type_product .instabadge-badge, .instabadge-successful-truck-type_product .instabadge-badge {
-width: 21.295907335907334%!important;
-max-width: 21.295907335907334%!important;
+.instabadge-20709-type_product .instabadge-badge {
+width: 21.363636363636363%!important;
+max-width: 21.363636363636363%!important;
 top: 0%!important;
-left: 9.10472972972973%!important;
-background: url('//cdn.shopify.com/s/files/1/2445/2869/t/480/assets/instabadge-39587_500x.png?v=181648475927427682501667928060');
+left: 9.162679425837322%!important;
+content: url('//cdn.shopify.com/s/files/1/2448/4493/t/353/assets/instabadge-20709_500x.png?v=181648475927427682501667928136')!important;
 }
 
-.instabadge-39588-type_collection .instabadge-badge, .instabadge-neat-digestion-type_collection .instabadge-badge {
-width: 19.90740740740741%!important;
-max-width: 19.90740740740741%!important;
+.instabadge-20710-type_collection .instabadge-badge {
+width: 19.832535885167466%!important;
+max-width: 19.832535885167466%!important;
 top: -0.33783783783783783%!important;
-left: 8.179012345679013%!important;
-background: url('//cdn.shopify.com/s/files/1/2445/2869/t/480/assets/instabadge-39588_150x.png?v=33163165611208136341667928061');
+left: 8.014354066985646%!important;
+content: url('//cdn.shopify.com/s/files/1/2448/4493/t/353/assets/instabadge-20710_150x.png?v=33163165611208136341667928136')!important;
 }
 
-.instabadge-39588-type_product .instabadge-badge, .instabadge-neat-digestion-type_product .instabadge-badge {
-width: 19.90740740740741%!important;
-max-width: 19.90740740740741%!important;
+.instabadge-20710-type_product .instabadge-badge {
+width: 19.832535885167466%!important;
+max-width: 19.832535885167466%!important;
 top: -0.33783783783783783%!important;
-left: 8.179012345679013%!important;
-background: url('//cdn.shopify.com/s/files/1/2445/2869/t/480/assets/instabadge-39588_500x.png?v=33163165611208136341667928061');
+left: 8.014354066985646%!important;
+content: url('//cdn.shopify.com/s/files/1/2448/4493/t/353/assets/instabadge-20710_500x.png?v=33163165611208136341667928136')!important;
 }
 
