@@ -1,324 +1,774 @@
-{%- assign header_sticky = false -%}
-{%- assign header_sticky_scroll = false -%}
-{%- assign header_sticky_mobile = false -%}
+{% comment %}Namogoo Snippet{% endcomment %}
+<script type="text/javascript" async> (() => { const cfgKey = "namogooDataLayer", categoriesCfgKey = "NmgDLProductCategories"; let userData = {}, siteData = {}, productData = {}, cartData = {}, searchProductsData = [], categoryProductsData = [], categoryData = {}; let utils = { objectIsEmpty: (obj) => { if (Array.isArray(obj)) { return obj.length === 0; } return Object.keys(obj).length === 0 && obj.constructor === Object; } }; let page = { href: () => window.location.href, pageType: () => { let pType = "{{ request.page_type }}"; switch (pType) { case '404': case 'password': case 'list-collections': { return 'Other'; } case 'article': case 'blog': case 'page': { return 'Content Page'; } case 'cart': { return 'Cart'; } case 'collection': { return 'Category'; } case 'customers/account': case 'customers/reset_password': { return 'Account'; } case 'customers/activate_account': case 'customers/addresses': case 'customers/login': case 'customers/register': { return 'Customer Service' } case 'customers/order': { return 'Order Details'; } case 'gift_card': { return 'Promotion'; } case 'product': { return 'Product'; } case 'index': { return 'Homepage'; } case 'search': { return 'Search'; } } let href = page.href(); if (href.includes("/cart")) { return 'Cart'; } else if (href.includes("/account")) { return 'Account'; } else if (href.includes("/thank_you")) { return 'Order Confirmation'; } else if (href.includes("/orders/")) { return 'Order Details'; } else if (href.includes("/checkout")) { return 'Checkout'; } else { return 'Other'; } }, requiredDataLayerGroups: () => { let pt = page.pageType(); let groups = ['userData', 'siteData', 'cartData']; if (pt === 'Product'){ groups.push('productData'); } else if (pt === 'Category'){ groups.push('categoryData', 'categoryProductsData'); } else if (pt === 'Search'){ groups.push('searchProductsData'); } return groups; }, td: () => window.ShopifyAnalytics.lib.trekkie.defaultAttributes, meta: () => window.ShopifyAnalytics.meta, get: { user: { uniqToken: () => page.td().uniqToken, visitToken: () => page.td().visitToken, id: () => __st.cid, }, }, set: { userData: () => { userData.guestUserId = page.get.user.uniqToken(); userData.sessionId = page.get.user.visitToken(); let userId = page.get.user.id(); if (userId){ userData.userId = userId; userData.loginType = 'logged in user'; } else { userData.userId = ''; userData.loginType = 'guest user'; } }, siteData: () => { siteData.local = "{{ request.locale.iso_code }}"; siteData.language = document.documentElement.lang; siteData.currency = "{{ shop.currency }}"; siteData.shopCurrency = "{{ shop.currency }}"; let currency = window.Currency ? window.Currency.currentCurrency : ''; siteData.cartCurrency = currency || "{{ cart.currency.iso_code }}"; siteData.pageType = page.pageType(); siteData.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; {%- if search and search.performed -%} siteData.searchTerms = "{{ search.terms }}"; {%- endif -%} }, productData: () => { {%- if product -%} let selectedVariantId = page.meta().selectedVariantId || {{ product.selected_or_first_available_variant.id }}; let allVariants = [ {%- for variant in product.variants -%} { sku: {{ variant.sku | json }}, id: {{ variant.id }}, salePrice: {{ variant.price }}, originalPrice: {{ variant.price }}, available: {{ variant.available }}, quantity: {{ variant.inventory_quantity }}, }, {%- endfor -%} ]; let selectedVariant = allVariants.filter(v => v.id == selectedVariantId)[0] || {}; productData.sku = selectedVariant.sku || ''; productData.id = {{ product.id }}; productData.variantId = selectedVariant.id; productData.title = "{{ product.title | escape }}"; productData.brand = "{{ product.vendor | escape }}"; productData.salePrice = selectedVariant.salePrice / 100 + ''; productData.originalPrice = selectedVariant.originalPrice / 100 + ''; productData.quantity = selectedVariant.quantity; productData.inStock = selectedVariant.available; productData.imageUrl = "{{ product | img_url }}"; let productCollections = [ {%- if product.collections -%} {%- for collection in product.collections -%} { id: "{{ collection.id }}", handle: "{{ collection.handle }}", title: "{{ collection.title }}" }, {%- endfor -%} {%- elsif collection -%} { id: "{{ collection.id }}", handle: "{{ collection.handle }}", title: "{{ collection.title }}" } {%- endif -%} ]; productData.categoryIds = []; productData.categoryNames = []; productData.categoryHandles = []; productCollections.forEach(collection => { productData.categoryIds.push(collection.id); productData.categoryNames.push(collection.title); productData.categoryHandles.push(collection.handle); }); {%- endif -%} }, cartData: () => { cartData.total = {{ cart.total_price }} / 100 + ''; cartData.subTotal = {{ cart.items_subtotal_price }} / 100 + ''; {% assign discounts = cart.cart_level_discount_applications | default: cart.discount_applications %} {%- for dscnt in discounts -%} cartData.discountData = { id: "{{ dscnt.key }}", name: "{{ dscnt.title | escape }}", discountType: "{{ dscnt.type }}", totalAmount: {{ dscnt.total_allocated_amount }} / 100 + '', value: "{{ dscnt.value }}", valueType: "{{ dscnt.value_type }}", }; {% break %} {%- endfor -%} {%- if cart.item_count -%} cartData.items = [ {%- for item in cart.items -%} { sku: "{{ item.sku }}", id: {{ item.product_id }}, variantId: {{ item.id }}, title: "{{ item.title | ecsape }}", brand: "{{ item.vendor | escape}}", price: {{ item.price }} / 100 + '', originalPrice: {{ item.price }} / 100 + '', salePrice: {{ item.discounted_price }} / 100 + '', quantity: {{ item.quantity }}, imageUrl: "{{ item | img_url }}", inStock: true, {%- if item.product.collections -%} {%- assign categoryIds = '' -%} {%- assign categoryNames = '' -%} {%- assign categoryHandles = '' -%} {%- for collection in item.product.collections -%} {%- assign categoryIds = categoryIds | append: collection.id | append: ' ,|!|, ' -%} {%- assign categoryNames = categoryNames | append: collection.title | escape | append: ' ,|!|, ' -%} {%- assign categoryHandles = categoryHandles | append: collection.handle | append: ' ,|!|, ' -%} {%- endfor -%} categoryIds: {{ categoryIds | split: ' ,|!|, ' | json }}, categoryNames: {{ categoryNames | split: ' ,|!|, ' | json }}, categoryHandles: {{ categoryHandles | split: ' ,|!|, ' | json }}, {%- else -%} categoryIds: [], categoryNames: [], categoryHandles: [], {%- endif -%} {% if item.discounts.size > 0 %} discountData: { amount: {{ item.discounts[0].amount | default: 0 }} / 100 + '', title: {{ item.discounts[0].title | json }}, }, {% endif %} }, {%- endfor -%} ]; let productCategoriesData = {}; cartData.items.forEach(item => { productCategoriesData[item.variantId] = { categoryIds: item.categoryIds, categoryNames: item.categoryNames, categoryHandles: item.categoryHandles, } }); localStorage.setItem(categoriesCfgKey, JSON.stringify(productCategoriesData)); {%- endif -%} cartData.totalQuantity = {{ cart.item_count }}; }, categoryData: () => { {%- if request.page_type == 'collection' -%} {%- assign collection = collections[handle] -%} categoryData.id = "{{ collection.id }}"; categoryData.handle = "{{ collection.handle }}"; categoryData.title = "{{ collection.title }}"; {%- endif -%} }, categoryProductsData: () => { categoryProductsData.length = 0; {%- if request.page_type == 'collection' -%} {%- assign collection = collections[handle] -%} {%- if collection.products -%} let product = {}, firstVariant = {}, variants = [], productCollections = []; {%- for product in collection.products -%} productCollections = [ {%- if product.collections -%} {%- for collection in product.collections -%} { id: "{{ collection.id }}", handle: "{{ collection.handle }}", title: "{{ collection.title }}" }, {%- endfor -%} {%- endif -%} ]; product = { id: {{ product.id }}, title: `{{ product.title }}`, brand: `{{ product.vendor }}`, imageUrl: "{{ product | img_url }}", categoryIds: productCollections ? productCollections.map(collection => collection.id) : [], categoryNames: productCollections ? productCollections.map(collection => collection.title) : [], categoryHandles: productCollections ? productCollections.map(collection => collection.handle) : [], {%- if product.variants.size == 1 -%} {% assign variant = product.variants[0] %} sku: {{ variant.sku | json }}, variantId: {{ variant.id }}, salePrice: {{ variant.price }} / 100 + '', originalPrice: {{ variant.price }} / 100 + '', inStock: {{ variant.available }}, quantity: {{ variant.inventory_quantity }}, variants: [], }; {%- else -%} }; firstVariant = { {%- assign variant = product.selected_or_first_available_variant -%} sku: {{ variant.sku | json }}, variantId: {{ variant.id }}, salePrice: {{ variant.price }} / 100 + '', originalPrice: {{ variant.price }} / 100 + '', inStock: {{ variant.available }}, quantity: {{ variant.inventory_quantity }}, }; variants = [ {%- for variant in product.variants -%} {%- if variant.id == product.selected_or_first_available_variant.id -%} {%- continue -%} {%- endif -%} { sku: {{ variant.sku | json }}, variantId: {{ variant.id }}, salePrice: {{ variant.price }} / 100 + '', originalPrice: {{ variant.price }} / 100 + '', inStock: {{ variant.available }}, quantity: {{ variant.inventory_quantity }}, }, {%- endfor -%} ]; product.variants = variants.map(v => {return {...product, ...v}}); product = {...product, ...firstVariant}; {%- endif -%} categoryProductsData.push({...product}); {%- endfor -%} {%- else -%} categoryProductsData.push({}); {%- endif -%} {%- endif -%} }, searchProductsData: () => { searchProductsData.length = 0; {%- if request.page_type == 'search' -%} {%- if search and search.performed -%} let searchResult = {}, searchResultFirstVariant = {}, searchResultVariants = [], searchResultCollections = []; {%- for product in search.results -%} {%- if product.object_type != "product" -%} {%- continue -%} {%- endif -%} searchResultCollections = [ {%- if product.collections -%} {%- for collection in product.collections -%} { id: "{{ collection.id }}", handle: "{{ collection.handle }}", title: "{{ collection.title }}" }, {%- endfor -%} {%- endif -%} ]; searchResult = { id: {{ product.id }}, title: `{{ product.title }}`, brand: `{{ product.vendor }}`, imageUrl: "{{ product | img_url }}", categoryIds: searchResultCollections ? searchResultCollections.map(collection => collection.id) : [], categoryNames: searchResultCollections ? searchResultCollections.map(collection => collection.title) : [], categoryHandles: searchResultCollections ? searchResultCollections.map(collection => collection.handle) : [], {%- if product.variants.size == 1 -%} {% assign variant = product.variants[0] %} sku: {{ variant.sku | json }}, variantId: {{ variant.id }}, salePrice: {{ variant.price }} / 100 + '', originalPrice: {{ variant.price }} / 100 + '', inStock: {{ variant.available }}, quantity: {{ variant.inventory_quantity }}, variants: [], }; {%- else -%} }; searchResultFirstVariant = { {%- assign variant = product.selected_or_first_available_variant -%} sku: {{ variant.sku | json }}, variantId: {{ variant.id }}, salePrice: {{ variant.price }} / 100 + '', originalPrice: {{ variant.price }} / 100 + '', inStock: {{ variant.available }}, quantity: {{ variant.inventory_quantity }}, }; searchResultVariants = [ {%- for variant in product.variants -%} {%- if variant.id == product.selected_or_first_available_variant.id -%} {%- continue -%} {%- endif -%} { sku: {{ variant.sku | json }}, variantId: {{ variant.id }}, salePrice: {{ variant.price }} / 100 + '', originalPrice: {{ variant.price }} / 100 + '', inStock: {{ variant.available }}, quantity: {{ variant.inventory_quantity }}, }, {%- endfor -%} ]; searchResult.variants = searchResultVariants.map(v => {return {...searchResult, ...v}}); searchResult = {...searchResult, ...searchResultFirstVariant}; {%- endif -%} searchProductsData.push({...searchResult}); {%- else -%} searchProductsData.push({}); {%- endfor -%} {%- endif -%} {%- endif -%} }, } }; let setRequiredGroupsData = () => { let requiredDataLayerGroups = page.requiredDataLayerGroups(); requiredDataLayerGroups.forEach((item, index) => { if (utils.objectIsEmpty(eval(item))){ try { page.set[item]() } catch (e) { } } }); }; let setLog = (groupsList) => { let log = {}; groupsList.forEach((item, index) => { if (['userData', 'siteData', 'cartData', 'categoryData'].includes(item)){ log[item] = eval(item) } else if (['categoryProductsData', 'searchProductsData'].includes(item)){ log['items'] = eval(item) } else if (item === 'productData'){ log['items'] = [eval(item)] } }); window[cfgKey] = [log] }; let interval; let perform = (i=1000) => { interval = setInterval(() => { setRequiredGroupsData(); let c = 0; let requiredGroups = page.requiredDataLayerGroups(); requiredGroups.forEach((item, index) => { if (!utils.objectIsEmpty(eval(item))){ c++ } }); if (requiredGroups.length === c){ clearInterval(interval); setLog(requiredGroups) } }, i) }; perform(); let initialHref = window.location.href; let trackUrl = setInterval(() => { if (page.href() !== initialHref){ initialHref = page.href(); userData = {}; siteData = {}; productData = {}; cartData = {} ; searchProductsData = []; categoryProductsData = []; categoryData = {}; perform() } }, 1000) })();
+</script>
+{% comment %}END of Namogoo Snippet{% endcomment %}
+{%- liquid
+  assign language_selector = false
+  assign country_selector = false
 
-{%- if section.settings.header_sticky  != '' -%}
-  {%- assign header_sticky = true -%}
-{%- endif -%}
+  if section.settings.show_country_selector and localization.available_countries.size > 1
+    assign country_selector = true
+  endif
 
-{%- if section.settings.header_sticky_scroll   != '' -%}
-  {%- assign header_sticky_scroll = true -%}
-{%- endif -%}
+  if section.settings.show_language_selector and localization.available_languages.size > 1
+    assign language_selector = true
+  endif
+-%}
 
-{%- if section.settings.header_sticky_mobile   != '' -%}
-  {%- assign header_sticky_mobile  = true -%}
-{%- endif -%}
-<div data-section-id="{{ section.id }}" data-section-type="header-section">
-  {%- assign header_skin = 'header-skin-' | append: section.settings.header_style -%}
-  {%- include header_skin -%}
-</div>
+<style type="text/css">
+  {% if section.settings.logo != blank %}
+    .logo img { width: {{ section.settings.mobile_logo_width | escape }}px; }
+    @media(min-width:768px){
+    .logo img { width: {{ section.settings.desktop_logo_width | escape }}px; }
+    }
+  {% else %}
+    {%- assign logo_font_size_mobile = section.settings.mobile_logo_width | divided_by: 6 | round -%}
+    {%- assign logo_font_size_desktop = section.settings.desktop_logo_width | divided_by: 6 | round -%}
+    .logo { font-size: {{ logo_font_size_mobile }}px; }
+    @media(min-width:768px){
+      .logo { font-size: {{ logo_font_size_desktop }}px; }
+    }
+  {% endif %}
+
+  .cc-announcement {
+    {% if section.settings.announcement_text_size > 16 %}
+      font-size: 16px;
+    {% else %}
+      font-size: {{ section.settings.announcement_text_size }}px;
+    {% endif %}
+  }
+
+  @media (min-width: 768px) {
+    .cc-announcement {
+      font-size: {{ section.settings.announcement_text_size }}px;
+    }
+  }
+</style>
+
+{% comment %} A hidden form to handle when the checkout button is pressed on the add to cart popup {% endcomment %}
+<form action="{{ routes.cart_url }}" method="post" id="cc-checkout-form">
+</form>
+
+{% if template == 'gift_card' %}
+
+  {% comment %} Gift card template logo {% endcomment %}
+  <div itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="{{ shop.name }}">
+    <a data-cc-animate-click class="logo" href="{{ shop.url }}" itemprop="url">
+      {% if section.settings.logo != blank %}
+        {% assign double_logo_width = section.settings.logo_width | default: 250 | times: 2 %}
+        {% capture img_size %}{% if double_logo_width > 2048 %}2048{% else %}{{ double_logo_width }}{% endif %}x{% endcapture %}
+        <img src="{{ section.settings.logo | img_url: img_size }}" alt="{{ shop.name | escape }}" itemprop="logo" />
+      {% else %}
+        {{ shop.name | escape }}
+      {% endif %}
+    </a>
+  </div>
+
+{% else %}
+  {% assign featured_links = section.settings.nav_featured_link | split: ', ' %}
+
+  {% capture logo_html %}
+  <a data-cc-animate-click data-cc-animate class="logo {% if section.settings.alt_logo != blank %}logo--has-alt-logo{% endif %}" href="{{ routes.root_url }}"
+     itemprop="url">
+
+    {% if template == 'index' and section.settings.logo_h1 %}
+      <h1 class="logo logo-h1">
+    {% endif %}
+
+    <meta itemprop="name" content="{{ shop.name }}">
+    {% if section.settings.logo != blank %}
+      {% assign double_logo_width = section.settings.logo_width | default: 250 | times: 2 %}
+      {% capture img_size %}{% if double_logo_width > 2048 %}2048{% else %}{{ double_logo_width }}{% endif %}x{% endcapture %}
+      <img src="{{ section.settings.logo | img_url: img_size }}" alt="{{ shop.name | escape }}" itemprop="logo"
+           width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}"/>
+
+      {% if section.settings.alt_logo != blank %}
+      <span class="alt-logo">
+        <img src="{{ section.settings.alt_logo | img_url: img_size }}" alt="{{ shop.name | escape }}" itemprop="logo"
+             width="{{ section.settings.alt_logo.width }}" height="{{ section.settings.alt_logo.height }}"/>
+      </span>
+      {% endif %}
+    {% else %}
+      {{ shop.name | escape }}
+    {% endif %}
+
+    {% if template == 'index' and section.settings.logo_h1 %}
+      </h1>
+    {% endif %}
+  </a>
+  {% endcapture %}
+
+  {%- capture announcement -%}
+  {% if section.settings.show_announcement %}
+  {% if template == 'index' or section.settings.announcement_home_only == false %}
+  <div class="cc-announcement">
+    {% if section.settings.announcement_link != blank %}<a data-cc-animate-click href="{{ section.settings.announcement_link }}">{% endif %}
+    <div class="cc-announcement__inner">
+      {{ section.settings.announcement_text }}
+    </div>
+    {% if section.settings.announcement_link != blank %}</a>{% endif %}
+  </div>
+  {% endif %}
+  {% endif %}
+  {%- endcapture -%}
+
+  {%- capture inline_link_html-%}
+    {% if section.settings.desktop_navigation == "inline" %}
+      <div class="site-control__inline-links">
+        <div class="nav-row multi-level-nav reveal-on-hover" role="navigation" aria-label="{{ 'general.navigation.main_navigation_aria_label' | t | escape }}">
+          <div class="tier-1">
+            <ul>
+              {% for link in linklists[section.settings.menu_linklist].links %}
+
+                {%- assign has_mega_drop_down = true -%}
+                {%- if link.links != blank -%}
+                  {%- for child_link in link.links -%}
+                    {%- if child_link.links == blank -%}
+                      {%- assign has_mega_drop_down = false -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- else -%}
+                  {%- assign has_mega_drop_down = false -%}
+                {%- endif -%}
+
+                <li class="{% if link.active %}active{% endif %}{% if link.links != blank %} contains-children{% endif %}{% if has_mega_drop_down %} contains-mega-menu{% endif %}{% if featured_links contains link.title %} featured-link{% endif %}">
+                  <a {% if link.links == blank %}data-cc-animate-click{% endif %} href="{{ link.url }}" class="{% if link.active %}active{% endif %} {% if link.links != blank %}has-children{% endif %}" {% if link.links != blank %}aria-haspopup="true"{% endif %}>
+                    {{ link.title }}
+                  </a>
+
+                  {% if link.links != blank %}
+
+                    {% assign num_ctas = 0 %}
+                    {% for block in section.blocks %}
+                      {% assign menu_item =  block.settings.menu_item | downcase %}
+                      {% assign link_title =  link.title | downcase %}
+                      {% if menu_item == link_title %}
+                        {% if block.settings.image1 != blank %}
+                          {% assign num_ctas = num_ctas | plus: 1 %}
+                        {% endif %}
+                        {% if block.settings.image2 != blank %}
+                          {% assign num_ctas = num_ctas | plus: 1 %}
+                        {% endif %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+
+                    <ul {% if has_mega_drop_down %}
+                      class="nav-columns
+                        nav-columns--count-{{ link.links.size }}
+                        {% if link.links.size > 2 %} nav-columns--count-3-or-more {% endif %}
+                        {% if link.links.size > 4 %} nav-columns--count-5-or-more {% endif %}
+                        nav-columns--cta-count-{{ num_ctas }}"
+                      {% else %}
+                        class="nav-rows"
+                      {% endif %}>
+
+                      {% for child_link in link.links %}
+                        <li class="{% if child_link.active %}active{% endif %}{% if child_link.links != blank %} contains-children{% endif %}{% if featured_links contains child_link.title %} featured-link{% endif %}">
+                          <a {% if child_link.links == blank %}data-cc-animate-click{% endif %} href="{{ child_link.url }}" class="{% if child_link.links != blank %}has-children column-title{% endif %}" {% if child_link.links != blank %}aria-haspopup="true"{% endif %}>
+                            {{ child_link.title }}
+
+                            {% if child_link.links != blank %}
+                              <span class="arr arr--small">{% render 'svg-chevron-right' %}</span>
+                            {% endif %}
+                          </a>
+
+                          {% if child_link.links != blank %}
+                            <ul>
+                              {% for child_child_link in child_link.links %}
+                                <li class="{% if child_child_link.active %}active{% endif %}{% if featured_links contains child_child_link.title %} featured-link{% endif %}">
+                                  <a data-cc-animate-click href="{{ child_child_link.url }}">{{ child_child_link.title }}</a>
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          {% endif %}
+                        </li>
+                      {% endfor %}
+
+                      {% for block in section.blocks %}
+                        {% assign menu_item =  block.settings.menu_item | downcase %}
+                        {% assign link_title =  link.title | downcase %}
+                        {% if menu_item == link_title %}
+                          {% render 'nav-call-to-action', cta: block, render_li: true %}
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {%- endcapture -%}
+
+  <div data-section-type="header" itemscope itemtype="http://schema.org/Organization">
+    <div id="site-control" class="site-control inline icons
+      {% if section.settings.desktop_navigation == "inline" %}nav-inline-desktop{% endif %}
+      {% if section.settings.nav_positioning == "inline" %}scrolls-with-page{% endif %}
+      {% if section.settings.nav_positioning == "sticky" or section.settings.nav_positioning == "peek" %}fixed{% endif %}
+      {% if section.settings.nav_opacity == "opaque" %}nav-opaque{% endif %}
+      {% if section.settings.show_announcement %}has-announcement{% endif %}
+      {% if section.settings.use_alt_logo_when_active %}alt-logo-when-active{% else %}main-logo-when-active{% endif %}
+      {% if section.settings.desktop_navigation == "inline" %}{% if language_selector or country_selector %}has-localization{% endif %}{% endif %}
+      "
+      data-cc-animate
+      data-opacity="{% if section.settings.nav_positioning == 'inline' and section.settings.nav_opacity contains 'opaque_on_scroll' %}opaque{% else %}{{ section.settings.nav_opacity }}{% endif %}"
+      data-positioning="{{ section.settings.nav_positioning }}"
+    >
+      {{ announcement }}
+      <div class="links site-control__inner">
+        <a class="menu" href="#page-menu" aria-controls="page-menu" data-modal-nav-toggle aria-label="{{ 'layout.header.menu' | t | escape }}">
+          {% render 'icon-menu' %}
+          <span class="text-link">{{ 'layout.header.menu' | t }}</span>
+        </a>
+
+        {{ logo_html }}
+
+        {{ inline_link_html }}
+
+        <div class="nav-right-side{% if language_selector %} has-lang-selector{% endif %}{% if country_selector %} has-country-selector{% endif %}">
+          {% if section.settings.desktop_navigation == "inline" %}
+            {% if country_selector or language_selector %}
+              <div class="localization">
+                {% render 'localization', input_prefix: 'header', abbreviate_country: true %}
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% if section.settings.desktop_navigation == "inline" and shop.customer_accounts_enabled %}
+            <a data-cc-animate-click href="{{ routes.account_url }}" class="nav-account">
+              {{ 'layout.customer.account' | t }}
+            </a>
+          {% endif %}
+
+          <a class="cart nav-search"
+             href="{{ routes.search_url }}"
+             aria-label="{{ 'layout.header.search' | t | escape }}"
+             data-modal-toggle="#search-modal">
+            {% render 'svg-search' %}
+            <span class="text-link">{{ 'layout.header.search' | t }}</span>
+          </a>
+
+          <a data-cc-animate-click class="cart cart-icon--{{ section.settings.nav_cart_icon }}" href="{{ routes.cart_url }}" aria-label="{{ 'layout.navigation.cart' | t | escape }}">
+            {% if section.settings.nav_cart_icon == "basket1" %}
+              {% render 'svg-cart' %}
+            {% elsif section.settings.nav_cart_icon == "basket2" %}
+              {% render 'svg-cart2' %}
+            {% endif %}
+            <div>{{ cart.item_count }}</div>
+            <span class="text-link">{{ 'layout.navigation.cart' | t }} {% if cart.item_count > 0 %}({{ cart.item_count }}){% endif %}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <nav id="page-menu" class="theme-modal nav-uses-modal">
+      <div class="inner">
+        <a href="#" class="no-js-only">{{ 'layout.header.close_mobile_nav_aria_label' | t }}</a>
+
+        <div class="nav-container">
+          <div class="nav-body container growth-area" data-root-nav="true">
+            <div class="nav main-nav" role="navigation" aria-label="{{ 'layout.header.menu_aria_label' | t | escape }}">
+              <ul>
+                {% for link in linklists[section.settings.menu_linklist].links %}
+                <li class="{% if link.active %}active{% endif %} {% if featured_links contains link.title %} featured-link{% endif %}">
+                  <a href="{{ link.url }}" {% if link.links != blank %}aria-haspopup="true"{% else %}data-cc-animate-click{% endif %}>
+                    <span>{{ link.title }}</span>
+                  </a>
+
+                  {% if link.links != blank %}
+                  <ul>
+                    {%- assign has_mega_drop_down = true -%}
+                    {%- if link.links != blank -%}
+                      {%- for child_link in link.links -%}
+                        {%- if child_link.links == blank -%}
+                          {%- assign has_mega_drop_down = false -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- else -%}
+                      {%- assign has_mega_drop_down = false -%}
+                    {%- endif -%}
+
+                    {% if has_mega_drop_down %}
+                      {% comment %} Break out the mega menu with titles {% endcomment %}
+                      {% for child_link in link.links %}
+                        <li class="{% if child_link.active %}active{% endif %} main-nav__mega-title">
+                          <a href="{{ child_link.url }}" {% if child_link.links != blank %}aria-haspopup="true"{% else %}data-cc-animate-click{% endif %}>
+                            <span>{{ child_link.title }}</span>
+                          </a>
+                        </li>
+
+                        {% for child_child_link in child_link.links %}
+                          <li class="{% if child_child_link.active %}active{% endif %} {% if featured_links contains child_child_link.title %} featured-link{% endif %}">
+                            <a data-cc-animate-click href="{{ child_child_link.url }}">
+                              <span>{{ child_child_link.title }}</span>
+                            </a>
+                          </li>
+                        {% endfor %}
+                      {% endfor %}
+
+                    {% else %}
+                      {% comment %} Render an ordinary child nav {% endcomment %}
+                      {% for child_link in link.links %}
+                      <li class="{% if child_link.active %}active{% endif %} {% if featured_links contains child_link.title %} featured-link{% endif %}">
+                        <a href="{{ child_link.url }}" {% if child_link.links != blank %}aria-haspopup="true"{% else %}data-cc-animate-click{% endif %}>
+                          <span>{{ child_link.title }}</span>
+                        </a>
+
+                        {% if child_link.links != blank %}
+                        <ul>
+                          {% for child_child_link in child_link.links %}
+                          <li class="{% if child_child_link.active %}active{% endif %} {% if featured_links contains child_child_link.title %} featured-link{% endif %}">
+                            <a data-cc-animate-click href="{{ child_child_link.url }}">
+                              <span>{{ child_child_link.title }}</span>
+                            </a>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                        {% endif %}
+                      </li>
+                      {% endfor %}
+                    {% endif %}
+                  </ul>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <div class="nav-footer-links">
+            {% comment %}
+            <div class="nav-footer-links__link">
+              <a class="search" href="{{ routes.search_url }}" data-modal-toggle="#search-modal">
+                {{ 'layout.header.search' | t }} <span class="arr arr--small">{% render 'svg-chevron-right' %}</span>
+              </a>
+            </div>
+            {% endcomment %}
+
+            {% if shop.customer_accounts_enabled %}
+              <div class="nav-footer-links__link">
+                <a data-cc-animate-click href="{{ routes.account_url }}">{{ 'layout.customer.account' | t }}</a>
+              </div>
+            {% endif %}
+
+            {% comment %}
+              {% render 'social-icons', icon_setting: settings.social_custom_icon, icon_size: 'x40' %}
+            {% endcomment %}
+
+            {% if country_selector or language_selector %}
+              <div class="localization">
+                {% render 'localization', input_prefix: 'header' %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="nav-ctas">
+            {% for block in section.blocks %}
+              {% assign nav_item = "_root" %}
+              {% if block.settings.menu_item != blank %}
+                {% assign nav_item = block.settings.menu_item %}
+              {% endif %}
+
+              <div class="nav-ctas__container" data-for-nav-item="{{ nav_item | downcase }}" {{ block.shopify_attributes }}>
+                {% render 'nav-call-to-action', cta: block, render_li: false %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+{% endif %}
+
 
 {% schema %}
   {
     "name": "Header",
     "settings": [
- 	{
-        "type": "text",
-        "id": "distributor_password",
-        "label": "ID Support Network PW:"
-     },
-     {
-        "type": "select",
-        "id": "header_style",
-        "label": "Menu Style",
-        "options": [
-          {
-            "label": "Off Canvas",
-            "value": "1"
-          },
-          {
-            "label": "Horizontal",
-            "value": "2"
-          }
-        ]
-      },
-      {
-        "type": "header",
-        "content": "Main Logo"
-      },
-      {
-        "type": "image_picker",
-        "id": "main_logo",
-        "label": "Logo Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "main_logo_retina",
-        "label": "Retina Logo Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "main_logo_dark",
-        "label": "Logo Image for Dark Background"
-      },
-      {
-        "type": "image_picker",
-        "id": "main_logo_dark_retina",
-        "label": "Retina Logo Image for Dark Background"
-      },
-      {
-        "type": "header",
-        "content": "Sticky Header Logo"
-      },
-      {
-        "type": "image_picker",
-        "id": "sticky_logo",
-        "label": "Sticky Header Logo Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "sticky_logo_retina",
-        "label": "Retina Sticky Header Logo Image"
-      },
-      {
-        "type": "header",
-        "content": "Menu Section"
-      },
       {
         "type": "link_list",
-        "id": "header_menu",
-        "label": "Main Menu"
-      },
-      {
-        "type": "select",
-        "id": "menu_trigger",
-        "label": "Menu Trigger Style",
-        "options": [
-          {
-            "label": "Style 1",
-            "value": "1"
-          },
-          {
-            "label": "Style 2",
-            "value": "2"
-          },
-          {
-            "label": "Style 3",
-            "value": "3"
-          },
-          {
-            "label": "Style 4",
-            "value": "4"
-          }
-        ]
-      },
-      {
-        "type": "header",
-        "content": "Contact Section"
-      },
-      {
-        "type": "select",
-        "id": "header_contact",
-        "label": "Contact Section",
-        "options": [
-          {
-            "label": "Disable",
-            "value": ""
-          },
-          {
-            "label": "Enable",
-            "value": "1"
-          }
-        ]
-      },
-      {
-        "type": "select",
-        "id": "header_contact_icon",
-        "label": "Contact Section Icon",
-        "options": [
-          {
-            "label": "Disable",
-            "value": ""
-          },
-          {
-            "label": "Enable",
-            "value": "1"
-          }
-        ]
+        "id": "menu_linklist",
+        "label": "Menu",
+        "default": "main-menu",
+        "info": "To create a mega menu, ensure every link within your menu has child links. [Learn more](https://cleancanvas.co.uk/support/general/mega-menus)"
       },
       {
         "type": "text",
-        "id": "header_contact_subtitle",
-        "label": "Customer Support bar Subtitle"
-      },
-      {
-        "type": "text",
-        "id": "header_contact_title",
-        "label": "Customer Support bar Title"
-      },
-      {
-        "type": "header",
-        "content": "Search Section"
+        "id": "nav_featured_link",
+        "label": "Featured link",
+        "info": "Enter the title of a link to highlight it in a different color",
+        "default": "Sale"
       },
       {
         "type": "select",
-        "id": "header_search",
-        "label": "Search Section",
+        "id": "desktop_navigation",
+        "label": "Desktop navigation",
+        "info": "For 'Show links', the navigation will automatically turn into a burger menu on smaller screens (1100px and below)",
         "options": [
           {
-            "label": "Disable",
-            "value": ""
+            "value": "burger",
+            "label": "Show burger menu"
           },
           {
-            "label": "Enable",
-            "value": "1"
-          }
-        ]
-      },
-      {
-        "type": "select",
-        "id": "header_search_mobile",
-        "label": "Mobile Search Section",
-        "options": [
-          {
-            "label": "Disable",
-            "value": ""
-          },
-          {
-            "label": "Enable",
-            "value": "1"
-          }
-        ]
-      },
-      {
-        "type": "collection",
-        "id": "header_search_featured",
-        "label": "Featured Products"
-      },
-      {
-        "type": "text",
-        "id": "header_search_limit",
-        "label": "Number of products"
-      },
-      {
-        "type": "header",
-        "content": "Currency Section"
-      },
-      {
-        "type": "select",
-        "id": "header_currency",
-        "label": "Enable currency conversion",
-        "info": "Even though prices are displayed in different currencies, orders will still be processed in your store's currency.",
-        "options": [
-          {
-            "label": "Disable",
-            "value": ""
-          },
-          {
-            "label": "Enable",
-            "value": "1"
-          }
-        ]
-      },
-      {
-        "type": "select",
-        "id": "currency_format",
-        "label": "Format",
-        "options": [
-          {
-            "value": "money_format",
-            "label": "Without currency ($10.00)"
-          },
-          {
-            "value": "money_with_currency_format",
-            "label": "With currency ($10.00 CAD)"
+            "value": "inline",
+            "label": "Show links"
           }
         ],
-        "default": "money_with_currency_format"
+        "default": "inline"
       },
       {
-        "type": "text",
-        "id": "supported_currencies",
-        "label": "Supported currencies",
-        "info": "Use the country's ISO [currency code](http://www.xe.com/iso4217.php). Separate your currency codes with a space.",
-        "default": "CAD USD EURO"
+        "type": "select",
+        "id": "nav_opacity",
+        "label": "Navigation background",
+        "options": [
+          {
+            "value": "transparent",
+            "label": "Transparent"
+          },
+          {
+            "value": "opaque_on_scroll",
+            "label": "Opaque on scroll"
+          },
+          {
+            "value": "opaque_on_scroll_alt",
+            "label": "Opaque on scroll showing contrast logo"
+          },
+          {
+            "value": "opaque",
+            "label": "Opaque"
+          }
+        ],
+        "default": "transparent"
       },
       {
-        "type": "text",
-        "id": "default_currency",
-        "label": "Default currency",
-        "default": "USD"
+        "type": "select",
+        "id": "nav_positioning",
+        "label": "Scroll behavior",
+        "options": [
+          {
+            "value": "sticky",
+            "label": "Sticks on scroll"
+          },
+          {
+            "value": "inline",
+            "label": "Scrolls with the page"
+          },
+          {
+            "value": "peek",
+            "label": "Hides on scroll down"
+          }
+        ],
+        "default": "sticky"
+      },
+
+      {
+        "type": "header",
+        "content": "Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Main logo",
+        "info": "520 x 200px recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "alt_logo",
+        "label": "Contrast logo",
+        "info": "Your main logo but in a different color to show over image-heavy sections. This should be the same size as your main logo."
+      },
+      {
+        "type": "range",
+        "id": "desktop_logo_width",
+        "min": 50,
+        "max": 250,
+        "step": 5,
+        "label": "Desktop logo width",
+        "default": 200,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "mobile_logo_width",
+        "min": 50,
+        "max": 150,
+        "step": 5,
+        "label": "Mobile logo width",
+        "default": 140,
+        "unit": "px"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_alt_logo_when_active",
+        "label": "Show contrast logo on burger menu popup/hovering the navigation bar",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "logo_h1",
+        "label": "Make the logo an <h1> on the homepage",
+        "info": "If a section on the homepage contains a primary page heading, this should be unticked [Learn more](https://cleancanvas.co.uk/support/showcase/seo#inner-anchor-0)",
+        "default": true
       },
       {
         "type": "header",
-        "content": "Social Media Icons"
+        "content": "Announcement"
       },
       {
-        "type": "select",
-        "id": "header_social",
-        "label": "Social Media Icons",
-        "options": [
-          {
-            "label": "Disable",
-            "value": ""
-          },
-          {
-            "label": "Enable",
-            "value": "1"
-          }
-        ]
+        "type": "checkbox",
+        "id": "show_announcement",
+        "label": "Show announcement",
+        "default": false
       },
       {
-        "type": "html",
-        "id": "header_social_content",
-        "label": "Social Icons"
+        "type": "checkbox",
+        "id": "announcement_home_only",
+        "label": "Show on home page only",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Text"
+      },      {
+        "type": "range",
+        "id": "announcement_text_size",
+        "min": 13,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "label": "Text size",
+        "default": 15
+      },
+      {
+        "type": "url",
+        "id": "announcement_link",
+        "label": "Link"
       },
       {
         "type": "header",
-        "content": "Sticky Header"
+        "content": "Cart"
       },
       {
         "type": "select",
-        "id": "header_sticky",
-        "label": "Header Sticky Menu",
+        "id": "nav_cart_icon",
+        "label": "Icon",
         "options": [
           {
-            "label": "Off",
-            "value": ""
+            "value": "basket1",
+            "label": "Basket 1"
           },
           {
-            "label": "On",
-            "value": "1"
+            "value": "basket2",
+            "label": "Basket 2"
           }
-        ]
+        ],
+        "default": "basket1"
       },
       {
-        "type": "select",
-        "id": "header_sticky_scroll",
-        "label": "Header Sticky Menu Show\/Hide on Scroll",
-        "options": [
-          {
-            "label": "Disable",
-            "value": ""
-          },
-          {
-            "label": "Enable",
-            "value": "1"
-          }
-        ]
+        "type": "header",
+        "content": "Country/Region Selector",
+        "info": "To add a country/region, go to your [payment settings.](/admin/settings/payments)"
       },
       {
-        "type": "select",
-        "id": "header_sticky_mobile",
-        "label": "Sticky Menu on Tablet\/Mobile devices",
-        "options": [
+        "type": "checkbox",
+        "id": "show_country_selector",
+        "label": "Enable country/region selector",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Language Selector",
+        "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_language_selector",
+        "label": "Enable language selector",
+        "default": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Menu promotion",
+        "settings": [
           {
-            "label": "Hide",
-            "value": ""
+            "type": "text",
+            "id": "menu_item",
+            "label": "Menu item",
+            "info": "Enter a dropdown menu item title to display the menu promotion on, e.g. 'Shop'.  If you leave this empty, the menu promotion will show on the first level of the burger menu popup. [Learn more](https://cleancanvas.co.uk/support/showcase/header-and-footer#h_01EPEP6TGX1X1A8Y5TVKFKFDG3)"
           },
           {
-            "label": "Show",
-            "value": "1"
+            "type": "header",
+            "content": "Promotion 1"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image",
+            "info": "800 x 600px recommended"
+          },
+          {
+            "type": "select",
+            "id": "desktop_image_position1",
+            "label": "Image alignment",
+            "info": "Used to keep the subject of your image in view",
+            "default": "center center",
+            "options": [
+              {
+                "value": "top left",
+                "label": "Top left"
+              },
+              {
+                "value": "top center",
+                "label": "Top center"
+              },
+              {
+                "value": "top right",
+                "label": "Top right"
+              },
+              {
+                "value": "center left",
+                "label": "Middle left"
+              },
+              {
+                "value": "center center",
+                "label": "Middle center"
+              },
+              {
+                "value": "center right",
+                "label": "Middle right"
+              },
+              {
+                "value": "bottom left",
+                "label": "Bottom left"
+              },
+              {
+                "value": "bottom center",
+                "label": "Bottom center"
+              },
+              {
+                "value": "bottom right",
+                "label": "Bottom right"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "subheading1",
+            "label": "Subheading",
+            "default": "Subheading"
+          },
+          {
+            "type": "textarea",
+            "id": "title1",
+            "label": "Heading",
+            "default": "Tell your story"
+          },
+          {
+            "type": "richtext",
+            "id": "text1",
+            "label": "Text",
+            "default": "<p>Pair text with an image to tell a story</p>"
+          },
+          {
+            "type": "text",
+            "id": "button_label1",
+            "label": "Button"
+          },
+          {
+            "type": "url",
+            "id": "cta_link1",
+            "label": "Link"
+          },
+          {
+            "type": "header",
+            "content": "Promotion 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image",
+            "info": "800 x 600px recommended"
+          },
+          {
+            "type": "select",
+            "id": "desktop_image_position2",
+            "label": "Image alignment",
+            "info": "Used to keep the subject of your image in view",
+            "default": "center center",
+            "options": [
+              {
+                "value": "top left",
+                "label": "Top left"
+              },
+              {
+                "value": "top center",
+                "label": "Top center"
+              },
+              {
+                "value": "top right",
+                "label": "Top right"
+              },
+              {
+                "value": "center left",
+                "label": "Middle left"
+              },
+              {
+                "value": "center center",
+                "label": "Middle center"
+              },
+              {
+                "value": "center right",
+                "label": "Middle right"
+              },
+              {
+                "value": "bottom left",
+                "label": "Bottom left"
+              },
+              {
+                "value": "bottom center",
+                "label": "Bottom center"
+              },
+              {
+                "value": "bottom right",
+                "label": "Bottom right"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "subheading2",
+            "label": "Subheading",
+            "default": "Subheading"
+          },
+          {
+            "type": "textarea",
+            "id": "title2",
+            "label": "Heading",
+            "default": "Tell your story"
+          },
+          {
+            "type": "richtext",
+            "id": "text2",
+            "label": "Text",
+            "default": "<p>Pair text with an image to tell a story</p>"
+          },
+          {
+            "type": "text",
+            "id": "button_label2",
+            "label": "Button"
+          },
+          {
+            "type": "url",
+            "id": "cta_link2",
+            "label": "Link"
           }
         ]
       }
