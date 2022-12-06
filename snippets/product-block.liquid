@@ -227,7 +227,35 @@
 
     <a data-cc-animate-click href="{{ product_url }}" class="caption upper">
       <span class="title">{{ product.title }}</span>
-
+      
+          <!-- Yotpo's Star Rating on Category Pages -->      
+          <script>
+          	var yotpoIsReady = false;
+          	(function checkForYotpo() {
+          	setTimeout(function() {
+          	if (typeof yotpo !== "undefined") {
+          	if (yotpo.initialized === true) {
+          	yotpoIsReady = true;
+          	yotpo.refreshWidgets();
+          	console.log('Yotpo reloaded');
+          	}
+          	} else {
+          	console.log('Checking for Yotpo...');
+          	}
+          	if (yotpoIsReady === false) checkForYotpo();
+          	}, 250);
+          	})();
+          </script>
+              
+          <script>
+          var api = new Yotpo.API(yotpo);
+          api.refreshWidgets();
+          </script>
+              
+          <div class="yotpo bottomLine" 
+            data-product-id="{{ product.id }}"> 
+          </div>
+      
       {% if show_vendor %}
         <span class="vendor">{{ product.vendor }}</span>
       {% endif %}
@@ -239,44 +267,17 @@
 
         {% render 'unit-price', variant: cheapest_variant %}
       </div>
-
-<!--Yotpo  Star Rating on Category Page--> 
-<style>
-    @media only screen and (max-width: 600px) {
-      .yotpo.bottomLine.yotpo-small {
-      text-align: center !important;
-      display: inline-block !important;
-      }
-      }
-
-.yotpo-bottomline.pull-left.star-clickable .text-m {
-margin-left: 7px;
-}
-  @media only screen and (max-width: 998px) {
-  .yotpo .standalone-bottomline.star-clickable, .yotpo .standalone-bottomline .star-clickable {
-  display:flex;
-    flex-direction:row;
-    flex-wrap:wrap;
-  }
-</style>
-
-  
-<div class="yotpo bottomLine" data-appkey="iAIDK4vUmxzqUZ1TSdQZVX70REn9Dc0Brb4lU9I7"
-data-product-id="{{ product.id }}">
-</div>
-      
-<script type="text/javascript">
-  setTimeout(function(){
-    var api = new Yotpo.API(yotpo);
-    api.refreshWidgets();
-    }, 1000
-    );
-</script>
-      
-<!--end of Yotpo  Star Rating on Category Page-->
-  
     </a>
-
-
+    {% if settings.show_product_block_reviews %}
+      <a data-cc-animate-click href="{{ product_url }}" class="themed-product-reviews" tabindex="-1">
+        {% render 'rating', rating_value: product.metafields.reviews.rating.value %}
+        {%- assign rating_count = product.metafields.reviews.rating_count | plus: 0 -%}
+        {% if rating_count != blank and rating_count > 0 %}
+<!--           <span class="cc-rating-custom-caption">
+            {{ rating_count }} {{ 'products.product.reviews_link' | t: count: rating_count | downcase }}
+          </span> -->
+        {% endif %}
+      </a>
+    {% endif %}
   </div>
 </div>

@@ -30,6 +30,18 @@
   endfor
 -%}
 
+{% comment %} <div class="yotpo bottomLine"
+    data-appkey="iAIDK4vUmxzqUZ1TSdQZVX70REn9Dc0Brb4lU9I7"
+    data-domain="{{shop.permanent_domain | escape }}"
+    data-product-id="{{ product.id }}"
+    data-product-models="{{ product.id }}"
+    data-name="{{ product.title | escape }}"
+    data-url="{{ shop.url }}{{ product.url }}"
+    data-image-url="{{ product.featured_image | product_img_url: 'large' |replace: '?', '%3F' | replace: '&','%26'}}"
+    data-description="{{ product.description | escape }}"
+    data-bread-crumbs="{% for tag in product.tags %}{{ tag | escape }};{% endfor %}">
+</div> {% endcomment %}
+
 {% style %}
   @media(max-width: 767px){
     .product-area__media .swiper-container:not(.swiper-container-horizontal) {
@@ -118,32 +130,7 @@
          data-variant-image-grouping-option={{ section.settings.variant_media_grouping_option | escape | downcase | default: "color,colour,couleur,farbe" | json }}
          data-underline-selected-media="{{ section.settings.highlight_selected_media }}"
     >
-      {% if section.settings.media_style == 'dv-carousel' %}
-      <div>
-        <div>
-          {% if product != blank %}        
-               <div class="owl-carousel owl-theme">
-                 {% for media in product.media %}
-                  <div class="item rimage-wrapper">
-                    <img src="{{ media.preview_image.src | product_img_url: 'master'}}" alt="Picture 1">
-                  </div>
-                   {% endfor %}
-                </div>          
-          {% elsif is_featured_product %}
-            {% for i in (1..5) %}
-              <div class="theme-img placeholder-slide theme-img-{{ forloop.index }} swiper-slide {% if featured_media == media %}current-img{% endif %}">
-                {% capture placeholder_svg_name %}product-{{ i }}{% endcapture %}
-                <div class="placeholder-image">{{ placeholder_svg_name | placeholder_svg_tag }}</div>
-              </div>
-            {% endfor %}
-          {% endif %}
-        </div>
-        <div class="swiper-pagination"></div>
-        <a href="#" class="swiper-button-prev" aria-label="{{ 'general.accessibility_labels.previous' | t | escape }}">{% render 'svg-chevron-left' %}</a>
-        <a href="#" class="swiper-button-next" aria-label="{{ 'general.accessibility_labels.next' | t | escape }}">{% render 'svg-chevron-right' %}</a>
-      </div>
-      {% else  %}
-              <div class="theme-viewport swiper-container" data-swiper-nav-style="{{ section.settings.slide_nav_style }}">
+      <div class="theme-viewport swiper-container" data-swiper-nav-style="{{ section.settings.slide_nav_style }}">
         <div class="theme-images swiper-wrapper">
           {% if product != blank %}
             {% for media in product.media %}
@@ -178,7 +165,7 @@
         <a href="#" class="swiper-button-prev" aria-label="{{ 'general.accessibility_labels.previous' | t | escape }}">{% render 'svg-chevron-left' %}</a>
         <a href="#" class="swiper-button-next" aria-label="{{ 'general.accessibility_labels.next' | t | escape }}">{% render 'svg-chevron-right' %}</a>
       </div>
-    {% endif %}
+
       {%- assign models = product.media | where: 'media_type', 'model' -%}
       {% if models.size > 0 %}
         <script type="application/json" class="model-json">
@@ -373,39 +360,11 @@
                     -%}
                     <{{ heading_tag }} class="product-area__details__title product-detail__gap-sm h2" {{ block.shopify_attributes }}>{{ product.title }}</{{ heading_tag }}>
                   {% endif %}
+                <!-- Yotpo's Star Rating on Product Pages -->
+                <div class="yotpo bottomLine"
+                data-product-id="{{ product.id }}">
+                </div>
 
-
-<style>
-    @media only screen and (max-width: 600px) {
-      .yotpo.bottomLine.yotpo-small {
-      text-align: center !important;
-      display: inline-block !important;
-      }
-      }
-
-.yotpo-bottomline.pull-left.star-clickable .text-m {
-margin-left: 7px;
-}
-  </style>
-
-<!-- Yotpo Star Rating-->
-<div class="yotpo bottomLine" Style="margin-top: 13px ; margin-bottom: 13px"
-    data-appkey="iAIDK4vUmxzqUZ1TSdQZVX70REn9Dc0Brb4lU9I7"
-    data-domain="{{shop.permanent_domain | escape }}"
-    data-product-id="{{ product.id }}"
-    data-product-models="{{ product.id }}"
-    data-name="{{ product.title | escape }}"
-    data-url="{{ shop.url }}{{ product.url }}"
-    data-image-url="{{ product.featured_image | product_img_url: 'large' |replace: '?', '%3F' | replace: '&','%26'}}"
-    data-description="{{ product.description | escape }}"
-    data-bread-crumbs="{% for tag in product.tags %}{{ tag | escape }};{% endfor %}"
-style="padding-bottom: 15px;">      
-<p>Star Rating 1. . . </p>
-</div>
-
-<!-- End Yotpo Star Rating-->
-
-                
                 {%- when 'price' -%}
                   <div class="price-area product-detail__gap-sm" {{ block.shopify_attributes }}>
                     {% if current_variant.compare_at_price > current_variant.price %}
@@ -980,9 +939,6 @@ style="padding-bottom: 15px;">
                     {{ 'onboarding.product.title' | t }}
                   </a>
 
-
-
-                
                 {%- when 'price' -%}
                   <div class="price-area product-detail__gap-sm" {{ block.shopify_attributes }}>
                     <span class="was-price">{%- render "price", price: 2999 -%}</span>
@@ -2739,10 +2695,6 @@ style="padding-bottom: 15px;">
           {
             "value": "carousel",
             "label": "Carousel"
-          },
-          {
-            "value": "dv-carousel",
-            "label": "Devium Carousel"
           }
         ],
         "info": "The 'Carousel' style will crop parts of the image. Avoid using this setting if your product images are landscape."
@@ -2911,4 +2863,3 @@ style="padding-bottom: 15px;">
     ]
   }
 {% endschema %}
-

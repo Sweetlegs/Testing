@@ -275,7 +275,7 @@
               <ul>
                 {% for link in linklists[section.settings.menu_linklist].links %}
                 <li class="{% if link.active %}active{% endif %} {% if featured_links contains link.title %} featured-link{% endif %}">
-                  <a href="{{ link.url }}" {% if link.links != blank %}aria-haspopup="true"{% else %}data-cc-animate-click{% endif %}>
+                  <a href="{% if link.links == blank %}{{ link.url }} {% else %}#{% endif %}" {% if link.links != blank %}aria-haspopup="true"{% else %}data-cc-animate-click{% endif %}>
                     <span>{{ link.title }}</span>
                   </a>
 
