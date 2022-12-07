@@ -1,0 +1,32 @@
+{% unless grid_image_width %}
+  {%- assign grid_image_width = '600x600' -%}
+{% endunless %}
+<li style="display: flex; flex-direction: column">
+  <a class="prod-th" href="{{ product.url | within:collection }}" title="{{ product.title | escape }}">
+  <span class="thumbnail">
+    <img src="{{ product.featured_image.src | img_url: grid_image_width }}" alt="{{ product.featured_image.alt }}">
+  </span>
+
+  <span class="product-title">
+    {% if section.settings.show_vendor %}<i>{{product.vendor}}</i>{% endif %}
+    <span class="title">
+      {{ product.title | escape }}
+    </span> 
+    {% include 'product-price' %}            
+  </span>
+
+  {% if product.compare_at_price > product.price %}
+    {% if section.settings.show_sale_sticker %}
+      <span class="sale round">{{ 'products.general.sale' | t }}</span>
+    {% endif %}
+  {% endif %}
+  </a>
+  <p class="">
+    <label for="">Qty</label>
+    <input variantId="{{product.variants[0].id }}" type="number"  name="quantity-bundle" value="0" min="1" class="bundle-qunatity-input">
+  </p>
+</li>
+
+<script>
+
+</script>

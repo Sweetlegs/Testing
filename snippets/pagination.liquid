@@ -1,0 +1,5 @@
+{% capture previous_label %}&larr; {{ 'general.pagination.previous' | t }}{% endcapture %}
+{% capture next_label %}{{ 'general.pagination.next' | t }} &rarr;{% endcapture %}
+<div class="paginate">
+  {{ paginate | default_pagination: previous: previous_label, next: next_label }}
+</div>

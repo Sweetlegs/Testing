@@ -1,102 +1,40 @@
-{%- if section.settings.layout == 'rows' -%}
-  {%- if section.settings.grid == 2 -%}
-    {%- assign product_class = 'column half' -%}
-    {%- elsif section.settings.grid == 3 -%}
-    {%- assign product_class = 'column third' -%}
-  {%- else -%}
-    {%- assign product_class = 'column quarter' -%}
-  {%- endif -%}
-{%- endif -%}
+{% if section.settings.title != blank %}
+  <h3>{{ section.settings.title | escape }}</h3>
+{% endif %}
 
-{%- assign max_products = section.settings.grid | times: section.settings.rows -%}
+{%- assign collection = collections[section.settings.collection] -%}
+{%- capture image_size -%}{{section.settings.thumb-size}}{%- endcapture -%}
+{%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
 
-{% assign animation_type = "cc-fade-in-up" %}
-{%- if section.settings.layout == "columns" -%}
-  {% assign animation_type = "cc-fade-in" %}
-{%- endif -%}
-
-{% if section.settings.layout == 'carousel' %}<div class="product-slider">{% endif %}
-
-<div class="wide-container half-gutter section-spacing {% if section.settings.alternate_bg_color %}use-alt-bg {% endif %}" data-section-type="featured-collection" data-components="product-block" data-cc-animate>
-  {% if section.settings.title != blank or section.settings.show_view_all %}
-    <div class="section-heading" data-cc-animate>
-      {% if section.settings.title != blank %}
-        <h2 class="h2">
-          <a data-cc-animate-click href="{{ collections[section.settings.collection].url }}">
-            {{ section.settings.title | escape }}
-          </a>
-        </h2>
-      {% else %}
-          <div></div>
-      {% endif %}
-
-      {% if section.settings.show_view_all %}
-        <a data-cc-animate-click class="view-all-link" href="{{ collections[section.settings.collection].url }}">
-          {{ 'collections.general.view_all' | t }}
-        </a>
-      {% endif %}
-    </div>
-  {% endif %}
-
-  {% if section.settings.layout == 'carousel' %}
-    <div class="swiper-container product-list product-list--{{ section.settings.layout }}"
-         data-products-in-view="{{ section.settings.grid }}">
-
-      <div class="swiper-wrapper" data-normheights=".image" data-normheights-inner="img">
-        {% if section.settings.collection != blank %}
-          {% assign collection = collections[section.settings.collection] %}
-          {% for product in collection.products limit: 12 %}
-            <div class="swiper-slide">
-              {% assign animate_delay = forloop.index | times: 0.4 %}
-              {% render 'product-block', product: product, product_class: product_class, i: forloop.index, animate: animate_delay, show_vendor: section.settings.show_vendor, hide_swatches: section.settings.hide_swatches %}
-            </div>
-          {% endfor %}
-
-        {% else %}
-          {% for i in (1..max_products) %}
-            <div class="swiper-slide">
-              {% assign animate_delay = forloop.index | times: 0.4 %}
-              {% render 'onboarding-product-block', i: forloop.index, product_class: product_class, animate: animate_delay %}
-            </div>
-          {% endfor %}
-        {% endif %}
-      </div>
-
-      <div class="swiper-scrollbar"></div>
-      <a href="#" class="swiper-button-prev" aria-label="{{ 'general.accessibility_labels.previous' | t | escape }}">{% render 'svg-chevron-left' %}</a>
-      <a href="#" class="swiper-button-next" aria-label="{{ 'general.accessibility_labels.next' | t | escape }}">{% render 'svg-chevron-right' %}</a>
-    </div>
+<ul class="block-grid columns{{section.settings.grid}} collection-th flexbox-grid" data-section-id="{{ section.id }}" data-section-type="featured-collection">
+  {% for product in collection.products limit: product_limit %}
+    {% include 'product-loop', grid_image_width: image_size %}
   {% else %}
-    <div class="product-list
+    {% for i in (1..product_limit) %}
+      <li>
+        <a href="#" class="prod-th">
+          <span class="thumbnail">
+            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+            {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+          </span>       
 
-      product-list--{{ section.settings.layout }}
-      {% if section.settings.grid_mobile == '2' %}mob-two-col{% endif %}
-      mob-show-{{ section.settings.rows | times: section.settings.grid_mobile }}
-      {% if section.settings.layout == 'columns' %}jiggly-split dynamic-col-{{ section.settings.grid }}{% else %}grid--uniform{% endif %}">
-
-      {% if section.settings.collection != blank %}
-        {% assign collection = collections[section.settings.collection] %}
-        {% for product in collection.products limit: max_products %}
-          {% render 'product-block', product: product, product_class: product_class, animation_type: animation_type, i: forloop.index, show_vendor: section.settings.show_vendor, animate: forloop.index, hide_swatches: section.settings.hide_swatches %}
-        {% endfor %}
-
-      {% else %}
-        {% for i in (1..max_products) %}
-          {% assign animate_delay = forloop.index | times: 0.4 %}
-          {% render 'onboarding-product-block', i: forloop.index, product_class: product_class, animate: animate_delay, animation_type: animation_type %}
-        {% endfor %}
-      {% endif %}
-    </div>
-  {% endif %}
-</div>
-
-{% if section.settings.layout == 'carousel' %}</div>{% endif %}
+          <span class="product-title">
+            <span class="title">
+              {{ 'homepage.onboarding.product_title' | t }}
+            </span>
+            {% include 'product-price' %}
+          </span>
+        </a>
+      </li>
+    {% endfor %}
+  {% endfor %}
+</ul>
 
 
 {% schema %}
   {
     "name": "Featured collection",
-    "class": "section-featured-collection",
+    "class": "index-section",
     "settings": [
       {
         "type": "text",
@@ -105,58 +43,59 @@
         "default": "Featured collection"
       },
       {
-        "type": "collection",
         "id": "collection",
+        "type": "collection",
         "label": "Collection"
       },
-      {
+{
         "type": "select",
-        "id": "layout",
-        "label": "Layout",
+        "id": "thumb-size",
+        "label": "Image size",
+        "default": "200x200",
         "options": [
           {
-            "value": "columns",
-            "label": "Collage"
+            "value": "120x120",
+            "label": "Small"
           },
           {
-            "value": "rows",
-            "label": "Grid"
+            "value": "200x200",
+            "label": "Medium"
           },
           {
-            "value": "carousel",
-            "label": "Carousel"
+            "value": "400x400",
+            "label": "Large"
           }
-        ],
-        "default": "rows",
-        "info": "Collage will only work when the 'Image shape' is set to Natural - in Products / Image shape"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_vendor",
-        "label": "Show product vendor",
-        "default": false
-      },
-      {
-        "type": "range",
-        "id": "grid",
-        "label": "Desktop products per row",
-        "min": 2,
-        "max": 4,
-        "default": 3
-      },
-      {
-        "type": "range",
-        "id": "rows",
-        "label": "Rows",
-        "min": 1,
-        "max": 4,
-        "default": 2,
-        "info": "Does not apply to carousel layout"
+        ]
       },
       {
         "type": "select",
-        "id": "grid_mobile",
-        "label": "Mobile products per row",
+        "id": "grid",
+        "label": "Products per row",
+        "default": "5",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "rows",
+        "label": "Rows",
+        "default": "2",
         "options": [
           {
             "value": "1",
@@ -165,35 +104,39 @@
           {
             "value": "2",
             "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
           }
-        ],
-        "default": "2"
+        ]
       },
       {
         "type": "checkbox",
-        "id": "hide_swatches",
-        "label": "Hide color swatches",
-        "default": false
-      },
-      {
-        "type": "checkbox",
-        "id": "alternate_bg_color",
-        "label": "Use alternate section color",
-        "default": false
-      },
-      {
-        "type": "checkbox",
-        "id": "show_view_all",
-        "label": "Show 'View all' link",
+        "id": "show_sale_sticker",
+        "label": "Show sale sticker",
         "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "default": false
       }
     ],
     "presets": [
       {
         "name": "Featured collection",
-        "settings": {}
+        "category": "Collection"
       }
-    ],
-    "templates": ["article", "index", "page", "product", "collection", "blog", "list-collections", "search", "404", "cart"]
+    ]
   }
 {% endschema %}

@@ -1,0 +1,11 @@
+{% if section.settings.show_newsletter_form %} <aside class="subscribe-form">
+  <h3>{{section.settings.title_newsletter | escape}}</h3> {% comment %} To maintain backwards compatibility for merchants that upgrade the theme, you can use the assign newsletter_action variable to hold the Mailchimp form action url {% endcomment %} {% assign newsletter_action = "" %} {% if newsletter_action == blank %}
+  {% assign sp_form_action = "/contact#contact_form" %}
+  {% if content_for_header contains "/spi.js" %}
+  {% assign sp_form_action = "https://vital-forms-api.c1.humanpresence.app/api/form/vfob/8c6e2cfb-9a39-4116-99b0-899ffbebfd39$61cb7394c6e55100b05747df" %}
+  {% endif %}
+  {% form 'customer', action: sp_form_action, data-vfib: "0" %}
+  {% if form.errors %} <div class="errorForm feedback"> {{ form.errors | default_errors }} </div> {% endif %} {% if form.posted_successfully? %} <div class="successForm feedback"> {{ 'layout.newsletter.confirmation' | t }} </div> {% else %} {% unless section.settings.newsletter_text == blank %} <p>{{section.settings.newsletter_text}}</p> {% endunless %} <fieldset> <input type="hidden" name="contact[tags]" value="newsletter"> <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'layout.newsletter.placeholder' | t }}" name="contact[email]" class="required email input-text" autocorrect="off" autocapitalize="off"> <button type="submit" class="button" name="commit">{{ 'layout.newsletter.submit' | t }}</button> </fieldset> {% endif %} {% endform %}
+  {% else %} {% comment %}Mailchimp form{% endcomment %} <form class="newsletter" action="{{newsletter_action}}" method="post"> {% unless section.settings.newsletter_text == blank %} <p>{{ section.settings.newsletter_text | escape }}</p> {% endunless %} <fieldset> <input type="email" placeholder="{{ 'layout.newsletter.placeholder' | t }}" class="required email input-text" name="EMAIL"> <button type="submit" class="button">{{ 'layout.newsletter.submit' | t }}</button> </fieldset>
+  </form> {% endif %}
+</aside> {% endif %}

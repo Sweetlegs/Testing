@@ -1,0 +1,68 @@
+{% if section.blocks.size > 1 %}
+  {% assign num_cols = 'columns2' %}
+{% else %}
+  {% assign num_cols = 'columns1' %}
+{% endif %}
+
+<div class="custom-section" data-section-id="{{ section.id }}" data-section-type="featured-video">
+  <ul class="block-grid featured-videos {{num_cols}}">  
+    {% for block in section.blocks %}
+      <li class="featured-video fv-{{ block.type }}" {{ block.shopify_attributes }}>
+        {% case block.type %}
+          {% when 'video' %}
+            <div class="video-wrapper">
+              {% if block.settings.video_url == blank %}
+                <iframe src="//www.youtube.com/embed/_9VUPq3SxOc?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+              {% else %}
+                {% if block.settings.video_url.type == "youtube" %}
+                  <iframe src="//www.youtube.com/embed/{{ block.settings.video_url.id }}?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+                {% endif %}
+                {% if block.settings.video_url.type == "vimeo" %}
+                  <iframe src="//player.vimeo.com/video/{{ block.settings.video_url.id }}?color={{ settings.color_secondary | remove: "#" }}&byline=0&portrait=0&badge=0" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+                {% endif %}
+              {% endif %}
+            </div>
+        {% endcase %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% if section.blocks.size == 0 %}
+    <div class="rte text-center">
+      {{ 'home_page.onboarding.no_content' | t }}
+    </div>
+  {% endif %}
+</div>
+
+
+{% schema %}
+  {
+    "name": "Featured video",
+    "max_blocks": 6,
+    "blocks": [
+      {
+        "type": "video",
+        "name": "Video",
+        "settings": [
+          {
+            "type": "video_url",
+            "id": "video_url",
+            "label": "YouTube or Vimeo link",
+            "accept": ["youtube", "vimeo"]
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured video",
+        "category": "Video",
+        "blocks": [
+          {
+            "type": "video"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+

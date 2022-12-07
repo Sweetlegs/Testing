@@ -1,0 +1,10 @@
+{%- assign w_continue = 'no' -%}
+{% assign wlmHideItem_Search = false %}{% for tag in customer.tags %}
+{% if tag == 'Reseller' %}{% assign wlmLockedTags22421 = true %}{% endif %}
+{% endfor %}
+
+
+
+{% if wlmHideItem_Search == true %}{% continue %}{% endif %}
+
+{%- if wlm_is_render == 'yes' -%}{{- w_continue -}}{%-endif-%}
