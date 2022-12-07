@@ -1,0 +1,50 @@
+<footer role="contentinfo" id="footer" class="{% unless settings.footer_bg_image == 'nobackground' %}has-bg-image{% endunless %}" data-section-id="{{ section.id }}" data-section-type="footer">
+   <div class="inner">
+      {% if section.settings.show_payment_icons %}
+         {% include 'payment-icons' %}
+      {% endif %}
+      {%- assign footer_linklist = section.settings.footer_linklist -%}
+      {% if linklists[footer_linklist].links.size > 0 %}
+         <ul class="footer-nav">
+         {% for link in linklists[footer_linklist].links %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+         {% endfor %}      
+         </ul>
+      {% endif %}
+      <div class="credits clearfix">
+         <p class="copyright">{{'layout.footer.copyright_html' | t }} {{ "now" | date: "%Y" }} {{ shop.name | link_to: '/' }}. {{'layout.footer.rights' | t }}</p>
+         {% capture credit %}{{'layout.footer.theme_title' | t}}{% endcapture %}
+         {% unless credit == blank %}
+            <p class="subtext"><a href="http://www.rawsterne.co.uk" title="Shopify theme by Rawsterne" target="_blank">{{'layout.footer.theme_title' | t}} Rawsterne</a></p>
+         {% endunless %}            
+         <p class="subtext">{{ powered_by_link }}</p>
+      </div>
+      <a id="xx-scroll-to-top" title="Back to top of page" class="" href="#header">{{'layout.footer.back_top' | t }}</a>
+   </div>
+</footer>
+
+
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+   {
+      "type": "link_list",
+      "id": "footer_linklist",
+      "label": "Primary menu",
+      "default": "footer"
+   },
+   {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+   }
+  ]
+}
+{% endschema %}
+
+
+
+

@@ -1,0 +1,10 @@
+<script>
+  var dcCart = {{cart | json}};
+  {% if customer %}
+  var dcCustomerId = {{customer.id}};
+  var dcCustomerEmail = '{{customer.email}}';
+  {% else %}
+  var dcCustomerId = false;
+  var dcCustomerEmail = false;
+  {% endif %}
+</script>

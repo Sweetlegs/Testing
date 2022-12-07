@@ -1,0 +1,36 @@
+{% if settings.share_facebook or settings.share_twitter or settings.share_pinterest %}
+  <div class="sunrise-share">
+    {% unless share_heading == blank %}<h6>{{share_heading}}</h6>{% endunless %}
+    
+    {% if settings.share_facebook %}
+      <a target="_blank" href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}" class="share-facebook" title="{{ 'general.social.alt_text.share_on_facebook' | t }}">
+        {% include 'icon-facebook' %}
+        <span class="share-title">{{ 'general.social.share_on_facebook' | t }}</span>
+      </a>
+    {% endif %}
+
+    {% if settings.share_twitter %}
+      <a target="_blank" href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: share_permalink }}" class="share-twitter" title="{{ 'general.social.alt_text.share_on_twitter' | t }}">
+        {% include 'icon-twitter' %}
+        <span class="share-title">{{ 'general.social.share_on_twitter' | t }}</span>
+      </a>
+    {% endif %}
+
+    {% if settings.share_pinterest %}
+      <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}&amp;media={{ share_image | img_url: '1024x1024' }}&amp;description={{ share_title | url_param_escape }}" class="share-pinterest" title="{{ 'general.social.alt_text.share_on_pinterest' | t }}">
+        {% include 'icon-pinterest' %}
+        <span class="share-title" aria-hidden="true">{{ 'general.social.share_on_pinterest' | t }}</span>
+      </a>
+    {% endif %}
+    
+    {% if settings.share_google %}
+      <a target="_blank" href="//plus.google.com/share?url={{ shop.url | append: share_permalink }}" class="share-google" title="{{ 'general.social.alt_text.share_on_google' | t }}">
+        {% include 'icon-googleplus' %}
+        <span class="share-title" aria-hidden="true">+1</span>
+      </a>
+    {% endif %}
+  </div>
+{% endif %}
+
+
+

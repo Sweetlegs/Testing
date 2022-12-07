@@ -1,0 +1,94 @@
+{% assign show_banner_ad = false %}
+{% if template == "index" %}
+  {% if section.settings.banner_ad_home %}{% assign show_banner_ad = true %}{% endif %}
+{% elsif template == "cart" %}
+  {% if section.settings.banner_ad_cart %}{% assign show_banner_ad = true %}{% endif %}
+{% elsif template contains "page" %}
+  {% if section.settings.banner_ad_page %}{% assign show_banner_ad = true %}{% endif %}
+{% elsif template contains "collection" %}
+  {% if section.settings.banner_ad_collection %}{% assign show_banner_ad = true %}{% endif %}
+{% elsif template contains "product" %}
+  {% if section.settings.banner_ad_product %}{% assign show_banner_ad = true %}{% endif %}
+{% elsif template contains "blog" or template contains "article" %}
+  {% if section.settings.banner_ad_blog %}{% assign show_banner_ad = true %}{% endif %}                
+{% endif %}
+
+{% if show_banner_ad %}
+  <div class="promo-wide">
+    {% assign bannerHelp = "" %}
+    {% if section.settings.banner_image == blank %}
+      {% capture bannerHelp %}<span class="placeholder-text">This is the banner ad</span>{% endcapture %}
+      {% capture imagesrc %}<div class="placeholder-background">{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>{% endcapture %}
+    {% else %}
+      {% capture imagesrc %}<img src="{{ section.settings.banner_image | img_url: '1000x' }}" alt="{{ section.settings.banner_image.alt | escape }}" />{% endcapture %}
+    {% endif %}
+
+    {% if section.settings.banner_ad_link == blank %}
+      {{imagesrc}}{{bannerHelp}}
+    {% else %}
+      <a href="{{section.settings.banner_ad_link}}">{{imagesrc}}{{bannerHelp}}</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Banner ad",
+    "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "banner_ad_link",
+      "label": "Banner ad link",
+      "info": "Optional"
+    },
+    {
+      "type": "paragraph",
+      "content": "Select pages to display ad"
+    },
+    {
+      "type": "checkbox",
+      "id": "banner_ad_home",
+      "label": "Home page",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "banner_ad_collection",
+      "label": "Collection page",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "banner_ad_product",
+      "label": "Product page",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "banner_ad_cart",
+      "label": "Cart",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "banner_ad_page",
+      "label": "Single page (about, contact etc.)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "banner_ad_blog",
+      "label": "Blog",
+      "default": true
+    }
+  ]
+  }
+{% endschema %}
+
+

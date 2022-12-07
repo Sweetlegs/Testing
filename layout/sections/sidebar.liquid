@@ -1,0 +1,314 @@
+<style>
+  #side-menu a.newfont{font-size:{{section.settings.side_menu_font_size}}px;}
+</style>
+<section role="complementary" id="sidebar" data-menuchosen="{{section.settings.sidebar_linklist}}" data-section-id="{{ section.id }}" data-section-type="sidebar" data-keep-open="{{section.settings.keep_menu_open}}">
+  <nav role="navigation" id="menu">
+    <form method="get" action="/search" class="search-form">
+      <fieldset>
+      <input type="text" placeholder="{{ 'general.search.placeholder' | t }}" name="q" id="search-input">
+      <button type="submit" class="button">{{ 'general.search.submit' | t }}</button>
+      </fieldset>
+    </form>          
+
+    <ul id="side-menu">
+    {% include 'sidebar-nav' %}          
+    {% if section.settings.show_tags_menu %}
+      <li class="has-sub">
+      <a href="/collections/all" class="top-link newfont">{{ section.settings.title_shop_by_tag | escape }}</a>
+      <ul id="search-tags">
+        {% if collections.all-products.tags.size > 0 %}
+          <li>
+          {% for tag in collections.all-products.tags %}
+            <a class="tag" href="/collections/all-products/{{ tag | handleize }}">{{ tag }}</a>
+          {% endfor %}
+          </li>
+        {% else %}
+          <li class="instructions">
+          <p>{{ 'layout.sidebar.onboarding_html' | t }}</p>
+          </li>            
+        {% endif %}           
+      </ul>
+      </li>
+    {% endif %}         
+
+    {% if section.settings.show_latest_posts_menu %}
+      {%- capture 'blogHandle' -%}{{section.settings.latest_blog}}{%- endcapture -%}
+      <li class="has-sub">
+        <a href="{{blogs[blogHandle].url}}" class="top-link newfont">{{ section.settings.title_latest_posts | escape }}</a>
+        <ul id="side-posts">
+          {% if blogs[blogHandle].articles.size > 0 %}
+            {% for article in blogs[blogHandle].articles limit:5 %}
+              <li>
+                <a class="article-link" href="{{ article.url }}">
+                  <strong>{{ article.title | escape }}</strong>
+                  <span>{{article.content | strip_html | truncatewords:15}}</span>
+                </a>
+              </li>
+            {% endfor %}
+          {% else %}
+            {% for i in (1..5) %}
+              <li>
+                <a class="article-link" href="#">
+                  <strong>{{ 'homepage.onboarding.blog_title' | t }}</strong>
+                  <span>{{ 'homepage.onboarding.blog_excerpt' | t }}</span>
+                </a>                           
+              </li>
+            {% endfor %}
+          {% endif %}
+        </ul>
+      </li>
+    {% endif %}
+
+    </ul>         
+  </nav>
+
+  {% if section.settings.show_social %}
+    <aside class="social-links">
+      <h3>{{ section.settings.title_stay_in_touch | escape}}</h3>
+      {% if settings.twitter_link != blank %} <a class="social-twitter" href="{{settings.twitter_link}}" title="Twitter">{% include 'icon-twitter' %}</a>{% endif %}
+      {% if settings.facebook_link != blank %}<a class="social-facebook" href="{{settings.facebook_link}}" title="Facebook">{% include 'icon-facebook' %}</a>{% endif %}          
+      {% if settings.pinterest_link != blank %}<a class="social-pinterest" href="{{settings.pinterest_link}}" title="Pinterest">{% include 'icon-pinterest' %}</a>{% endif %}                              
+      {% if settings.youtube_link != blank %}<a class="social-youtube" href="{{settings.youtube_link}}" title="Youtube">{% include 'icon-youtube' %}</a>{% endif %}            
+      {% if settings.vimeo_link != blank %}<a class="social-vimeo" href="{{settings.vimeo_link}}" title="Vimeo">{% include 'icon-vimeo' %}</a>{% endif %}          
+      {% if settings.gplus_link != blank %}<a class="social-googleplus" href="{{settings.gplus_link}}" title="Google +">{% include 'icon-googleplus' %}</a>{% endif %}            
+      {% if settings.instagram_link != blank %}<a class="social-instagram" href="{{settings.instagram_link}}" title="Instagram">{% include 'icon-instagram' %}</a>{% endif %}              
+      {% if settings.linkedin_link != blank %}<a class="social-linkedin" href="{{settings.linkedin_link}}" title="LinkedIn">{% include 'icon-linkedin' %}</a>{% endif %}           
+      {% if settings.snapchat_link != blank %}<a class="social-snapchat" href="{{settings.snapchat_link}}" title="Snapchat">{% include 'icon-snapchat' %}</a>{% endif %}                 
+      {% if settings.tumblr_link != blank %}<a class="social-tumblr" href="{{settings.tumblr_link}}" title="Tumblr">{% include 'icon-tumblr' %}</a>{% endif %}  
+    </aside>
+  {% endif %}
+
+  {% include 'newsletter' %}
+
+  {% if section.settings.show_popular %} 
+    {%- capture 'popProducts' -%}{{section.settings.popular_collection}}{%- endcapture -%}
+    <aside class="top-sellers">
+      <h3>{{ section.settings.title_popular_products | escape}}</h3>
+      <ul>
+        {% if collections[popProducts].products.size > 0 %}
+          {% for product in collections[popProducts].products limit:section.settings.number_pop_products %}       
+            <li>
+              <a href="{{ product.url }}" title="{{ product.title | escape }}">
+                <img src="{{ product.images.first | product_img_url: 'small' }}" alt="{{ product.title | escape }}" />
+                <span class="top-title">
+                  {{ product.title | escape }}
+                  <i>
+                    {% if product.available %}
+                      {% if product.compare_at_price > product.price %}
+                        <del><span class=price-money>{{product.compare_at_price | money}}</span></del> <span class=price-money>{{product.price | money}}</span>
+                      {% else %}
+                        {% if product.price_varies %}<small>{{ 'products.general.from' | t }}</small> {% endif %}<span class=price-money>{{product.price | money}}</span>
+                      {% endif %}
+                    {% else %}
+                      {{ 'products.product.out_of_stock_msg' | t }}
+                    {% endif %}            
+                  </i>
+                </span>
+              </a>
+            </li>
+          {% endfor %}
+        {% else %}
+          {% for i in (1..section.settings.number_pop_products) %}
+            <li>
+              <a href="#">
+                <span class="th-popular">
+                  {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                  {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                </span> 
+                <span class="top-title">
+                  {{ 'homepage.onboarding.product_title' | t }}      
+                  <i>
+                    {% include 'product-price' %}
+                  </i>
+                </span>
+              </a>
+            </li>
+          {% endfor %}
+        {% endif %}      
+      </ul>
+    </aside>
+  {% endif %}   
+</section>          
+
+{% schema %}
+  {
+    "name": "Sidebar",
+    "settings": [
+     {
+        "type": "header",
+        "content": "Menu"
+      },
+      {
+        "type": "link_list",
+        "id": "sidebar_linklist",
+        "label": "Menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "keep_menu_open",
+        "label": "Keep menu open",
+        "default": true,
+        "info": "Will keep the menu section open when a link is clicked in that section"
+      },
+  
+      {
+        "type": "select",
+        "id": "side_menu_font_size",
+        "label": "Font size",
+        "options": [
+           {
+            "value": "12",
+            "label": "12px"
+          },
+          {
+            "value": "14",
+            "label": "14px"
+          },  
+          {
+            "value": "16",
+            "label": "16px"
+          },
+          {
+            "value": "17",
+            "label": "17px"
+          },
+          {
+            "value": "18",
+            "label": "18px"
+          },
+          {
+            "value": "19",
+            "label": "19px"
+          },
+          {
+            "value": "20",
+            "label": "20px"
+          }
+        ],
+        "default": "20"
+      },
+     {
+        "type": "header",
+        "content": "Social icons"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_social",
+        "label": "Show in sidebar",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title_stay_in_touch",
+        "label": "Heading",
+        "default": "Stay in touch"
+      },
+     {
+        "type": "header",
+        "content": "Newsletter form"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_newsletter_form",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title_newsletter",
+        "label": "Heading",
+        "default": "Newsletter"
+      },
+      {
+        "type": "textarea",
+        "id": "newsletter_text",
+        "label": "Text",
+        "default": "Sign up to our newsletter for the latest news and special offers."
+      },
+      {
+        "type": "header",
+        "content": "Shop by tag"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tags_menu",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title_shop_by_tag",
+        "label": "Heading",
+        "default": "Shop by tag"
+      },
+      {
+        "type": "header",
+        "content": "Latest posts"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_latest_posts_menu",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title_latest_posts",
+        "label": "Heading",
+        "default": "Latest posts"
+      },
+      {
+        "type": "blog",
+        "id": "latest_blog",
+        "label": "Select blog"
+      },
+      {
+        "type": "header",
+        "content": "Popular products"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_popular",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title_popular_products",
+        "label": "Heading",
+        "default": "Popular products"
+      },
+      {
+        "type": "collection",
+        "id": "popular_collection",
+        "label": "Select collection"
+      },
+      {
+        "type": "select",
+        "id": "number_pop_products",
+        "label": "Number to display",
+        "options": [
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "10",
+            "label": "10"
+          },
+          {
+            "value": "15",
+            "label": "15"
+          },
+          {
+            "value": "20",
+            "label": "20"
+          }
+        ],
+        "default": "5"
+      }
+]
+  }
+{% endschema %}
+

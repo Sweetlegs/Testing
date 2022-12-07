@@ -1,0 +1,49 @@
+{% if settings.show_bread and template != "index" %}
+  {% capture separator %}&rarr;{% endcapture %}
+  <div class="breadcrumb">
+    {% unless template == 'index' or template == 'cart' %}
+      <a href="/" class="homepage-link" title="{{ 'general.breadcrumbs.back_to_home' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+      {% if template contains "product" %}
+        {% if collection and collection.handle %}
+          <span class="separator">{{separator}}</span> 
+          {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+          {{ collection.title | link_to: url }}
+        {% else %}   
+          <span class="separator">{{separator}}</span> 
+          <a href="/collections/all">Products</a>
+        {% endif %}   
+        <span class="separator">{{separator}}</span>
+        <span class="page-on">{{ product.title }}</span>
+      {% elsif template contains "collection" and collection.handle %}
+        {% if current_tags.size > 0 %}
+          <span class="separator">{{separator}}</span>
+          {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+          {{ collection.title | link_to: url }}
+          <span class="separator">{{separator}}</span>
+          <span class="page-on">{{ current_tags.first }}</span>
+        {% else %}
+          <span class="separator">{{separator}}</span>
+          <span class="page-on">{{ collection.title }}</span>      
+        {% endif %}      
+      {% elsif template == "blog" %}      
+        <span class="separator">{{separator}}</span> 
+        {{ blog.title | link_to: blog.url }}
+        {% if current_tags %}
+          <span class="separator">{{separator}}</span>
+          <span class="page-on">{{current_tags.first}}</span>
+        {% endif %}    
+      {% elsif template == "article" %}
+        <span class="separator">{{separator}}</span> 
+        {{ blog.title | link_to: blog.url }}
+        <span class="separator">{{separator}}</span>
+        <span class="page-on">{{article.title}}</span>
+      {% elsif template contains 'page' %}
+        <span class="separator">{{separator}}</span>
+        <span class="page-on">{{ page.title }}</span>
+      {% else %}
+        <span class="separator">{{separator}}</span>
+        <span class="page-on">{{ page_title }}</span>
+      {% endif %}
+    {% endunless %}
+  </div>  
+{% endif %}

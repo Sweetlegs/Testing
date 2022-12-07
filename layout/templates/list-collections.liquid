@@ -1,0 +1,28 @@
+<h1 class="page-title">{{'collections.general.list_collections_title' | t }}</h1>
+
+<ul class="block-grid columns3 collection-th flexbox-grid">
+   {% for collection in collections %}
+      {% unless collection.handle == 'frontpage' %}
+         <li>
+            <a class="prod-th" href="{{ collection.url }}" title="{{ collection.title | escape }}">
+               <span class="thumbnail">
+                  {% if collection.image %}
+                     {{ collection.image.src | collection_img_url: '240x240' | img_tag: collection_title }}
+                  {% else %}
+                     {{ collection.products.first.featured_image | product_img_url: '240x240' | img_tag: collection_title }}
+                  {% endif %}
+               </span>
+               
+               <span class="product-title">
+                  <span class="title">
+                     {{ collection.title | escape }} 
+                  </span>  
+                  <span class="price">
+                     {{collection.all_products_count}} {{ 'collections.general.items' | t:count: collection.all_products_count }}
+                  </span>
+               </span>
+            </a>
+         </li>
+      {% endunless %}
+   {% endfor %}
+</ul> 

@@ -1,0 +1,10 @@
+{% comment %}
+Learn how to add more credit card icons to your online store footer... 
+https://help.shopify.com/themes/customization/store/add-credit-card-icons
+{% endcomment %}
+
+<p class="payment-icons">
+  {% for type in shop.enabled_payment_types %}
+    <img src="{{ type | payment_type_img_url }}" alt="{{ type | replace: '_',' '}}" />
+  {% endfor %}
+</p>
