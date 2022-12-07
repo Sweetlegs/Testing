@@ -1,0 +1,13 @@
+{% if section.settings.show_blog_categories %}  
+  {% if blog.tags.size > 0 %}
+    <div id="blog-categories">
+      <!--<label for="BlogTagFilter">{{ 'blogs.article.all_topics' | t }}</label>-->      
+      <select id="BlogTagFilter">
+        <option value="/blogs/{{ blog.handle }}">{{ 'blogs.article.all_topics' | t }}</option>
+        {% for tag in blog.all_tags %}
+           <option{% if current_tags contains tag %} selected{% endif %} value="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}">{{ tag }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  {% endif %}
+{% endif %}

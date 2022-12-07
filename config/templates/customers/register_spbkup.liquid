@@ -1,0 +1,40 @@
+<!-- Create Customer -->
+<div class="box-form">
+
+  <h2 class="form-header">{{ 'customer.register.title' | t }}</h2>
+
+  {% form 'create_customer' %}
+
+    {% if form.errors %}
+      <div class="errorForm feedback">
+        {{ form.errors | default_errors }}
+      </div>
+    {% endif %}
+
+    <p>
+      <label for="first_name" class="login">{{'customer.register.first_name' | t}}</label>
+      <input class="input-text" type="text" value="" name="customer[first_name]" id="first_name" />
+    </p>
+
+    <p>
+      <label for="last_name" class="login">{{'customer.register.last_name' | t}}</label>
+      <input class="input-text" type="text" value="" name="customer[last_name]" id="last_name" />
+    </p>
+
+    <p>
+      <label for="email" class="login">{{'customer.register.email' | t}}</label>
+      <input class="input-text" type="email" value="" name="customer[email]" id="email" />
+    </p>
+
+    <p>
+      <label for="password" class="login">{{'customer.register.password' | t}}</label>
+      <input class="input-text" type="password" value="" name="customer[password]" id="password" />
+    </p>
+
+    <p class="form-action">
+      <input class="button" type="submit" value="{{ 'customer.register.submit' | t }}" />
+      <span class="form-sub-action"><a href="/account/login">{{'customer.register.login' | t }}</a></span>
+    </p>
+  {% endform %}
+
+</div>

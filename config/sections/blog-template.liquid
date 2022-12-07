@@ -1,0 +1,85 @@
+{% paginate blog.articles by 10 %}     
+
+<div class="blog-header">
+  <h1 class="page-title">{{blog.title}}</h1>
+  {% include 'blog-tags' %}
+</div>
+
+{% for article in blog.articles %}
+  {% capture articletitle %}{{article.title | escape}}{% endcapture %}
+  {% capture articleurl %}http://{{shop.domain}}{{article.url}}{% endcapture %}  
+  {% assign article_content = article.excerpt_or_content %}
+  {% assign featured_image_src = '' %}
+
+  {% if article.image %}
+    {% assign featured_image_src = article | img_url: '1024x1024' %}
+  {% endif %}
+
+  <div class="article-list clearfix{% if forloop.last %} last{% endif %}">
+    <h2><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>   
+    <div class="article-meta">
+      {% if section.settings.blog_show_author %}
+        <span class="author">{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+      {% endif %}
+
+      {% if section.settings.blog_show_date %}
+        <span class="article-date">
+          {{ article.published_at | time_tag: '%b %d, %Y' }}
+        </span>
+      {% endif %}
+
+      {% if blog.comments_enabled? %}
+        <span class="post-comment-count">
+        <a class="comment-count" href="{{article.url}}#comments">{{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}</a>
+        </span>            
+      {% endif %}
+    </div>
+
+    <div class="article-content">
+      {% unless featured_image_src == blank %}
+        <div class="article-featured-image">
+          <a href="{{ article.url }}">{{ featured_image_src | img_tag: article.title }}</a>
+        </div>
+      {% endunless %}
+      {{ article.excerpt_or_content }}
+      {% if article.excerpt != blank %}
+        <p>
+        <span class="view-article"><a href="{{ article.url }}">{{ 'blogs.general.read_more_html' | t }}</a></span>
+        </p>
+      {% endif %}
+    </div> 
+  </div>
+{% endfor %}
+
+{% if paginate.pages > 1 %}
+    {% include 'pagination' %}
+{% endif %}
+      
+{% endpaginate %}  
+
+{% schema %}
+  {
+    "name": "Blog pages",
+    "class": "inner-wrap",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_blog_categories",
+        "label": "Show blog category dropdown",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,33 @@
+{% if template == 'index' %}
+    <title>{{ shop.name }} | {{ page_title }}</title>
+{% elsif template == '404' %}
+    <title>{{'general.404.title' | t }} | {{ shop.name }}</title>
+{% else %}
+    <title>{{ page_title }}{% if current_tags %} | {{current_tags.first }}{% endif %} | {{ shop.name }}</title> 
+{% endif %}
+
+{% assign maxmeta = 155 %}
+
+{% if page_description %}
+	<meta name="description" content="{{ page_description }}" />
+{% else %}
+	{% if template contains 'product' %}
+		<meta name="description" content="{{ product.description | strip_html | strip_newlines | truncate: maxmeta | escape }}" />
+	{% elsif template contains 'page' %}
+		<meta name="description" content="{{ page.content | strip_html | strip_newlines | truncate: maxmeta | escape }}" />
+	{% elsif template == 'index' %}
+		<meta name="description" content="{{ shop.description | strip_html | strip_newlines | truncate: maxmeta | escape}}" />
+	{% elsif template contains 'article' %}	
+		<meta name="description" content="{{ article.content | strip_html | strip_newlines | truncate: maxmeta | escape }}" />
+	{% elsif template contains 'collection' %}	
+		{% if collection.description != "" %}
+			<meta name="description" content="{{ collection.description | strip_html | strip_newlines | truncatewords: maxmeta | escape }}" />
+		{% else %}
+			<meta name="description" content="{{ page_title | escape }} - {{ shop.description | strip_html | strip_newlines | truncate: maxmeta | escape}}" />
+		{% endif %}
+	{% else %}
+		<meta name="description" content="{{ page_title | escape }} - {{ shop.description | strip_html | strip_newlines | truncate: maxmeta | escape}}" />
+	{% endif %}
+{% endif %}
+
+<link rel="canonical" href="{{ canonical_url }}" /> 
