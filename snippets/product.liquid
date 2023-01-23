@@ -64,11 +64,7 @@
 
           {% include 'display-variant-weight' %}
           
-          
-{% comment %}Start automatically added Judge.me widget{% endcomment %}
-  {% render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', concierge_install: true, product: product %}
-{% comment %}End automatically added Judge.me widget{% endcomment %}
-{%- if section.settings.form_position == 'above' -%}
+          {%- if section.settings.form_position == 'above' -%}
             {% include 'product-form' %}
           {%- endif -%}
 
@@ -146,11 +142,7 @@
         {% endif %}
       </div>
     </div>
-  
-{% comment %}Start automatically added Judge.me widget{% endcomment %}
-  {% render 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: true, product: product %}
-{% comment %}End automatically added Judge.me widget{% endcomment %}
-</div>
+  </div>
 </div>
 
 {% if description_position == 'both' %}

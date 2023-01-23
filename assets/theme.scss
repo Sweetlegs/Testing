@@ -321,11 +321,11 @@ $accentFontAdjust: 0.8;
 // Icons
 @font-face {
   font-family: 'icons';
-  src: url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/icons.eot?v=3364567537052764893');
-  src: url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/icons.eot?v=3364567537052764893#iefix') format("embedded-opentype"),
-       url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/icons.woff?v=371582728864620814') format("woff"),
-       url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/icons.ttf?v=10529776329753831131') format("truetype"),
-       url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/icons.svg?v=8022031131045997127#timber-icons') format("svg");
+  src: url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/icons.eot?v=3364567537052764893');
+  src: url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/icons.eot?v=3364567537052764893#iefix') format("embedded-opentype"),
+       url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/icons.woff?v=371582728864620814') format("woff"),
+       url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/icons.ttf?v=10529776329753831131') format("truetype"),
+       url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/icons.svg?v=8022031131045997127#timber-icons') format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -2004,7 +2004,7 @@ select {
           appearance: none;
   background-position: right center;
   background: {
-    image: url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/ico-select.svg?v=7035494906131057494');
+    image: url('//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/ico-select.svg?v=7035494906131057494');
     repeat: no-repeat;
     position: right 10px center;
     color: transparent;
@@ -2897,7 +2897,7 @@ $infoBarPadding: 5px;
     border-top-right-radius: $radius;
     border-bottom-right-radius: $radius;
     width: 23px;
-    background: url("//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/search.svg?v=12129272582130612898");
+    background: url("//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/search.svg?v=12129272582130612898");
     background-repeat: no-repeat;
     background-position:  right 3px center;
     &:focus,
@@ -3151,17 +3151,17 @@ $infoBarPadding: 5px;
 }
 /* ie8  icon replacement*/
 .lt-ie9 .nav--mobile .header-hamburger{
-  background: url("//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/nav.png?v=16568843095843017154");
+  background: url("//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/nav.png?v=16568843095843017154");
   background-position: right center;
   background-repeat: no-repeat;
 }
 .lt-ie9 .nav--mobile .header-cart{
-  background: url("//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/cart.png?v=9452818017506614905");
+  background: url("//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/cart.png?v=9452818017506614905");
   background-position: left center;
   background-repeat: no-repeat;
 }
 .lt-ie9 .header-search .search-bar{
-  background: url("//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/search.png?v=4367452071243830171");
+  background: url("//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/search.png?v=4367452071243830171");
   background-position: right center;
   background-repeat: no-repeat;
 }
@@ -5711,6 +5711,11 @@ a .home__subtitle{
           transition: all .3s;
           .inner {
           	transform: rotateY(180deg);
+/*             .front {
+              h2 {
+              	visibility: hidden;
+              }
+            } */
           }
         }
 
@@ -5812,11 +5817,23 @@ a .home__subtitle{
       	top: 779px;
         .inner {
         	.front {
-				background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),url('https://cdn.shopify.com/s/files/1/0427/9373/0207/files/optimistic.jpg?v=1628267075') no-repeat center center / cover;
+				background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),url('https://cdn.shopify.com/s/files/1/0427/9373/0207/files/Optimistic_Mary_and_Lisa_4.jpg?v=1628925929') no-repeat center center / cover;
             }
           	.back {
-          		background: linear-gradient(rgba(77, 6, 0, 0.8), rgba(77, 6, 0, 0.8)),url('https://cdn.shopify.com/s/files/1/0427/9373/0207/files/optimistic.jpg?v=1628267075') no-repeat center center / cover;
-          	}
+          		background: linear-gradient(rgba(77, 6, 0, 0.8), rgba(77, 6, 0, 0.8)),url('https://cdn.shopify.com/s/files/1/0427/9373/0207/files/Optimistic_Mary_and_Lisa_4.jpg?v=1628925929') no-repeat center center / cover;
+                .txt-container {
+                  visibility: hidden;
+				}
+            }
+        }
+        &:hover {
+          .inner {
+            .front {
+              h2 {
+                display: none;
+              }
+            }
+          }
         }
       }
       
@@ -11006,11 +11023,11 @@ hr.top-rule-gradient{
     background-size: contain;
   }
   &:before{
-    background-image: url(//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/flourish.png?v=10150175321392053680);
+    background-image: url(//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/flourish.png?v=10150175321392053680);
     left: -90px;
   }
   &:after{
-    background-image: url(//cdn.shopify.com/s/files/1/0427/9373/0207/t/13/assets/flourish-reverse.png?v=9367066868651659628);
+    background-image: url(//cdn.shopify.com/s/files/1/0427/9373/0207/t/17/assets/flourish-reverse.png?v=9367066868651659628);
     right: -90px;
   }
 }

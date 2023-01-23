@@ -80,8 +80,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {{ content_for_header }}
   <script src="//maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyAXZVsGgGJirVcDoTQEjwVYe48yXVaCpds"  type="text/javascript"></script>
   {{ 'ndnapps-storelocator.css' | asset_url | stylesheet_tag }}
-{% include 'hulkcode_common' %}{% if template contains 'product' or template contains 'cart' %}<script src='https://ha-volume-discount.nyc3.digitaloceanspaces.com/assets/api/v2/hulkcode.js' defer='defer'></script>{% endif %}  {% render 'judgeme_core' %}
-</head>
+{% include 'hulkcode_common' %}{% if template contains 'product' or template contains 'cart' %}<script src='https://ha-volume-discount.nyc3.digitaloceanspaces.com/assets/api/v2/hulkcode.js' defer='defer'></script>{% endif %}</head>
 
 <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" data-animations="{{ settings.animations_enable }}">
 
