@@ -1,84 +1,42 @@
-{% paginate article.comments by 50 %}
-{% assign number_of_comments = article.comments_count %}
-{% comment %}If a comment was just submitted, and it has no blank fields.{% endcomment %}
-{% if comment and comment.created_at %}
-   {% assign number_of_comments = article.comments_count | plus: 1 %}
-{% endif %}
+{% section 'article' %}
 
-<article class="article clearfix" itemscope itemtype="http://schema.org/Article">
-   {% section 'article-template' %}
-</article>   
-
-{% if blog.comments_enabled? %}
-   <div id="comments">
-      <h2>{{ 'blogs.comments.title' | t }}</h2>
-      {% comment %}If a comment was just submitted with no blank field.{% endcomment %}
-      {% if comment and comment.created_at %}
-         <p class="success feedback">
-            {% if blog.moderated? %}
-               {{'blogs.comments.success_moderated' | t }}
-            {% else %}
-               {{'blogs.comments.success' | t }}
-            {% endif %}
-         </p>
-      {% endif %}
-
-      {% if number_of_comments > 0 %}
-         <ul class="comment-list">
-            {% comment %}If a comment was just submitted with no blank field, let's show it.{% endcomment %}
-            {% if comment and comment.created_at %}
-               <li id="{{ comment.id }}" class="comment first{% if article.comments_count == 0 %} last{% endif %}">
-                  <h6 class="comment-author">{{ comment.author }}<span> - {{ comment.created_at | date: "%B %d, %Y" }}</span></h6>
-                  <div class="comment-content">
-                     {{ comment.content }}
-                  </div>
-               </li>
-            {% endif %}
-
-            {% for comment in article.comments %}
-               <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if forloop.first %} first{% endif %}{% endunless %}{% if forloop.last %} last {% endif %}">
-                  <h6 class="comment-author">{{ comment.author }}<span> - {{ comment.created_at | date: "%B %d, %Y" }}</span></h6>
-                  <div class="comment-content">
-                     {{ comment.content }}
-                  </div>
-               </li>
-            {% endfor %}
-         </ul>
-      {% endif %}
-
-      {% if paginate.pages > 1 %}
-         <div class="paginate">
-            {{ paginate | default_pagination }}
-         </div>
-      {% endif %}
-
-      {% form article %}
-         <h4 id="add-comment-title">{{'blogs.comments.leave_comment' | t }}</h4>
-         {% if form.errors %}
-            <div class="feedback error">
-               <p>{{ form.errors | default_errors }}</p>
-            </div>
-         {% endif %}
-
-         <p>
-            <label for="comment-author">{{'blogs.comments.name' | t }}</label>
-            <input required{% if form.errors contains "author" %} class="error"{% endif %} type="text" name="comment[author]" placeholder="" id="comment-author" value="{{ form.author }}" />
-         </p>
-
-         <p>
-            <label for="comment-email">{{'blogs.comments.email' | t }}</label>
-            <input required{% if form.errors contains "email" %} class="error"{% endif %} type="email" name="comment[email]" placeholder="" id="comment-email" value="{{ form.email }}" />
-         </p>
-
-         <p>
-            <label for="comment-body">{{'blogs.comments.message' | t }}</label>
-            <textarea required{% if form.errors contains "body" %} class="error"{% endif %} name="comment[body]" id="comment-body">{{ form.body }}</textarea>
-         </p>
-
-         <input class="button" type="submit" value="{{'blogs.comments.post' | t }}" /> 
-      {% endform %}
-   </div>
-{% endif %}      
-{% endpaginate %}
-
- <div class="powr-social-media-icons" id="ed03126d_1598019569"></div>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "articleBody": {{ article.content | strip_html | json }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ shop.url | append: page.url | json }}
+  },
+  "headline": {{ article.title | json }},
+  {% if article.excerpt != blank %}
+    "description": {{ article.excerpt | strip_html | json }},
+  {% endif %}
+  {% if article.image %}
+    {% assign image_size = article.image.width | append: 'x' %}
+    "image": [
+      {{ article | img_url: image_size | prepend: "https:" | json }}
+    ],
+  {% endif %}
+  "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "author": {
+    "@type": "Person",
+    "name": {{ article.author | json }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    {% if settings.social_home_image %}
+      {% assign image_size = settings.social_home_image.width | append: 'x' %}
+      "logo": {
+        "@type": "ImageObject",
+        "height": {{ settings.social_home_image.height | json }},
+        "url": {{ settings.social_home_image | img_url: image_size | prepend: "https:" | json }},
+        "width": {{ settings.social_home_image.width | json }}
+      },
+    {% endif %}
+    "name": {{ shop.name | json }}
+  }
+}
+</script>

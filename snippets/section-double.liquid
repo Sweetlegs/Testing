@@ -1,0 +1,89 @@
+{% assign blockList = '' %}
+{% for block in section.blocks %}
+  {% assign blockList = blockList | append: block.type | append:','  %}
+{% endfor %}
+{% assign blockArray = blockList | split: "," %}
+
+{% assign swaparoo = false %}
+{% if blockArray[0] != 'image' and  blockArray[1] == 'image' %}
+  {% assign swaparoo = true %}
+{% endif %}
+
+{% assign same_bg_color = false %}
+{% if section.blocks[0].block.settings.bg_color == section.blocks[1].block.settings.bg_color %}
+{% assign same_bg_color = true %}
+{% endif %}
+
+<div class="grid--full homepage-double equalOverflowHeight {{ section.settings.height }}{% if swaparoo %} grid--rev{% endif %}{% if same_bg_color == true %} vertical-border{% endif %}">
+  {%- if swaparoo -%}
+    {%- assign block = section.blocks[1] -%}
+    {% include 'index-double-image' %}
+  {%- endif -%}
+
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'image' %}
+        {% unless swaparoo %}
+          {% include 'index-double-image' %}
+        {% endunless %}
+      {% when 'text' %}
+        <div class="grid__item large--one-half double__block {{ block.settings.homepage_bg_color }} preventOverflow" {{ block.shopify_attributes }} {% if block.settings.custom_bg_color == true %}style="background-color: {{ block.settings.bg_color }};"{% endif %}>
+          <div class="content--centered">
+            <div class="{{ block.settings.text_align }} preventOverflowContent">
+              {% if block.settings.title != '' %}
+                <h1 class="home__subtitle">{{ block.settings.title }}</h1>
+              {% endif %}
+              {% if block.settings.richtext != blank %}
+                <div class="rte rte--homepage">
+                  {{ block.settings.richtext }}
+                </div>
+              {% endif %}
+              {% if block.settings.html != blank %}
+                <div class="rte rte--homepage">
+                  {{ block.settings.html }}
+                </div>
+              {% endif %}
+              {% if block.settings.image %}
+                <div class="text-center">
+                  <p>{{ block.settings.image | img_url: '300x' | img_tag }}</p>
+                </div>
+              {% endif %}
+              {% if block.settings.link_text != '' %}
+                <a class="{{ block.settings.button_style }}" href="{{ block.settings.link }}">
+                  {{ block.settings.link_text | escape }}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% when 'newsletter' %}
+        <div class="grid__item large--one-half double__block {{ block.settings.homepage_bg_color }} preventOverflow" {{ block.shopify_attributes }}>
+          <div class="content--centered">
+            <div class="{{ block.settings.text_align }} preventOverflowContent">
+              {% if block.settings.title != '' %}
+                <h4 class="home__subtitle">{{ block.settings.title | escape }}</h4>
+              {% endif %}
+              {% if block.settings.richtext != blank %}
+                <div class="rte rte--homepage">
+                  {{ block.settings.richtext }}
+                </div>
+              {% endif %}
+              {% include 'newsletter-form' %}
+            </div>
+          </div>
+        </div>
+        {% when 'social_icons' %}
+        <div class="grid__item large--one-half double__block {{ block.settings.homepage_bg_color }} preventOverflow double-social" {{ block.shopify_attributes }} {% if block.settings.custom_bg_color == true %}style="background-color: {{ block.settings.bg_color }};"{% endif %}>
+          <div class="content--centered">
+            <div class="{{ block.settings.text_align }} preventOverflowContent">
+              {% if block.settings.title != '' %}
+                <h4 class="home__subtitle">{{ block.settings.title | escape }}</h4>
+              {% endif %}
+              {% include 'footer-social-icons' %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+    {% endcase %}
+  {% endfor %}
+</div>

@@ -1,0 +1,53 @@
+{% if section.settings.header_enable_search %}
+<div class="header-search__wrapper">
+  <div class="header-search">
+    <form action="{{ routes.search_url }}" method="get" class="input-group search" role="search">
+      {% if section.settings.search_only_products %}<input type="hidden" name="type" value="product">{% endif %}
+      <input class="search-bar" type="search" name="q" title="{{ 'general.search.submit' | t }}">
+      <button type="submit" class="btn search-btn" aria-label="{{ 'general.search.submit' | t }}"></button>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+<div class="header-cart__wrapper">
+  <a href="{{ routes.cart_url }}" class="CartToggle header-cart">
+    {% include 'icon-cart' %}<span class="cart-item-count strong">{{ cart.item_count }}</span>
+    <span>{{ 'layout.cart.title' | t }}</span>
+  </a>
+  <span class="header-cart__bubble cartCount{% if cart.item_count < 1 %} hidden-count{% endif %}"></span>
+</div>
+
+{% comment %}
+<div class="header-currency">
+  {% form 'currency' %}
+  	{% include 'icon-payment' %}
+    {{ form | currency_selector }}
+  {% endform %}
+</div>
+{% endcomment %}
+
+<div class="header-currency">
+  {% form 'localization' %}
+  	{% include 'icon-payment' %}
+    <select name="country_code">
+      {% for country in localization.available_countries %}
+        <option value="{{ country.iso_code }}"
+          {%- if country == localization.country %} selected="selected"{% endif %}
+        >
+          {{ country.iso_code }}D {{ country.currency.symbol }}
+        </option>
+      {% endfor %}
+    </select>
+
+  {% endform %}
+</div>
+
+
+{% if shop.customer_accounts_enabled and section.settings.header_enable_account %}
+<div class="header-account-link">
+  <a href="{{ routes.account_url }}">
+    <img src="{{ 'account.svg' | asset_url }}" alt="{{ 'customer.account.title' | t }}"> <span>{{ 'customer.account.title' | t }}</span>
+  </a>
+</div>
+{% endif %}

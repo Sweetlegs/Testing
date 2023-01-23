@@ -1,0 +1,101 @@
+<div class="wrapper page-margin">
+  <div class="grid">
+    <div class="grid__item large--two-thirds push--large--one-sixth">
+      <h1 class="text-center">{{ section.settings.title }}</h1>
+      <div class="rte text-center margin-bottom-60">
+        {{ section.settings.richtext }}
+      </div>
+      <div class="grid">
+        <div class="grid__item large--one-third text-center">
+          <h3 class="h3--accent">CALL US</h3>
+          {{ section.settings.img_phone | img_url: '40x' | img_tag }}
+          <p>{{ section.settings.phone_number }}</p>
+          
+          <h3 class="h3--accent margin-top-60">WRITE US</h3>
+          {{ section.settings.img_write | img_url: '40x' | img_tag }}
+          <p>{{ section.settings.text_write }}</p>
+        </div>
+        <div class="grid__item large--two-thirds">
+          <h3 class="h3--accent text-center">EMAIL US</h3>
+          <p class="text-center">{{ section.settings.img_email | img_url: '40x' | img_tag }}</p>
+          <div class="text-center">{{ section.settings.text_email }}</div>
+          <div>
+            {% include 'contact-form' %}
+          </div>
+
+        </div>
+
+      </div>
+      <h3 class="h3--accent text-center margin-top-30">{{ section.settings.pickup_title }}</h3>
+      <p class="text-center">{{ section.settings.img_pickup | img_url: '40x' | img_tag }}</p>
+      <div class="rte text-center">
+        {{ section.settings.richtext_2 }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Rich Text"
+    },
+    {
+      "id": "richtext",
+      "type": "richtext",
+      "label": "Text",
+      "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_phone",
+      "label": "Phone icon"
+    },
+    {
+      "type": "richtext",
+      "id": "phone_number",
+      "label": "Phone text"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_write",
+      "label": "Write icon"
+    },
+    {
+      "type": "richtext",
+      "id": "text_write",
+      "label": "Write text"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_email",
+      "label": "Email icon"
+    },
+    {
+      "type": "richtext",
+      "id": "text_email",
+      "label": "Email text"
+    },
+    {
+      "type": "text",
+      "id": "pickup_title",
+      "label": "Pickup title"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_pickup",
+      "label": "Pickup icon"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext_2",
+      "label": "Pickup text"
+    }
+  ]
+}
+{% endschema %}

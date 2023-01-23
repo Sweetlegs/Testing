@@ -1,50 +1,240 @@
-<footer role="contentinfo" id="footer" class="{% unless settings.footer_bg_image == 'nobackground' %}has-bg-image{% endunless %}" data-section-id="{{ section.id }}" data-section-type="footer">
-   <div class="inner">
-      {% if section.settings.show_payment_icons %}
-         {% include 'payment-icons' %}
+<footer class="site-footer-wrapper" role="contentinfo" data-section-id="{{ section.id }}" data-section-type="footer">
+  <div class="wrapper site-footer">
+    <div class="grid-uniform">
+
+      {% case section.blocks.size %}
+        {% when 0 %}
+        {% when 1 %}
+          {% assign footer_column_width = 'large--one-half push--large--one-quarter' %}
+        {% when 2 %}
+          {% assign footer_column_width = 'large--one-half' %}
+        {% when 3 %}
+          {% assign footer_column_width = 'large--one-third' %}
+        {% when 4 %}
+            {% assign footer_column_width = 'large--one-quarter' %}
+      {% endcase %}
+
+      {% for block in section.blocks %}
+        {% case block.type %}
+
+          {% when 'linklist' %}
+            {% assign linklist = linklists[block.settings.linklist] %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+<!--               <p class="uppercase footer__title Museo">{{ linklist.title }}</p> -->
+              
+              <ul class="footer-quicklinks">
+                {% for link in linklist.links %}
+                  <li><a class="strong" href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+              </ul>
+              {% if block.settings.social == true %}
+                {% include 'footer-social-icons' %}
+              {% endif %}
+              <p class="text-left brgs-logo"><a href="https://www.brcgs.com/our-standards/food-safety/" target="_blank">{{ 'brgs-food-safety-sm-80.png' | asset_url | img_tag }}</a></p>
+            </div>
+
+          {% when 'page' %}
+            {% assign page = pages[block.settings.page] %}
+            {% if page == blank or page.empty? %}
+              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+                <p class="uppercase footer__title">{{ shop.name }}</p>
+                <hr class="hr--underline">
+                <div class="rte">{{ 'home_page.onboarding.no_content' | t }}</div>
+            </div>
+            {% else %}
+              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+                <p class="uppercase footer__title">{{ page.title | escape }}</p>
+                <hr class="hr--underline">
+                <div class="rte">{{ page.content }}</div>
+              </div>
+            {% endif %}
+
+          {% when 'text' %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <h3 class="footer__title SackersHeavyRoman">{{ block.settings.title | escape }}</h3>
+              
+              <div class="rte footer-text">{{ block.settings.text }}</div>
+              <p class="text-center">{{ section.settings.footer_image | img_url: '70x' | img_tag }}</p>
+            </div>
+
+          {% when 'newsletter' %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <p class="uppercase footer__title">{{ 'layout.footer.newsletter_title' | t }}</p>
+              <hr class="hr--underline">
+              <div class="rte">
+                {{ block.settings.richtext }}
+              </div>
+              {% include 'newsletter-form' %}
+            </div>
+
+          {% else %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    <div class="footer-secondary-wrapper">
+
+      {%- include 'cross-border' -%}
+
+      <ul class="footer-secondary inline-list">
+          
+        {% for link in linklists[section.settings.footer_secondary_linklist].links %}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+
+      {% if section.settings.footer_social_enable %}
+        {% include 'footer-social-icons' %}
       {% endif %}
-      {%- assign footer_linklist = section.settings.footer_linklist -%}
-      {% if linklists[footer_linklist].links.size > 0 %}
-         <ul class="footer-nav">
-         {% for link in linklists[footer_linklist].links %}
-            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-         {% endfor %}      
-         </ul>
+
+      {% if section.settings.footer_payment_enable %}
+        {% unless shop.enabled_payment_types == empty %}
+        <ul class="footer-payment payment-icons inline-list">
+          {% for type in shop.enabled_payment_types %}
+          <li>
+            {{ type | payment_type_svg_tag: class:'payment-icon' }}
+            <span class="visually-hidden">{{ type | capitalize | replace: '_', ' ' }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endunless %}
       {% endif %}
-      <div class="credits clearfix">
-         <p class="copyright">{{'layout.footer.copyright_html' | t }} {{ "now" | date: "%Y" }} {{ shop.name | link_to: '/' }}. {{'layout.footer.rights' | t }}</p>
-         {% capture credit %}{{'layout.footer.theme_title' | t}}{% endcapture %}
-         {% unless credit == blank %}
-            <p class="subtext"><a href="http://www.rawsterne.co.uk" title="Shopify theme by Rawsterne" target="_blank">{{'layout.footer.theme_title' | t}} Rawsterne</a></p>
-         {% endunless %}            
-         <p class="subtext">{{ powered_by_link }}</p>
-      </div>
-      <a id="xx-scroll-to-top" title="Back to top of page" class="" href="#header">{{'layout.footer.back_top' | t }}</a>
-   </div>
+
+    </div>
+  </div>
+  <div id="footer-bottom-rule"></div>
+  {% if section.settings.bottom_image != blank %}
+    {{ section.settings.bottom_image | img_url: '2000x' | img_tag: 'footer-bottom-rule', 'footer-bottom-rule' }}
+  {% endif %}
+  <div id="copywright-bottom" style="text-align: center;"><a href="{{ shop.secure_url }}">&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}'s Shortbread. All Rights Reserved.</a></div>
+  
 </footer>
-
-
 
 {% schema %}
 {
   "name": "Footer",
+  "max_blocks": 4,
   "settings": [
-   {
+    {
+      "label": "Footer logo",
+      "type": "image_picker",
+      "id": "footer_image",
+      "info": "400 x 200px .png"
+    },
+    {
+      "label": "Bottom Image",
+      "type": "image_picker",
+      "id": "bottom_image"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
       "type": "link_list",
-      "id": "footer_linklist",
-      "label": "Primary menu",
-      "default": "footer"
-   },
-   {
+      "id": "footer_secondary_linklist",
+      "label": "Link List",
+      "info": "This menu won't show dropdown items"
+    },
+    {
       "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "Show payment icons",
+      "id": "footer_payment_enable",
+      "label": "Show payment types"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_social_enable",
+      "label": "Show social icons"
+    },
+    {
+      "type": "header",
+      "content": "language selector",
+      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_locale_selector",
+      "label": "Show language selector",
       "default": true
-   }
+    },
+    {
+      "type": "header",
+      "content": "Currency selector",
+      "info": "To add a currency, go to your [payment settings.](/admin/settings/payments)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "Show currency selector",
+      "default": true
+    }
+  ],
+  "blocks" : [
+    {
+      "type": "linklist",
+      "name": "Link list",
+      "settings": [
+        {
+           "type": "link_list",
+           "id": "linklist",
+           "label": "Link list",
+           "default": "main-menu",
+           "info": "This menu won't show dropdown items"
+        },
+        {
+           "type": "checkbox",
+           "id": "social",
+           "label": "Show social icons",
+           "default": false
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
+        },
+        {
+          "id": "richtext",
+          "type": "richtext",
+          "label": "Newsletter description",
+          "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Text column"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share store details, promotions, or brand content with your customers.</p>"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "id": "page",
+          "type": "page",
+          "label": "Page"
+        }
+      ]
+    }
   ]
 }
 {% endschema %}
-
-
-
-

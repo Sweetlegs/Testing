@@ -1,14 +1,37 @@
-<!-- Create Customer -->
-<div class="box-form">
-  <h2 class="form-header">{{ 'customer.register.title' | t }}</h2>
-  {% assign sp_form_action = "/account" %}
-  {% if content_for_header contains "/spi.js" %}
-  {% assign sp_form_action = "https://vital-forms-api.c1.humanpresence.app/api/form/vfob/8c6e2cfb-9a39-4116-99b0-899ffbebfd39$61cb72d47d596d00b2a4e8df" %}
-  {% endif %}
-  {% form 'create_customer', action: sp_form_action, data-vfib: "0" %}
-  {% if form.errors %} <div class="errorForm feedback"> {{ form.errors | default_errors }} </div> {% endif %} <p> <label for="first_name" class="login">{{'customer.register.first_name' | t}}</label> <input class="input-text" type="text" value="" name="customer[first_name]" id="first_name" /> </p>
-  <p> <label for="last_name" class="login">{{'customer.register.last_name' | t}}</label> <input class="input-text" type="text" value="" name="customer[last_name]" id="last_name" /> </p>
-  <p> <label for="email" class="login">{{'customer.register.email' | t}}</label> <input class="input-text" type="email" value="" name="customer[email]" id="email" /> </p>
-  <p> <label for="password" class="login">{{'customer.register.password' | t}}</label> <input class="input-text" type="password" value="" name="customer[password]" id="password" /> </p>
-  <p class="form-action"> <input class="button" type="submit" value="{{ 'customer.register.submit' | t }}" /> <span class="form-sub-action"><a href="/account/login">{{'customer.register.login' | t }}</a></span> </p> {% endform %}
+<!-- /templates/customers/register.liquid -->
+<div class="wrapper">
+
+  <div class="grid page-margin">
+
+    <div class="grid__item large--one-third push--large--one-third text-center">
+
+      <h3>{{ 'customer.register.title' | t }}</h3>
+
+      {% form 'create_customer' %}
+
+        {{ form.errors | default_errors }}
+
+        <label for="FirstName" class="label--hidden">{{ 'customer.register.first_name' | t }}</label>
+        <input type="text" name="customer[first_name]" id="FirstName" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocapitalize="words" autofocus>
+
+        <label for="LastName" class="label--hidden">{{ 'customer.register.last_name' | t }}</label>
+        <input type="text" name="customer[last_name]" id="LastName" placeholder="{{ 'customer.register.last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocapitalize="words">
+
+        <label for="Email" class="label--hidden">{{ 'customer.register.email' | t }}</label>
+        <input type="email" name="customer[email]" id="Email" placeholder="{{ 'customer.register.email' | t }}" {% if form.errors contains "email" %} class="error"{% elsif form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+
+        <label for="CreatePassword" class="label--hidden">{{ 'customer.register.password' | t }}</label>
+        <input type="password" name="customer[password]" id="CreatePassword" placeholder="{{ 'customer.register.password' | t }}" {% if form.errors contains "password" %} class="error"{% endif %}>
+
+        <p>
+          <input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn btn--full">
+        </p>
+        {{ 'layout.customer.log_in' | t | customer_login_link }}
+
+      {% endform %}
+
+    </div>
+
+  </div>
+
 </div>

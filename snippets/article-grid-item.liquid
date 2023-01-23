@@ -1,0 +1,25 @@
+<div class="grid__item {{ blog_grid }}">
+  <a class="blog__link" href="{{ article.url }}" aria-label="{{ article.title }}">
+    <div class="blog__article blog__article--card{% if article.image %} blog__article--image{% endif %}">
+      {% if article.image %}
+        {%- assign img_object = article.image -%}
+        <div class="blog__article__overlay lazyload" data-bgset="{% include 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt }}"></div>
+        <noscript>
+          <div class="blog__article__overlay" style="background-image: url('{{ article.image | img_url: 'x540' }}')"></div>
+        </noscript>
+      {% endif %}
+      <div class="blog__article__content equalHeightColumn">
+        <h3 class="h3 blog__article__title">{{ article.title }}</h3>
+        {% unless article.image %}
+          <div class="rte blog__article__text">
+            {% if article.excerpt == blank %}
+              {{ article.content | strip_html | truncate: 200 }}
+            {% else %}
+              {{ article.excerpt | strip_html | truncate: 200 }}
+            {% endif %}
+          </div>
+        {% endunless %}
+      </div>
+    </div>
+  </a>
+</div>

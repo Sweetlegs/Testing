@@ -1,0 +1,34 @@
+{% form 'contact' %}
+
+{% comment %}
+Successful message
+{% endcomment %}
+{% if form.posted_successfully? %}
+<div class="note form-success">
+  {{ 'contact.form.post_success' | t }}
+</div>
+{% endif %}
+
+{{ form.errors | default_errors }}
+
+{% assign name_attr = 'contact.form.name' | t | handle %}
+<label for="ContactFormName" class="label--hidden">{{ 'contact.form.name' | t }}</label>
+<input type="text" id="ContactFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+
+<label for="ContactFormEmail" class="label--hidden">{{ 'contact.form.email' | t }}</label>
+<input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+
+<label for="ContactFormMessage" class="label--hidden">{{ 'contact.form.message' | t }}</label>
+<textarea rows="8" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+<input type="checkbox" id="contactFormSubscriptToNewsletter" name="contact[Subscribe]" value="Subscribe" checked="checked" />
+<label style="display:inline-block" for="contactFormSubscriptToNewsletter"> Subscribe to our mailing list</label>
+
+<input type="submit" class="btn btn--full btn--clear uppercase" value="{{ 'contact.form.send' | t }}">
+
+{% endform %}
+<script>
+  if(location.href=='https://marymacleod.com/pages/contact-us?contact_posted=true' || location.href=='https://marymacleod.com/pages/corporate-gifts?contact_posted=true'){
+    location.hash = "#contact_form";
+  }
+</script>

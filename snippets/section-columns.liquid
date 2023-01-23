@@ -1,0 +1,124 @@
+{%- assign grid_offset = '' -%}
+{%- assign products_count = collection.products_count -%}
+{%- case section.settings.grid_setting_large -%}
+  {%- when 1 -%}
+    {%- assign grid_width_large = 'large--one-whole' -%}
+  {%- when 2 -%}
+    {%- assign grid_width_large = 'large--one-half' -%}
+    {%- if products_count == 1 -%}
+      {%- assign grid_offset = 'push--large--one-quarter' -%}
+    {%- endif -%}
+  {%- when 3 -%}
+    {%- assign grid_width_large = 'large--one-third' -%}
+    {%- if products_count == 1 -%}
+      {%- assign grid_offset = 'push--large--one-third' -%}
+    {%- elsif products_count == 2 -%}
+      {%- assign grid_offset = 'push--large--one-sixth' -%}
+    {%- endif -%}
+  {%- when 4 -%}
+    {%- assign grid_width_large = 'large--one-quarter' -%}
+    {%- if products_count == 1 -%}
+      {%- assign grid_offset = 'push--large--three-eighths' -%}
+    {%- elsif products_count == 2 -%}
+      {%- assign grid_offset = 'push--large--one-quarter' -%}
+    {%- elsif products_count == 3 -%}
+      {%- assign grid_offset = 'push--large--one-eighth' -%}
+    {%- endif -%}
+{%- endcase -%}
+{%- case section.settings.grid_setting_medium -%}
+  {%- when 1 -%}
+    {%- assign grid_width_medium = 'medium--one-whole' -%}
+  {%- when 2 -%}
+    {%- assign grid_width_medium = 'medium--one-half' -%}
+  {%- when 3 -%}
+    {%- assign grid_width_medium = 'medium--one-third' -%}
+{%- endcase -%}
+{%- case section.settings.grid_setting_small -%}
+  {%- when 1 -%}
+    {%- assign grid_width_small = 'small--one-whole' -%}
+  {%- when 2 -%}
+    {%- assign grid_width_small = 'small--one-half' -%}
+  {%- when 3 -%}
+    {%- assign grid_width_small = 'small--one-third' -%}
+{%- endcase -%}
+
+<div class="homepage-columns {{ section.settings.homepage_columns_color }}" data-section-id="{{ section.id }}" data-section-type="index-columns">
+  <div class="wrapper">
+    {% if section.settings.title != blank %}
+      <h4 class="home__subtitle">{{ section.settings.title | escape }}</h4>
+    {% endif %}
+    {% if section.settings.text != blank %}
+      <div class="rte text-center">
+        {{ section.settings.text }}
+      </div>
+    {% endif %}
+    <div class="grid">
+      {% if section.settings.slider %}
+      {% include 'section-columns-slider' %}
+      {% else %}
+      <div class="grid__item{% if section.settings.grid_setting_large < 3 %} large--two-thirds push--large--one-sixth{% endif %}">
+        <div class="grid-uniform">
+          {% for block in section.blocks %}
+            <div class="index__column grid__item {{ grid_width_small }} {{ grid_width_medium }} {{ grid_width_large }} {{ push_item}} {{ section.settings.align_text }}" {{ block.shopify_attributes }}>
+              {% if block.settings.enable_image %}
+                {% if block.settings.image != blank %}
+                  {% assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+                  <div class="lazy-image column__image" style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100}}%; background-image:  url('{{ block.settings.image | img_url: '1x1' }}');">
+                    <img class="lazyload fade-in"
+                      alt="{{  block.settings.image.alt | default: block.settings.title }}"
+                      data-src="{{ img_url }}"
+                      data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+                      data-aspectratio="{{  block.settings.image.aspect_ratio }}"
+                      data-parent-fit="cover"
+                      data-sizes="auto"/>
+                      {% comment %}
+                        If there is a video add a play button over the image
+                        If there is a non video link and no button label just
+                        link the image to the link destination
+                      {% endcomment %}
+                      {% if block.settings.enable_video %}
+                        {%- if block.settings.video_link.type == 'youtube' -%}
+                          {% capture video_link %}https://www.youtube.com/watch?v={{ block.settings.video_link.id }}{% endcapture %}
+                        {%- elsif block.settings.video_link.type == 'vimeo' -%}
+                          {% capture video_link %}https://vimeo.com/{{ block.settings.video_link.id }}{% endcapture %}
+                        {%- endif -%}
+                        <a href="{{ video_link }}" data-video-popup class="link-over-image column__play" aria-label="{{ 'general.accessibility.play' | t }}">
+                          <span class="icon icon-play">{% include 'svg-play',  play_color: settings.product_background_color %}</span>
+                          <span class="visually-hidden">{{ 'general.accessibility.play' | t }}</span>
+                        </a>
+                      {% elsif block.settings.button_label == blank and block.settings.button_link != blank %}
+                        <a class="link-over-image" href="{{ block.settings.button_link }}" aria-label="{{ block.settings.title }}"></a>
+                      {% endif %}
+                  </div>
+                  <noscript>
+                    <img src="{{ block.settings.image | img_url: '540x' }}" alt="{{ block.settings.image.alt | default: block.settings.title }}"/>
+                  </noscript>
+                {% else %}
+                  <p>
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </p>
+                {% endif %}
+              {% endif %}
+              {% if block.settings.title != blank %}
+                <h5 class="h3 strong">{{ block.settings.title }}</h5>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <div class="rte">{{ block.settings.text }}</div>
+              {% endif %}
+              {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+                <a href="{{ block.settings.button_link }}" class="btn btn--clear btn--square uppercase{% if section.settings.btn_full == true %} btn--full{% endif %}">
+                  {{ block.settings.button_label | escape }}
+                </a>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size == 0 %}
+      <div class="text-center">{{ 'home_page.onboarding.no_content' | t }}</div>
+    {% endif %}
+  </div>
+</div>
