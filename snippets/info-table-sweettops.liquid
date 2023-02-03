@@ -1,0 +1,50 @@
+ <table>
+                    <tr>
+                      <td><strong>Size</strong></td>
+                        {% if product.title contains 'Ultra Soft Open Cardigan' %} 
+                       <td>Available in S/M, L/XL, 2X/3X</td>
+                      {% else  %}
+                           <td>Available in XS,S,M,L,XL,2XL,3XL</td>
+                      {% endif %}
+                      
+                     
+                    </tr>
+                  <tr>
+                    <td><strong>Fabric</strong></td>
+                        {% if product.title contains 'Ultra Soft Open Cardigan' %} 
+                       <td> Super soft fabric made from 50% viscose, 28% nylon, 22% polyester
+</td>
+                      {% else  %}
+                           <td>Super soft, breathable, light weight, and drapes beautifully </td>
+                      {% endif %}
+                    
+                  </tr>
+   				 {% if product.metafields.my_fields.material %}
+                    <tr>
+                      <td><strong>Material</strong></td><td>
+
+                      {{product.metafields.my_fields.material}}
+                      </td>
+                     </tr>
+   				 {% endif %}
+                  <tr>
+                    <td><strong>Care</strong></td><td>
+                    {% if product.title == "Everyday Pullover" %}
+                    		Its hand wash, tumble dry low
+                    {% elsif product.title contains 'Ultra Soft Open Cardigan' %} 
+                    		Machine wash cold on gentle cycle, lay flat to dry.
+ 					{% else %}
+                    Wash before wearing. Hand wash cold and hang to dry
+					{% endif %}
+                    	
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hypoallergenic</strong></td><td>Safe for sensitive skin</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Touch & Feel</strong></td><td>Extremely soft, luxe, and durable</td>
+                  </tr>
+
+
+                </table>

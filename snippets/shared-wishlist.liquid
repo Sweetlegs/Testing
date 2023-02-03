@@ -1,0 +1,153 @@
+<input value="" type="text" readonly="" style="position: absolute; left: -2000px; right: -99999px" class="shortUrl" >
+<div class="shared-wishlist">
+  <div class="heading">Share this Wishlist with your family & friends!</div>
+  <div class="button">
+    <div class="copy" onclick="copyToClipboard()">COPY LINK</div>
+    <div class="shareFB" >SHARE ON FACEBOOK</div>
+    <div class="email">EMAIL LINK</div>
+  </div>
+</div>
+
+
+
+<style>
+  .shared-wishlist {
+    background: #f7f7f7;
+    padding: 30px;
+    text-align: center;
+    margin-top: 30px;
+  }
+  .shared-wishlist .heading {
+    color: #00c4b3;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .shared-wishlist .button {
+    display: flex;
+    justify-content: center;
+    background-color: #f7f7f7;
+    padding-top: 0px;
+  }
+  .shared-wishlist .button > div {
+    background-color: white;
+    margin: 5px;
+    padding: 10px 30px;
+    border: 1px solid #00c4b3;
+}
+  
+  @media (max-width: 430px){
+    .shared-wishlist .button > div {
+      margin-top: 10px;
+      padding: 10px 20px;
+    }
+    .shared-wishlist .button {
+      display: block;
+    }
+  }
+  
+</style>
+
+
+<script>
+  var shortUrl;
+  function ShortLinkBitly() { /*pLongUrl is the long URL*/
+    pLongUrl ="https://"+"{{ shop.permanent_domain }}"+"/pages/shared-wishlist/{{customer.id}}";
+	/*Long URL must start with a protocol, bitly can't (and won't) figure out the right protocol.*/
+	if ( !pLongUrl.match(/(ftp|http|https):\/\//i) ) {
+		return "Error: Link must start with a protocol (e.g.: http or https).";
+	}
+
+	var apiKey = 'R_d565560f9eb84bb29567dc04c8daeb55';
+	var username = 'sweetlegs';
+	
+	/*Ajax call*/
+	$.ajax(
+	{
+		url: 'https://api-ssl.bitly.com/v3/shorten?login=' + username + '&apiKey=' + apiKey + '&format=json&longUrl=' + encodeURIComponent(pLongUrl),
+		
+		dataType: 'jsonp',
+		
+		success: function( response ) {
+          console.log(response.data.url);
+			if ( response.status_code == 500) {
+				/*500 status code means the link is malformed.*/
+				return "Error: Invalid link.";
+
+            } else if ( response.status_code != 200){
+			 	/*If response is not 200 then an error ocurred. It can be a network issue or bitly is down.*/
+				return "Error: Service unavailable.";
+				
+				/*Uncomment the following line only for debugging purposes*/
+				/*console.log('Response: ' + response.status_code + '-' + response.status_txt);*/
+			}
+          else {
+           $('.shortUrl').val(response.data.url);				
+          }
+		},
+		
+		contentType: 'application/json'
+	});
+  
+}
+  function copyToClipboard() {
+    el = '.shortUrl';
+    // resolve the element
+    el = (typeof el === 'string') ? document.querySelector(el) : el;
+ 	console.log(el);
+    // resolve the element
+    // handle iOS as a special case
+    if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+
+        // save current contentEditable/readOnly status
+        var editable = el.contentEditable;
+      	console.log(editable);
+        var readOnly = el.readOnly;
+
+        // convert to editable with readonly to stop iOS keyboard opening
+        el.contentEditable = true;
+        el.readOnly = true;
+
+        // create a selectable range
+        var range = document.createRange();
+        range.selectNodeContents(el);
+
+        // select the range
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        el.setSelectionRange(0, 999999);
+
+        // restore contentEditable/readOnly to original state
+        el.contentEditable = editable;
+        el.readOnly = readOnly;
+    }
+    else {
+        el.select();
+       document.execCommand("copy", false);
+    }
+
+    // execute copy command
+     try {
+        document.execCommand('copy');
+        $('.shared-wishlist .copy').html('Copied');
+        setTimeout(function () {
+             $('.shared-wishlist .copy').html('Copy Link');
+        }, 3000)
+     } catch (e) {
+     }
+}
+  $(document).ready(function(e) {
+     ShortLinkBitly();
+        $('.shared-wishlist .shareFB').click(function(e) {
+            url = $('.shortUrl').val();
+            url = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+           	window.open(url,'_blank');
+       });
+      $('.shared-wishlist .email').click(function(e) {
+        	shareLink = $('.shortUrl').val();
+        	body = `Check out {{customer.first_name}}'s SweetLegs Wishlist! Just use the following link: ${shareLink}`;
+        	subject = `{{customer.first_name}} has sent you a SweetLegs Wishlist!`;
+            window.location = `mailto:?subject=${subject}&body=${body}`;
+       });  
+  });
+</script>

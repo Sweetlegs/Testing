@@ -1,240 +1,297 @@
-<footer class="site-footer-wrapper" role="contentinfo" data-section-id="{{ section.id }}" data-section-type="footer">
-  <div class="wrapper site-footer">
-    <div class="grid-uniform">
-
-      {% case section.blocks.size %}
-        {% when 0 %}
-        {% when 1 %}
-          {% assign footer_column_width = 'large--one-half push--large--one-quarter' %}
-        {% when 2 %}
-          {% assign footer_column_width = 'large--one-half' %}
-        {% when 3 %}
-          {% assign footer_column_width = 'large--one-third' %}
-        {% when 4 %}
-            {% assign footer_column_width = 'large--one-quarter' %}
-      {% endcase %}
-
-      {% for block in section.blocks %}
-        {% case block.type %}
-
-          {% when 'linklist' %}
-            {% assign linklist = linklists[block.settings.linklist] %}
-            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-<!--               <p class="uppercase footer__title Museo">{{ linklist.title }}</p> -->
-              
-              <ul class="footer-quicklinks">
-                {% for link in linklist.links %}
-                  <li><a class="strong" href="{{ link.url }}">{{ link.title }}</a></li>
-                {% endfor %}
-              </ul>
-              {% if block.settings.social == true %}
-                {% include 'footer-social-icons' %}
-              {% endif %}
-              <p class="text-left brgs-logo"><a href="https://www.brcgs.com/our-standards/food-safety/" target="_blank">{{ 'brgs-food-safety-sm-80.png' | asset_url | img_tag }}</a></p>
-            </div>
-
-          {% when 'page' %}
-            {% assign page = pages[block.settings.page] %}
-            {% if page == blank or page.empty? %}
-              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-                <p class="uppercase footer__title">{{ shop.name }}</p>
-                <hr class="hr--underline">
-                <div class="rte">{{ 'home_page.onboarding.no_content' | t }}</div>
-            </div>
-            {% else %}
-              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-                <p class="uppercase footer__title">{{ page.title | escape }}</p>
-                <hr class="hr--underline">
-                <div class="rte">{{ page.content }}</div>
-              </div>
-            {% endif %}
-
-          {% when 'text' %}
-            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-              <h3 class="footer__title SackersHeavyRoman">{{ block.settings.title | escape }}</h3>
-              
-              <div class="rte footer-text">{{ block.settings.text }}</div>
-              <p class="text-center">{{ section.settings.footer_image | img_url: '70x' | img_tag }}</p>
-            </div>
-
-          {% when 'newsletter' %}
-            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
-              <p class="uppercase footer__title">{{ 'layout.footer.newsletter_title' | t }}</p>
-              <hr class="hr--underline">
-              <div class="rte">
-                {{ block.settings.richtext }}
-              </div>
-              {% include 'newsletter-form' %}
-            </div>
-
-          {% else %}
-        {% endcase %}
-      {% endfor %}
-    </div>
-
-    <div class="footer-secondary-wrapper">
-
-      {%- include 'cross-border' -%}
-
-      <ul class="footer-secondary inline-list">
-          
-        {% for link in linklists[section.settings.footer_secondary_linklist].links %}
-          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-        {% endfor %}
-      </ul>
-
-      {% if section.settings.footer_social_enable %}
-        {% include 'footer-social-icons' %}
-      {% endif %}
-
-      {% if section.settings.footer_payment_enable %}
-        {% unless shop.enabled_payment_types == empty %}
-        <ul class="footer-payment payment-icons inline-list">
-          {% for type in shop.enabled_payment_types %}
-          <li>
-            {{ type | payment_type_svg_tag: class:'payment-icon' }}
-            <span class="visually-hidden">{{ type | capitalize | replace: '_', ' ' }}</span>
-          </li>
-          {% endfor %}
-        </ul>
-        {% endunless %}
-      {% endif %}
-
-    </div>
+<footer id="site-footer-{{ section.id }}" class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer-section">
+  {%- if section.settings.footer_instagram != '' -%}
+  {%- assign my_instagram = section.settings.footer_instagram_token | split: '.' -%}
+  <div class="footer-instagram-section">
+    <ul id="footer-instagram" class="instagram-pics instagram-size-small" data-id="{{ my_instagram.first | escape }}" data-token="{{ section.settings.footer_instagram_token | escape }}" data-limit="{{ section.settings.footer_instagram_limit | plus:0 }}"></ul>
+    <p class="clear"><a href="//instagram.com/{{ section.settings.footer_instagram_username | escape }}" rel="me" target="_blank">{{ 'footer.instagram.follow_our_instagram' | t | escape }}</a></p>
   </div>
-  <div id="footer-bottom-rule"></div>
-  {% if section.settings.bottom_image != blank %}
-    {{ section.settings.bottom_image | img_url: '2000x' | img_tag: 'footer-bottom-rule', 'footer-bottom-rule' }}
-  {% endif %}
-  <div id="copywright-bottom" style="text-align: center;"><a href="{{ shop.secure_url }}">&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}'s Shortbread. All Rights Reserved.</a></div>
+  {%- endif -%}
   
+  {%- if section.settings.footer_area != '' -%}
+  <div class="f-columns widget-area">
+    {%- case section.settings.footer_area -%}
+    {%- when '1' -%}
+      {%- include 'footer-area-1' -%}
+    {%- when '2' -%}
+      {%- include 'footer-area-2' -%}
+    {%- when '3' -%}
+      {%- include 'footer-area-3' -%}
+    {%- when '4' -%}
+      {%- include 'footer-area-4' -%}
+  	{%- when '5' -%}
+      {%- include 'footer-area-5' -%}
+    {%- when '6' -%}
+      {%- include 'footer-area-6' -%}
+    {%- when '7' -%}
+      {%- include 'footer-area-7' -%}
+    {%- when '8' -%}
+      {%- include 'footer-area-8' -%}
+  	{%- when '9' -%}
+      {%- include 'footer-area-9' -%}
+    {%- endcase -%}
+  </div>
+  {%- endif -%}
+  <div class="f-copyright">
+    <div class="row">
+      <div class="medium-12 columns socials">
+        <div class="footer-divider"></div>
+        {%- if section.settings.footer_social != '' -%}
+          {%- include 'shortcode' load: section.settings.footer_social_content -%}
+        {%- endif -%}            
+      </div>
+      {%- if section.settings.footer_copyright != '' -%}
+      <div class="medium-12 columns copytxt">
+        <p class="copyright">
+          {{ section.settings.footer_copyright }}
+        </p>
+      </div>
+      {%- endif -%}
+    </div>    
+  </div> 
 </footer>
 
 {% schema %}
-{
-  "name": "Footer",
-  "max_blocks": 4,
-  "settings": [
-    {
-      "label": "Footer logo",
-      "type": "image_picker",
-      "id": "footer_image",
-      "info": "400 x 200px .png"
-    },
-    {
-      "label": "Bottom Image",
-      "type": "image_picker",
-      "id": "bottom_image"
-    },
-    {
-      "type": "header",
-      "content": "Bottom bar"
-    },
-    {
-      "type": "link_list",
-      "id": "footer_secondary_linklist",
-      "label": "Link List",
-      "info": "This menu won't show dropdown items"
-    },
-    {
-      "type": "checkbox",
-      "id": "footer_payment_enable",
-      "label": "Show payment types"
-    },
-    {
-      "type": "checkbox",
-      "id": "footer_social_enable",
-      "label": "Show social icons"
-    },
-    {
-      "type": "header",
-      "content": "language selector",
-      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_locale_selector",
-      "label": "Show language selector",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Currency selector",
-      "info": "To add a currency, go to your [payment settings.](/admin/settings/payments)"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_currency_selector",
-      "label": "Show currency selector",
-      "default": true
-    }
-  ],
-  "blocks" : [
-    {
-      "type": "linklist",
-      "name": "Link list",
-      "settings": [
-        {
-           "type": "link_list",
-           "id": "linklist",
-           "label": "Link list",
-           "default": "main-menu",
-           "info": "This menu won't show dropdown items"
-        },
-        {
-           "type": "checkbox",
-           "id": "social",
-           "label": "Show social icons",
-           "default": false
-        }
-      ]
-    },
-    {
-      "type": "newsletter",
-      "name": "Newsletter",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
-        },
-        {
-          "id": "richtext",
-          "type": "richtext",
-          "label": "Newsletter description",
-          "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
-        }
-      ]
-    },
-    {
-      "type": "text",
-      "name": "Text",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Heading",
-          "default": "Text column"
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>Share store details, promotions, or brand content with your customers.</p>"
-        }
-      ]
-    },
-    {
-      "type": "page",
-      "name": "Page",
-      "settings": [
-        {
-          "id": "page",
-          "type": "page",
-          "label": "Page"
-        }
-      ]
-    }
-  ]
-}
+  {
+    "name": "Footer",
+    "settings": [
+      {
+        "type": "select",
+        "id": "footer_area",
+        "label": "Footer Widget Areas [( ? )](\/\/goo.gl\/xqR9oQ)",
+        "options": [
+          {
+            "value": "0",
+            "label": "None"
+          },
+          {
+            "value": "1",
+            "label": "Area 1"
+          },
+          {
+            "value": "2",
+            "label": "Area 2"
+          },
+          {
+            "value": "3",
+            "label": "Area 3"
+          },
+          {
+            "value": "4",
+            "label": "Area 4"
+          },
+          {
+            "value": "5",
+            "label": "Area 5"
+          },
+          {
+            "value": "6",
+            "label": "Area 6"
+          },
+          {
+            "value": "7",
+            "label": "Area 7"
+          },
+          {
+            "value": "8",
+            "label": "Area 8"
+          },
+          {
+            "value": "9",
+            "label": "Area 9"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Footer 1"
+      },
+      {
+        "type": "select",
+        "id": "footer_1_align",
+        "label": "Text Align",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left-align"
+          },
+          {
+            "label": "Right",
+            "value": "right-align"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_1_content",
+        "label": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Footer 2"
+      },
+      {
+        "type": "select",
+        "id": "footer_2_align",
+        "label": "Text Align",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left-align"
+          },
+          {
+            "label": "Right",
+            "value": "right-align"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_2_content",
+        "label": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Footer 3"
+      },
+      {
+        "type": "select",
+        "id": "footer_3_align",
+        "label": "Text Align",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left-align"
+          },
+          {
+            "label": "Right",
+            "value": "right-align"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_3_content",
+        "label": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Footer 4"
+      },
+      {
+        "type": "select",
+        "id": "footer_4_align",
+        "label": "Text Align",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left-align"
+          },
+          {
+            "label": "Right",
+            "value": "right-align"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_4_content",
+        "label": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Footer 5"
+      },
+      {
+        "type": "select",
+        "id": "footer_5_align",
+        "label": "Text Align",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left-align"
+          },
+          {
+            "label": "Right",
+            "value": "right-align"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_5_content",
+        "label": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Instagram Feed"
+      },
+      {
+        "type": "select",
+        "id": "footer_instagram",
+        "label": "Instagram Feed",
+        "options": [
+          {
+            "label": "Disable",
+            "value": ""
+          },
+          {
+            "label": "Enable",
+            "value": "1"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "footer_instagram_username",
+        "label": "Username"
+      },
+      {
+        "type": "text",
+        "id": "footer_instagram_token",
+        "label": "Access Token [( ? )](\/\/goo.gl\/OypFlG)"
+      },
+      {
+        "type": "range",
+        "id": "footer_instagram_limit",
+        "min": 4,
+        "max": 16,
+        "step": 1,
+        "label": "Limit",
+        "default": 8
+      },
+      {
+        "type": "header",
+        "content": "Social Media Icons"
+      },
+      {
+        "type": "select",
+        "id": "footer_social",
+        "label": "Social Media Icons",
+        "options": [
+          {
+            "label": "Disable",
+            "value": ""
+          },
+          {
+            "label": "Enable",
+            "value": "1"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_social_content",
+        "label": "Social Icons"
+      },
+      {
+        "type": "header",
+        "content": "Copyright"
+      },
+      {
+        "type": "html",
+        "id": "footer_copyright",
+        "label": "Copyright Text"
+      }
+    ]
+  }
 {% endschema %}

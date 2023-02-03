@@ -1,0 +1,650 @@
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+  a:hover{
+    color: white !important;
+    cursor: pointer;
+  }
+  .altheisure-banner{
+    position: relative;
+    height: 70vh;
+    background: #171513;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .altheisure-banner-child{
+      position: absolute;
+  }
+  .altheisure-banner h1,
+  .altheisure-banner h3{
+  	color: white;
+    text-align: right;
+  }
+   body,
+  .page-wrapper{
+    background-color: rgb(0, 0, 0) !important;
+  }
+  
+  .topbar{
+    background-color: #171513 !important
+  }
+  
+  .topbar .topbar-menu a:hover {
+    color: white !important;
+  }
+  
+  .header-v2{
+    background-color: rgb(0, 0, 0) !important;
+    color: white !important;
+  }
+  
+  header.site-header .header-wrapper .menu-item > a {
+     color: white !important;
+  }
+  
+  header.site-header .header-wrapper .is-mega-menu .sub-menu .menu-item > a {
+    color: rgb(0, 0, 0) !important;
+  }
+  
+  .copyright img{
+    display: none !important;
+  }
+
+  
+  header.site-header .header-wrapper .sub-menu .menu-item > a {
+    color: rgb(0, 0, 0) !important;
+  }
+  
+  i.fas.fa-heart {
+     color: white !important;
+  }
+  
+  header.site-header .header-wrapper .tools ul li.cart-button .cart-desc{
+      color: white !important;
+  }
+
+  .mainImg{
+    filter: invert(97%) sepia(100%) saturate(12%) hue-rotate( 
+      219deg) brightness(250%) contrast(103%) !important;
+  }
+  
+  
+  header.site-header .header-wrapper .tools ul li.cart-button i:before, header.site-header .header-wrapper .tools ul li.search-button i:before {
+      color: white !important;
+  }
+  
+  .banner {
+    background-color: #222;
+    height: 100vh;
+  }
+  
+  .second-section{
+    background-color: rgb(0, 0, 0) !important;
+    padding: 3rem 0;
+  }
+  
+  .offcanvas_main_content {
+    margin-top: 0;
+  }
+  
+  .second-section p{
+  	color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0 !important;
+  }
+
+  h5.widget-title{
+   color: white !important;
+  }
+  
+ .site-footer{
+   background-color: rgb(0, 0, 0) !important;
+  }
+  
+  .topbar-menu.social-icons{
+    background-color: #171513 !important
+  }
+  
+footer.site-footer .f-copyright .socials .social-icons{                   
+    background-color: rgb(0, 0, 0) !important;           
+  }
+  
+  li.menu-item.bulk-order-button span {
+    color: white !important;
+  }
+
+  .medium-12.columns.copytxt,  
+  .medium-12.columns.copytxt a,                               
+  .column.column-widget.left-align,        
+  ul.menu a,
+  i.fa.fa-heart-o.tooltipstered
+  {
+    color: white !important;
+  }
+  
+  
+/* form   */
+
+.form{
+  margin: 0 auto !important;
+}
+.form-item{
+  position: relative !important;
+  margin-bottom: 15px !important;
+}
+.form-item input{
+  display: block !important;
+  width: 100% !important;
+  height: 50px !important;
+  background: #171513 !important;
+  border: solid 2px #22201e !important;
+  transition: all .3s ease !important;
+  padding: 15px !important;
+  color: white !important;
+  border-radius: 5px;
+  font-size: 16px !important;
+}
+.form-item input:focus{
+  border-color: white !important;
+}
+.form-item label{
+  position: absolute !important;
+  cursor: text !important;
+  z-index: 2 !important;
+  top: 13px;
+  left: 10px !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
+  background: #171513 !important;
+  padding: 0 10px !important;
+  color: white !important;
+  transition: all .3s ease !important;
+}
+.form-item input:focus + label,
+.form-item input:valid + label{
+  font-size: 11px !important;
+  top: -8px !important;
+}
+
+  .active{
+    top: -8px !important;
+  }  
+  
+  
+.form-item input:focus + label{
+  color: white !important;
+}
+ 
+  
+/*  */
+
+.athleisure-button,
+button.athleisure-button{
+	font-weight: 700;
+    font-size: 16px;
+    background-color: white;
+    color: rgb(0,0,0);
+    border: .8px solid white;
+  	border-radius: 3px;
+  	padding: .6375rem 1.575rem;
+    background: linear-gradient(to right, white 50%, #171513 50%) left;
+    background-size: 200%;
+    transition: all 1.2s .25s cubic-bezier(0,1,.3,1), opacity .6s .25s ease-out;
+}
+  
+  button.athleisure-button:hover{
+    background-position: right;
+    color: white;
+  }
+  
+  .form-container {
+  background: #171513;
+  border-radius: 12px;
+  height: 286.8px;
+}
+
+.form-container2{
+  background: #171513;
+  padding: 2rem 4rem;
+  margin: 0;
+  border-radius: 12px;
+  height: 286.8px;
+}
+  
+ .social-container{
+  background: #171513;
+  padding: 2rem;
+  margin: 0 0px 30px 0;
+  border-radius: 12px;
+  height: 286.8px;
+  color: white;
+ }
+  
+  .second-sub p{
+    color: white;
+    font-size: 25px;
+    font-weight: unset;
+    margin: 2rem 0;
+    padding: 0 15px;
+  }
+  /*    */
+  .wrapper{
+    width: 100%;
+    height: 634.4px;
+    overflow: hidden;
+  }
+
+  .wrapper .wrapper__video{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .social-container {
+       padding: 2rem;
+       height: unset;
+    }
+    .second-sub p{
+      font-size: 18px;
+      padding: 0;
+    }
+    .form-container {
+      height: 367.6px;
+	  margin: 0 0 30px 0;
+      padding: 0;
+    }
+   	.form-container2{
+      margin: 0;
+      padding: 2rem;
+      height: 367.6px;
+    }
+    .section-third {
+      margin-top: 0;
+    }
+    .wrapper{
+      height: 292.8px;
+    }
+    #card{
+      padding-left: 0;
+    }
+  }
+  
+  @media only screen and (max-width: 768px) and (min-width: 601px) {
+    .form-container {
+      height: 334.6px;
+      margin: 0 0 30px 0;
+      padding: 0;
+    }
+    .form-container2{
+      margin: 0;
+      padding: 2rem;
+      height: 334.6px;
+    }
+    .flip-card {
+      padding: 0;
+    }
+  }
+  
+  .form-container p,
+  .social-container p{
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  
+
+  
+  @media only screen and (min-width: 769px) and (max-width: 1100px) {
+    .form-container,
+    .form-container2
+    {
+      height: 244px;
+    }
+    .social-container{
+      height: unset;
+    }
+    .form-container{
+      margin-bottom: 30px;
+    }
+    .flip-card {
+      padding: 0;
+    }
+    .form-container2{
+      margin-right: 10px;
+    }
+  }
+  
+  
+  header.site-header .header-wrapper .nav .header-nav .menu-trigger div span, header.site-header .header-wrapper .nav .header-nav .menu-trigger div span::after, header.site-header .header-wrapper .nav .header-nav .menu-trigger div span::before {
+     background: white !important; 
+  }
+  
+  .social-icons2{
+    margin-top: 1.2rem;
+    background-color: #171513 !important;
+    padding: 0;
+    margin-left: 0;
+    display: flex;
+    text-align: center;
+    list-style: none;
+  }
+  
+  .social-icons2 li a:before {
+    font-family: FontAwesome;
+    font-weight: 400;
+    font-style: normal;
+    display: inline-block;
+    color: #00c4b3 !important;
+    font-size: 24px;
+    width: 45px;
+    height: 35px;
+    -moz-transition: transform .3s ease;
+    -o-transition: transform .3s ease;
+    -webkit-transition: transform .3s ease;
+    transition: transform .3s ease;
+}
+  
+  .social-icons2 li.facebook a:before {
+    content: "\f09a";
+}
+  
+  .social-icons2 li.instagram a:before {
+    content: "\f16d";
+}
+
+ .social-icons2 li a:hover:before{
+   transform: scale(1.4) !important;
+}
+  
+  #share-email{
+    display: flex;
+    align-items: center;
+    margin-top: 3px;
+  }
+  
+  span.fa.fa-envelope-o {
+    color: #00c4b3;
+    font-size: 1.5rem;
+    transition: all .3s ease;
+  }
+  
+  span.fa.fa-envelope-o:hover {
+    font-size: 2rem;
+  }
+
+  
+/* Flip the card */
+  .flip-card {
+  background-color: transparent;
+  perspective: 1000px;
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -o-perspective:1000;
+    -ms-perspective: 1000;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d; 
+        -ms-transform-style: preserve-3d;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+      -webkit-backface-visibility: hidden;
+      -moz-backface-visibility: hidden;
+      -ms-backface-visibility: hidden;
+      backface-visibility: hidden; 
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+
+.flip-card-back {
+  color: white;
+  transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+      -moz-transform: rotateY(180deg);
+      -o-transform: rotateY(180deg);
+      -ms-transform: rotateY(180deg);
+}
+  
+  #altheisure input:-webkit-autofill {
+    color: white !important;
+    background-color: #171513 !important;
+    -webkit-box-shadow: 0 0 0 60px #171513 inset !important;
+  }
+
+  input:-webkit-autofill {
+    color: white !important;
+    background-color: #171513 !important;
+    -webkit-box-shadow: 0 0 0 60px #171513 inset !important;
+  }
+  input:autofill {
+    color: white !important;
+    background-color: #171513 !important;
+    -webkit-box-shadow: 0 0 0 60px #171513 inset !important;
+  }
+
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active  {
+    color: white !important;
+    -webkit-box-shadow: 0 0 0 60px #171513 inset !important;
+    background-color: #171513 !important;
+    background: transparent !important;
+    -webkit-text-fill-color: white !important;
+    background-clip: content-box !important;
+  }
+  
+  
+  .vimeo-wrapper {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   z-index: -1;
+   pointer-events: none;
+   overflow: hidden;
+}
+.vimeo-wrapper iframe {
+   width: 100vw;
+   height: 56.25vw; /* Given a 16:9 aspect ratio, 9/16*100 = 56.25 */
+   min-height: 100vh;
+   min-width: 177.77vh; /* Given a 16:9 aspect ratio, 16/9*100 = 177.77 */
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+  
+
+
+  
+</style>  
+
+<div id="altheisure" class="content-area">
+  <div id="content" class="site-content">
+    <article class="page">
+      <div class="entry-content">
+        <div class="wrapper">
+          <video src="https://cdn.shopify.com/s/files/1/2448/4493/t/261/assets/fm_ath_compressed.mp4" class="wrapper__video video" autoplay="true" loop muted playsinline>
+            <source src="https://cdn.shopify.com/s/files/1/2448/4493/t/261/assets/fm_ath_compressed.wenm" type='video/webm'>
+            <source src="https://cdn.shopify.com/s/files/1/2448/4493/t/261/assets/fm_ath_compressed.mp4" type='video/mp4'>
+            <source src="https://cdn.shopify.com/s/files/1/2448/4493/t/261/assets/fm_ath_compressed.ovg" type='video/ogg'>
+          </video>  
+        </div>
+        
+         <a href="https://logwork.com/countdown-rwpu" class="countdown-timer" data-timezone="America/Vancouver" data-textcolor="#ffffff" data-date="2021-10-27 11:00" data-unitscolor="#ffffff">ATHLEISURE LAUNCH</a>
+        
+       
+        <div class="second-section">
+          <div class="row" style="text-align: center">
+            <h1 data-aos="fade-up" data-aos-offset="100" data-aos-delay="250" data-aos-duration="1000" class="columns large-12" style="color: white">CONFIDENCE IN MOTION. YOU ARE WILD, UNSTOPPABLE, AND EXCITING.THIS COLLECTION IS DESIGNED FOR YOU.</h1>
+          </div>
+          <div data-aos="fade-up" data-aos-offset="100" data-aos-delay="450" data-aos-duration="1000" class="row second-sub">
+            <p>Redefine the way you move with Athleisure by SweetLegs. Moving with you from morning to night, our Athleisure Collection was designed to be worn dressed up or down while also providing support for our active customers. Be the first to know when our exciting new collection drops by signing up for our newsletter.
+            </p>
+          </div>
+        </div>
+
+        <!--   section third     -->
+        <div class="row section-third">
+          <div class="flip-card col-xs-12 col-md-7 form-container">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <!--           front   -->
+                <div id="front-part" class="form-container2" data-aos="fade-up" data-aos-offset="100" data-aos-delay="450" data-aos-duration="1000">
+                  <p style="text-align:left; color: white; margin-bottom: 2rem;">JOIN OUR ATHLEISURE NEWSLETTER</p>
+                  <form id="athleisure_signup">
+                    <input type="hidden" name="g" value="RXSGRF">
+                    <div class="form-sub-container">
+                      <div class="form">
+                        <div class="form-item">
+                          <input type="fname" name="name" id="fname" required="true">
+                          <label for="username">Name</label>
+                        </div>
+                        <div class="form-item">
+                          <input type="email" name="email" id="email" required="true">
+                          <label for="email">Email</label>
+                        </div>
+                      </div>
+                      <div class="klaviyo_form_actions">
+                        <button type="submit" id="athleisure-button" class="btn athleisure-button">Submit</button>
+                      </div>
+                    </div>  
+                  </form>
+                </div>
+              </div>
+              <div class="flip-card-back">
+                <!--  back-->
+                <div style="text-align: center; align-items: center;" class="form-container2" data-aos="fade-up" data-aos-offset="100" data-aos-delay="450" data-aos-duration="1000">
+                  <h2 style="color: white;">Thank You!</h2>
+                  <p>Please check your email and confirm your subscription.</p>
+                </div> 
+              </div>
+            </div>
+          </div>
+          <div data-aos="fade-up" data-aos-offset="100" data-aos-delay="700" data-aos-duration="1000" class="col-xs-12 col-md-5 social-container">
+            <p style="text-align:left; color: white; margin-bottom: 2rem;">SPREAD THE WORD!</p>
+            <span style="font-size: 18px;">Are you as excited about this product line as we are? Shout it out from the mountain tops and share the news with all your friends and family!</span>
+            <ul class="social-icons2"><p style="display: flex; margin-bottom: 0; align-items: center;">Share this webpage</p>
+              <li class="facebook"><a target="_blank" rel="noopener" aria-label="Sweetlegs's facebook Page" aria-describedby="new-window-0">
+                <span class="shopify-social-icon-facebook-circle" aria-hidden="true"></span></a><p style="text-align:left; color: white; margin-bottom: 2rem; display: inline;"></p>
+              </li>
+              <li id="share-email"><a style="padding-left: 5px" target="_blank" rel="noopener" aria-label="Sweetlegs's facebook Page" aria-describedby="new-window-0">
+                <span class="fa fa-envelope-o" aria-hidden="true"></span></a><p style="text-align:left; color: white; margin-bottom: 2rem; display: inline;"></p>
+              </li>
+            </ul>	
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+  
+<script src="https://cdn.logwork.com/widget/countdown.js"></script>
+<script type="text/javascript" src="//www.klaviyo.com/media/js/public/klaviyo_subscribe.js"></script>
+<script>
+  
+  $(document).ready(function(){
+    $("video").load();
+
+    var video_button = $(".wrapper")[0];
+    video_button.addEventListener("click", function() {
+      var video = $("video")[0];
+      const booleanValue = video.muted.valueOf();
+      if (booleanValue == true) {
+        video.muted = false;
+      } else {
+        video.muted = true;
+      }
+    });
+  });
+
+
+$('#altheisure input').on('focusin', function() {
+  $(this).parent().find('label').addClass('active');
+});
+
+$('#altheisure input').on('focusout', function() {
+  if (!this.value) {
+    $(this).parent().find('label').removeClass('active');
+  }
+});
+  
+  
+  $('#altheisure .facebook a').click(function(e) {
+    url = 'sweetlegs.com/pages/atheleisure';
+    url = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    window.open(url,'_blank');
+  });
+  
+    $('#altheisure .instagram a').click(function(e) {
+    url = 'sweetlegs.com/pages/atheleisure';
+    url = `https://www.instagram.com/sharer/sharer.php?u=${url}`;
+    window.open(url,'_blank');
+  });
+  
+  $('#share-email').click(function(e) {
+    var user = `{{customer.first_name}}`;
+    var dynamic_subject = '';
+    
+    if(!user){
+    	dynamic_subject = `Preview the new SweetLegs Athleisure collection!`;
+    }else{
+    	dynamic_subject = `{{customer.first_name}} is inviting you to preview the new SweetLegs Athleisure collection!`;
+    }
+    var shareLink = 'https://sweetlegs.com/pages/athleisure';
+    var body = `Redefine the way you move with Athleisure by SweetLegs, coming soon! Click here to learn more! ${shareLink}`;
+    var subject = dynamic_subject;
+    window.location = `mailto:?subject=${subject}&body=${body}`;
+  }); 
+
+
+</script>
+  
+<script>
+  $("#athleisure-button").click(function (event) {  
+    event.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: `https://sweetlegs.rocks/api/klaviyo/sms-sign-up/atheleisure`,
+      data: $('#athleisure_signup').serialize(),
+      dataType: "json",
+    }).done(function (data) {
+      if(data['statusCode'] != 200) {
+        var flip = document.getElementsByClassName('flip-card-inner')[0];
+        var form_visibility = document.getElementById('front-part');
+        var button_hide = document.getElementById('athleisure-button');
+        form_visibility.style.visibility = "hidden";
+        button_hide.style.display = "none";
+        flip.style.transform = "rotateY(180deg)";  
+      } else {
+        console.log("Fail subscription");
+      }
+    });
+  });
+</script>
+
+  
+
+
+
+

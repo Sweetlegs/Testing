@@ -1,0 +1,99 @@
+<section id="size-chart">
+  <div class="row row-flex">
+    <div data-aos="fade-left" data-aos-offset="250" data-aos-delay="375" data-aos-duration="1000" class="col-md-6 col-sm-12 col-xs-12">
+      <div class="content">
+        {{ section.settings.image | img_tag: block.settings.image.alt, image_class }}
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-12 col-xs-12 main-altheisure-table" data-aos="fade-right" data-aos-offset="250" data-aos-delay="375" data-aos-duration="1000">
+      <div class="content">
+        <h1 class="section-fourth-heading">SIZE CHART</h1>
+        <table class="table altheisure-table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">BUST</th>
+              <th scope="col">WAIST</th>
+              <th scope="col">HIP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">XS</th>
+              <td>32-33</td>
+              <td>24-25</td>
+              <td>35-36</td>
+            </tr>
+            <tr>
+              <th scope="row">S</th>
+              <td>34-35</td>
+              <td>26-27</td>
+              <td>37-38</td>
+            </tr>
+            <tr>
+              <th scope="row">M</th>
+              <td>36-37</td>
+              <td>28-29</td>
+              <td>39-40</td>
+            </tr>
+            <tr>
+              <th scope="row">L</th>
+              <td>38.5-40.5</td>
+              <td>30.5-32.5</td>
+              <td>42-43</td>
+            </tr>
+            <tr>
+              <th scope="row">XL</th>
+              <td>43-44</td>
+              <td>35-36</td>
+              <td>46-47</td>
+            </tr>
+            <tr>
+              <th scope="row">2X</th>
+              <td>47-48</td>
+              <td>39-40</td>
+              <td>50-51</td>
+            </tr>
+            <tr>
+              <th scope="row">3X</th>
+              <td>51-52</td>
+              <td>45-46</td>
+              <td>56-57</td>
+            </tr>         
+          </tbody>
+        </table>
+        <div>
+          {{section.settings.size_chart_text}}
+        </div>
+      </div>
+    </div>
+  </div>          
+</section>
+
+
+
+{% schema %}
+  {
+    "name": "Size Chart",
+    "settings": [{
+     	  "type": "text",
+          "id": "image",
+          "label": {
+          	"en": "Image Url"
+		  }
+	  },
+	  {
+          "type": "textarea",
+          "id": "size_chart_text",
+          "label": {
+          "en": "Size Chart Text"
+	 }
+   }]
+ }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,264 @@
+<style>
+ #sign-up-sms-klaviyo .error-message {
+   color: white;
+   background: black;
+   margin-top: 5px;
+   padding: 5px;
+   letter-spacing: 2px;
+   border-radius: 5px;
+   text-align: center;
+   font-weight: 400;
+  }
+  .hide-error-message{
+    transform: scale(0);
+    width: 0;
+    height: 0;
+    transition: transform 1s .25s cubic-bezier(0,1,.3,1), opacity .6s .25s ease-out;  
+  }
+  #sign-up-sms-klaviyo{
+    background: rgba(0, 0, 0, 0.5); 
+  	transition: all .825s;
+  }
+  #after-submission {
+    height: inherit;
+    position: relative;
+    width: 0;
+    transform: translateY(-1200px);
+    transition: transform 1s .25s cubic-bezier(0,1,.3,1), opacity .6s .25s ease-out;  
+  }
+  #sign-up-sms-klaviyo .parent{
+    background: #ff0092;
+    width: 30%;
+    margin: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: height 1s .25s cubic-bezier(0,1,.3,1), opacity .6s .25s ease-out;  
+  }
+  #sign-up-sms-klaviyo .close-button-container{
+    background: #ff0092;
+	position: relative;
+  }
+  #sign-up-sms-klaviyo .close-button-first{
+    font-size: 24px;
+    color: #fff;
+    position: absolute;
+    right: 2%;
+    top: 2%;
+    cursor: pointer;
+  }
+ #sign-up-sms-klaviyo .close-button-second {
+    font-size: 24px;
+    color: #fff;
+    position: absolute;
+    right: 1%;
+    top: 2%;
+    cursor: pointer;
+  }
+  #sign-up-sms-klaviyo .container-modal {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  #sign-up-sms-klaviyo .confirmation-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  #sign-up-sms-klaviyo .content-container2{
+    padding: .5rem 2rem;
+  }
+  
+  #sign-up-sms-klaviyo .signup-button{
+     margin-bottom: 1rem;
+    font-weight: 900;
+    font-size: 18px;
+    color: white;
+    background: #00c4b3;
+    border: 2px solid #00c4b3;
+    transition: all 1s .25s cubic-bezier(0,1,.3,1), opacity .6s .25s ease-out;
+  }
+  
+  #sign-up-sms-klaviyo .signup-button:hover{
+  	color: white;
+    background: none;
+    border: 2px solid #00c4b3;
+  }
+  
+  #sign-up-sms-klaviyo .sign-up-text, .privacy-policy{
+    padding: .625rem 0;
+    color: white;
+    font-size: 12px;
+    line-height: initial;
+  }
+
+  @media (max-width: 500px){
+    #sign-up-sms-klaviyo .parent{
+      width: 90%;
+    }
+    #sign-up-sms-klaviyo .content-container2{
+      padding: .5rem 1rem;
+    }
+    #sign-up-sms-klaviyo .confirmation-container{
+      width: 90%;
+    }
+     #sign-up-sms-klaviyo .close-button-first {
+      font-size: 24px;
+      top: 2%;
+    }
+    
+    #sign-up-sms-klaviyo .close-button-second{
+      font-size: 24px;
+      top: 5%;
+    }
+    
+    #sign-up-sms-klaviyo .sign-up-text, .privacy-policy{
+      font-size: 10px;
+      right: 2%;
+    }
+  }
+  
+    @media (max-width: 1024px) and (min-width: 501px){
+    #sign-up-sms-klaviyo    .parent{
+    	width: 65%;
+    }
+  }
+  
+  @media (max-width: 1400px) and (min-width: 1025px){
+    #sign-up-sms-klaviyo .parent{
+      width: 50%;
+    }
+  }
+  
+  @media print {
+    #sign-up-sms-klaviyo{
+      visibility: hidden;
+      display: none;
+    }
+  }
+
+</style>
+<!-- Modal -->
+{{ 'input-phone-field.js' | asset_url | script_tag }} 
+<div class="modal fade" id="sign-up-sms-klaviyo" tabindex="-1" role="dialog" aria-labelledby="sign-up-sms-klaviyoTitle" aria-hidden="true">
+  <div class="container-modal">
+    <div class="parent">
+      <div class="img-container2">
+        <img class="img-fluid" rel="no-follow" src="https://d3k81ch9hvuctc.cloudfront.net/company/LYCBqa/images/a329120e-b60c-446f-9103-a31ee75cd546.jpeg" alt="Sweetlegs's Logo">
+        <i class="far fa-times-circle close-button-first"></i>
+      </div>
+      <div class="content-container2">
+        <form id="sms-subscription-form">
+          <input type="hidden" name="g" id="list_id" value="RCNJ46">
+          <input type="hidden" name="email" value="{{customer.email}}">
+          <input type="hidden" name="name" value="{{ customer.first_name }}">
+          <input style="background: #ffff !important; background-color: #ffff !important; border-radius: 5px; padding-left: 10px; font-size: 18px;" type="text" id="phone_number" value="" name="phone_number" required placeholder="(123) 456-7890">
+          <div class="error-message hide-error-message">Oops! Phone number invalid</div>
+          <div class="sign-up-text">By clicking SIGN UP NOW, you agree to receive marketing text messages from SweetLegs Clothing Inc at the number provided. Consent is not a condition of any purchase. Message and data rates may apply. Message frequency varies. Reply HELP for help or STOP to cancel. View our <a class="privacy-policy" rel="nofollow" href="https://sweetlegs.ca/pages/payments-privacy">Privacy Policy and Terms of Service</a>
+          </div>
+          <button type="submit" style="width: 100%;
+                                       font-weight: 700;
+                                       font-size: 18px;
+                                       color: white;
+                                       border: 2px solid #00c4b3;
+                                       transition: all 2s .25s cubic-bezier(0,1,.3,1), opacity .6s .25s ease-out;" class="btn signup-button">Sign Up</button>
+        </form>
+      </div>
+    </div>
+    <div id="after-submission">
+      <div class="confirmation-container">
+        {{ 'ThanksForSubscribing_1.jpg' |  asset_url | img_tag: 'Sweetlegs Logo'  }}
+        <i class="far fa-times-circle close-button-second"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+$(document).ready(function () {
+  const klaviyoSendSMS = '{{customer.metafields.klaviyo.sign-up-sms-send}}';
+//   if(klaviyoSendSMS) {
+//   	console.log("Already send sms don't show modal", klaviyo);
+//   }
+  let searchParams = new URLSearchParams(window.location.search);
+  let showId = searchParams.get('show');
+//   console.log('send', showId);
+  $('#phone_number').usPhoneFormat({
+        format: '(xxx) xxx-xxxx',
+  });
+   if(window.location.href.includes('/account') && !klaviyoSendSMS) {
+      $('.fade').addClass('in');
+      $("#sign-up-sms-klaviyo").css("display", "block");
+      $('.loaded').addClass('modal-open');
+  }
+  if(showId === 'klaviyo-sms-form') {
+     $('.fade').addClass('in');
+      $("#sign-up-sms-klaviyo").css("display", "block");
+      $('.loaded').addClass('modal-open');
+  }
+
+//   close the modal
+  $('.close-button-first')[0].addEventListener("click", function(){
+//     $('.fade').removeClass('in');
+    $("#sign-up-sms-klaviyo").css("display", "none");
+    $('.loaded').removeClass('modal-open');
+  });
+  
+  $('.close-button-second')[0].addEventListener("click", function(){
+//     $('.fade').removeClass('in');
+    $("#sign-up-sms-klaviyo").css("display", "none");
+    $('.loaded').removeClass('modal-open');
+  });
+  
+  $('#phone_number').focus(function() {
+    $(".hide-error-message").css("transform", "scale(0)");
+    $(".hide-error-message").css("width", "0");
+    $(".hide-error-message").css("height", "0");
+  });
+  
+  
+  $("#sms-subscription-form").submit(function (event) {  
+    event.preventDefault();
+    let phoneNumber = $("#phone_number").val();
+    phoneNumber = phoneNumber.match(/\d/g);
+    if(phoneNumber) {
+    
+	phoneNumber = phoneNumber.join("");
+    var formData = {
+      phone: `+1${phoneNumber}`,
+      list_id: $("#list_id").val(),
+      customer_id: '{{customer.id}}',
+      store_id: '{{settings.store_id}}',
+    }
+//     console.log(formData);
+    $.ajax({
+      type: "POST",
+      url: `https://sweetlegs.rocks/api/klaviyo/sms-sign-up`,
+      data: formData,
+      dataType: "json",
+    }).done(function (data) {
+      if(data['statusCode'] != 200) {
+        $(".hide-error-message").css("transform", "scale(1)");
+        $(".hide-error-message").css("width", "100%");
+        $(".hide-error-message").css("height", "100%");
+      } else {
+        $(".parent").css("transform", "scale(0)");
+        $(".parent").css("height", "0");
+        $("#after-submission").css("width", "auto");
+        $("#after-submission").css("transform", "translateY(0)");
+      }
+    });
+  }
+    
+  });
+});
+ 
+</script>

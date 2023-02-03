@@ -1,0 +1,517 @@
+<script>
+	let searchParamsPostalCode = location.search.split('search=')[1];
+    $.ajax({
+       url: `https://sweetlegs.rocks/api/id-locators`,
+       type: 'get',
+       success: function (response) {
+         locations = response;
+         mapLocations(response, map);
+         var cities = response.map(each => each.city+', '+ each.province);
+         sortCities = cities.sort();
+         distinctCities = sortCities.filter((v,i) => sortCities.indexOf(v) == i);
+         distinctCities.forEach(function(entry) {
+           $("#citySelect").append("<option value='"+ entry +"'>"+ camelCase(entry) +"    </option>");
+          });
+         if(searchParamsPostalCode) {
+           $('.form-control.search').val(decodeURI(searchParamsPostalCode)).trigger("change");
+         }         
+         $('#spinner').addClass('hideMe');
+       },
+   });
+</script>
+
+
+<div id="primary" class="content-area">
+  {%- include 'page-header' -%}
+  <div id="content" class="site-content">
+    <article class="page">
+      <div class="row">
+        <div class="large-12 columns">
+          <div class="entry-content">
+            <h3 class="intro">Use our locator map to find a SweetLegs Independent Distributor near you!</h3>
+            {%- include 'shortcode' load: page.content -%}
+            <div class="filter-locations">
+                <div class="search-box">
+                    <label>Search</label>
+                    <input type="search" class="form-control search" placeholder="Search Product">
+                </div>
+               <div class="filter-city">
+                 	<label>City</label>
+                    <select id="citySelect">
+                        <option value="">- Select a City -</option>
+                    </select>
+                </div>
+                <div class="distance">
+                  	<label>Distance</label>
+                    <select id="kilometer">
+                      	<option value="10">10 km</option>
+                        <option value="20">20 km</option>
+                        <option value="50" selected>50 km</option>
+                        <option value="100">100 km</option>
+                        <option value="200">200 km</option>
+                      	<option value="500">500 km</option>
+                    </select>
+                </div>
+             	<div class="button-div">
+              		<button type="button" class="button clear">Clear</button>
+              	</div>
+             </div>
+            <div class="mapId">
+            <div id="map" style=""></div>
+              <div id="spinner">
+                {{ 'loading.gif' | asset_url | img_tag: 'spin', 'spin' }}
+				</div>
+            </div>
+          </div>
+          <div id="filteredIdCard">
+          	{% include 'map-card' %} 
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script ype="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0fsIxkQi7szsujn5aze5Ci9i_SOzgW8E"></script>
+
+<script type="text/javascript">
+   var markersArray = [];
+   var locations = [];
+	var centerLong = 49.84;
+    var centerLati = -99.95;
+  	var filterStores = [];
+    var zoom = 4;
+    var searchPositionMarkers = [];
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: zoom,
+      center: new google.maps.LatLng(centerLong, centerLati),
+      mapTypeControl: false,
+    });
+     
+    var featureOption = [
+        {"featureType": "landscape","stylers": [{"color": "#FCFCFC"}]},
+        {"featureType": "poi","stylers": [{"visibility": "off"}]},
+        {"featureType": "road.arterial","elementType": "geometry.fill","stylers": [{"color": "#D6D6D6"},{"lightness": 50}]},
+        {"featureType": "road.highway.controlled_access","elementType": "geometry.fill","stylers": [{"color": "#D6D6D6" }]},
+        {"featureType": "road.highway.controlled_access","elementType": "labels.text","stylers": [{"visibility": "on"} ]},
+        {"featureType": "road.local","elementType": "geometry.fill","stylers": [{"color": "#D6D6D6"}]},
+        {"featureType": "road.local","elementType": "labels.text","stylers": [{"color": "#929292"},{"visibility": "on"}]},
+        {"featureType": "road.local","elementType": "labels.text.stroke","stylers": [{ "color": "#FFFFFF"},{"visibility": "on"}]},
+        {"featureType": "transit","stylers": [{"visibility": "off"}]},
+   		{"featureType": "poi.business","stylers": [{"visibility": "off"}]},
+        {"featureType": "water","stylers": [{"color": "#00C4B3"},{"visibility": "on"}]}
+	];
+    map.setOptions({
+      styles: featureOption,                                  
+    });
+    
+    var infowindow = new google.maps.InfoWindow({
+      maxWidth: 600,
+    });
+
+
+    var marker, i, newPos,  oldPos, oldZoom;
+  	let markers = [];
+    var redIcon = {
+        url: "{{'redMarker.png' | asset_url }}",
+        scaledSize: new google.maps.Size(32, 32), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(16, 32) // anchor
+    };
+  
+    var greenIcon = {
+        url: "{{'greenMarker.png' | asset_url }}",
+        scaledSize: new google.maps.Size(35, 35), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(35, 35) // anchor
+    };
+    
+    google.maps.event.addListener(infowindow,'closeclick',function(){
+          
+	});
+  
+  function mapLocations(locations, map) {
+    map.setOptions({
+      styles: featureOption,                                  
+    });
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i]['lat'], locations[i]['long']),
+        map: map,
+        icon: redIcon,
+//         animation: google.maps.Animation.DROP,
+      });
+	  markersArray.push(marker);
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+//           map.setOptions({
+//               center: new google.maps.LatLng(locations[i]['lat'], locations[i]['long']),
+//           });
+          var name = camelCase(locations[i]['store_name']);
+          var address = locations[i]['city']+', '+locations[i]['province'] + '<br/>' + locations[i]['postcode']+', '+locations[i]['country'];
+          var destination = encodeURI(locations[i]['city']+', '+ locations[i]['postcode']);
+          var directionUrl = `https://maps.google.ca/maps?daddr=${destination}`;
+          var facebookUrl = encodeURI(locations[i]['facebook']);
+          var postalCode = `<a target=_blank href=${directionUrl}> <div class="info-card-icon"><button class="button mapCard__directionButton" type="button"><i class="fas fa-directions" "></i></button></div></a>`;
+          var website =  locations[i]['facebook'] ? `<a target=_blank href=${facebookUrl}><div class="info-card-icon"><button class="button mapCard__directionButton" type="button"><i class="fas fa-globe"></i></button></div></a>` : '';
+          var email = locations[i]['email'] ? `<a href="mailto:${locations[i]['email']}"><div class="info-card-icon"><button class="button mapCard__directionButton" type="button"><i class="fas fa-envelope"></i></button></div></a>` : '';
+          var phone = locations[i]['phone'] ? `<a href="tel:${locations[i]['phone']}"><div class="info-card-icon"><button class="button mapCard__directionButton" type="button"><i class="fas fa-phone"></i></button></div></a></a>` : '';
+          var html = "<b>" + name + "</b> <br/>" + address + "<div class='info-card-icons'>"+ postalCode + website + email+phone + "</div>";
+          infowindow.setContent(html);
+          infowindow.open(map, marker);
+        }
+      })(marker, i)); 
+    }
+  }
+  
+  function clearOverlays() {
+     for (var i = 0; i < markersArray.length; i++ ) {
+        markersArray[i].setMap(null);
+     }
+     markersArray.length = 0;
+  }
+  
+  
+    function drop() {
+        for (let i = 0; i < locations.length; i++) {
+          addMarkerWithTimeout(locations[i], i * 10);
+        }
+  	}
+  
+  function getBaseLog(x, y) {
+  	return Math.log(y) / Math.log(x);
+  }
+  
+  function showMarkerInfo(id) {
+    const index = locations.findIndex(item => item.id === parseInt(id));
+    google.maps.event.trigger(markersArray[index], 'click');
+    $('html, body').animate({
+        scrollTop: $("#map").offset().top - 20
+    }, 1000);
+  }
+
+  function addMarkerWithTimeout(location, timeout) {
+    window.setTimeout(() => {
+      markers.push(
+        new google.maps.Marker({
+          position: new google.maps.LatLng(location['lat'], location['long']),
+          map,
+          animation: google.maps.Animation.DROP,
+        })
+      );
+    }, timeout);
+  }
+
+  var rad = function(x) {
+      return x * Math.PI / 180;
+    };
+
+    var getDistance = function(p1, p2) {
+      var R = 6378137; // Earth’s mean radius in meter
+      var dLat = rad(p2['lat'] - p1['lat']);
+      var dLong = rad(p2['lng'] - p1['lng']);
+      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(rad(p1['lat'])) * Math.cos(rad(p2['lat'])) *
+        Math.sin(dLong / 2) * Math.sin(dLong / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var d = R * c;
+      return d;
+    };
+  
+  function findDistributorWithIn(latitude, longitude, km) {
+    p1 = {lat: latitude, lng: longitude};
+    locations.forEach(function(entry) {
+      p2 = {lat: entry['lat'], lng: entry['long']};
+      distance = getDistance(p1, p2)/1000;
+      entry['distance'] = distance;
+      if(distance <= km) {
+        filterStores.push(entry);  
+      }
+	});
+  }
+  
+  function displayLocatorCard(sortFilterStores) {    	
+	$( ".mapCard" ).remove();
+    filterStores = [];
+      sortFilterStores.forEach(function(entry) {
+            var destination = encodeURI(entry['city']+', '+ entry['postcode']);
+       		var directionUrl = `https://maps.google.ca/maps?daddr=${destination}`;
+       		var facebookUrl = encodeURI(entry['facebook']);
+        	var classPhone = entry['phone'] ? 'phone' : 'hideMe';
+        	var classEmail = entry['email'] ? 'email' : 'hideMe';
+        	var classFacebook = entry['facebook'] ? 'facebook' : 'hideMe';
+        	$("#filteredIdCard").append(`
+				<div class="mapCard">
+				    <div class="mapCard__left">
+				        <span class="mapCard__storeName" id=${entry['id']}>${camelCase(entry['store_name'])}<span
+				                class="distance">${entry['distance'].toFixed(2)} km</span></span>
+				        <span class="mapCard__address">${camelCase(entry['city'])}, ${entry['province']} ${entry['postcode']},
+				            ${entry['country']}</span>
+				    </div>
+				    <div class="mapCard__right">
+				        <div class="mapCard__button">
+				            <a href=${directionUrl} target=_blank>
+				                <button class="button mapCard__directionButton" type="button"><i
+				                        class="fas fa-directions"></i></button>
+				                <div class="mapCard__buttonLabel">Directions</div>
+				            </a>
+				        </div>
+						<div class="mapCard__button ${classFacebook}">
+				            <a href="${facebookUrl}" target="_blank">
+				                <button class="button mapCard__directionButton" type="button"><i class="fas fa-globe"></i></button>
+				                <div class="mapCard__buttonLabel">Website</div>
+				            </a>
+				        </div>
+				        <div class="mapCard__button ${classEmail}">
+				            <a href="mailto:${entry['email']}" target=_blank>
+				                <button class="button mapCard__directionButton" type="button"><i
+				                        class="fas fa-envelope"></i></button>
+				                <div class="mapCard__buttonLabel">Email</div>
+				            </a>
+				        </div>
+				        <div class="mapCard__button ${classPhone}">
+				            <a href="tel:${entry['phone']}" target=_blank>
+				                <button class="button mapCard__directionButton" type="button"><i class="fas fa-phone"></i></button>
+				                <div class="mapCard__buttonLabel">${entry['phone']}</div>
+				            </a>
+				        </div>
+				    </div>
+				</div>
+			`);
+      });
+    
+  }
+  
+  function clickFilter() {   
+    if(searchPositionMarkers.length > 0) {
+      for (let i = 0; i < searchPositionMarkers.length; i++) {
+      	searchPositionMarkers[i].setMap(null);
+      }
+      searchPositionMarkers = [];
+    }
+    var address = $('.form-control.search').val();
+        if(address) {
+            var geocoder = new google.maps.Geocoder();
+            var latitude;
+            var longitude;
+            var address = $('.form-control.search').val();
+            var km = parseInt($('#kilometer').find(":selected").val());
+            geocoder.geocode( { 'address': address}, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                  latitude = results[0].geometry.location.lat();
+                  longitude = results[0].geometry.location.lng();
+                  findDistributorWithIn(latitude, longitude, km);
+                    searchPositionMarker = new google.maps.Marker({
+                        position: new google.maps.LatLng(latitude, longitude),
+                        map: map,
+                      	zIndex: 1000,
+//                        label: { color: '#40c4b3', fontWeight: 'bold', fontSize: '14px', text: 'Your are here', marginTop: '-30px' }
+						icon: greenIcon,
+                //         animation: google.maps.Animation.DROP,
+      				});
+                searchPositionMarkers.push(searchPositionMarker);
+                  sortFilterStores = filterStores.sort(function (a, b) {
+                        return a.distance - b.distance;
+                  });
+                 displayLocatorCard(sortFilterStores);
+                  map.setOptions({
+                    center: new google.maps.LatLng(latitude, longitude),
+                    zoom: parseInt(getBaseLog(2, 40000 / (km / 2)) - 1),
+                  });
+              } 
+            });            
+        } 
+  }
+  
+  function camelCase(str) {
+    return str.toLowerCase().replace(/(?:^|\s)\w/g, function(match) {
+        return match.toUpperCase();
+    });
+  }
+  
+  $(document).ready(function(){
+      $('.form-control.search').keypress(function(e){
+         $('#citySelect').val('');
+          if(e.which == 13){//Enter key pressed
+              clickFilter();
+          }
+      });
+    
+      $('.form-control.search').on('change', function(e){
+         $('#citySelect').val('');
+         clickFilter();
+      });
+    $('#citySelect').on("change", function() {
+        var city = $(this).val();
+        $('.form-control.search').val(city);
+        clickFilter();
+    });
+    
+    $('#kilometer').on("change", function() {
+        clickFilter();
+        
+    });
+    
+    $('.button.clear').on("click", function() {
+       $( ".mapCard" ).remove();
+       if(searchPositionMarkers.length > 0) {
+          for (let i = 0; i < searchPositionMarkers.length; i++) {
+            searchPositionMarkers[i].setMap(null);
+          }
+          searchPositionMarkers = [];
+        }
+        $('.form-control.search').val('');
+        $('#citySelect').val('');
+        $('#kilometer').val('50');
+         map.setOptions({
+            center: new google.maps.LatLng(centerLong, centerLati),
+            zoom: 4,
+         });
+    });
+  
+      $(document).on('click', '.mapCard__storeName', function() {
+         id = $(this).attr('id');
+          showMarkerInfo(id);
+      });
+     
+  });
+</script>
+
+
+<style>
+  .intro {
+  	font-size: 36px;
+    border-bottom: 1px solid #f7f7f7;
+    padding-bottom: 70px;
+    margin-bottom: 35px;
+  }
+  .filter-locations {
+    display: flex;
+    margin-bottom:20px;
+  }
+  .filter-locations .search-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 2;
+  }
+  .filter-locations label{
+    margin-bottom: 0px;
+    margin-right: 10px;
+  }
+  .filter-locations .filter-city {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 2;
+  }
+
+  .filter-locations .distance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+  }
+  .filter-locations .button-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #map{
+    width: 100%;
+    height: 600px;
+  }
+  .mapId {
+    position: relative;
+  }
+  .mapId #spinner {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 600px;
+    background: #0000003d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mapId #spinner img {
+    height: 50px;
+     width: 50px;
+  }
+  .mapCard__storeName .distance {
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1.1px;
+    letter-spacing: 1.2;
+    color: #999;
+    margin-left: 1rem;
+  }
+  .info-card-icons {
+    display: flex;
+  }
+  .info-card-icon .button.mapCard__directionButton {
+    margin: 5px;
+    width: 25px;
+    height: 25px
+  }
+   .info-card-icon .button.mapCard__directionButton:hover i{
+      color:white !important;
+  }
+   .info-card-icon .button.mapCard__directionButton i {
+	color: #00c4b3;
+    line-height:2;
+  }
+  .filter-locations input,.filter-locations select {
+    border-bottom:1px solid #80808047!important;
+    height: 30px!important;
+    padding: 5px!important;
+    margin-bottom: 10px!important;
+  }
+
+  .button-div {
+    margin-bottom: 10px;
+  }
+  .button.clear {
+    width: 100%;
+  }
+  
+  
+  @media only screen and (min-width : 768px) { 
+  .clear {
+    margin-left:5px!important;
+  }
+}
+  
+  
+  @media only screen and (max-width : 640px) {
+   #map{
+    margin-left: -33px;
+    width: 100vw;
+    height: 600px;
+  }
+    #spinner {
+    margin-left: -33px !important;
+    width: 100vw !important;
+    }
+}
+  
+  @media only screen and (max-width : 768px) and (min-width: 640px) {
+   #map{
+    margin-left: -43px;
+    width: 100vw;
+    height: 600px;
+  }
+  .intro {
+  	font-size: 25px !important;
+  }
+  #spinner {
+    margin-left: -43px !important;
+    width: 100vw !important;
+    }
+}
+
+</style>
+ 
+
+

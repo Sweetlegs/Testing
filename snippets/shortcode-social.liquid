@@ -1,0 +1,23 @@
+{%- capture icon_render -%}{% include 'shortcode-render' render:'icons' %}{%- endcapture -%}
+{%- assign my_icons = icon_render | remove: ' ' | split: ',' -%}
+{%- assign default_icons = 'twitter,facebook,googleplus,pinterest,instagram,tumblr,snapchat,youtube,vimeo' -%}
+{%- if my_icons.size > 0 -%}
+<ul class="social-icons">
+  {%- for icon in my_icons -%}
+    {%- if default_icons contains icon -%}
+    <li class="{{ icon }}">
+      {%- assign setting_icon = 'social_' | append: icon | append: '_link' -%}
+      
+      <a href="{{ settings[setting_icon] | escape }}"
+      target="_blank"
+      rel="noopener"
+      aria-label="Sweetlegs's {{ icon }} Page"
+      aria-describedby="new-window-0">
+      <span class="shopify-social-icon-{{icon}}-circle" aria-hidden="true"></span>
+      </a> 
+    
+  	</li>
+    {%- endif -%}
+  {%- endfor -%}
+</ul>
+{%- endif -%}

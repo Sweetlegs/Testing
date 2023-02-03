@@ -1,0 +1,198 @@
+<div id="primary" class="content-area">
+  {%- include 'page-header' -%}
+  <div id="content" class="site-content">
+    <article class="page">
+      <div class="row">
+        <div class="large-10 columns large-centered">
+          <div class="entry-content page-wishlist">
+           <table class="shop_table cart  wishlist_table products ">            
+              <thead>
+                <tr>
+                  <th class="product-thumbnail"></th>
+                  <th class="product-name">
+                    <span class="nobr">Product</span>
+                  </th>
+                   <th class="product-price">
+                    <span class="nobr">{{ 'wishlists.wishlist.unit_price' | t }}</span>
+                  </th>
+                  <th class="product-add-to-cart"></th>                
+                </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+<script>
+ totalProductsCount = "{{collections['quick-order'].all_products_count}}";
+ var addToCart, imgSrc, wishlist,variantId =5, variantTitle, price, current_variant_price,inventoryQuantity, status = ` <span class="stock out-of-stock">Out of stock.</span>`, current_variant_compare_at_price;
+  let data = {};
+  data.customerId = window.location.href.substring(47);
+  $(document).ready(function(e) {
+      customerId = window.location.href.substring(47);
+      if(window.location.href.split("?").pop()== 'redirected_us') {
+        data.storeId = {{ settings.store_id_us}};
+      }else {
+        data.storeId = {{ settings.store_id_cad}};
+      }
+      let api = `{{ settings.sweetlegs_rocks_api}}`;
+      $.ajax({
+        type: 'GET',
+        url: `${api}/api/wishlists`,
+        data: data,
+        success: function(response) {
+          pageTitle = `${response.customerName}'s wishlist`;
+          if(!response.customerName) {
+             $('.wishlist_table').remove();
+            $('#content').append(`<p class="invalidUrl">Invalid URL</p>`);
+           
+          } else {
+            $('.page-title').text(pageTitle);
+            if(response.metafields.length < 1) {
+              $('.wishlist_table').append(`<tr class="product eva_ajax_load_more_item_visible">
+                           <td colspan="4" class="searchListImg">
+                              No Product Added to the Wishlist. 
+                           </td>
+                  </tr>`);
+            } else {
+              wishlists = response.metafields.filter(function(wishlist) {
+                return wishlist.namespace == 'wishlist';
+              });
+           for(i =1; i< totalProductsCount/50 + 1; i++) {
+             $.ajax({
+                type: "GET",
+                url: `/collections/quick-order/products.json?limit=50&page=${i}`, 
+                success: function(response) {
+                   response.products.forEach(function(product) { 
+                      product_id = wishlists.find(function(wishlist) {
+                        return wishlist.value == product.handle;
+                      });
+                      var index = product.images[0].src.indexOf('.jpg');
+                      handle = product.handle;
+                      productTitle = product.title;
+                      imgSrc = [product.images[0].src.slice(0, index), '_small', product.images[0].src.slice(index)].join('');
+                      product.variants.forEach(function(variant) {
+                        variantId = variant.id;
+                        variantTitle = variant.title;
+                       current_variant_compare_at_price = variant.compare_at_price;
+                       current_variant_price = variant.price;
+                         if(current_variant_compare_at_price > current_variant_price) {
+                                price = `<del><span class="price-old money">$${ current_variant_compare_at_price}</span></del>&nbsp;&nbsp;<ins><span class="price-new money">$${ current_variant_price}</span></ins>`;
+                              } else {
+                                 price = `<ins><span class="price-new money">$${ current_variant_price}</span></ins>`;
+                              }
+
+                     if(product.variants.length > 1) {
+                            addToCart =` <a rel="nofollow" href="/collections/all/products/${handle}" class="button product_type_variable">
+                                <span class="button-loader"></span>
+                                {{- 'products.product.select_options' | t | escape -}}
+                              </a>`;
+                          } else {
+                            if(variant.available){
+                              addToCart = `                      
+                                              <form action="/cart/add" method="post" enctype="multipart/form-data">
+                                                <input type="hidden" name="quantity" value="1" />
+                                                <select class="hide" name="id">
+                                                  <option value="${variantId }">${ variantTitle} - ${current_variant_price}</option>
+                                                </select>
+                                                <a rel="nofollow" href="/collections/all/products/${handle}" class="button product_type_simple add_to_cart_button ajax_add_to_cart">
+                                                  <span class="button-loader"></span>
+                                                  {{- 'products.product.add_to_cart' | t | escape -}}
+                                                </a>
+                                              </form>`;
+                            } 
+                      }
+                     });
+                     if(product_id) {
+                        $('.wishlist_table tbody').append(`<tr class="product eva_ajax_load_more_item_visible">
+                           <td class="searchListImg">
+                            <a href="/collections/all/products/${handle}">
+                            <img src="${imgSrc}"  style="max-width: none"/>  
+                           </td>
+                          <td class="product-name">
+                              <a href="/collections/all/products/${handle}">${productTitle}</a>
+                          </td>
+                          <td class="product-price">
+                              ${price}
+                         </td>
+                          <td class="product-add-to-cart">
+                            <div class="product_after_shop_loop_buttons"> 
+                                ${addToCart}
+                            </div>
+                        </td>					
+                      </tr>`)
+                     }
+                   });
+
+                },
+             });
+          }
+         }
+          }
+        },
+        error: function(e) {
+          console.log(e);
+        }
+      }).done(function(e){
+        setTimeout(
+            function() 
+            {
+                   $('#spinner').remove();
+            }, 500);  
+      });
+    $(document).on('click','.add_to_cart_button', function(e) {
+      $('.cart_items_number.counter_number.animated.rubberBand').text(parseInt($('.cart_items_number.counter_number.animated.rubberBand').text()) + 1);
+    });
+});     
+</script>
+<style>
+  .product-thumbnail {
+    width: 20%;
+  }
+  #spinner {
+    text-align: center;
+    width: 50px;
+  }
+  .spin {
+    width: 80px;
+    height: 80px;
+  }
+    .wishlist_table .searchListImg img {
+      height: 67px;
+      width: 67px;
+  }
+  .wishlist_table th {
+    text-align: left;
+  }
+  .add_to_cart_button {
+    min-width: 100px;
+  }
+  .invalidUrl {
+    text-align: center;
+    color: red;
+    text-size: 20px;
+  }
+  @media (max-width: 550px){ 
+    td.product-price {
+      display: none;
+    }
+    table.wishlist_table tbody td {
+      padding: 10px 5px;
+    }
+    .wishlist_table .searchListImg img {
+      height: 50px;
+      width: 50px;
+	}
+    .product-name a {
+      font-size: 12px!important;
+    }
+    th.product-price{
+      display:none;
+    } 
+  }
+</style>

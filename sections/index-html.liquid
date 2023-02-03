@@ -1,30 +1,46 @@
-<!-- /sections/index-html.liquid -->
-<div class="index-html{% unless section.settings.full_width %} wrapper{% endunless %}">
-  {{ section.settings.html }}
+<div id="custom-html-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="custom-html">
+  {%- if section.settings.layout == 'container' -%}
+  <div class="row">
+    <div class="column">
+      {%- endif -%}
+      {{- section.settings.html -}}
+      {%- if section.settings.layout == 'container' -%}
+    </div>
+  </div>
+  {%- endif -%}
 </div>
 
 {% schema %}
-{
-  "name": "Custom HTML",
-  "settings": [
-    {
-      "type": "html",
-      "id": "html",
-      "label": "Custom HTML",
-      "default": "<div style='text-align: center; padding: 90px 0;'><h4 class='home__subtitle'>Custom HTML</h4><p>Add your custom HTML here.</p></div>"
-    },
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "Full width",
-      "default": true
-    }
-  ],
-  "presets": [
-    {
-      "category": "Advanced",
-      "name": "Custom HTML"
-    }
-  ]
-}
+  {
+    "name": "Custom HTML",
+    "settings": [
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "options": [
+          {
+            "value": "container",
+            "label": "Container"
+          },
+          {
+            "value": "fullwidth",
+            "label": "Fullwidth"
+          }
+        ],
+        "default": "container"
+      },
+      {
+        "type": "html",
+        "id": "html",
+        "label": "Content"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom HTML",
+        "category": "Content"
+      }
+    ]
+  }
 {% endschema %}

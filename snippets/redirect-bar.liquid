@@ -1,0 +1,14 @@
+{% if canonical_url contains "shared-wishlist" %}
+  {% assign url = canonical_url | split: '/' %}
+{% endif %}
+
+<div id="redirect-bar" class="redirect-bar" style="display:none">
+  <div class="redirect-bar-text">
+   We noticed you're in Canada, so we have redirected you to our Canadian store.
+    <div class="text-center redirect-btn">          
+    	<a class="redirect-btn" href="https://sweetlegs.com{{page.url}}/{{url[5]}}?no-redirect" target="_self">Go to USD store</a>
+    	<a href="#" class="redirect-btn no">Thanks! Close this</a> 
+    </div>
+  </div>
+</div>
+

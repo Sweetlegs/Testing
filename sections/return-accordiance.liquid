@@ -1,0 +1,58 @@
+
+<div class="row">
+  <div class="large-12 columns">
+    <div id="faq" role="tablist" aria-multiselectable="true">
+      {% for block in section.blocks %} 
+      <div class="panel panel-default">
+        <div  role="tab" id="{{'question-' | append: forloop.index}}">
+          <div class="panel-heading collapsed" data-toggle="collapse" data-parent="#faq" href="{{'#answer-' | append: forloop.index}}" aria-expanded="false" aria-controls="{{'answer-' | append: forloop.index}}">
+            <div class="question">{{ block.settings.heading }}</div>
+            <div class="accordiance-icon"><span></span><span></span></div>
+          </div>
+        </div>
+        <div id="{{'answer-' | append: forloop.index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby=id="{{'question-' | append: forloop.index}}">
+          <div class="panel-body">
+            {{  block.settings.content }}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Accordiance",
+     "blocks": [
+     {
+       "name": "Accordiance",
+       "type": "slide",
+       "settings": [
+      {
+        "type": "textarea",
+        "id": "heading",
+        "label": "Heading"
+        },
+        {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content"
+        }
+      ]
+     }
+  ],
+    "presets": [
+      {
+        "name": "Accordiance"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

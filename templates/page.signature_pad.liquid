@@ -1,0 +1,455 @@
+{% unless customer  %}
+<script type="text/javascript">
+  window.location = "/account/login?return_url=/pages/core-fundamentals";
+</script>
+{% endunless %}
+<main class="loading-container">
+  <p class="spinner-text">
+    Loading.....
+  </p>
+  <div class="spinner"></div>
+</main>
+<div id="signature_pad_page" class="content-area">
+  {%- include 'page-header' -%}
+  <div id="content" class="site-content">
+    <article class="page">
+      {%- include 'language-selector' -%}
+       <div class="row">
+        <div class="large-12 columns">
+        <div class="entry-content">
+          <button class="increase-image-size zoom-button"><img src="{{ 'zoom-in-icon.svg' | asset_url }}"></button>    
+          <button class="decrease-image-size zoom-button hideMe"><img src="{{ 'zoom-out.svg' | asset_url }}"></button>  
+          {%- section 'signature-pad-heading' -%}
+            <div class="english-version">
+          <div class="image-cnt" style="position:relative" id="signature-pad">
+                <img  src="https://cdn.shopify.com/s/files/1/2445/2869/files/SweetLegs-IDCoreFundamentals-REV-Nov2022-eng-longversion-2x.png?v=1667923406" usemap="#image-map" id="step-2-signature-pad">
+                  <map name="image-map">
+                          <area target="" alt="First Signature" class="firstSignatureArea" title="First Signature" href="#" coords="81,611,184,700" shape="rect">
+                          <area target="" alt="Second Signature" class="secondSignatureArea" title="Second Signature" href="#" coords="84,921,189,1008" shape="rect">
+                          <area target="" alt="Third Signature" class="thirdSignatureArea" title="Third Signature" href="#" coords="83,1190,189,1282" shape="rect">
+                          <area target="" alt="Fourth Signature" class="fourthSignatureArea" title="Fourth Signature" href="#" coords="85,1669,184,1766" shape="rect">
+                          <area target="" alt="Fifth Signature" class="fifthSignatureArea" title="Fifth Signature" href="#" coords="83,2269,187,2361" shape="rect">
+                          <area target="" alt="Sixth Signature" class="sixthSignatureArea" title="Sixth Signature" href="#" coords="88,2653,183,2743" shape="rect">
+                          <area target="" alt="Seventh Signature" class="seventhSignatureArea" title="Seventh Signature" href="#" coords="84,3254,184,3348" shape="rect">
+                          <area target="" alt="Eighth Signature" class="eightSignatureArea" title="Eighth Signature" href="#" coords="91,3519,183,3612" shape="rect">
+                  </map>
+              <div>
+            </div>
+          </div>
+        </div>
+
+        <div class="french-version visibiltyHidden">
+          <div class="image-cnt" style="position:relative" id="signature-pad-fr">
+            <img  src="https://cdn.shopify.com/s/files/1/2445/2869/files/core_fundamentals_FR_compressed_1.png?v=1667483237" usemap="#image-map-fr" id="step-2-signature-pad-fr">
+              <map name="image-map-fr">
+                      <area target="" alt="First Signature" class="firstSignatureArea" title="First Signature" href="#" coords="89,595,183,688" shape="rect">
+                      <area target="" alt="Second Signature" class="secondSignatureArea" title="Second Signature" href="#" coords="88,956,186,1047" shape="rect">
+                      <area target="" alt="Third Signature" class="thirdSignatureArea" title="Third Signature" href="#" coords="85,1212,187,1303" shape="rect">
+                      <area target="" alt="Fourth Signature" class="fourthSignatureArea" title="Fourth Signature" href="#" coords="85,1672,184,1764"  shape="rect">
+                      <area target="" alt="Fifth Signature" class="fifthSignatureArea" title="Fifth Signature" href="#" coords="84,2263,187,2350"  shape="rect">
+                      <area target="" alt="Sixth Signature" class="sixthSignatureArea" title="Sixth Signature" href="#" coords="79,2740,186,2837" shape="rect">
+                      <area target="" alt="Seventh Signature" class="seventhSignatureArea" title="Seventh Signature" href="#" coords="84,3258,186,3349"  shape="rect">
+                      <area target="" alt="Eighth Signature" class="eightSignatureArea" title="Eighth Signature" href="#" coords="75,3515,186,3610" shape="rect">
+              </map>
+          <div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div  class="step_two_submission subscribebtn hideMe">
+    <div class="loading-container">
+      <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+      <p class="please-wait-text hideMe">Please wait ....</p>
+    </div>
+      <div class="submit_text">SUBMIT</div>
+   </div>
+        </div>
+       </div>
+    </article>
+ {%- include 'signature-pad-popup' -%}
+  </div>
+</div>
+
+
+<style>
+.french-version, .english-version {
+ overflow: scroll;
+-webkit-overflow-scrolling: touch;
+}
+.image-cnt {
+  min-width: 100%;
+  transition: min-height 0.3s ease;
+}
+.zoom-button {
+  position: fixed;
+  right: 30px;
+  bottom: 20px;
+  z-index: 99999; 
+  color: white;
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  font-weight: bold;
+}
+.signature-pad-button {
+  transition: all 0.1s;
+}
+/* .decrease-image-size.zoom-button {
+  right: 90px;
+} */
+.step_two_submission.subscribebtn {
+  width: 100%; 
+  text-align: center; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  background:  #ED3393;
+  bottom: 10px;
+  left: 0px;  
+  color: white;
+  padding: 10px 0px;
+}
+.smile-launcher-frame {
+  display: none;
+}
+ #clear {
+   font-weight: bold;
+ }
+  .canvas-cnt {
+     border: 1px solid grey;
+    padding: 20px;
+  }
+  
+  .button_holder{
+    display: flex;
+    justify-content: end;
+  }
+  .visibiltyHidden {
+    visibility: hidden;
+    height: 0px;
+  }
+  .lds-ellipsis div {
+    background: white!important;
+  }
+  .loading-container {
+    display: flex;
+    align-items: center;
+  }
+  .loading-container p{
+    margin-bottom: 0px;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+@media only screen and (max-width: 600px) {
+  .zoom-button {
+    display: block;
+  }
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js" integrity="sha512-01CJ9/g7e8cUmY0DFTMcUw/ikS799FHiOA0eyHsUWfOetgbx/t6oV4otQ5zXKQyIrQGTHSmRVPIgrgLcZi/WMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script>
+var portrait = window.innerWidth < window.innerHeight;
+var PleaseRotateOptions = {
+    onlyMobile: true,
+}
+  let zoomImage = 700;
+let clickedBoxClass = null;
+  let signaturePad = null;
+  let signaturePadData = null;
+$(document).ready(function(e) {
+setTimeout(function() {
+$('area').each(function( index ) {
+        let e = document.createElement('button');
+        const addClassButton = `signature-pad-button ${$(this).attr('class')}`
+        $(e).addClass(addClassButton);
+        const coordiante =  $(this).attr('coords').split(',');
+        let adjX = parseInt(coordiante[0]);
+        let adjY = parseInt(coordiante[1]);
+        let width = parseInt(coordiante[2]) - parseInt(coordiante[0]);
+        let height = parseInt(coordiante[3]) - parseInt(coordiante[1]);   
+        $(e).css("left",adjX);
+        $(e).css("top",adjY);
+         $(e).css("z-index",99999);
+        $(e).css("position",'absolute');
+        $(e).css("height", height);
+        $(e).css("width", width);
+         // $(e).css("background", '#0000001f'); 
+        $(this).parent().parent().append(e);
+         $('.loading-container').css('display', 'none');
+  })
+  }, 2500);
+class ImageResize {
+  /**
+   * constructor - make image maps responsive
+   * @param {Object} config - setting for responsive image map
+   */
+  constructor(config) {
+    const { width, height, element } = config;
+
+    this.imageW = width;
+    this.imageH = height;
+    this.imageMap = document.querySelector(element);
+    const mapId = this.imageMap.getAttribute('usemap');
+    const mapElem = `map[name="${mapId.substring(1, mapId.length)}"]`;
+    const area = document.querySelector(mapElem).children;
+    this.areaArray = Array.from(area);
+    window.addEventListener('resize', this.resizeEvent);
+    setTimeout(this.imgMap, 500);
+  }
+  /**
+   * getCoords - get image map coordinates
+   * @param  {Node} elem - area tag
+   * @return {String} - area map coordinates
+   */
+  getCoordinates = (elem) => {
+    let areaCords = elem.dataset.coords;
+
+    if (!areaCords) {
+      areaCords = elem.getAttribute('coords');
+
+      elem.dataset.coords = areaCords;
+    }
+
+    return areaCords;
+  };
+  imgMap = () => {
+    this.wPercent = this.imageMap.offsetWidth / 100;
+    this.hPercent = this.imageMap.offsetHeight / 100;
+
+    this.areaArray.forEach(this.areaLoop);
+  };
+  /**
+   * areaLoop - Loop through area tags for image map
+   * @param  {Node} area - Area tag
+   */
+  areaLoop = (area) => {
+    const coordinates = this.getCoordinates(area).split(',');
+    const coordsPercent = coordinates.map(this.mapCoords).join();
+    area.setAttribute('coords', coordsPercent);
+  };
+  /**
+   * mapCoords - Set new image map coordinates based on new image width and height
+   * @param  {String} coordinate - coordinates from image map array
+   * @param  {Num} index - Loop index
+   * @return {Num} - New image map coordinates
+   */
+  mapCoords = (coordinate, index) => {
+    const parseCord = parseInt(coordinate, 10);
+    return index % 2 === 0
+      ? this.coordinatesMath(parseCord, this.imageW, this.wPercent)
+      : this.coordinatesMath(parseCord, this.imageH, this.hPercent);
+  };
+  /**
+   * coordinatesMath Set new coordinates from original image map coordinates
+   * @param  {number} coordinates - original image map coordinate
+   * @param  {number} imgVal - Image width or height value
+   * @param  {number} percentVal - New image width or height divided by 100
+   * @return {number} - New image map coordinates
+   */
+  coordinatesMath = (coordinates, imgVal, percentVal) =>
+    (coordinates / imgVal) * 100 * percentVal;
+
+  /**
+   * resizeEvent - Resize Event
+   */
+  resizeEvent = () => {
+    this.imgMap();
+  };
+}
+4264
+const resizeImg = new ImageResize({
+  width: 1224,
+  height: 4264,
+  element : '#step-2-signature-pad'
+})
+
+const resizeImgFrench = new ImageResize({
+  width: 1224,
+  height: 4198,
+  element : '#step-2-signature-pad-fr'
+})
+
+function open_signature_pad(ClassName){
+    $('.wrapper').css("display", "flex");
+    let canvas = document.getElementById('signature-pad-modal');
+    function resizeCanvas() {
+      
+      var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+      canvas.width = canvas.offsetWidth * ratio;
+      canvas.height = canvas.offsetHeight * ratio;
+      canvas.getContext("2d").scale(ratio, ratio);
+    }
+
+    window.onresize = resizeCanvas;
+    resizeCanvas();
+if(!signaturePad) {
+    signaturePad = new SignaturePad(canvas, {
+      backgroundColor: 'rgb(255, 255, 255,0)'
+    });
+}
+  console.log("signaturePadData", signaturePadData);
+    if(signaturePadData) {
+      signaturePad.fromDataURL(signaturePadData); 
+    }
+    // document.getElementById('save-png').addEventListener('click', function (e) {    
+    //   const imgClassName = `img.square.${ClassName}`;
+    //   if($(imgClassName).length > 0) {
+    //     return;
+    //   }   
+    //   if (signaturePad.isEmpty()) {
+    //     return alert("Please provide a signature first.");
+    //   }  
+    // });
+
+    document.getElementById('clear').addEventListener('click', function () {
+      signaturePad.clear();
+    });
+    
+    // close signature pad
+    document.getElementsByClassName('svg_container')[0].addEventListener('click', function(e){
+      $('.wrapper').css("display", "none");
+    });
+  }
+
+  $('#save-png').click(function() {
+    if($('.signature-img').length == 14) {
+       $('.step_two_submission.subscribebtn').removeClass('hideMe');
+      $('.step_two_submission.subscribebtn').addClass("bounce");
+    }  
+      if (signaturePad.isEmpty()) {
+          return alert("Please provide a signature first.");
+       }  
+       var data = signaturePad.toDataURL('image/png');
+        signaturePadData = data;
+        let e = document.createElement('img');
+        $(e).addClass('signature-img');
+        const areaClass = `area.${clickedBoxClass}`
+        const coordiante =  $(areaClass).attr('coords').split(',');
+        let adjX = parseInt(coordiante[0]);
+        let adjY = parseInt(coordiante[1]);
+        let width = parseInt(coordiante[2]) - parseInt(coordiante[0]);
+        let height = parseInt(coordiante[3]) - parseInt(coordiante[1]);   
+        $(e).attr('src', data);
+    $(`.signature-pad-button.${clickedBoxClass}`).html('');
+        $(`.signature-pad-button.${clickedBoxClass}`).append(e);
+      $('.wrapper').css("display", "none");
+  })
+$(window).resize(function() {
+  $('.signature-pad-button').each(function(i, obj) {
+    const className = $(obj).attr('class').replace('signature-pad-button ', "");
+    const parent = $(this);
+     setTimeout(function(){
+         const coordiante =  parent.parent().find(`area.${className}`).attr('coords').split(',');
+        let x = parseInt(coordiante[0]);
+        let y = parseInt(coordiante[1]);
+        let width = parseInt(coordiante[2]) - parseInt(coordiante[0]);
+        let height = parseInt(coordiante[3]) - parseInt(coordiante[1]);
+        $(obj).css("left",x);
+        $(obj).css("top",y);
+        $(obj).css("height", height);
+        $(obj).css("width", width);     
+     }, 1000);  
+  })
+});
+$('.step_two_submission.subscribebtn').on('click', function(e) {
+  $('.loading-container').css('display', 'flex');
+  if($( window ).width() < 500) {  
+      $("#step-2-signature-pad-fr").css('max-width', '500px');
+      $("#step-2-signature-pad").css('max-width', '500px');
+        window.dispatchEvent(new Event('resize'));
+  }
+   
+  $('.submit_text').css('display', 'none');
+  // $('.lds-ellipsis').css('display', 'flex');
+  // $('.please-wait-text').removeClass('hideMe');
+  
+  var domNode = document.getElementById('signature-pad')
+  if(localStorage.getItem('language') == 'french') {
+    domNode = document.getElementById('signature-pad-fr')
+  }
+  var scale = 1200/domNode.clientWidth;
+   var options = {
+           width: domNode.clientWidth * scale,
+           height: domNode.clientHeight * scale,
+           style: {
+              transform: 'scale('+scale+')',
+              transformOrigin: 'top left'
+          }
+      };
+  domtoimage.toPng(domNode).then(dataUrl3 => {
+  domtoimage.toPng(domNode).then(dataUrl2 => {
+   domtoimage.toPng(domNode)
+    .then(function (dataUrl) {
+      var img = new Image();
+      img.src = dataUrl;
+      console.log("Image ", dataUrl);
+      customerId = `{{customer.id}}`;
+      console.log("customerId ", customerId);
+      $.ajax({
+                url : `https://sweetlegs.rocks/api/distributor-onboarding/Step2`,
+                type : 'POST',
+                data: {
+                  customerId: customerId,
+                  img: img.src
+                },
+                success : function(data) {
+                  window.location.href = "/pages/id-sign-up-dashboard"
+           }
+      	});
+   
+    })
+    .catch(function (error) {
+      console.error('oops, something went wrong!', error);
+    });
+  })
+     })
+}) 
+
+  
+$(document).on("click",".signature-pad-button",function() {	
+    clickedBoxClass = $(this).attr('class').replace('signature-pad-button ', "");
+  $("body").dblclick()
+    open_signature_pad($(this).attr('class'));
+});
+$(document).on("click","#save-all-png",function() {
+  $('.signature-pad-button').html('');
+  $('.signature-pad-button').each(function(item) {
+       let buttonClass = $(this).attr('class').replace('signature-pad-button ', '');
+        var data = signaturePad.toDataURL('image/png');
+        signaturePadData = data;
+        let e = document.createElement('img');
+        $(e).addClass('signature-img');
+        const areaClass = `area.${buttonClass}`
+        const coordiante =  $(areaClass).attr('coords').split(',');
+        let adjX = parseInt(coordiante[0]);
+        let adjY = parseInt(coordiante[1]);
+        let width = parseInt(coordiante[2]) - parseInt(coordiante[0]);
+        let height = parseInt(coordiante[3]) - parseInt(coordiante[1]);   
+        $(e).attr('src', data);
+        $(this).append(e);
+       
+      })
+  $('.step_two_submission.subscribebtn').removeClass('hideMe');
+  $('.step_two_submission.subscribebtn').addClass("bounce");
+  $('.wrapper').css("display", "none");
+})
+  $(document).on("click",".increase-image-size",function() {
+    $(this).toggleClass('hideMe');
+    $('.decrease-image-size').toggleClass('hideMe');
+    $('.image-cnt').css('min-width', `${zoomImage}px`);
+    zoomImage =  zoomImage + 100;
+   window.dispatchEvent(new Event('resize'));
+  })
+
+  $(document).on("click",".decrease-image-size",function() {
+     $(this).toggleClass('hideMe');
+     $('.increase-image-size').toggleClass('hideMe');
+    $('.image-cnt').css('min-width', `100%`);
+   window.dispatchEvent(new Event('resize'));
+  })
+  
+});
+</script>
+ {{ 'pleaserotate.min.js' | asset_url | script_tag }}

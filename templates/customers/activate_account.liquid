@@ -1,38 +1,54 @@
-<!-- /templates/customers/activate_account.liquid -->
-<div class="wrapper">
-
-  <div class="grid page-margin">
-
-    <div class="grid__item large--one-third push--large--one-third text-center">
-
-      <h3>{{ 'customer.activate_account.title' | t }}</h3>
-      <p>{{ 'customer.activate_account.subtext' | t }}</p>
-
-      {% comment %}
-        This form must use 'activate_customer_password'
-      {% endcomment %}
-      {% form 'activate_customer_password' %}
-
-        {{ form.errors | default_errors }}
-
-        <label for="CustomerPassword" class="label--hidden">{{ 'customer.activate_account.password' | t }}</label>
-        <input type="password" value="" name="customer[password]" id="CustomerPassword" placeholder="{{ 'customer.activate_account.password' | t }}">
-
-        <label for="CustomerPasswordConfirmation" class="label--hidden">{{ 'customer.activate_account.password_confirm' | t }}</label>
-        <input type="password" value="" name="customer[password_confirmation]" id="CustomerPasswordConfirmation" placeholder="{{ 'customer.activate_account.password_confirm' | t }}">
-
-        <div class="text-center">
-          <p>
-            <input type="submit" class="btn btn--full" value="{{ 'customer.activate_account.submit' | t }}">
-          </p>
-          <p>
-          <input type="submit" class="btn btn--secondary" name="decline" value="{{ 'customer.activate_account.cancel' | t }}">
-          </p>
+<div id="primary" class="content-area">
+  {%- include 'page-header' -%}
+  <div id="content" class="site-content">
+    <div class="row">
+      <div class="medium-10 medium-centered large-6 large-centered columns">
+        <div class="login-register-container">
+          <div class="row">
+            <div class="large-12 columns">
+              <div class="account-forms-container">
+                <ul class="account-tab-list">
+                  <li class="account-tab-item"><span class="account-tab-link current">{{ 'customer.activate_account.title' | t }}</span></li>
+                </ul>
+                <div class="account-forms">
+                  {%- form 'activate_customer_password' -%}
+                  <p>{{ 'customer.activate_account.subtext' | t }}</p>
+                  
+                  {{- form.errors | default_errors -}}
+                  
+                  <div class="form-row form-row-wide">
+                    <p class="minimal-form-input no-text">
+                      <label for="activate-password">
+                        <span class="text">
+                          <span class="text-inner">{{ 'customer.activate_account.password' | t }} <span class="required">*</span></span>
+                        </span>
+                      </label>
+                      <input type="password" required="required" class="input-text" name="customer[password]" id="activate-password" />
+                    </p>
+                  </div>
+                  <div class="form-row form-row-wide">
+                    <p class="minimal-form-input no-text">
+                      <label for="activate-password2">
+                        <span class="text">
+                          <span class="text-inner">{{ 'customer.activate_account.password_confirm' | t }} <span class="required">*</span></span>
+                        </span>
+                      </label>
+                      <input type="password" required="required" class="input-text" name="customer[password_confirmation]" id="activate-password2" />
+                    </p>
+                  </div>
+                  <p class="form-row">
+                    <input type="submit" class="button" name="activate" value="{{ 'customer.activate_account.submit' | t }}" />
+                  </p>
+                  <p class="form-row2">
+                    <input type="submit" name="decline" value="{{ 'customer.activate_account.cancel' | t }}">
+                  </p>
+                  {%- endform -%}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      {% endform %}
-
+      </div>
     </div>
-
   </div>
-  
 </div>

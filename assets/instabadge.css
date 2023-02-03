@@ -1,0 +1,61 @@
+.instabadge {
+  position:relative;
+}
+
+.instabadge .instabadge-badge {
+  width: 19.90740740740741%!important;
+    max-width: 19.90740740740741%!important;
+    background-color: transparent!important;
+    border: none!important;
+    position: absolute!important;
+    max-width: 30%!important;
+    max-height: 30%!important;
+    top: -5px!important;
+    left: 8.179012345679013%!important;
+    z-index: 30!important;
+    transform: inherit!important;
+    content: ''!important;
+    opacity: 1!important;
+    background-size: contain!important;
+    background-repeat: no-repeat!important;
+    height: 100%;
+    width: 100%;
+}
+.instabadge-badge.sale{
+  background: url( //cdn.shopify.com/s/files/1/2445/2869/t/502/assets/instabadge-20709.png?v=181648475927427682501675447592)
+} 
+.instabadge-badge.new{
+background: url( //cdn.shopify.com/s/files/1/2445/2869/t/502/assets/instabadge-20710.png?v=33163165611208136341675447592)
+}  
+.instabadge-39587-type_collection .instabadge-badge, .instabadge-successful-truck-type_collection .instabadge-badge {
+width: 21.295907335907334%!important;
+max-width: 21.295907335907334%!important;
+top: 0%!important;
+left: 9.10472972972973%!important;
+background: url('//cdn.shopify.com/s/files/1/2445/2869/t/502/assets/instabadge-39587_150x.png?v=181648475927427682501675447593');
+}
+
+.instabadge-39587-type_product .instabadge-badge, .instabadge-successful-truck-type_product .instabadge-badge {
+width: 21.295907335907334%!important;
+max-width: 21.295907335907334%!important;
+top: 0%!important;
+left: 9.10472972972973%!important;
+background: url('//cdn.shopify.com/s/files/1/2445/2869/t/502/assets/instabadge-39587_500x.png?v=181648475927427682501675447593');
+}
+
+.instabadge-39588-type_collection .instabadge-badge, .instabadge-neat-digestion-type_collection .instabadge-badge {
+width: 19.90740740740741%!important;
+max-width: 19.90740740740741%!important;
+top: -0.33783783783783783%!important;
+left: 8.179012345679013%!important;
+background: url('//cdn.shopify.com/s/files/1/2445/2869/t/502/assets/instabadge-39588_150x.png?v=33163165611208136341675447594');
+}
+
+.instabadge-39588-type_product .instabadge-badge, .instabadge-neat-digestion-type_product .instabadge-badge {
+width: 19.90740740740741%!important;
+max-width: 19.90740740740741%!important;
+top: -0.33783783783783783%!important;
+left: 8.179012345679013%!important;
+background: url('//cdn.shopify.com/s/files/1/2445/2869/t/502/assets/instabadge-39588_500x.png?v=33163165611208136341675447594');
+}
+
