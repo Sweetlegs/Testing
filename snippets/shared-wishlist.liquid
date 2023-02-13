@@ -51,7 +51,8 @@
 <script>
   var shortUrl;
   function ShortLinkBitly() { /*pLongUrl is the long URL*/
-    pLongUrl ="https://"+"{{ shop.permanent_domain }}"+"/pages/shared-wishlist/{{customer.id}}";
+    pLongUrl ="https://sweetlegs.com/pages/shared-wishlist/{{customer.id}}";
+    console.log(pLongUrl);
 	/*Long URL must start with a protocol, bitly can't (and won't) figure out the right protocol.*/
 	if ( !pLongUrl.match(/(ftp|http|https):\/\//i) ) {
 		return "Error: Link must start with a protocol (e.g.: http or https).";

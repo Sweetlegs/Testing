@@ -6,17 +6,15 @@
   {%- for icon in my_icons -%}
     {%- if default_icons contains icon -%}
     <li class="{{ icon }}">
-      {%- assign setting_icon = 'social_' | append: icon | append: '_link' -%}
-      
+      {%- assign setting_icon = 'social_' | append: icon | append: '_link' -%}          
       <a href="{{ settings[setting_icon] | escape }}"
       target="_blank"
       rel="noopener"
       aria-label="Sweetlegs's {{ icon }} Page"
       aria-describedby="new-window-0">
       <span class="shopify-social-icon-{{icon}}-circle" aria-hidden="true"></span>
-      </a> 
-    
-  	</li>
+      </a>    
+    </li>
     {%- endif -%}
   {%- endfor -%}
 </ul>

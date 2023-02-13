@@ -1,16 +1,8 @@
-
-{{ 'addToCart.js' | asset_url | script_tag }} 
 {%- capture my_title -%}{% include 'shortcode-render' render: 'title' %}{%- endcapture -%}
 {%- capture my_collection_name -%}{% include 'shortcode-render' render: 'collection' %}{%- endcapture -%}
 {%- capture my_limit -%}{% include 'shortcode-render' render: 'limit' %}{%- endcapture -%}
 {%- capture my_columns -%}{% include 'shortcode-render' render: 'columns' %}{%- endcapture -%}
-{% assign totalLineItem = 0 %}
-{% for item in cart.items %}
-     {% assign totalLineItem = totalLineItem | plus: 1 %}      
-  {% endfor %} 
-{% if customer.tags contains "distributor" or customer.tags contains "Distributor" %}
-	
-{% endif %}
+
 <div class="shortcode_products_slider">
   <div class="products-carousel products-carousels-slider">
     {%- if my_title != blank -%}
@@ -27,14 +19,3 @@
     {%- endunless -%}
   </div>
 </div>
-  <script>
-//     $('.closeModal').on('click',function(){
-//     	$('.popUpModal').fadeOut();
-//   	});
-    $('.click').unbind().click(function(e) {
-      var $url = $(this).parent().find('.url').val();
-      var $id = $(this).parent().find('.id').val();
-      addToCart($url, $id, 1);
-    });
-
- </script>

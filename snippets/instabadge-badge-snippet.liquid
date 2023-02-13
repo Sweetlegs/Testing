@@ -16,7 +16,7 @@
   {%- assign sale_value = discountPercent %}
 
 
-  {% assign date_published = product.created_at | date:'%s' | plus: 0 %}
+  {% assign date_published = product.published_at | date:'%s' | plus: 0 %}
   {% assign date_now = 'now' | date:'%s' %}
   {% assign new_value = date_now | minus: date_published %}
 
@@ -27,12 +27,19 @@
   {% endif %}
   {% endfor %}
 
+{% assign instabadge-20709-collectionsSKUs = "11885608983" %} 
 
+{% assign instabadge-20709-collection-condition = false %}
+{% for collection in product.collections %}
+{% if instabadge-20709-collectionsSKUs contains collection.id %}
+{% assign instabadge-20709-collection-condition = true %}
+{% endif %}
+{% endfor %}
  
-{% if sale_value >= 1 %} 
-"instabadge-39587" 
+{% if  instabadge-20709-collection-condition == true  %} 
+"instabadge-20709" 
 {% elsif new_value <= 1209600 %} 
-"instabadge-39588"
+"instabadge-20710"
 {% else %}
 
  False 

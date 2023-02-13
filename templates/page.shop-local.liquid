@@ -1,13 +1,8 @@
 <script>
 	let searchParamsPostalCode = location.search.split('search=')[1];
-  let api = '{{settings.sweetlegs_rocks_api}}'
-  let requestData = {};
-   requestData.customer_id = '{{customer.id}}';
-   requestData.shop_id = '{{settings.store_id}}';
     $.ajax({
-      url: `${api}/api/id-locators`,
+       url: `https://sweetlegs.rocks/api/id-locators`,
        type: 'get',
-      	data: requestData,
        success: function (response) {
          locations = response;
          mapLocations(response, map);
@@ -34,6 +29,7 @@
         <div class="large-12 columns">
           <div class="entry-content">
             <h3 class="intro">Use our locator map to find a SweetLegs Independent Distributor near you!</h3>
+            {%- include 'shortcode' load: page.content -%}
             <div class="filter-locations">
                 <div class="search-box">
                     <label>Search</label>

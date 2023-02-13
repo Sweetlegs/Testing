@@ -8,17 +8,18 @@
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.9.0/css/light.css" integrity="sha384-/ggAGHSQWxssDRflcj0aeAlGN2rNgsnWOLv1ZU5FEvjQWxP53glq5pNPjtfldVVN" crossorigin="anonymous">
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.9.0/css/brands.css" integrity="sha384-wRa49NRotGDh34aLO1Hjbu65qHSTF/ZNSBm7uTpMUa2EQ1Csq7Zlswm+FR9hcWtn" crossorigin="anonymous">
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.9.0/css/fontawesome.css" integrity="sha384-QSCxeayZXa6bvOhHReoQRGN7utvnOnY3JoBHGxM61JQQ1EXA7AT3m7dnlHXLhnCj" crossorigin="anonymous">
-  {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+
+  	{{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
 	{{'//cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.3/jquery.timeago.js' | script_tag}}
 	{{ '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css' | stylesheet_tag }}
-
 	{{ '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js' | script_tag }}
   <meta charset="utf-8" />
   <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /><![endif]-->
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="{{ settings.color_button }}">
   <link rel="canonical" href="{{ canonical_url }}">
-  {{assign og:image ="//cdn.shopify.com/s/files/1/2445/2869/t/62/assets/logo-svg.svg?15976391691356102603"}}
+  
+  
   {%- if settings.favicon_image -%}
     <link rel="shortcut icon" href="{{ settings.favicon_image | img_url: '32x32' }}" type="image/png" />
   {%- endif -%}
@@ -58,12 +59,16 @@
     <meta name="description" content="{{ page_description | escape }}" />
   {%- endif -%}
   <script>
-     const slInventoryUrl = 'https://sl-erp.sweetlegs.biz';
+    const slInventoryUrl = 'https://sl-erp.sweetlegs.biz';
   </script>
+ 
+  
+  
+  
   {%- include 'social-meta-tags' -%}
   {%- include 'shopify-head' -%}
-  
-  {{ content_for_header }}  {{ shop.metafields.fontify.stylesheets }}
+   {{ content_for_header }}
+
 
   {% assign cad_domain = "https://sweetlegs.ca" %}
   {% assign usd_domain = "https://sweetlegs.com" %}
@@ -89,7 +94,7 @@
    		window.totalProducts = "{{collections['quick-order'].products.length}}";   
   	</script>  
   {% endpaginate %}
-   {% include 'redirect-bar' %}
+  {% include 'redirect-bar' %}
   {% include 'alertMessageLineItem' %}
   {%- if settings.page_loader == '1' -%}
   <div id="eva-loader-wrapper">
@@ -108,7 +113,8 @@
       <div class="page-wrapper">
         <main id="main">
           {{ content_for_layout }}
-        </main>        
+        </main>
+        
         {%- section 'footer' -%}
       </div>
     </div>
@@ -118,16 +124,19 @@
   {%- include 'photoswipe' -%}
   {%- include 'newsletter-popup' -%}
   {%- include 'notify-products' -%}
-  {%- include 'cookie-popup' -%}
+  {%- include 'cookie-banner' -%}
   {%- include 'facebook-chat' -%}
-  
+
+  <script>
+    //jQuery('a[href^="http"]').not('a[href^="{{ shop.url }}"]').attr('target', '_blank');
+  </script>
 
     <script async type="text/javascript" id="stamped-script-widget" data-api-key="pubkey-l47V85Gah31UV70ZD6V08K451U1iC2" src="https://cdn-stamped-io.azureedge.net/files/widget.min.js"></script>
 
  <input type="hidden" name="aaaformbuilder_customer_logged_id" value="{{customer.id}}" id="aaaformbuilder_customer_logged_id"/>
  
  {% include 'smile-initializer' %}
-  
+
   {% if customer %}
   {% else %}
   <style>
@@ -137,8 +146,6 @@
   </style>
   {% endif %}
 
-  
-  
 <script src='https://revsliderapp.com/public/assets/js/themepunch-bind.js' defer="defer"></script>
   
 
@@ -148,8 +155,8 @@
 <script>  //klaviyo script for notify me
     var klaviyo = klaviyo || [];
     klaviyo.init({
-      account: "LYCBqa",
-       list: 'KUT59H',
+      account: "MxF3MP",
+       list: 'JF7HEN',
       platform: "shopify"
     });
     klaviyo.enable("backinstock",{ 
@@ -158,7 +165,7 @@
       product_page_class: "notifybtn",
       product_page_text_align: "center",
       product_page_margin: "0px",
-      include_on_tags: 'sweettops, black',
+      include_on_tags: 'sweettops, notifyme',
       replace_anchor: false
     },
     modal: {
@@ -190,6 +197,5 @@
 {{ 'search.js' | asset_url | script_tag }} 
 {{ 'main-theme.js' | asset_url | script_tag }} 
 </html>
-  
-  
-  
+
+

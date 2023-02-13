@@ -1,6 +1,7 @@
 {{ 'offcanvas.scss' | asset_url | stylesheet_tag }}
 <div class="menu-offcanvas">
-  <div class="offcanvas_close offcanvas_target"></div>  
+  <div class="offcanvas_close offcanvas_target"></div>
+  
   {%- comment -%} CURRENCY {%- endcomment -%}
   {%- if section.settings.header_currency != '' -%}
   <nav class="language_currency offcanvas_target">

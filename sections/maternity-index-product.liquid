@@ -8,7 +8,7 @@
     </div>
   </div>
   {%- endif -%}
-  <div class="column-container{% if section.settings.sidebar == 'left' or section.settings.sidebar == 'right' %} small-12 large-7 float-left{% endif %}">
+  <div data-aos="fade-left"  data-aos-offset="250" data-aos-delay="500" data-aos-duration="1000" class="column-container{% if section.settings.sidebar == 'left' or section.settings.sidebar == 'right' %} small-12 large-7 float-left{% endif %}">
     <div class="row" style="padding-bottom: 35px">
       <div class="large-12 columns">
         {%- assign my_shortcode = '' -%}
@@ -30,10 +30,10 @@
 
 
           <a class="index-product-link-wrapper" href="/collections/{{ collections[section.settings.collection].handle }}"> 
-            <h3 class="shortcode_title_1" style="color:black">{{ collections[section.settings.collection].title }}</h3> 
+            <h3 class="shortcode_title_1" style="color:black;">{{ collections[section.settings.collection].title }}</h3> 
             <p class="index-product-paragraph">VIEW ALL <i class="far fa-external-link-square-alt index-product-viewAll"></i></p>
          </a>
-
+        
           <h4 class="shortcode_title_2">{{ section.settings.heading | escape }}</h4>
           <div class="empty_space" style="height:40px"><span class="empty_space_inner"></span></div>
         {%- endif -%}
@@ -43,7 +43,7 @@
     </div>
   </div>
   {%- if section.settings.sidebar == 'right' -%}
-  <div class="column-container small-12 large-5 float-{{ section.settings.sidebar }}">
+  <div  data-aos="fade-right"  data-aos-offset="250" data-aos-delay="500" data-aos-duration="1000" class="column-container small-12 large-5 float-{{ section.settings.sidebar }}">
     <div class="column-inner"{% if section.settings.sidebar_image %} style="background-image:url({{ section.settings.sidebar_image | img_url:'master' }});"{% endif %}>
       <a href="/collections/{{ collections[section.settings.collection].handle }}"><div class="empty_space" style="height:{{ section.settings.sidebar_height | default:400 | plus:0 }}px;"><span class="empty_space_inner"></span></div></a>
     </div>

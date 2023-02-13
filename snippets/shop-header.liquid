@@ -23,13 +23,12 @@
           {%- elsif template.name == 'collection' -%}
             {% if collection.title == 'Halloween Shop'  %}
               <span style="color: #F47B33">{{  collection.title  }}</span>
-            {% else %}
+                 {%- else -%}
             {{  collection.title  }}
-            {% endif %}
-          {% else %}
-          	{{ page.title }}
+              {% endif %}
+          {%- else -%}
+            {{  collection.title  }}
           {%- endif -%}
-          
         </h1>
         {%- if section.settings.shop_description != '' and collection.description != '' -%}
         <div class="term-description">

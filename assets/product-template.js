@@ -29,24 +29,24 @@
            default:
              limit_tag = limit;
          }
-
+         
          let checkSpan = $(".limit-cnt").empty();
          $(".limit-cnt").append( "<div class='limit-one'>Limit " + limit_tag + "</div>" )
          this.value = parseInt(limit);
-       }
-     }       
-   });
-   
+     	}
+     }
+        
+	});
    if($(".add_to_cart_button").hasClass( "hide" )) {
        	$(".variations_button").addClass( "hide" )
    }
- //   $('select').on('change', function() {
- //     if($(".add_to_cart_button").hasClass( "hide" )) {
- //       	$(".variations_button").addClass( "hide" )
- //     } else {
- //       	$(".variations_button").removeClass( "hide" )
- //     }
-	// });
+   $('select').on('change', function() {
+     if($(".add_to_cart_button").hasClass( "hide" )) {
+       	$(".variations_button").addClass( "hide" )
+     } else {
+       	$(".variations_button").removeClass( "hide" )
+     }
+	});
     $('.closeModal').on('click',function(){
       $('.popUpModal').fadeOut();
     });

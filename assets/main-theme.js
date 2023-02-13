@@ -1,7 +1,7 @@
-    $(document).ready(function(){
-        setTimeout(function(){
+    $(document).ready(function(){  
+      	setTimeout(function(){
           $('.cbb-frequently-bought-add-button').addClass("button btn1 bshadow alt");
-        }, 2000);
+        }, 1000);
       
       $(document).on('click', '.swatch-item', function(e) {
         $('.swatch-item').removeClass('active');
@@ -10,25 +10,6 @@
         imageDiv.attr('srcset',  $(this).attr('data-image'));
         $(this).parent().parent().parent().find('.product_thumbnail_secondary').css('background-image', `url(${$(this).attr('data-image')})`);
         
-      })
-      $('.filterBoxWrap').click(function() {
-        $(this).find('.form-controls').focus();
-      });
-       $(document).on('click', '.remove.remove_from_wishlist', function(e) {
-        let api = `https://sweetlegs.rocks`;
-        let data = {
-          customer: $('.customerId').val(),
-          product: $('.productId').val(),
-          shop: 'sweetlegs-cad.myshopify.com'
-        }
-        $.ajax({
-          type: 'Delete',
-          url: `${api}/api/wishlists`,
-          data: data,
-          success: function(response) {
-          },
-            
-          })
       })
       $(document).on('click', '.instafeed-lightbox', function(e) 
       {
@@ -40,32 +21,10 @@
               var a = url.indexOf("?");
               var b =  url.substring(a);
               var c = url.replace(b,"");
-              window.location.href = '/#_';
+              window.location.href = 'https://sweetlegs.com/#_';
           }
       });
-      
-      const myInterval = setInterval(scroll_bar, 500);
-      
-      function myStopFunction() {
-        clearInterval(myInterval);
-      }
-
-      function scroll_bar() {
-        if($('#fsb_bar').html()) {
-          const style = $('#fsb_bar').attr('style');
-          function findColor(item) {
-            return item.includes('background');
-          }
-          let background_value = $('#fsb_bar').attr('style').split(';').find(findColor);
-          let colon_index = background_value.indexOf(':');
-          let background_color = background_value.substring(colon_index + 1, background_value.length);
-          let ticker_tape_container = $('.tickerwrapper');
-          ticker_tape_container.css('background-color', background_color);
-          myStopFunction();
-        }
-      }
-      
-      $(document).on('click','.tagged-buy-button', function(e) {
+       $(document).on('click','.tagged-buy-button', function(e) {
         e.preventDefault();
         const href = $(this).parent().parent().find('a').prop('href');
         if(href.includes('leggings')) {
@@ -88,12 +47,30 @@
   
       });
       
-      $(document).on('click','.lightbox-instagram', function (event) {
-        console.log("test", event);
-      });
+      const myInterval = setInterval(scroll_bar, 500);
 
+      function myStopFunction() {
+        clearInterval(myInterval);
+      }
+
+      function scroll_bar() {
+        if($('#fsb_bar').html()) {
+          const style = $('#fsb_bar').attr('style');
+          function findColor(item) {
+            return item.includes('background');
+          }
+          let background_value = $('#fsb_bar').attr('style').split(';').find(findColor);
+          let colon_index = background_value.indexOf(':');
+          let background_color = background_value.substring(colon_index + 1, background_value.length);
+          let ticker_tape_container = $('.tickerwrapper');
+          ticker_tape_container.css('background-color', background_color);
+          myStopFunction();
+        }
+      }
+
+//       $('#insta-feed h2').append('<h2>TAG @SWEETLEGS FOR A CHANCE TO BE FEATURED</h2>');
       const player = new Plyr('#player'); 
-      const player2 = new Plyr('#player-wwc'); 
+       const player2 = new Plyr('#player-wwc'); 
       player.on('play', (data) => {
         const width = $(window).width();
         if(width < 600) {
@@ -107,22 +84,20 @@
       $('.owl-item .product ').on('mouseleave',function(e){
         $(this).closest('.owl-carousel').trigger('play.owl.autoplay');
       })
-      	if (customerTags.toLowerCase().indexOf("distributor") >= 0) {
+	 if (customerTags.toLowerCase().indexOf("distributor") >= 0) {
 //           $('.price-old').hide();
           $('.price-new').text('');
-     	}  
-//       display review total in ribbon
-         if(window.location.href == "https://sweetlegs.ca/" || window.location.href.includes("https://sweetlegs.ca/?")) {
-             var myVar = setInterval(function() {
-                if(jQuery) {    
-                  if($( "#stamped-badge-total" ).html()) {
-                      $('.ribbon.black .content .text .points span').text($( "#stamped-badge-total" ).html())
-                      clearInterval(myVar);
-                  }
-                }
-            }, 20);
-      	}
-      
+     }   
+     if(window.location.href == "https://sweetlegs.com/" || window.location.href.includes("https://sweetlegs.com/?")) {
+         var myVar = setInterval(function() {
+            if(jQuery) {    
+              if($( "#stamped-badge-total" ).html()) {
+                  $('.ribbon.black .content .text .points span').text($( "#stamped-badge-total" ).html())
+                  clearInterval(myVar);
+              }
+            }
+        }, 20);
+      }
     
       var href = window.location.href.split('/')[2];
       var totalProduct = window.totalProducts;
@@ -150,21 +125,14 @@
       	window.top.location.href = 'https://sweetlegs.com'+window.location.pathname+'/?no-redirect'; 
       })
       
-      $('.store-switcher-cad').css('font-weight', 'bold');
+      $('.store-switcher-usd').css('font-weight', 'bold');
       $('.map-distibutor .double-ribbon').click(function(e) {
         window.location.href = "/pages/reviews";
-//         window.open( "/pages/reviews", '_blank');
       });
       $('.offcanvas_overlay').on('click', function(e){
         $(this).addClass('offcanvas_close');
       });
-      $('.product_wrapper .input-text.qty.text').change(function(){
-        if($(this).val() > 25) {
-          $(this).val(25);
-        } 
-      })
       $('.input-text.qty.text.cart').change(function(){
-         var line = $(this).parent().find('.input-text.qty.text').data('line');
         var $qty = $(this).parent().find('.input-text.qty.text').val();
         var $id = $(this).parent().find('.input-text.qty.text').data('id');
         var $url = $(this).parent().find('.input-text.qty.text').data('url');
@@ -172,21 +140,19 @@
         var answer = true;
         var reload = true;
         var max = 25;
-        
         var value = parseInt($(this).val(), 10) || 0;
-        console.log(line);
         function  addToCart(quantity, reload) {  
 
             var data = {
             quantity: quantity,
-            line: line
+            id: $id
             }
 
             jQuery.ajax({
               type: 'post',
               url: '/cart/change.js',
               data: data,
-              success: function(d){
+              success: function(d){ 
                                    if(reload) {
                                      if ($('.prodPlus:hover').length == 0 && $('.prodMinus:hover').length == 0) {
                                        
@@ -223,7 +189,7 @@
             success: function(cart) {
               var tags = cart.product.tags.split(','); 
               tags.forEach(tag => {
-                if(tag.trim().startsWith("limit")){
+               if(tag.trim().startsWith("limit")){
                   var limit = parseInt(tag.split("limit").pop());
                   if(parseInt($qty) > limit) {
                     $('.goCart').addClass('hideMe');
@@ -294,7 +260,7 @@
         $.ajax({
             type: "POST",
             url: '/cart.js',
-            data: {"attributes[Ref_ID]": srefId.replace('/', '')}, /* We are using an attribute named "pagination" */
+            data: {"attributes[Ref_ID]": srefId}, /* We are using an attribute named "pagination" */
             success: function(d){             
               },
             dataType: 'json'
@@ -312,16 +278,17 @@
 	}
     //Add arrow in drowdown menu
     $(".list-item>li" ).has('ul').append('<i class="fa fa-angle-down" style="margin: 5px"></i>');
-
-    // click event in offcanvas menu
-    $(document).on("click",".menu-item.is-mega-menu",function(e){
-      $(this).find('.mm-next').trigger('click');
+      
+   // click event in offcanvas menu
+    $(document).on("click",".offcanvas_menu.mm-listview span.mm-selected",function(e){
+      if($(this).parent().attr('href') == '#') {
+        $(this).parent().parent().find('.mm-next').trigger('click');
+    //     $('.mm-next').trigger('click');
+      }
     });
 
 
-
-//disable right click on sweetlegs logo
-$('.site-logo').bind('contextmenu', function(e) {
-    return false;
-}); 
-
+  //disable right click on sweetlegs logo
+  $('.site-logo').bind('contextmenu', function(e) {
+      return false;
+  }); 

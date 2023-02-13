@@ -62,12 +62,10 @@
     clearInterval(myInterval);
   }
 
-  
   function scroll() {
     if(temp === 1) {
       if($('#fsb_bar').html()) {
         const style = $('#fsb_bar').attr('style');
-        console.log('sytle', $('#fsb_bar').attr('style'));
         $('.tickerwrapper .list').attr('style', style);
         temp = temp +1;
         const childHtml = $('#fsb_bar').html();

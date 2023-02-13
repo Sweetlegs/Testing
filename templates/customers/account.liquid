@@ -1,13 +1,12 @@
-
 {%- paginate customer.orders by 20 -%}
 <div id="primary" class="content-area">
   {%- include 'page-header' -%}
    <div class="large-12 large-centered columns">
-    <div class="my_account_container">
-      <div class="myaccount_user">
-          {%- include 'account-navigation' -%}
-      </div>
-    </div>
+   	<div class="my_account_container">
+    	<div class="myaccount_user">
+      		{%- include 'account-navigation' -%}
+    	</div>
+  	</div>
   </div>
   <div class="row">
     <div class="large-12 columns">
@@ -18,12 +17,13 @@
               <div class="myaccount_user">
                 
                 <div class="myaccount-content content order-history hideMe" style="overflow: auto">
-                    <ul class="nav nav-tabs"   style="margin-left: 0px">
+                    <ul class="nav nav-tabs">
                       <li class="active"><a data-toggle="tab" href="#order">ORDER HISTORY</a></li>
                        {% if customer.tags contains "distributor" or customer.tags contains "Distributor" %}
-                       <li><a data-toggle="tab" href="#refund">RETURNS HISTORY</a></li>
+                     	 <li><a data-toggle="tab" href="#refund">RETURNS HISTORY</a></li>
                        {% endif %}
                     </ul>
+
                     <div class="tab-content">
                       <div id="order" class="tab-pane fade in active">
                               {%- if customer.orders.size > 0 -%}
@@ -32,16 +32,11 @@
                                 <thead>
                                   <tr>
                                     <th>{{ 'customer.orders.order_number' | t }}</th>
-                                    {% assign hideMobile = 'visible-lg' %}
-                                    {% if customer.tags contains "distributor" or customer.tags contains "Distributor" %}
-                                      {% assign hideMobile = '' %}
-                                    {% endif %}
-                                      <th class="{{hideMobile}}">{{ 'customer.orders.date' | t }}</th>
-                                      <th class="{{hideMobile}}">{{ 'customer.orders.payment_status' | t }}</th>
-                                      <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
-                                      <th class="order-quantity-outer {{hideMobile}}">{{ 'customer.order.quantity' | t }}</th>
-                                      <th class="{{hideMobile}}">{{ 'customer.orders.total' | t }}</th>                        
-                                    
+                                    <th>{{ 'customer.orders.date' | t }}</th>
+                                    <th>{{ 'customer.orders.payment_status' | t }}</th>
+                                    <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                                    <th class="order-quantity-outer">{{ 'customer.order.quantity' | t }}</th>
+                                    <th>{{ 'customer.orders.total' | t }}</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -50,26 +45,18 @@
                                     <td class="order-number" data-label="{{ 'customer.orders.order_number' | t }}">
                                       <a href="{{ order.customer_url }}">{{ order.name }}</a>
                                     </td>
-                            
-                                    <td class="{{hideMobile}}" data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
-                                    <td class="{{hideMobile}}" data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
-                                    <td  data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
-                                    <td class="{{hideMobile}}" data-label="{{ 'customer.orders.quantity' | t }}" class="order-quantity-outer">
+                                    <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
+                                    <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                                    <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                                    <td data-label="{{ 'customer.orders.quantity' | t }}" class="order-quantity-outer">
                                     {% assign totalQuanity = 0 %}
                                       {% for line_item in order.line_items %}              
                                         {% assign   totalQuanity = totalQuanity| plus: line_item.quantity %}
                                       {% endfor %}
                                     <span class="order-quantity">{{ totalQuanity}}</span>
                                     </td>
-                                    <td class="{{hideMobile}}" data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
-                 
-                                    <td class="print" style="width:50px"><i data-url="{{order.customer_url}}" class="fa fa-print" style="font-size:18px;color: gray;"></i></td>
-                                    {% assign orderName = order.name | remove: "CA#" %}
-                                    {% assign email = customer.email %}
-                                    {% assign link = 'https://sweetlegs.loopreturns.com/#/?order=CA%23' | append: orderName | append: '&email=' | append: email %}
-                                    {% unless customer.tags contains "distributor" or customer.tags contains "Distributor" %}
-                                      <td class="refund" style="width:50px" ><a href="{{link}}"><img src="{{ 'refund.png' | asset_img_url: '25x', crop: 'center' }}" /></a></td>
-                                    {% endunless %}   
+                                    <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+                                    <td class="print" ><i data-url="{{order.customer_url}}" class="fa fa-print" style="font-size:18px;color: gray;"></i></td>
                                   </tr>
                                   {% endfor %}
                                 </tbody>
@@ -77,12 +64,13 @@
                               {%- if paginate.pages > 1 -%}
                                 {%- include 'pagination' -%}
                               {%- endif -%}
+
                               {%- else -%}
                               <div class="infos">{{ 'customer.orders.none' | t }}</div>
                               {%- endif -%}
                       </div>
                       {% include 'id-refund' %}  
-            </div>
+  				  </div>
                 </div>
                 
                 
@@ -92,17 +80,18 @@
                 
 <!--                 address of customer -->
                 <div class="content customer-address hideMe">
-                  {%- include 'address' -%}
+                	{%- include 'address' -%}
                 </div>
                 
 <!--                 join the team section -->
                 <div class="content join-the-team hideMe">
                   {%- include 'join-the-team'  -%}
                 </div>
+
 <!--                 reward of customer -->
                  <div class="content customer-reward">
                   <div style="margin-top: 60px"></div>
-                  {%- include 'reward' -%}
+                	{%- include 'reward' -%}
                 </div>
                 
                 
@@ -140,7 +129,7 @@
      $('#order').removeClass('in active');
      $(".nav.nav-tabs li").toggleClass("active")
    }
-  
+ 	
   $('.fa.fa-print').click(function(e){
     var url = $(this).attr('data-url');  
     $("<iframe>")                             // create a new iframe element
@@ -152,7 +141,7 @@
    $('.my_account_container .myaccount_user .myaccount-navigation ul li').click(function(e) {
      $(".my_account_container .myaccount_user .myaccount-navigation ul li").removeClass('selected');
      $(this).addClass('selected');
-     if ($(this).text().indexOf("Addresses") >= 0) {       
+     if ($(this).text().indexOf("Addresses") >= 0) {  
        $('.content').addClass('hideMe');
        $('.customer-address').removeClass('hideMe');
      } else if($(this).text().indexOf("History") >= 0) {
@@ -164,7 +153,8 @@
         $('.content').addClass('hideMe');
        $('.customer-reward').removeClass('hideMe');
      } else if($(this).text().indexOf("Join") >= 0) {
-       window.location.href = '/pages/id-sign-up-dashboard';
+       $('.content').addClass('hideMe');
+       $('.join-the-team').removeClass('hideMe');
      }else if($(this).text().indexOf("Quick Order") >= 0) {
        window.location.href = '/pages/bulk-order-form';
      }     
@@ -172,6 +162,8 @@
   });
   
 </script>
+
+
 <style>
   .fa.fa-print:hover{
      cursor: pointer;    

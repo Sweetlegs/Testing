@@ -19,7 +19,7 @@
              <input type="hidden" name="shop" class='shop' value="{{ shop.permanent_domain }}">
             <input type="hidden" name="metafield" class='metafield' value='{{customer.metafields.wishlist}}'>          
            {% if wishlist_size > 0 %} 
-             <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/WishlistBanner.jpg?v=1643664129" alt="" width="" height="" /><br><br>
+          <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/WishlistBanner.jpg?v=1643664129" alt="" width="" height="" /><br><br>
             <table class="shop_table cart  wishlist_table products ">            
               <thead>
                 <tr>
@@ -39,12 +39,13 @@
               </tbody>
             </table>
              {% else %}
+        
                   <tr class="wishlist-empty{% if wishlist_size > 0 %} hide{% endif %}">
                   <td colspan="6">{{ 'wishlists.wishlist.no_products' | t }}</td>
                 </tr>
               {% endif %}
             {%- else -%}
-          <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/WishlistBanner.jpg?v=1643664129" alt="" width="" height="" />
+           <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/WishlistBanner.jpg?v=1643664129" alt="" width="" height="" />
             <div style="text-align: center;padding: 25px 0 0 0;font-size: 20px;">{{ 'wishlists.wishlist.need_login_html' | t }}</div>
             {%- endif -%}
             {% if customer and wishlist_size > 0 %}
@@ -57,8 +58,7 @@
   </div>
 </div>
 <script>
- var addToCart, imgSrc, wishlist = JSON.parse(window.wishlist.replace(/\=>/g, ':')),variantId =5, variantTitle, price, current_variant_price,inventoryQuantity, status = ` <span class="stock out-of-stock">Sold Out.</span>`, current_variant_compare_at_price;
-  console.log('wishlist', window.wishlist);
+ var addToCart, imgSrc, wishlist = JSON.parse(window.wishlist.replace(/\=>/g, ':')),variantId =5, variantTitle, price, current_variant_price,inventoryQuantity, status = ` <span class="stock out-of-stock">Sold Out.</span>`, current_variant_compare_at_price;  
   $(document).ready(function(e) {
     customerId = $('.customerId').val();
     shop = $('.shop').val();    
@@ -118,9 +118,9 @@
                   $('.wishlist_table tbody').append(`<tr class="product eva_ajax_load_more_item_visible">
                     <td class="product-remove">
                       <form method="post" action="/contact" class="wishlist-form" enctype="multipart/form-data">
-                        <input type="hidden" name="customer" value="${customerId}" class="customerId">
-                        <input type="hidden" name="shop" value="${shop}" class="shopId">
-                        <input type="hidden" name="product" value="${product.id}" class="productId">
+                        <input type="hidden" name="customer" value="${customerId}">
+                        <input type="hidden" name="shop" value="${shop}">
+                        <input type="hidden" name="product" value="${product.id}">
                         <a href="javascript:;" class="remove remove_from_wishlist" title="Remove this product">×</a>
                       </form>
                     </td>
@@ -145,10 +145,12 @@
 
           },
        });
-  	} 
-     $(document).on('click','.add_to_cart_button', function(e) {
+  	}
+    
+  $(document).on('click','.add_to_cart_button', function(e) {
       $('.cart_items_number.counter_number.animated.rubberBand').text(parseInt($('.cart_items_number.counter_number.animated.rubberBand').text()) + 1);
     });
+
 });
 
 </script>

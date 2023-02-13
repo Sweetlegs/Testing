@@ -37,31 +37,29 @@
     customerID = '{{customer.id}}';
     let data = {};
     data.customer_id = customerID;
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-                        "July", "August", "September", "October", "November", "December"
-                       ];
-    //read the customer refund 
-    $.ajax({
-      type: 'GET',
-      url: `${proxy}/api/distributor-returns`,
-      data: data,
-      success: function(refunds) { 
-        refunds.forEach(function(refund) {
-          var refundDate = new Date(refund.updated_at);
-          var refundDateFormat = monthNames[refundDate.getMonth()] + " " + refundDate.getDate() + ", " + refundDate.getFullYear();
-          $('#refund table tbody').append(`<tr>
-              <td class="rma-no"><a href="#">#${refund.rma_no}</a></td>
-              <td>${ refundDateFormat }</td>
-              <td class="status" id='$${refund.id}' rma='${refund.rma_no}'>${refund.status}</td>
-              <td>${refund.quantity}</td>
-              <td>$${parseFloat(refund.total).toFixed(2)}</td>
-            </tr>`);
-        })
-      },
-      error: function(error) {
-        console.log(error);
-      }
-    });
+     //read the customer refund 
+     $.ajax({
+          type: 'GET',
+           url: `${proxy}/api/distributor-returns`,
+       		data: data,
+           success: function(refunds) { 
+            console.log(refunds);
+            refunds.forEach(function(refund) {
+              var refundDate = new Date(refund.updated_at.replace(' ', 'T'));
+              $('#refund table tbody').append(`<tr>
+                  <td class="rma-no"><a href="#">#${refund.rma_no}</a></td>
+                  <td>${refundDate.toLocaleString('en-us', { month: 'long' })} ${refundDate.getDate()}, ${refundDate.getFullYear()} </td>
+                  <td class="status" id='$${refund.id}' rma='${refund.rma_no}'>${refund.status}</td>
+                  <td>${refund.quantity}</td>
+                  <td>$${parseFloat(refund.total).toFixed(2)}</td>
+                </tr>`);
+            })
+           },
+           error: function(error) {
+             console.log(error);
+           }
+     });
+
 
 
     $(document).on('click', '#refund tr', function(e) {

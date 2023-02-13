@@ -1,4 +1,10 @@
  <table>
+                  <tr>
+                    <td><strong>Weight</strong></td><td>{{ product.variants.first.weight | weight_with_unit }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Dimensions</strong></td><td>25 x 25 x .9 cm</td>
+                  </tr>
                     <tr>
                       <td><strong>Size</strong></td>
                     {% if product.title == "Classic Layering Tank" %}
@@ -14,14 +20,14 @@
                     <td><strong>Fabric</strong></td>
                     <td>Silky soft and smooth! This fabric blend is durable and will retain its shape beautifully.</td>
                   </tr>
-                 {% if product.metafields.my_fields.material %}
+                {% if product.metafields.my_fields.materials %}
                     <tr>
-                        <td><strong>Material</strong></td><td>
+                      <td><strong>Material</strong></td><td>
 
-                        {{product.metafields.my_fields.material}}
-                        </td>
-                       </tr>
-                   {% endif %}
+                      {{product.metafields.my_fields.materials}}
+                      </td>
+                     </tr>
+   				 {% endif %}
                   <tr>
                     <td><strong>Care</strong></td><td>Hand wash cold and hang to dry</td>
                   </tr>

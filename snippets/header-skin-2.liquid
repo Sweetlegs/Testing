@@ -46,9 +46,9 @@
       <div class="topbar-menu-container">
         <ul class="topbar-menu">
             {%- if settings.product_wishlist != '' -%}
-         {% if customer.tags contains "distributor" or customer.tags contains "Distributor" or customer.tags contains "RetailStore"%}
+         {% if customer.tags contains "distributor" or customer.tags contains "Distributor" %}
            <li class="menu-item bulk-order-button">
-            <a href="https://sweetlegs.ca/pages/bulk-order-form">
+            <a href="https://sweetlegs.com/pages/bulk-order-form">
               {{ 'Quick Order'}}
             </a>
           </li>
@@ -75,7 +75,7 @@
               {{ 'header.my_account.my_account' | t }}
             </a>
           </li>
-         
+
           {%- else -%}
           <li class="menu-item login-button">
             <a href="/account">
@@ -94,7 +94,7 @@
     </div>
   </div>
 </div>
-<header id="masthead" class="{{page.handle}} header-v2 site-header animate-search{% if header_sticky == true %} sticky{% endif %}" data-my-sticky="{{ header_sticky }}" data-my-sticky-scroll="{{ header_sticky_scroll }}" data-my-sticky-mobile="{{ header_sticky_mobile }}">
+<header id="masthead" class="header-v2 site-header animate-search{% if header_sticky == true %} sticky{% endif %}" data-my-sticky="{{ header_sticky }}" data-my-sticky-scroll="{{ header_sticky_scroll }}" data-my-sticky-mobile="{{ header_sticky_mobile }}">
   <div class="header-wrapper row">
     <div class="nav">
       <div class="header-nav">
@@ -182,10 +182,4 @@
 .wishlist-button a i:hover {  
     animation: beat .6s ease-in-out infinite;
 }
-    @media (max-width: 767.98px) { 
-#topbar > div > div.topbar-menu.medium-6.columns.text-right > div > ul > li.menu-item.account-button > a {
-
-    display:none !important;
-  }}
-</style>
 </style>

@@ -1,32 +1,7 @@
-<style>
-.message {
-    background: #f4f6f8;
-    color: black;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 32px;
-    padding: 50px;
-    line-height: 2rem;
-    margin-bottom: 0px;
-    line-height: inherit;
-    margin-bottom: 2rem;
-}
-@media (max-width: 1200px) {
-  .message {
-      padding: 30px;
-      font-size: calc(16px + (40 - 16) * ((100vw - 300px) / (2000 - 300)));
-      line-height: inherit;
-  }
-}
-</style>
+
 <div id="primary" class="content-area">
   {%- include 'page-header' -%}
   <div id="content" class="site-content">
-    <div class="row">
-      <div class="col-sm-12"> 
-        <p class="message english-version hideMe">  Please log in or register to begin the ID application process. </p>
-      </div>
-    </div>
     <div class="row">
       <div class="medium-10 medium-centered large-5 large-centered columns">
         <div class="login-register-container">
@@ -34,8 +9,8 @@
             <div class="large-12 columns">
               <div class="account-forms-container">
                 <ul class="account-tab-list">
-                  <li class="account-tab-item"><a class="account-tab-link current" href="#">{{ 'customer.login.title' | t }}</a></li>
-                  <li class="account-tab-item last"><a class="account-tab-link register-tab" href="/account/register">{{ 'customer.register.title' | t }}</a></li>
+                  <li class="account-tab-item"><a class="account-tab-link current" href="/account/login">{{ 'customer.login.title' | t }}</a></li>
+                  <li class="account-tab-item last"><a class="account-tab-link" href="/account/register">{{ 'customer.register.title' | t }}</a></li>
                 </ul>
                 <div class="account-forms">
                   <div id="CustomerLoginForm">
@@ -120,10 +95,6 @@
 <script>  
   $(document).ready(function () { 
     url = window.location.toString();
-    if(url.indexOf('/pages/id-sign-up-dashboard') > 0) {
-      $('.message').removeClass('hideMe');
-      $('.account-tab-link.register-tab').attr('href', '/account/register/?/pages/id-sign-up-dashboard' )
-    }
     if(url.indexOf('redirect') > 0 ) {
        var referrer =  document.referrer;
        hostname = window.location.hostname;
