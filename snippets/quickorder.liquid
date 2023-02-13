@@ -22,7 +22,7 @@
 					  {% assign vault = '' %} 
                     {% endif %}
 					{% assign product_tags_string = product.tags | join: ' ' %}
-                    <tr class="{{ vault }}" data-filter-name="{{ title | downcase }}" data-name="{{ title | downcase }}" data-tag-array="{{ product.tags | join: "," | downcase }}" data-tag="{{ product.tags | join: "" | downcase  }}">
+                    <tr data-inventory-quantity="{{ variant.inventory_quantity }}"  class="{{ vault }}" data-filter-name="{{ title | downcase }}" data-name="{{ title | downcase }}" data-tag-array="{{ product.tags | join: "," | downcase }}" data-tag="{{ product.tags | join: "" | downcase  }}">
                       <td class="prodListImg">
                         {% if product.type  == 'Shorts'  %}
                        		<img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >
@@ -68,7 +68,14 @@
                     </tr>
                 {% endfor %}
 			 {% else %}
-                    <tr class="parent" data-filter-name="{{ title | downcase }}" data-name="{{ title | downcase }}" data-tag-array="{{ product.tags | join: "," | downcase }}" data-tag="{{ product.tags | join: "" | downcase }}">
+                {% assign min_inventory = 0 %}
+                {% for variant in product.variants %}
+                  {% if variant.inventory_quantity < min_inventory  && variant.inventory_quantity != 0 %}
+                    {% assign min_inventory = variant.inventory_quantity %}
+                  {% endif %}
+                {% endfor %}
+
+                    <tr data-inventory-quantity="{{ min_inventory }}" class="parent" data-filter-name="{{ title | downcase }}" data-name="{{ title | downcase }}" data-tag-array="{{ product.tags | join: "," | downcase }}" data-tag="{{ product.tags | join: "" | downcase }}">
                      <td class="prodListImg">
                         {% if product.type  == 'Shorts'  %}
                        		<img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >
@@ -93,7 +100,7 @@
                     {% else %}
                         {% assign compareAtPrice = variant.price %}  
                     {% endif %}
-                    <tr class="sub" data-filter-name="{{ title | downcase }}" data-name="{{ title | downcase }} - {{ variant.title | downcase }}" data-tag-array="{{ product.tags | join: "," | downcase }}" data-tag="{{ product.tags | join: "" | downcase }}">
+                    <tr data-inventory-quantity="{{ variant.inventory_quantity }}" class="sub" data-filter-name="{{ title | downcase }}" data-name="{{ title | downcase }} - {{ variant.title | downcase }}" data-tag-array="{{ product.tags | join: "," | downcase }}" data-tag="{{ product.tags | join: "" | downcase }}">
                       <td class="prodListImg">
                         {% if product.type  == 'Shorts'  %}
                        		<img src={{ product.images[1] | img_url: '50*50' }} alt={{product.title}} >

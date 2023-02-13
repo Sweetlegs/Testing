@@ -168,7 +168,7 @@
   }
   
   .size_chart_holder{
-  	margin-top: 50px;
+    margin-top: 50px;
   }
 
   .size_chart_holder .size_chart_wrapper,
@@ -341,7 +341,7 @@
   
   .convert_inches, 
   .convert_cm{
-  	cursor: pointer;
+    cursor: pointer;
   }
   
   .sizing_cm{
@@ -498,7 +498,7 @@
               <span class="convert_inches active" onclick="myConvertor('IN')">IN</span> /
               <span class="convert_cm" onclick="myConvertor('CM')">CM</span>
             </div>
-      	</div>
+        </div>
    <div class="accordiance-container">     
     <div class="measurements-container">
       <table class="sizetable measurements-table sizing_inches">
@@ -1297,7 +1297,7 @@
       calculated_value.forEach(function(value, index){
         
         if(index == 0){
-        	return;
+          return;
         }
         
         if(value == "XS"){
@@ -1308,7 +1308,7 @@
         else if(value == "M"){
            m += 1;
         } 
-       	else if(value == "L"){
+        else if(value == "L"){
            l += 1;
         } 
         else if(value == "XL"){
@@ -1322,7 +1322,7 @@
         } 
       });
         
-		// final results for Sweetlegs       
+    // final results for Sweetlegs       
         if(xs > 1){
           $('#recommendedsize').text("PETITE");
           $('#dynamic_message').html('');
@@ -1537,7 +1537,7 @@
         }        
       }
       
-	
+  
      // PRODUCT TYPE: Athleisure leggings, Crops, and Shorts - 2222
       else if(product_type == "SweetLegs Athleisure"){
         $('.sizing_message').text('The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.');
@@ -1946,7 +1946,7 @@
       calculated_value.forEach(function(value, index){
         
         if(index == 0){
-        	return;
+          return;
         }
         
         if(value == "XS"){
@@ -1957,7 +1957,7 @@
         else if(value == "M"){
            m += 1;
         } 
-       	else if(value == "L"){
+        else if(value == "L"){
            l += 1;
         } 
         else if(value == "XL"){
@@ -2005,6 +2005,32 @@
           $('#recommendedsize').text("3X");
           $('#dynamic_message').html('');
           $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if ('{{product.type}}' == "SweetLegs Jeggings" && calculated_value.length > 1 ) {
+          sizeJeggings = ['XS', 'S', 'M', 'L', 'XL', '2X', '3X'];
+          hipIndex = sizeJeggings.findIndex(function(element) {
+            return element === calculated_value[1];
+          });
+          waistIndex = sizeJeggings.findIndex(function(element) {
+            return element === calculated_value[2];
+          });
+          finalSize = [];
+            if(waistIndex > hipIndex) {
+              for(i=hipIndex;  i <= waistIndex; i++) {
+                 finalSize.push(sizeJeggings[i]);
+               }
+            } else {
+                for(i=waistIndex;  i <= hipIndex; i++) {
+                 finalSize.push(sizeJeggings[i]);
+               }
+        }
+
+               $('#recommendedsize').text(finalSize);
+          $('.sizing_message').addClass('hideMe')
+                           $('#dynamic_message').html('');
+            $('#dynamic_message').html(`
+<p class="sizing_message_bold">Your body shape may be a perfect fit for multiple sizes. Your hips match our ${calculated_value[2]} size and your waist falls in line with the ${calculated_value[1]}! Please choose the size that you think will flatter your unique body type.</p>`);
+               
         }
         // Priority Base
         else if( xs == 1){
@@ -2060,7 +2086,7 @@
       
       else if(product_type == "SweetTops" || product_type == "The Weekender Dress"){
         if(product_type == "SweetTops") {
-        	$('.sizing_message').text('Every SweetTop has been designed for a different fit, and this recommendation should help you find the most ideal size. Please refer to the product descriptions for each specific style for additional recommendations.  Please note that the way a fabric drapes may be impacted by choosing a size outside of the recommendation above.');
+          $('.sizing_message').text('Every SweetTop has been designed for a different fit, and this recommendation should help you find the most ideal size. Please refer to the product descriptions for each specific style for additional recommendations.  Please note that the way a fabric drapes may be impacted by choosing a size outside of the recommendation above.');
           } else {
                                       $('.sizing_message').text('The recommended size best lines up with how this garment has been designed to fit. This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared for comfort and ease of movement.');
           }
@@ -2469,7 +2495,7 @@
       calculated_value.forEach(function(value, index){
         
         if(index == 2){
-        	return;
+          return;
         }
         
         console.log(value);
@@ -2482,7 +2508,7 @@
         else if(value == "M"){
            m += 1;
         } 
-       	else if(value == "L"){
+        else if(value == "L"){
            l += 1;
         } 
         else if(value == "XL"){
@@ -2497,7 +2523,7 @@
       });
         
         
-		// final results for SweetTops     
+    // final results for SweetTops     
         if(xs > 1){
           $('#recommendedsize').text("XS");
           $('#dynamic_message').html('');

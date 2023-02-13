@@ -4,7 +4,7 @@
     <div class="column-inner"{% if section.settings.sidebar_image %} style="margin-top: 20px; background-image:url({{ section.settings.sidebar_image | img_url:'master' }});min-height:{{ section.settings.sidebar_height | default:400 | plus:0 }}px;"{% endif %}>
     
       {% comment %} FRONT PAGE LINK FOR COLLECTION TITLE {% endcomment %}
-      <a href="/collections/sweettops">  <div class="empty_space" style=""><span class="empty_space_inner"></span></div> </a>
+            <a href="/collections/{{ collections[section.settings.collection].handle }}">  <div class="empty_space" style=""><span class="empty_space_inner"></span></div> </a>
     </div>
   </div>
   {%- endif -%}

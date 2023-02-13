@@ -112,7 +112,8 @@
   {% if template contains 'collection' and handle contains 'all' %}
   <meta name="robots" content="noindex">
   {% endif %}
-{% include 'add_header_assets' %}</head>
+{% include 'add_header_assets' %}<script src='{{ 'sca.affiliate.data.js' | asset_url }}' async></script>
+</head>
 
 {%- assign form_style = settings.form_style | default: 'default' -%}
 <body class="template-{{ template | split: '.' | first }}" data-form-style="{{ form_style }}">

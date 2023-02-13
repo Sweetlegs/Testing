@@ -46,7 +46,7 @@
     margin: 2.5rem 0;
 }
 </style>
-<div id="product-{{ product.id }}" class="product-section {{ product_design }}" data-section-id="{{ section.id }}" data-section-type="product-template" data-enable-history-state="true" data-product_swatch_color="{{ settings.product_swatch_color }}" data-product_swatch_size="{{ settings.product_swatch_size }}">
+<div id="ProductSection-{{ section.id }}" class="product-section {{ product_design }}" data-section-id="{{ section.id }}" data-section-type="product-template" data-enable-history-state="true" data-product_swatch_color="{{ settings.product_swatch_color }}" data-product_swatch_size="{{ settings.product_swatch_size }}">
   <div id="primary" class="content-area">
     <div id="content" class="site-content">
       <div class="page-header"></div>
@@ -469,12 +469,12 @@
 
 
 
-
 {%- unless product == empty -%}
   <script type="application/json" id="ProductJson-{{ section.id }}">
     {{- product | json -}}
       
   </script>
+
 <script text="text/javascript">
   var _learnq = _learnq || [];
 
@@ -917,4 +917,4 @@ var images = [];
       },200);
     });
   })
-</script>m
+</script>

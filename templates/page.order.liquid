@@ -95,10 +95,10 @@ Source: https://gist.github.com/carolineschnapp/9122054
       {% if collection.products_count > 0 %}
        <div id="errorCart" class="hideMe alert alert-success" role="alert"></div> 
         <div class="filterBoxWrap">
-			<div class="filterBox fBox">
+      <div class="filterBox fBox">
                 <label>Search</label>
                 <input type="search" class="form-control" placeholder="Search Product">
-			</div> 
+      </div> 
             <div class="fBox cat">
                 <label>Category</label>
                 <select class="catFilter">  
@@ -118,6 +118,7 @@ Source: https://gist.github.com/carolineschnapp/9122054
                       <option value="crops">Crops</option>    
                       <option value="sale-">ID Sale Prints</option>     
                       <option value="safe">From The Vault</option>  
+                      <option value="almostGone">Almost Gone</option>  
                </select>
             </div>
             <div class="fBox subs">
@@ -154,7 +155,7 @@ Source: https://gist.github.com/carolineschnapp/9122054
             </table>
          </div>
       {% endif %}
-  		<div class="content">
+      <div class="content">
           <table id="quick-order-content">
             <thead>
                 <tr>
@@ -168,7 +169,7 @@ Source: https://gist.github.com/carolineschnapp/9122054
                 {% for product in collection.products %}
                   {% if product.available %}
                       {% if product.tags contains 'vault' or product.tags contains 'featured' %}
-                      {% else %}             			
+                      {% else %}                  
                       {% include 'quickorder' %}
                       {% endif %}
                   {% endif %}
@@ -190,12 +191,12 @@ Source: https://gist.github.com/carolineschnapp/9122054
           <a class="submitCheckout" href="/cart">Continue to Checkout</a>
 <!--           <input type="submit" id="bulkCheckout" value="Continue to Checkout" style="margin-left: 6px" /> -->
           <span class="scrollTop" style="display:none">
-			<i class="fa fa-angle-up" style="cursor: pointer;font-size: 30px;text-align: center;color:white"></i>
-		  </span>
+      <i class="fa fa-angle-up" style="cursor: pointer;font-size: 30px;text-align: center;color:white"></i>
+      </span>
            <span class="cartItem" style="display:none" >
              <span style="font-size: 14px">{{cart.item_count}}</span></br>
              ITEMS
-		  </span>
+      </span>
           {% comment %}<a class="submitCheckout" href="/checkout">Checkout</a> {% endcomment %}
         </div>
       </div>
@@ -217,14 +218,14 @@ Source: https://gist.github.com/carolineschnapp/9122054
       <script>
         (function($){
      
-          $(document).on('ready', function(e){           
+          $(document).on('ready', function(e){      
+             setTimeout(function(e) {$("#spinner").css('display', 'none')}, 8000);    
             if(typeof carts != 'undefined') {
               setTimeout(function(e) {displayQty()}, 0);
               setTimeout(function(e) {
                 showDiscount(discountableItem, page - 50);
               }, 0);
             } else {
-              $("#spinner").css('display','none'); 
               setTimeout(function(e) {displayQty()}, 0);
               setTimeout(function(e) {
                 showDiscount(0, page - 50);
@@ -265,13 +266,11 @@ Source: https://gist.github.com/carolineschnapp/9122054
                       loadMore.attr('href', nextLoadMoreUrl).show();
                     }
                   if(typeof carts != 'undefined') {
-                    $("#spinner").css('display','none'); 
                       setTimeout(function(e) {displayQty()}, 0);
                       setTimeout(function(e) {
                         showDiscount(discountableItem, page - 50);
                       }, 0);
                     }else {
-                      $("#spinner").css('display','none');  
                       setTimeout(function(e) {displayQty()}, 0);
                       setTimeout(function(e) {
                         showDiscount(0, page - 50);
@@ -349,7 +348,6 @@ function displayQty() {
     });
   }   
   page = page + 50; 
-  $("#spinner").css('display','none');  
 }
   
 
@@ -399,7 +397,7 @@ $(document).ready(function() {
   });
   
 //   $('.filterBox .form-control').keydown(function(e) {
-// 	console.log('this hit');
+//  console.log('this hit');
 //           // Allow: backspace, delete, tab, escape, enter and .
 //     if ($.inArray(e.keyCode, [46 , 9 , 27, 110, 190]) !== -1 ||
 //       // Allow: Ctrl+A
@@ -451,10 +449,13 @@ $(document).ready(function() {
  
   $('.catFilter').val('');
   $('.catFilter').change(function() {
-  console.log('this hit abc');
     var cv = $(this).val().toLowerCase();
-    
-    if (cv != '') {
+    if(cv == 'almostgone') {
+      $('#prodList tr[data-inventory-quantity]').removeClass('hideMe');
+      $('tr[data-inventory-quantity]').filter(function() { 
+        return parseInt($(this).data('inventory-quantity')) > 10 || parseInt($(this).data('inventory-quantity')) == 0;
+      }).addClass('hideMe');
+    }else if (cv != '') {
       $('#featuredList tr').addClass('hideMe');
       $('#featuredList tr[data-tag*="'+cv+'"]').removeClass('hideMe');
       $('#prodList tr').addClass('hideMe');
@@ -470,9 +471,7 @@ $(document).ready(function() {
       $('.zeroResults').removeClass('hideMe');
     } else {
       $('.zeroResults').addClass('hideMe')
-    }
-    
-    
+    }  
     floatMe();
     
   });
@@ -545,7 +544,7 @@ $(document).ready(function(){
   var url = window.location.href;  
   $(document).on('focusin','.quantity.field', function(e){
     $(this).data('val', $(this).val());
-	}).on('change','.quantity.field',function(e){
+  }).on('change','.quantity.field',function(e){
     e.stopPropagation();
     changeQty = true;
     $(this).attr('update', 'updated');
@@ -563,7 +562,7 @@ $(document).ready(function(){
       var pricePerItem = $(this).text().split('$');
       var qty = parseInt($(this).parent('tr').find('td.prodListQty').find('input.quantity.field').val());
       if(qty > 0) {
-      	totalPrice += parseFloat(pricePerItem[pricePerItem.length-1]) * qty; 
+        totalPrice += parseFloat(pricePerItem[pricePerItem.length-1]) * qty; 
       }
       });
      let lineItemCount = 25;
@@ -644,7 +643,7 @@ $(document).ready(function(){
   var int00;
   var handled = false;
   $(document).on("click touchstart",'.prodListPlus', function(e){
-    	 e.stopImmediatePropagation();
+       e.stopImmediatePropagation();
           if(e.type == "touchend") {
               handled = true;              
               var $qty = $(this).parent().find('.quantity.field');
@@ -660,8 +659,8 @@ $(document).ready(function(){
           else {
               handled = false;
           }                  
-	});
-	
+  });
+  
     
      $(document).on("click",'.prodListMinus', function(e){
         e.stopImmediatePropagation();
@@ -682,12 +681,12 @@ $(document).ready(function(){
           } else {
               handled = false;
           }               
-       	
+        
       });
   
   
   $(".fa.fa-angle-up").on('click',function(){
-   		$(window).scrollTop(0);
+      $(window).scrollTop(0);
   })
    
    //save the change before leaving the page
@@ -745,7 +744,7 @@ $(document).ready(function(){
   
  
   $(window).load(function() {
-	
+  
   });
   $(document).on('click touchstart','.max', function(e) {
     $(this).before(`<span class="tooltipMax">MAX LIMIT REACHED FOR ITEM.</span>`);
@@ -755,7 +754,7 @@ $(document).ready(function(){
   
 //   Search filter 
     $(".form-control").on("keyup", function() {
-    	var value = $(this).val().toLowerCase();
+      var value = $(this).val().toLowerCase();
         $("#prodList tr").filter(function() {
           if($(this).attr('data-filter-name')) {
             title = $(this).attr('data-filter-name').toLowerCase();
@@ -765,15 +764,15 @@ $(document).ready(function(){
 
             $(this).toggle(title.indexOf(value) > -1)       
         });
-      	$("#featuredList tr").filter(function() {
-			if($(this).attr('data-filter-name')) {
+        $("#featuredList tr").filter(function() {
+      if($(this).attr('data-filter-name')) {
             title = $(this).attr('data-filter-name').toLowerCase();
           } else {
             title = '';
           }
-          	$(this).toggle(title.indexOf(value) > -1)
+            $(this).toggle(title.indexOf(value) > -1)
         });
-  	});
+    });
 })  
 </script>
                     

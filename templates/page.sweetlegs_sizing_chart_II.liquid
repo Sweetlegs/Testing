@@ -1468,6 +1468,31 @@
           $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your waist and hip measurement.</p>
 <p>The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.</p>`); 
         }
+        else if (product_type == "Anytime Jeggings" && calculated_value.length > 1 ) {
+          sizeJeggings = ['XS', 'S', 'M', 'L', 'XL', '2X', '3X'];
+          hipIndex = sizeJeggings.findIndex(function(element) {
+            return element === calculated_value[1];
+          });
+          waistIndex = sizeJeggings.findIndex(function(element) {
+            return element === calculated_value[2];
+          });
+          finalSize = [];
+          if(waistIndex > hipIndex) {
+              for(i=hipIndex;  i <= waistIndex; i++) {
+                 finalSize.push(sizeJeggings[i]);
+               }
+            } else {
+                for(i=waistIndex;  i <= hipIndex; i++) {
+                 finalSize.push(sizeJeggings[i]);
+               }
+        }
+
+               $('#recommendedsize').text(finalSize);
+                           $('#dynamic_message').html('');
+            $('#dynamic_message').html(`
+<p class="sizing_message_bold">Your body shape may be a perfect fit for multiple sizes. Your hips match our ${calculated_value[2]} size and your waist falls in line with the ${calculated_value[1]}! Please choose the size that you think will flatter your unique body type.</p>`);
+               
+        }
         // Priority Base
         else if( xs == 1){
           if(s == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){

@@ -4,13 +4,6 @@
 .cbb-frequently-bought-selector-label-name {
   margin-left: 5px;
 }
-.product .cbb-frequently-bought-container {
-    display: none;
-  }
-
-  #product-7307929419949 .cbb-frequently-bought-container, #product-7307929059501 .cbb-frequently-bought-container, #product-7307929059501 .cbb-frequently-bought-container, #product-7299121643693 .cbb-frequently-bought-container{
-    display: block;
-  }
 
 
 .cbb-frequently-bought-this-item-label {
@@ -225,6 +218,9 @@ border: none;
   justify-content: center;
 }
 @media only screen and (max-width: 600px) {
+  #jegging-image-benefit .cont {
+    padding: 5px!important;
+  }
   .cbb-frequently-bought-container {
     border: 0px;
     padding: 0px;
