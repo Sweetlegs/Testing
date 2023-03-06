@@ -1,0 +1,241 @@
+{% capture style_custom_color %}
+  {% if section.settings.custom_color %}
+    color: {{ section.settings.body_text_color }} !important
+  {% endif %}
+{% endcapture %}
+
+<div class="count-section wrapper arena-heading {{ section.id }} three-columns">
+  {% for block in section.blocks %}
+    {% if block.type == 'product-left' %}
+      <div class="product-block">
+        <div class="--top">
+          <div class="product-info">
+            <h2 class="heading-neue h4">{{ block.settings.product.title }}</h2>
+            <h2 class="heading-neumeister-a h4">{{ block.settings.product.price | money }}</h2>
+          </div>
+          <img
+            style="max-width: 100%; display: block"
+            src="{{ block.settings.product.featured_image | image_url: width: 500 }}"
+            loading="lazy"
+            srcset="{{ block.settings.product.featured_image | image_url: width: 500 }} 500w, {{ block.settings.product.featured_image | image_url: width: 800 }} 800w, {{ block.settings.product.featured_image | image_url: width: 1080 }} 1080w, {{ block.settings.product.featured_image | image_url: width: 1500 }} 1500w"
+            width="846"
+            height="auto"
+            sizes="(max-width: 479px) 94vw, (max-width: 767px) 57vw, (max-width: 991px) 41vw, (max-width: 1439px) 47vw, 468px"
+            alt=""
+            class="arena-heading-image-block"
+          >
+        </div>
+        <a href="{{ block.settings.product.url }}" class="arena --mobile hero__btn btn uppercase btn--black">
+          shop now
+        </a>
+      </div>
+    {% elsif block.type == 'text' %}
+      <div class="count-section headings-block">
+        <h2 class="{{ block.settings.font_style_1 }}">
+          {{ block.settings.heading_1 }}
+        </h2>
+        <h2 class="{{ block.settings.font_style_2 }}">
+          {{ block.settings.heading_2 }}
+        </h2>
+        <h2 class="{{ block.settings.font_style_3 }}">
+          {{ block.settings.heading_3 }}
+        </h2>
+      </div>
+    {% elsif block.type == 'product-right' %}
+    <div class="product-block">
+        <div class="--top">
+          <div class="product-info">
+            <h2 class="heading-neue h4">{{ block.settings.product.title }}</h2>
+            <h2 class="heading-neumeister-a h4">{{ block.settings.product.price | money }}</h2>
+          </div>
+          <img
+            style="max-width: 100%; display: block"
+            src="{{ block.settings.product.featured_image | image_url: width: 500 }}"
+            loading="lazy"
+            srcset="{{ block.settings.product.featured_image | image_url: width: 500 }} 500w, {{ block.settings.product.featured_image | image_url: width: 800 }} 800w, {{ block.settings.product.featured_image | image_url: width: 1080 }} 1080w, {{ block.settings.product.featured_image | image_url: width: 1500 }} 1500w"
+            width="846"
+            height="auto"
+            sizes="(max-width: 479px) 94vw, (max-width: 767px) 57vw, (max-width: 991px) 41vw, (max-width: 1439px) 47vw, 468px"
+            alt=""
+            class="arena-heading-image-block"
+          >
+        </div>
+        <a href="{{ block.settings.product.url }}" class="arena --mobile hero__btn btn uppercase btn--black">
+          shop now
+        </a>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<style></style>
+{% schema %}
+{
+  "name": "Arena Prod|Heading|Prod",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "small_background",
+      "label": "Background Image (max-width 767px)"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_color",
+      "label": "Overwrite text color?",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "body_text_color",
+      "label": "Body color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading_1",
+          "label": "Heading 1"
+        },
+        {
+          "type": "select",
+          "label": "Font family",
+          "id": "font_style_1",
+          "default": "heading-neue",
+          "options": [
+            {
+              "value": "heading-neue",
+              "label": "Neue"
+            },
+            {
+              "value": "heading-ozymandias",
+              "label": "Ozymandias"
+            },
+            {
+              "value": "heading-neumeister-a",
+              "label": "FDI Neumeister A"
+            },
+            {
+              "value": "heading-neumeister-b",
+              "label": "FDI Neumeister B"
+            },
+            {
+              "value": "heading-sentient",
+              "label": "Sentient"
+            },
+            {
+              "value": "heading-sf-pro",
+              "label": "SF Pro Text"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "heading_2",
+          "label": "Heading 2"
+        },
+        {
+          "type": "select",
+          "label": "Font family",
+          "id": "font_style_2",
+          "default": "heading-neue",
+          "options": [
+            {
+              "value": "heading-neue",
+              "label": "Neue"
+            },
+            {
+              "value": "heading-ozymandias",
+              "label": "Ozymandias"
+            },
+            {
+              "value": "heading-neumeister-a",
+              "label": "FDI Neumeister A"
+            },
+            {
+              "value": "heading-neumeister-b",
+              "label": "FDI Neumeister B"
+            },
+            {
+              "value": "heading-sentient",
+              "label": "Sentient"
+            },
+            {
+              "value": "heading-sf-pro",
+              "label": "SF Pro Text"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "heading_3",
+          "label": "Heading 3"
+        },
+        {
+          "type": "select",
+          "label": "Font family",
+          "id": "font_style_3",
+          "default": "heading-neue",
+          "options": [
+            {
+              "value": "heading-neue",
+              "label": "Neue"
+            },
+            {
+              "value": "heading-ozymandias",
+              "label": "Ozymandias"
+            },
+            {
+              "value": "heading-neumeister-a",
+              "label": "FDI Neumeister A"
+            },
+            {
+              "value": "heading-neumeister-b",
+              "label": "FDI Neumeister B"
+            },
+            {
+              "value": "heading-sentient",
+              "label": "Sentient"
+            },
+            {
+              "value": "heading-sf-pro",
+              "label": "SF Pro Text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "product-left",
+      "name": "Product Left",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    },
+    {
+      "type": "product-right",
+      "name": "Product Right",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Arena Prod|Heading|Prod"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,331 @@
+{
+  "sections": {
+    "d88c7a75-0869-4203-90cb-c17c33350102": {
+      "type": "arena-heading",
+      "blocks": {
+        "3b6122eb-279a-4bd2-a927-b0aef1e28ea5": {
+          "type": "text",
+          "settings": {
+            "heading": "Where",
+            "font_style": "heading-neue"
+          }
+        },
+        "fc133a27-2277-4b4b-9295-fd55c4ab322c": {
+          "type": "text",
+          "settings": {
+            "heading": "Music",
+            "font_style": "heading-ozymandias"
+          }
+        },
+        "e6b000cd-ee6f-4dde-a568-ff72c4f61234": {
+          "type": "text",
+          "settings": {
+            "heading": "and fashion",
+            "font_style": "heading-neue"
+          }
+        },
+        "35dcbfe7-cde4-4d8b-a7ad-3b1d931e5cd2": {
+          "type": "text",
+          "settings": {
+            "heading": "meet",
+            "font_style": "heading-ozymandias"
+          }
+        },
+        "8ed1fe7e-56d7-4e59-aae2-be5cec3afab9": {
+          "type": "counter",
+          "settings": {
+          }
+        },
+        "68b577cf-24b8-49a0-90f9-0dea2250afdf": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/img_hero.png",
+            "width_limit": 45
+          }
+        }
+      },
+      "block_order": [
+        "3b6122eb-279a-4bd2-a927-b0aef1e28ea5",
+        "fc133a27-2277-4b4b-9295-fd55c4ab322c",
+        "e6b000cd-ee6f-4dde-a568-ff72c4f61234",
+        "35dcbfe7-cde4-4d8b-a7ad-3b1d931e5cd2",
+        "8ed1fe7e-56d7-4e59-aae2-be5cec3afab9",
+        "68b577cf-24b8-49a0-90f9-0dea2250afdf"
+      ],
+      "settings": {
+        "small_background": "shopify:\/\/shop_images\/small_bg.png",
+        "custom_color": false,
+        "body_text_color": "#000000"
+      }
+    },
+    "1228aaaf-52c6-43e3-b085-18e615b4669e": {
+      "type": "arena-heading-product",
+      "blocks": {
+        "21e264da-4b3d-49da-9125-df0c676fb7fe": {
+          "type": "headline",
+          "settings": {
+            "alignment": "h--top w--left",
+            "heading": "Top of the charts",
+            "font_style": "heading-neue"
+          }
+        },
+        "e588b055-f48b-4efe-a7c5-f4868b0780a9": {
+          "type": "counter",
+          "settings": {
+            "alignment": "h--middle w--right"
+          }
+        },
+        "98b83276-0bb0-477c-bae0-c6082ab3ddc4": {
+          "type": "text_block",
+          "settings": {
+            "alignment": "h--bottom w--left",
+            "text_block": "<p><em>Lorem ipsum <\/em><strong>is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.<\/strong><\/p>",
+            "cta_text": "Shop now",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        }
+      },
+      "block_order": [
+        "21e264da-4b3d-49da-9125-df0c676fb7fe",
+        "e588b055-f48b-4efe-a7c5-f4868b0780a9",
+        "98b83276-0bb0-477c-bae0-c6082ab3ddc4"
+      ],
+      "settings": {
+        "large_background": "shopify:\/\/shop_images\/Screen_Shot_2022-06-02_at_10.43_1.png",
+        "small_background": "shopify:\/\/shop_images\/Screen_Shot_2022-06-02_at_10.43_1_1.png",
+        "product": "arcadia-titians-high-school-arcadia-circle-a-women-s-fitted-tee",
+        "custom_color": true,
+        "body_text_color": "#ffffff"
+      }
+    },
+    "fdc4879e-a0b0-4ddb-8521-c6c55fc69872": {
+      "type": "arena-product-with-text",
+      "settings": {
+        "large_background": "shopify:\/\/shop_images\/Group_844.png",
+        "counter": true,
+        "product": "5-stripes-unisex-tee-shirt",
+        "title": "",
+        "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<\/p>",
+        "custom_color": false,
+        "body_text_color": "#000000",
+        "heading_1": "Last",
+        "font_style_1": "heading-ozymandias",
+        "heading_2": "T-shirt",
+        "font_style_2": "heading-neue",
+        "heading_3": "Launch",
+        "font_style_3": "heading-neue",
+        "cta_text": "shop now",
+        "button_color": "btn--white",
+        "button_style": "btn uppercase"
+      }
+    },
+    "c231837f-5ceb-4430-bfb8-cd2ff0326ce1": {
+      "type": "arena-collection-with-video",
+      "blocks": {
+        "29c60bde-af0e-4601-98e9-1a4cdb2cee80": {
+          "type": "video",
+          "settings": {
+            "video": "shopify:\/\/files\/videos\/video.mp4",
+            "heading_floating": "A Variety of Styles",
+            "heading_1": "A Soundtrack",
+            "font_style_1": "heading-ozymandias",
+            "heading_2": "for every",
+            "font_style_2": "heading-sf-pro",
+            "heading_3": "Moment",
+            "font_style_3": "heading-ozymandias"
+          }
+        },
+        "04262d13-8167-44ce-9c7f-75c9682410dc": {
+          "type": "collection",
+          "settings": {
+            "collection": "bear-ghost-collection",
+            "background_image": "shopify:\/\/shop_images\/Screen_Shot_2022-06-02_at_10.27_1_-_here.png",
+            "cta_text": "SHOP NOW",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        }
+      },
+      "block_order": [
+        "29c60bde-af0e-4601-98e9-1a4cdb2cee80",
+        "04262d13-8167-44ce-9c7f-75c9682410dc"
+      ],
+      "settings": {
+        "custom_color": true,
+        "body_text_color": "#ffffff"
+      }
+    },
+    "ef44728d-c089-4ed0-a9bb-193cf48d4ce6": {
+      "type": "arena-static-ad",
+      "settings": {
+        "counter": true,
+        "image": "shopify:\/\/shop_images\/Screen_Shot_2022-05-31_at_11.27_1_8c58861f-b155-4261-a2df-bb2878880f18.png",
+        "background_color": "#000000",
+        "custom_color": true,
+        "body_text_color": "#ffffff",
+        "heading_1": "Endless",
+        "font_style_1": "heading-neue",
+        "heading_2": "Options",
+        "font_style_2": "heading-neue",
+        "heading_3": "Design",
+        "font_style_3": "heading-neue",
+        "heading_4": "Your Own",
+        "font_style_4": "heading-neue",
+        "title": "About the process",
+        "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore<\/p>",
+        "cta_text": "Start Designing",
+        "btn_url": "",
+        "button_color": "btn--white",
+        "button_style": "btn uppercase"
+      }
+    },
+    "2a015930-f624-453c-aa21-8af8e522aafc": {
+      "type": "arena-find-your-style",
+      "blocks": {
+        "2594c910-9c5e-4cbd-891c-bb0f506396b6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>ENDLESS POSSIBILITIES - START DESIGNING YOUR OWN SHIRT<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "2594c910-9c5e-4cbd-891c-bb0f506396b6"
+      ],
+      "settings": {
+        "collection": "t-shirts",
+        "bg_color": "#f7f7f7",
+        "color": "#000000",
+        "text_size": 4,
+        "counter": true,
+        "custom_color": false,
+        "body_text_color": "#000000"
+      }
+    },
+    "83307fcd-7fec-4064-9d45-fa085254a8c2": {
+      "type": "arena-product-heading-produc",
+      "blocks": {
+        "ae5f7101-b610-4761-a33d-60c15d95f585": {
+          "type": "product-left",
+          "settings": {
+            "product": "33-1-3-mens-ringer-tee-arena"
+          }
+        },
+        "0bb833dd-16bb-4b49-a7ac-d0a481d63531": {
+          "type": "text",
+          "settings": {
+            "heading_1": "A Soundtrack",
+            "font_style_1": "heading-ozymandias",
+            "heading_2": "for every",
+            "font_style_2": "heading-neue",
+            "heading_3": "Moment",
+            "font_style_3": "heading-ozymandias"
+          }
+        },
+        "04a4bb5c-d5b6-4f0b-ad1c-474fd4181c09": {
+          "type": "product-right",
+          "settings": {
+            "product": "arena-331-3-wos-ringer-tee"
+          }
+        }
+      },
+      "block_order": [
+        "ae5f7101-b610-4761-a33d-60c15d95f585",
+        "0bb833dd-16bb-4b49-a7ac-d0a481d63531",
+        "04a4bb5c-d5b6-4f0b-ad1c-474fd4181c09"
+      ],
+      "settings": {
+        "custom_color": false,
+        "body_text_color": "#000000"
+      }
+    },
+    "e2f383f0-7071-41a9-9948-8e35fd9bd9f0": {
+      "type": "arena-heading-product-2",
+      "blocks": {
+        "0b863b55-0453-4d74-8479-b29a2cc51fba": {
+          "type": "headline",
+          "settings": {
+            "alignment": "h--top w--left",
+            "heading": "Disturb the industry",
+            "font_style": "heading-neue"
+          }
+        },
+        "6c7d19fb-3cc9-4fdb-a9c0-babaa7217b32": {
+          "type": "counter",
+          "settings": {
+            "alignment": "h--top w--right"
+          }
+        },
+        "338d4e4b-3cc2-434c-bc2b-0413754754b7": {
+          "type": "text_block",
+          "settings": {
+            "alignment": "h--top w--left",
+            "text_block": "",
+            "cta_text": "SHOP NOW",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        }
+      },
+      "block_order": [
+        "0b863b55-0453-4d74-8479-b29a2cc51fba",
+        "6c7d19fb-3cc9-4fdb-a9c0-babaa7217b32",
+        "338d4e4b-3cc2-434c-bc2b-0413754754b7"
+      ],
+      "settings": {
+        "large_background": "shopify:\/\/shop_images\/0125250500014NEW_00_030_1.png",
+        "small_background": "shopify:\/\/shop_images\/0125250500014NEW_00_030_1.png",
+        "product": "death-metal-unisex-tee-shirt",
+        "custom_color": true,
+        "body_text_color": "#ffffff"
+      }
+    },
+    "457a9436-7682-446a-8b15-99a8d68e3b64": {
+      "type": "arena-insta-feed",
+      "blocks": {
+        "c99369cf-a7eb-4e71-b94a-9223390cd6a3": {
+          "type": "text",
+          "settings": {
+            "heading": "Follow",
+            "font_style": "heading-ozymandias"
+          }
+        },
+        "943b4772-8292-4ae4-b41d-037acdfb33bf": {
+          "type": "text",
+          "settings": {
+            "heading": "us and get",
+            "font_style": "heading-neue"
+          }
+        },
+        "3e663ba7-695b-4d8f-b907-18d838a755c1": {
+          "type": "text",
+          "settings": {
+            "heading": "Social",
+            "font_style": "heading-neumeister-b"
+          }
+        }
+      },
+      "block_order": [
+        "c99369cf-a7eb-4e71-b94a-9223390cd6a3",
+        "943b4772-8292-4ae4-b41d-037acdfb33bf",
+        "3e663ba7-695b-4d8f-b907-18d838a755c1"
+      ],
+      "settings": {
+        "custom_color": false,
+        "body_text_color": "#000000"
+      }
+    }
+  },
+  "order": [
+    "d88c7a75-0869-4203-90cb-c17c33350102",
+    "1228aaaf-52c6-43e3-b085-18e615b4669e",
+    "fdc4879e-a0b0-4ddb-8521-c6c55fc69872",
+    "c231837f-5ceb-4430-bfb8-cd2ff0326ce1",
+    "ef44728d-c089-4ed0-a9bb-193cf48d4ce6",
+    "2a015930-f624-453c-aa21-8af8e522aafc",
+    "83307fcd-7fec-4064-9d45-fa085254a8c2",
+    "e2f383f0-7071-41a9-9948-8e35fd9bd9f0",
+    "457a9436-7682-446a-8b15-99a8d68e3b64"
+  ]
+}

@@ -1,0 +1,263 @@
+{% capture style_custom_color %}
+  {% if section.settings.custom_color %}
+    color: {{ section.settings.body_text_color }} !important
+  {% endif %}
+{% endcapture %}
+
+<div class="count-section wrapper arena-heading {{ section.id }} two-columns">
+  {% for block in section.blocks %}
+    {% if block.type == 'video' %}
+      <div class="arena-collection--block video-block">
+        <div class="section-counter" data-skip-if-max-width="767" style="{{ style_custom_color }}"></div>
+        <div class="headings-overlay">
+          <p class="floating-heading heading-sf-pro">{{ block.settings.heading_floating }}</p>
+          <h2 class="{{ block.settings.font_style_1 }}">
+            {{ block.settings.heading_1 }}
+          </h2>
+          <h2 class="{{ block.settings.font_style_2 }}">{{ block.settings.heading_2 }}</h2>
+          <h2 class="{{ block.settings.font_style_3 }}">{{ block.settings.heading_3 }}</h2>
+        </div>
+        <div class="background-video">
+          {{
+            block.settings.video
+            | video_tag: controls: false, autoplay: true, loop: true, muted: true, width: '100%'
+          }}
+        </div>
+      </div>
+    {% else %}
+      <div
+        class="arena-collection--block collection-block"
+      >
+        <div class="--block section-counter" style="{{ style_custom_color }}"></div>
+        <h1 class="collection-name" style="{{ style_custom_color }}">{{ block.settings.collection.title }}</h1>
+        <a
+          href="{{ block.settings.collection.url }}"
+          class="hero__btn {{ block.settings.button_style }} {{ block.settings.button_color }}"
+        >
+          {{ block.settings.cta_text }}
+        </a>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  {% for block in section.blocks %}
+    {% if block.type == 'collection' %}
+      {% if block.settings.background_image != null %}
+        <style>
+          .arena-heading.{{ section.id }} .arena-collection--block.collection-block{
+            min-height:{{ block.settings.background_image.height }}px;
+            background-image:url('{{ block.settings.background_image | image_url: width: '1800' }}')
+          }
+        </style>
+      {% elsif block.settings.collection.handle != '' %}
+        <style>
+          .arena-heading.{{ section.id }} .arena-collection--block.collection-block{
+            min-height:{{ block.settings.collection.image.height }}px;
+            max-height:{{ block.settings.collection.image.height | split: 2 }}px;
+            background-image:url('{{ block.settings.collection.image | image_url: width: '1800' }}')
+          }
+        </style>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% schema %}
+  {
+    "name": "Arena Video Collection",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "custom_color",
+        "label": "Overwrite text color?",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "body_text_color",
+        "label": "Body color",
+        "default": "#000000"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "video",
+        "name": "Video Block",
+        "settings": [
+          {
+            "type": "video",
+            "id": "video",
+            "label": "MP4 VIDEO FILE"
+          },
+          {
+            "type": "text",
+            "id": "heading_floating",
+            "label": "Floating Heading"
+          },
+          {
+            "type": "text",
+            "id": "heading_1",
+            "label": "Heading"
+          },
+          {
+            "type": "select",
+            "label": "Font family",
+            "id": "font_style_1",
+            "default": "heading-neue",
+            "options": [
+              {
+                "value": "heading-neue",
+                "label": "Neue"
+              },
+              {
+                "value": "heading-ozymandias",
+                "label": "Ozymandias"
+              },
+              {
+                "value": "heading-neumeister-a",
+                "label": "FDI Neumeister A"
+              },
+              {
+                "value": "heading-neumeister-b",
+                "label": "FDI Neumeister B"
+              },
+              {
+                "value": "heading-sentient",
+                "label": "Sentient"
+              },
+              {
+                "value": "heading-sf-pro",
+                "label": "SF Pro Text"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "heading_2",
+            "label": "Heading"
+          },
+          {
+            "type": "select",
+            "label": "Font family",
+            "id": "font_style_2",
+            "default": "heading-neue",
+            "options": [
+              {
+                "value": "heading-neue",
+                "label": "Neue"
+              },
+              {
+                "value": "heading-ozymandias",
+                "label": "Ozymandias"
+              },
+              {
+                "value": "heading-neumeister-a",
+                "label": "FDI Neumeister A"
+              },
+              {
+                "value": "heading-neumeister-b",
+                "label": "FDI Neumeister B"
+              },
+              {
+                "value": "heading-sentient",
+                "label": "Sentient"
+              },
+              {
+                "value": "heading-sf-pro",
+                "label": "SF Pro Text"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "heading_3",
+            "label": "Heading"
+          },
+          {
+            "type": "select",
+            "label": "Font family",
+            "id": "font_style_3",
+            "default": "heading-neue",
+            "options": [
+              {
+                "value": "heading-neue",
+                "label": "Neue"
+              },
+              {
+                "value": "heading-ozymandias",
+                "label": "Ozymandias"
+              },
+              {
+                "value": "heading-neumeister-a",
+                "label": "FDI Neumeister A"
+              },
+              {
+                "value": "heading-neumeister-b",
+                "label": "FDI Neumeister B"
+              },
+              {
+                "value": "heading-sentient",
+                "label": "Sentient"
+              },
+              {
+                "value": "heading-sf-pro",
+                "label": "SF Pro Text"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "background_image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "cta_text",
+            "label": "Button Text"
+          },
+          {
+            "type": "select",
+            "id": "button_color",
+            "label": "Color",
+            "default": "btn--white",
+            "options": [
+              { "value": "btn--primary", "label": "Bright accent" },
+              { "value": "btn--secondary", "label": "Secondary accent" },
+              { "value": "btn--neutral", "label": "Text color" },
+              { "value": "btn--black", "label": "Black" },
+              { "value": "btn--white", "label": "White" }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "button_style",
+            "label": "Button style",
+            "default": "btn uppercase",
+            "options": [
+              { "value": "caps--link", "label": "Capitalized text" },
+              { "value": "btn uppercase", "label": "Solid button" },
+              { "value": "btn--soft uppercase", "label": "Soft button" },
+              { "value": "btn--outline uppercase", "label": "Outlined button" }
+            ]
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Arena Video Collection"
+      }
+    ]
+  }
+  {% endschema %}
+</div>

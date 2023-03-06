@@ -1,0 +1,151 @@
+{% capture style_custom_color %}
+  {% if section.settings.custom_color %}
+    color: {{ section.settings.body_text_color }} !important
+  {% endif %}
+{% endcapture %}
+
+<div class="count-section wrapper arena-heading {{ section.id }}">
+  {% for block in section.blocks %}
+    {% if block.type == 'text' %}
+      <h1 class="{{ block.settings.font_style }}">
+        {{ block.settings.heading }}
+      </h1>
+    {% elsif block.type == 'image' %}
+      <img
+        style="max-width:{{ block.settings.width_limit }}%"
+        src="{{ block.settings.image | image_url: width: 500 }}"
+        loading="lazy"
+        srcset="{{ block.settings.image | image_url: width: 500 }} 500w, {{ block.settings.image | image_url: width: 800 }} 800w, {{ block.settings.image | image_url: width: 1080 }} 1080w, {{ block.settings.image | image_url: width: 1500 }} 1500w"
+        width="846"
+        height="auto"
+        sizes="(max-width: 479px) 94vw, (max-width: 767px) 57vw, (max-width: 991px) 41vw, (max-width: 1439px) 47vw, 468px"
+        alt=""
+        class="arena-heading-image-block"
+      >
+    {% elsif block.type == 'counter' %}
+      <div class="section-counter"></div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<style>
+  @media(max-width: 767px){
+    {% if section.settings.small_background %}
+    .arena-heading.{{ section.id }} {
+      background-image: url("{{ section.settings.small_background | image_url: width: 800 }}");
+      background-repeat: no-repeat;
+      background-position: center;
+      min-height: {{ section.settings.small_background.height | append : "px" }};
+    }
+    {% endif %}
+    .arena-heading-image-block{
+      display: none;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Arena Heading Section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "small_background",
+      "label": "Background Image (max-width 767px)"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_color",
+      "label": "Overwrite text color?",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "body_text_color",
+      "label": "Body color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "label": "Font family",
+          "id": "font_style",
+          "default": "heading-neue",
+          "options": [
+            {
+              "value": "heading-neue",
+              "label": "Neue"
+            },
+            {
+              "value": "heading-ozymandias",
+              "label": "Ozymandias"
+            },
+            {
+              "value": "heading-neumeister-a",
+              "label": "FDI Neumeister A"
+            },
+            {
+              "value": "heading-neumeister-b",
+              "label": "FDI Neumeister B"
+            },
+            {
+              "value": "heading-sentient",
+              "label": "Sentient"
+            },
+            {
+              "value": "heading-sf-pro",
+              "label": "SF Pro Text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "width_limit",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Image max-width",
+          "default": 50
+        }
+      ]
+    },
+    {
+      "type": "counter",
+      "name": "Section Counter",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Arena Heading Section"
+    }
+  ]
+}
+{% endschema %}

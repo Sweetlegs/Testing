@@ -1,0 +1,425 @@
+<!-- /snippets/collection-filters-sidebar.liquid -->
+{% comment %}
+  The collection sidebar containing tag filering and link-based navigation
+
+  * collection {object} - The current collection
+  * section {object} - The current section
+
+  {% render 'collection-filters-sidebar', section: section, collection: collection %}
+{% endcomment %}
+<style>
+  @media only screen and (max-width: 767px) {
+    #collection-filters-fixed {
+      display: none!important
+    }
+    .collection__filters__outer {
+         top: 65px!important;
+        min-width: 100%!important;
+      }
+    .sidebar__navigation__list {
+    border-top: 0px solid var(--border);
+    }
+  }
+  .drawer__underlay__fill, .drawer__underlay__blur {
+    display: none!important;
+}
+  .collection__filters__inner {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .sidebar__filter__group  {
+      padding-left: 16px;
+    padding-right: 16px;
+    padding: 20px 16px;
+    margin: 0px!important;
+    border-bottom: 1px solid black;
+  }
+</style>
+{%- assign collection_handle = 'all' -%}
+{%- if collection.handle -%}
+  {%- assign collection_handle = collection.handle -%}
+{%- endif -%}
+
+{%- for block in section.blocks -%}
+  {%- case block.type -%}
+
+  {%- when 'filters' -%}
+    <form data-sidebar-filter-form>
+      
+      {% if collection.current_type %}
+      	<input type="hidden" name="q" value="{{ collection.current_type }}">
+      {% endif %}
+      {% if collection.current_vendor %}
+      	<input type="hidden" name="q" value="{{ collection.current_vendor }}">
+      {% endif %}  
+
+      {%- for filter in collection.filters -%}
+        {% render 'filters', block: block, filter: filter %}
+      {%- endfor -%}
+    </form>
+    
+  {%- when 'nav_links' -%}
+    {% unless block.settings.collection_linklist == blank or block.settings.collection_linklist.empty? %}
+      {% assign custom_nav_list = block.settings.collection_linklist | handleize %}
+      <div class="sidebar__filter__group" {{ block.shopify_attributes }}>
+        <button class="sidebar__heading accordion-is-open"
+          data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+          aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+          aria-haspopup="true" 
+          aria-expanded="true"
+        >
+          <span>{{ linklists[custom_nav_list].title }}</span>
+
+          <span class="sidebar__heading-chevron">
+            {% render 'icon-arrow-medium-right' %}
+            <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+            <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+          </span>
+        </button>
+
+        <div class="sidebar__navigation__list" data-accordion-body id="accordion-{{ block.id }}-{{ forloop.index }}">
+          {% for link in linklists[custom_nav_list].links %}
+            {% if link.links == blank %}
+              <div class="sidebar__item {% if link.active %} sidebar__item--active{% endif %} {% if forloop.index > 10 %} is-hidden{% endif %}">
+                <a href="{{ link.url }}">{{ link.title }}</a>
+                {% render 'icon-box' %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if linklists[custom_nav_list].links.size > 10 %}
+          <button type="button" data-show-more>{{ 'collections.sidebar.show_more' | t }}</button>
+        {% endif %}
+      </div>
+
+      {% for link in linklists[custom_nav_list].links %}
+        {% if link.links != blank %}
+        <div class="sidebar__filter__group">
+          <button class="sidebar__heading accordion-is-open"
+            data-accordion-trigger="accordion-{{ link | handle }}-{{ forloop.index }}"
+            aria-controls="accordion-{{ link | handle }}-{{ forloop.index }}"
+            aria-haspopup="true" 
+            aria-expanded="true"
+            >
+            <span>{{ link.title }}</span>
+            
+            <span class="sidebar__heading-chevron">
+              {% render 'icon-arrow-medium-right' %}
+              <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+              <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+            </span>
+          </button>
+
+          <div class="sidebar__navigation__list" data-accordion-body id="accordion-{{ link | handle }}-{{ forloop.index }}">
+            {% for childlink in link.links %}
+              <div class="sidebar__item{% if childlink.active %} sidebar__item--active{% endif %} {% if forloop.index > 10 %} is-hidden{% endif %}">
+                <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                {% render 'icon-box' %}
+              </div>
+            {% endfor %}
+          </div>
+
+          {% if link.links.size > 10 %}
+            <button type="button" data-show-more>{{ 'collections.sidebar.show_more' | t }}</button>
+          {% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    {% endunless %}
+
+  {%- when 'collections' -%}
+    {% if collections.size > 1 %}
+      <div class="sidebar__filter__group" {{ block.shopify_attributes }}>
+        <button class="sidebar__heading accordion-is-open"
+          data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+          aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+          aria-haspopup="true" 
+          aria-expanded="true"
+        >
+          <span>{{ block.settings.title }}</span>
+          
+          <span class="sidebar__heading-chevron">
+            {% render 'icon-arrow-medium-right' %}
+            <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+            <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+          </span>
+        </button>
+
+        <ul class="sidebar__navigation__list" data-accordion-body id="accordion-{{ block.id }}-{{ forloop.index }}">
+          {% for collection_link in collections %}
+            {% unless collection_link.handle == 'frontpage' %}
+              <li class="sidebar__item{% if collection.handle == collection_link.handle %} sidebar__item--active{% endif %} {% if forloop.index > 10 %} is-hidden{% endif %}">
+                <a href="{{ routes.collections_url }}/{{ collection_link.handle }}">{{ collection_link.title }}</a>
+                {% render 'icon-box' %}
+              </li>
+            {% endunless %}
+          {% endfor %}
+        </ul>
+
+        {% if collections.size > 10 %}
+          <button type="button" data-show-more>{{ 'collections.sidebar.show_more' | t }}</button>
+        {% endif %}
+      </div>
+    {% endif %}
+    {%- when 'group' -%}
+      <div class="sidebar__filter__group" data-tag-group {{ block.shopify_attributes }}>
+       -expanded="true"
+        ><h6>
+          <span>{{ block.settings.title }}</span>
+          <span class="sidebar__heading-chevron">
+            {% render 'icon-arrow-medium-right' %}
+            <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+            <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+          </span>
+        </h6>
+        </button>
+        <ul class="sidebar__navigation__list sidebar__navigation__list--grouped" data-accordion-body id="accordion-{{ block.id }}-{{ forloop.index }}">
+          {%- for settings_tag in settings_tag_array -%}
+            {% comment %} Normalize merchant settings input {% endcomment %}
+            {%- assign settings_tag_handle = settings_tag | handleize -%}
+            {%- assign settings_tag_handle_plus = settings_tag | handleize | append: '+' | prepend: '+' -%}
+    
+            {%- assign link_style = 'link--disable' -%}
+    
+            {% comment %} If tag is currently active setup URLs to remove tag {% endcomment %}
+            {%- if current_tags_compare contains settings_tag_handle_plus -%}
+              {%- assign link_style = 'link--remove' -%}
+              {%- assign removed_tag_array = '' -%}
+              {%- for product_tag in current_tags -%}
+                {%- assign product_tag_handle = product_tag | handleize -%}
+                {%- unless settings_tag_handle == product_tag_handle -%}
+                  {%- assign removed_tag_array = removed_tag_array | append: product_tag_handle | append: '[!ヽ(´ー｀)/!]' -%}
+                {%- endunless -%}
+              {%- endfor -%}
+              {%- assign removed_tag_array = removed_tag_array | split: '[!ヽ(´ー｀)/!]' -%}
+              {%- capture removed_tag_url -%}
+                {%- for tag in removed_tag_array -%}{{ tag | handleize }}{%- unless forloop.last -%}+{%- endunless -%}{%- endfor -%}
+              {%- endcapture -%}
+    
+              <li class="sidebar__item sidebar__item--active {{ link_style }}">
+                <a href="{{ routes.collections_url }}/{{ collection_handle }}/{{ removed_tag_url }}" title="✕ {{ settings_tag }}">
+                  {{ settings_tag }}
+                </a>
+                {% render 'icon-box' %}
+                {% render 'icon-reset' %}
+              </li>
+            {%- else -%}
+              {% if shop_tags_compare contains settings_tag_handle_plus %}
+                {%- assign link_style = 'link--add' -%}
+              {%- endif -%}
+              <li class="sidebar__item {{ link_style }}">
+                <a href="{{ routes.collections_url }}/{{ collection_handle }}/{{ current_tags_url }}{{ settings_tag_handle }}" title="+ {{ settings_tag }}">
+                  {{ settings_tag }}
+                </a>
+                {% render 'icon-box' %}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+  {%- endcase -%}
+{%- endfor -%}
+<style>
+#modbile-filter-sidbar .nav-container {
+  border-bottom: 1px solid black;
+  padding: 20px 30px;
+  height: 60px;
+}
+#modbile-filter-sidbar .nav-container.open {
+  height: unset;
+}
+#modbile-filter-sidbar .nav-container.open .list-heading svg {
+  transform: rotate(90deg);
+   transition: all 0.5s ease-out;
+}
+#modbile-filter-sidbar .nav-container ul{
+  height: 0px;
+  opacity: 0;
+}
+#modbile-filter-sidbar  svg .checkbox-border {
+  stroke: #000!important;
+}
+#modbile-filter-sidbar  svg g  {
+    fill: #fff!important;
+  }
+#modbile-filter-sidbar  .list-heading {
+  display: flex;
+
+  justify-content: space-between;
+}
+#modbile-filter-sidbar  .action-container .applyButton {
+  background: black;
+  color: white;
+  padding: 10px 20px;
+  border: 1px solid white;
+}
+  #modbile-filter-sidbar .action-container .clearButton {
+  background: white;
+  color: black;
+    border: 1px solid black;
+    margin-right: 20px;
+    padding: 10px 20px;
+    border-radius: 0px;
+}
+  #modbile-filter-sidbar  .action-container .applyButton {
+  background: black;
+  color: white;
+  padding: 10px 20px;
+  border: 1px solid white;
+}
+.collection__filters__outer  .clearButton {
+      background: white;
+    color: black;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    padding: 5px;
+    margin-right: 20px;
+}
+  .collection__filters__outer  .applyButton{
+  background: black;
+  color: white;
+    padding: 0px 5px;
+}
+  #modbile-filter-sidbar .nav-container.open ul {
+    height: 100%;
+    opacity: 1;
+    transition: all 0.5s ease-out;
+  }
+  #modbile-filter-sidbar  .filterButton.active svg .checkbox-border {
+  stroke: #fff!important;
+    z-index: 99999;
+}
+#modbile-filter-sidbar  .filterButton.active svg g  {
+    fill: #000!important;
+  }
+ #modbile-filter-sidbar  .filter-tag  {
+    font-family: 'Neue Haas Grotesk Text Pro';
+    font-size: 16px;
+    line-height: 15px;
+   padding-right: 20px;;
+ }
+   #modbile-filter-sidbar  .filter-tag-container {
+           padding: 0px 30px;
+   }
+    #modbile-filter-sidbar h4 {
+      font-family: 'FDI Neumeister A';
+      font-size: 15px;
+      line-height: 18px;
+      letter-spacing: 0.03em;
+      
+    }
+
+    #modbile-filter-sidbar h5 {
+      font-family: 'Neue Haas Grotesk Text Pro';
+      font-size: 20px;
+      line-height: 24px;
+    }
+.cart__drawer__title {
+  font-family: 'Ozymandias';
+  font-size: 30px;
+  line-height: 29px;
+}
+  .drawer__top {
+    border: none;
+    margin-top: 15px;x
+  }
+</style>
+<div id="modbile-filter-sidbar">
+  <div class="filter-tag-container">
+  </div>
+        {%- for block in section.blocks -%}
+          {% if block.type == 'group' %}
+            <div class="nav-container">
+            <div class="list-heading"><h5>{{ block.settings.title }} </h5><button class="expand" style="z-index: 999; position: relative">{% render 'icon-arrow-left-mobile' %}</div>
+            <ul style="{% if block.settings.title == 'Color' %}columns: 2; width: 260px;{% endif %}">
+             {%- assign settings_tag_array = block.settings.group_tags | split: ', ' -%}
+             {%- for settings_tag in settings_tag_array -%}
+               <li class="filterButton" title="{{ block.settings.title }}">{% render 'icon-box-white' %}  <span value="{{ settings_tag }}" style="padding-left: 10px">{{  settings_tag }}</span></li>
+             {% endfor %}
+            </ul>
+              </div>
+            {% endif %}
+        {% endfor %}
+         <div class="nav-container">
+           <h4>VIEW OPTIONS</h4>
+         </div>
+         <div class="nav-container">
+            <div class="list-heading"><h5>SORT BY </h5><button class="expand" style="z-index: 999; position: relative">{% render 'icon-arrow-left-mobile' %}</button></div>
+            <ul style="">
+              <li class="sort__button" filterparams="sort_by=price-ascending">Price: Low to High</li>
+              <li class="sort__button" filterparams="sort_by=price-descending">Price: High to Low</li>
+              <li class="sort__button" filterparams="sort_by=relevance">Relevance</li>
+            </ul>
+            </div>
+            <div class="nav-container">
+               <div class="list-heading"><h5>VIEW AS</h5><button class="expand" style="z-index: 999; position: relative">{% render 'icon-arrow-left-mobile' %}</button></div>
+              <ul style="">
+                     <button data-toggle-product-view-mode="product" filterparams="view=product" class="button--toggle-view">PRODUCT</button>
+                    <button data-toggle-product-view-mode="on-model" filterparams="view=on-modal" class="button--toggle-view">ON MODEL</button>
+                    <button data-toggle-product-view-mode="outfit" filterparams="view=outfit" class="button--toggle-view">OUTFIT</button>
+              </ul>
+            </div>
+     <div class="nav-container">
+       <div class="action-container">
+          <button class="btn  uppercase clearButton">Clear All</button>
+         <button class="btn  uppercase applyButton">Apply All</button>
+        
+       </div>
+     </div>
+  <ul>
+</div>
+<script>
+    $(document).ready(() => {  
+      tags.forEach(tag => {
+    $('.filter-tag-container').append(`<span class="filter-tag" filterTag="${tag}"">${tag.replace('+', ' ')}<svg width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.097744 0.498483C0.0667553 0.471368 0.0421739 0.439177 0.0254029 0.40375C0.00863193 0.368322 3.26519e-10 0.330351 0 0.292004C-3.26519e-10 0.253658 0.00863193 0.215687 0.0254029 0.180259C0.0421739 0.144832 0.0667553 0.112641 0.097744 0.085526C0.128733 0.0584109 0.165522 0.0369021 0.20601 0.0222275C0.246499 0.00755294 0.289895 -2.85704e-10 0.333719 0C0.377544 2.85704e-10 0.420939 0.00755294 0.461428 0.0222275C0.501917 0.0369021 0.538706 0.0584109 0.569695 0.085526L4 3.08763L7.43031 0.085526C7.46129 0.0584109 7.49808 0.0369021 7.53857 0.0222275C7.57906 0.00755294 7.62246 0 7.66628 0C7.71011 0 7.7535 0.00755294 7.79399 0.0222275C7.83448 0.0369021 7.87127 0.0584109 7.90226 0.085526C7.93324 0.112641 7.95783 0.144832 7.9746 0.180259C7.99137 0.215687 8 0.253658 8 0.292004C8 0.330351 7.99137 0.368322 7.9746 0.40375C7.95783 0.439177 7.93324 0.471368 7.90226 0.498483L4.47128 3.5L7.90226 6.50152C7.93324 6.52863 7.95783 6.56082 7.9746 6.59625C7.99137 6.63168 8 6.66965 8 6.708C8 6.74634 7.99137 6.78431 7.9746 6.81974C7.95783 6.85517 7.93324 6.88736 7.90226 6.91447C7.87127 6.94159 7.83448 6.9631 7.79399 6.97777C7.7535 6.99245 7.71011 7 7.66628 7C7.62246 7 7.57906 6.99245 7.53857 6.97777C7.49808 6.9631 7.46129 6.94159 7.43031 6.91447L4 3.91237L0.569695 6.91447C0.538706 6.94159 0.501917 6.9631 0.461428 6.97777C0.420939 6.99245 0.377544 7 0.333719 7C0.289895 7 0.246499 6.99245 0.20601 6.97777C0.165522 6.9631 0.128733 6.94159 0.097744 6.91447C0.0667553 6.88736 0.0421739 6.85517 0.0254029 6.81974C0.00863193 6.78431 0 6.74634 0 6.708C0 6.66965 0.00863193 6.63168 0.0254029 6.59625C0.0421739 6.56082 0.0667553 6.52863 0.097744 6.50152L3.52872 3.5L0.097744 0.498483Z" fill="black"></path>
+</svg>
+</span>`)
+      console.log($("span[value='" + tag.replace('+', ' ') + "']").parent().addClass('active'));
+    })
+      $('.collection__filters__toggle').click(function() {
+         $('#collection-filters-fixed').toggleClass('hideMe')
+      })
+      $('#modbile-filter-sidbar .list-heading button').click(function(){     
+        $(this).parent().parent().toggleClass('open');
+      })
+      $('#modbile-filter-sidbar .filter-tag').click(function(){     
+          tag = $(this).attr('filtertag');
+          if(tag == 'CLEAR') {
+            tags = [];
+          } else {
+            tags = tags.filter(value => value != tag);
+          }
+      
+          applyFilter();
+      })
+
+
+     $('.applyButton').click(function(){
+        applyFilter();
+     })
+    $('li.sort__button').click(function(){     
+      console.log('this hits')
+      sortParams = $(this).attr('filterparams');
+        $('#collection-filters-fixed li.sort__button').removeClass('active');
+      $(this).toggleClass('active');
+    })
+    $('.button--toggle-view').click(function(){     
+     
+      viewParams = $(this).attr('filterparams');
+       console.log('this hits',viewParams)
+      $(this).toggleClass('active');
+    })
+    
+      $('#modbile-filter-sidbar .filterButton').click(function(){     
+        const filterValue = $(this).find('span').attr('value').split(' ').join('+');
+        if($(this).hasClass("active")) {
+          tags = tags.filter(e => e !== filterValue); 
+        } else {
+          tags.push(filterValue);
+        }
+        $(this).toggleClass('active');
+      })      
+    })
+</script>

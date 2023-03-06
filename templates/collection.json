@@ -1,0 +1,104 @@
+{
+  "sections": {
+    "main": {
+      "type": "collection",
+      "blocks": {
+        "collections": {
+          "type": "collections",
+          "disabled": true,
+          "settings": {
+            "title": "All collections"
+          }
+        },
+        "filters": {
+          "type": "filters",
+          "disabled": true,
+          "settings": {
+          }
+        },
+        "27f32715-af4c-4ae6-8d0f-a9cfa45e66b8": {
+          "type": "group",
+          "disabled": true,
+          "settings": {
+            "title": "Category",
+            "group_tags": "Arena Apparel, Band Merch, Brand Merch"
+          }
+        },
+        "59e3c61d-f8c7-4e56-b6c7-82ac10604665": {
+          "type": "group",
+          "settings": {
+            "title": "Product Type",
+            "group_tags": "T Shirts, Tanks, Shorts, Pants, Dresses, Jackets, Sweatshirts"
+          }
+        },
+        "3ebd6b03-ed0a-4e79-95bf-23b709ef6ecb": {
+          "type": "group",
+          "settings": {
+            "title": "Finish",
+            "group_tags": "Digital Print, Vinyl, Embroidery, All Over Print"
+          }
+        },
+        "0b7e8e9e-5d42-4773-b02c-8601bb4b07f8": {
+          "type": "group",
+          "disabled": true,
+          "settings": {
+            "title": "Gender",
+            "group_tags": "Women, Men,\tBoys, Girls, Unisex"
+          }
+        },
+        "2a41b142-de4a-4163-9857-5a1c261ddb63": {
+          "type": "group",
+          "settings": {
+            "title": "Color",
+            "group_tags": "White, Natural, Lemon, Yellow, Mustard, Gold, Orange, Pale Pink, Pink, Rose, Coral,\tCopper, Red, Cardinal, Burgundy, Purple, Mauve,\tPale Blue, Carolina Blue, Arctic Blue, Petrol Blue,\tBright Royal, Indigo, Navy, Aqua, Sage, Teal, Kelly Green,"
+          }
+        },
+        "15fb1da9-1e79-4816-b7ac-d9a314503f20": {
+          "type": "group",
+          "settings": {
+            "title": "Neck",
+            "group_tags": "V Neck, Round Neck, Swoop Neck, Crew Neck"
+          }
+        },
+        "b1e4b902-325c-4e19-bc27-5ff2ddd5b6d9": {
+          "type": "group",
+          "settings": {
+            "title": "Sleeve",
+            "group_tags": "Sleeveless, Short Sleeve, Long Sleeve"
+          }
+        },
+        "0c985c42-445d-4149-b83e-6ebce276a83f": {
+          "type": "group",
+          "disabled": true,
+          "settings": {
+            "title": "Price Range",
+            "group_tags": "$25 - $50, $50 - $100, $100 - $150, $150 - $200, $200 - $250, $250 - $300, $300 - $350, $350 - $400"
+          }
+        }
+      },
+      "block_order": [
+        "collections",
+        "filters",
+        "27f32715-af4c-4ae6-8d0f-a9cfa45e66b8",
+        "59e3c61d-f8c7-4e56-b6c7-82ac10604665",
+        "3ebd6b03-ed0a-4e79-95bf-23b709ef6ecb",
+        "0b7e8e9e-5d42-4773-b02c-8601bb4b07f8",
+        "2a41b142-de4a-4163-9857-5a1c261ddb63",
+        "15fb1da9-1e79-4816-b7ac-d9a314503f20",
+        "b1e4b902-325c-4e19-bc27-5ff2ddd5b6d9",
+        "0c985c42-445d-4149-b83e-6ebce276a83f"
+      ],
+      "settings": {
+        "product_limit": 24,
+        "grid_setting_large": 3,
+        "grid_setting_small": "2",
+        "enable_layout_toggle": false,
+        "collection_sorting": true,
+        "hide_sidebar": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

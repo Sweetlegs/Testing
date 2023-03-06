@@ -1,0 +1,415 @@
+{% capture style_custom_color %}
+  {% if section.settings.custom_color %}
+    color: {{ section.settings.body_text_color }} !important
+  {% endif %}
+{% endcapture %}
+
+<div class="count-section wrapper arena-heading {{ section.id }}">
+  {% if section.settings.counter %}
+    <div class="section-counter "></div>
+  {% endif %}
+  <h3 class="product-title --mobile heading-neue" style="{{ style_custom_color }}">
+    {{ section.settings.heading | default: section.settings.product.title }}
+  </h3>
+  <div class="background-product-and-text wrapper">
+    {% for n in (1..3) %}
+      <div class="background-product-and-text" image-position="{{ forloop.index }}"></div>
+    {% endfor %}
+    <div class="overlay-infos">
+      <div class="column">
+        <h3 class="product-title --desktop heading-neue" style="{{ style_custom_color }}">
+          {% if section.settings.title != '' %}
+            {{ section.settings.title }}
+          {% else %}
+            {{ section.settings.product.title }}
+          {% endif %}
+        </h3>
+        <div class="description">
+          {{ section.settings.description }}
+        </div>
+      </div>
+      <a
+        href="{{ section.settings.product.url }}"
+        class="arena --desktop hero__btn {{ section.settings.button_style }} {{ section.settings.button_color }}"
+      >
+        {{ section.settings.cta_text }}
+      </a>
+      <div class="column">
+        <h1 class="{{ section.settings.font_style_1 }}">
+          {{ section.settings.heading_1 }}
+        </h1>
+        <h1 class="{{ section.settings.font_style_2 }}">
+          {{ section.settings.heading_2 }}
+        </h1>
+        <h1 class="{{ section.settings.font_style_3 }}">
+          {{ section.settings.heading_3 }}
+        </h1>
+      </div>
+    </div>
+  </div>
+  <a
+    href="{{ section.settings.product.url }}"
+    class="arena --mobile hero__btn {{ section.settings.button_style }} btn--black"
+  >
+    {{ section.settings.cta_text }}
+  </a>
+</div>
+
+{% if section.settings.large_background %}
+  <style>
+    .arena-heading.{{ section.id }} .background-product-and-text[image-position] {
+      height: {{ section.settings.large_background.height | append : "px" }};
+    }
+      .arena-heading.{{ section.id }} .background-product-and-text[image-position] {
+        background-image: url("{{ section.settings.large_background | image_url: width: 800 }}");
+      }
+      .arena-heading.{{ section.id }}{
+        min-height: {{ section.settings.large_background.height | times: 243 | divided_by: section.settings.large_background.width | append: "px" }};
+      }
+      .arena-heading.{{ section.id }} .background-product-and-text[image-position]{
+        min-height: {{ section.settings.large_background.height | times: 243 | divided_by: section.settings.large_background.width | append: "px" }};
+        max-height: {{ section.settings.large_background.height | times: 243 | divided_by: section.settings.large_background.width | append: "px" }};
+      }
+  </style>
+{% else %}
+  <style>
+    .arena-heading.{{ section.id }} .background-product-and-text[image-position] {
+      height: {{ section.settings.product.featured_image.height | append : "px" }};
+    }
+      .arena-heading.{{ section.id }} .background-product-and-text[image-position] {
+        background-image: url("{{ section.settings.product.featured_image | image_url: width: 800 }}");
+      }
+      .arena-heading.{{ section.id }}{
+        min-height: {{ section.settings.product.featured_image.height | times: 243 | divided_by: section.settings.product.featured_image.width | append: "px" }};
+      }
+      .arena-heading.{{ section.id }} .background-product-and-text[image-position]{
+        min-height: {{ section.settings.product.featured_image.height | times: 243 | divided_by: section.settings.product.featured_image.width | append: "px" }};
+        max-height: {{ section.settings.product.featured_image.height | times: 243 | divided_by: section.settings.product.featured_image.width | append: "px" }};
+      }
+  </style>
+{% endif %}
+
+<style>
+    .wrapper.arena-heading.{{ section.id }} {
+      position: relative;
+      margin-top: var(--outer);
+      margin-bottom: var(--outer);
+        flex-direction: row-reverse;
+    }
+    .arena-heading.{{ section.id }} h3.product-title.--mobile.heading-neue {
+      display: none;
+    }
+    .arena-heading.{{ section.id }} .overlay-infos {
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      margin: 0px;
+      padding: var(--outer);
+      flex-direction: row;
+      color: #fff;
+      align-items: flex-end;
+    }
+    .arena-heading.{{ section.id }} .overlay-infos .column {
+      padding-bottom: var(--outer);
+    }
+    .arena-heading.{{ section.id }} .overlay-infos .column:first-child {
+      flex: 1;
+    }
+    .arena-heading.{{ section.id }} .overlay-infos .column:last-child {
+      /* flex: 2; */
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      max-width: 66%;
+   }
+   .arena-heading.{{ section.id }} .overlay-infos .column:last-child h1 {
+    font-size: 110px;
+  }
+  .arena-heading.{{ section.id }} a.arena.--mobile{
+    display: none;
+  }
+  .arena-heading.{{ section.id }} .overlay-infos a.arena{
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      bottom: var(--outer);
+      z-index: 1;
+    }
+    .wrapper.arena-heading.{{ section.id }} h3.product-title{
+      margin-bottom: 0px;
+      font-size: 18px;
+      background: #000;
+      padding: 4px;
+      width: fit-content;
+      max-width: 15ch;
+    }
+    .wrapper.arena-heading.{{ section.id }} .description {
+      max-width: 300px;
+      text-align: justify;
+      background: #000;
+    }
+    .arena-heading.{{ section.id }} .background-product-and-text.wrapper {
+      padding: 0px;
+      display: flex;
+      position: relative;
+    }
+    .arena-heading.{{ section.id }} .background-product-and-text[image-position] {
+      width: auto;
+      flex: 1;
+      max-height: 550px;
+    }
+    .wrapper.arena-heading.{{ section.id }} .section-counter{
+      margin-left: var(--outer);
+    }
+      .arena-heading.{{ section.id }} .background-product-and-text[image-position] {
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+      }
+    @media(max-width: 767px){
+      .wrapper.arena-heading.{{ section.id }}{
+        flex-direction: column;
+      }
+      .arena-heading.{{ section.id }} a.arena.--desktop{
+        display: none;
+      }
+      .arena-heading.{{ section.id }} a.arena.--mobile{
+        display: block;
+        margin-top: var(--outer);
+        margin-bottom: var(--outer);
+      }
+      .arena-heading.{{ section.id }} h3.product-title.--mobile.heading-neue {
+        display: block;
+      }
+      .wrapper.arena-heading.{{ section.id }} .section-counter{
+        top: 50%;
+        transform: translate(-50%)
+      }
+      .arena-heading.{{ section.id }} .background-product-and-text.wrapper {
+        width: 100%;
+      }
+      .arena-heading.{{ section.id }} .overlay-infos {
+        max-width: 243px;
+        margin: auto;
+        left: 50%;
+        transform: translate(-50%);
+     }
+      .arena-heading.{{ section.id }} .overlay-infos .column:last-child h1{
+        font-size: 45px;
+      }
+      .arena-heading.{{ section.id }} .arena-heading-image-block,
+      .arena-heading.{{ section.id }} .product-title.--desktop,
+      .arena-heading.{{ section.id }} .description {
+        display: none;
+      }
+      .wrapper.arena-heading.{{ section.id }} h3.product-title{
+        background: none;
+        margin-bottom: 20px;
+      }
+      .arena-heading.{{ section.id }} .background-product-and-text[image-position]{
+        max-width: 243px;
+        margin: auto;
+      }
+      .arena-heading.{{ section.id }} .background-product-and-text[image-position='3'],
+      .arena-heading.{{ section.id }} .background-product-and-text[image-position='2'] {
+        display: none;
+      }
+    }
+</style>
+{% schema %}
+{
+  "name": "Arena Product with Text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "large_background",
+      "label": "Background Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "counter",
+      "label": "Counter",
+      "default": true
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_color",
+      "label": "Overwrite text color?",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "body_text_color",
+      "label": "Body color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "heading_1",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "label": "Font family",
+      "id": "font_style_1",
+      "default": "heading-neue",
+      "options": [
+        {
+          "value": "heading-neue",
+          "label": "Neue"
+        },
+        {
+          "value": "heading-ozymandias",
+          "label": "Ozymandias"
+        },
+        {
+          "value": "heading-neumeister-a",
+          "label": "FDI Neumeister A"
+        },
+        {
+          "value": "heading-neumeister-b",
+          "label": "FDI Neumeister B"
+        },
+        {
+          "value": "heading-sentient",
+          "label": "Sentient"
+        },
+        {
+          "value": "heading-sf-pro",
+          "label": "SF Pro Text"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading_2",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "label": "Font family",
+      "id": "font_style_2",
+      "default": "heading-neue",
+      "options": [
+        {
+          "value": "heading-neue",
+          "label": "Neue"
+        },
+        {
+          "value": "heading-ozymandias",
+          "label": "Ozymandias"
+        },
+        {
+          "value": "heading-neumeister-a",
+          "label": "FDI Neumeister A"
+        },
+        {
+          "value": "heading-neumeister-b",
+          "label": "FDI Neumeister B"
+        },
+        {
+          "value": "heading-sentient",
+          "label": "Sentient"
+        },
+        {
+          "value": "heading-sf-pro",
+          "label": "SF Pro Text"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading_3",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "label": "Font family",
+      "id": "font_style_3",
+      "default": "heading-neue",
+      "options": [
+        {
+          "value": "heading-neue",
+          "label": "Neue"
+        },
+        {
+          "value": "heading-ozymandias",
+          "label": "Ozymandias"
+        },
+        {
+          "value": "heading-neumeister-a",
+          "label": "FDI Neumeister A"
+        },
+        {
+          "value": "heading-neumeister-b",
+          "label": "FDI Neumeister B"
+        },
+        {
+          "value": "heading-sentient",
+          "label": "Sentient"
+        },
+        {
+          "value": "heading-sf-pro",
+          "label": "SF Pro Text"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "select",
+      "id": "button_color",
+      "label": "Color",
+      "default": "btn--white",
+      "options": [
+        { "value": "btn--primary", "label": "Bright accent" },
+        { "value": "btn--secondary", "label": "Secondary accent" },
+        { "value": "btn--neutral", "label": "Text color" },
+        { "value": "btn--black", "label": "Black" },
+        { "value": "btn--white", "label": "White" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn uppercase",
+      "options": [
+        { "value": "caps--link", "label": "Capitalized text" },
+        { "value": "btn uppercase", "label": "Solid button" },
+        { "value": "btn--soft uppercase", "label": "Soft button" },
+        { "value": "btn--outline uppercase", "label": "Outlined button" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Arena Product with Text"
+    }
+  ]
+}
+{% endschema %}

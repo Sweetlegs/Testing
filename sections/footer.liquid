@@ -1,297 +1,414 @@
-<footer id="site-footer-{{ section.id }}" class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer-section">
-  {%- if section.settings.footer_instagram != '' -%}
-  {%- assign my_instagram = section.settings.footer_instagram_token | split: '.' -%}
-  <div class="footer-instagram-section">
-    <ul id="footer-instagram" class="instagram-pics instagram-size-small" data-id="{{ my_instagram.first | escape }}" data-token="{{ section.settings.footer_instagram_token | escape }}" data-limit="{{ section.settings.footer_instagram_limit | plus:0 }}"></ul>
-    <p class="clear"><a href="//instagram.com/{{ section.settings.footer_instagram_username | escape }}" rel="me" target="_blank">{{ 'footer.instagram.follow_our_instagram' | t | escape }}</a></p>
-  </div>
-  {%- endif -%}
+<style>
+  .site-footer-wrapper {
+    background: #000000;
+    color: white;
+  }
   
-  {%- if section.settings.footer_area != '' -%}
-  <div class="f-columns widget-area">
-    {%- case section.settings.footer_area -%}
-    {%- when '1' -%}
-      {%- include 'footer-area-1' -%}
-    {%- when '2' -%}
-      {%- include 'footer-area-2' -%}
-    {%- when '3' -%}
-      {%- include 'footer-area-3' -%}
-    {%- when '4' -%}
-      {%- include 'footer-area-4' -%}
-  	{%- when '5' -%}
-      {%- include 'footer-area-5' -%}
-    {%- when '6' -%}
-      {%- include 'footer-area-6' -%}
-    {%- when '7' -%}
-      {%- include 'footer-area-7' -%}
-    {%- when '8' -%}
-      {%- include 'footer-area-8' -%}
-  	{%- when '9' -%}
-      {%- include 'footer-area-9' -%}
-    {%- endcase -%}
+  .footer-quicklinks a, .footer-secondary a {
+    color: white;
+  }
+
+  .medium-up--custom5 {
+    width: 20%;
+  }
+  
+  .medium-up--custom6 {
+    width: 14%;
+  }
+
+  .medium-up--custom6:first-child  {
+    width: 30%;
+  }
+</style>
+
+<footer class="site-footer-wrapper"
+  role="contentinfo"
+  data-section-id="{{ section.id }}"
+  data-section-type="footer">
+  {% if section.settings.footer_image %}
+    <style>
+      .main-content .shopify-section:last-child .brick--margin,
+      .main-content .shopify-section:last-child .wrapper--brick {
+        margin-bottom: 0;
+        padding-bottom: calc(var(--outer) + var(--footer-logo) / 2);
+      }
+    </style>
+    <div class="footer-logo-wrapper">
+      <a href="{{ routes.root_url }}" class="footer-logo" data-footer-logo>
+        <img src="{{ section.settings.footer_image | img_url: 'x200' }}" 
+          width="{{ section.settings.footer_image.width }}"
+          height="{{ section.settings.footer_image.height }}"
+          alt="{{ section.settings.footer_image.alt | default: shop.name | strip_html | escape }}"/>
+      </a>
+    </div>
+  {% endif %}
+  <div class="wrapper site-footer">
+    <div class="grid grid--uniform" data-accordion-group>
+      <div class="grid__item medium-up--three-tenths">
+        first
+      </div>
+      <div class="grid__item medium-up--three-tenths">
+        <div class="grid grid--uniform">
+          <div class="grid__item medium-up--five-tenths ">
+            <div>this hit</div>
+            <div>thsi hti </div>
+            <div>this hit</div>
+          </div>
+          <div class="grid__item medium-up--five-tenths ">
+            <div>this hit</div>
+            <div>thsi hti </div>
+            <div>this hit</div>
+          </div>
+        </div>
+      </div>
+      <div class="grid__item medium-up--three-tenths">
+        <div class="grid grid--uniform">
+          <div class="grid__item medium-up--five-tenths ">
+            <div>this hit</div>
+            <div>thsi hti </div>
+            <div>this hit</div>
+          </div>
+          <div class="grid__item medium-up--five-tenths ">
+            <div>this hit</div>
+            <div>thsi hti </div>
+            <div>this hit</div>
+          </div>
+        </div>
+      </div>
+      <div class="grid__item medium-up--two-twelfths">
+        first
+      </div>
+
+
+      {% case section.blocks.size %}
+        {% when 1 %}
+          {% assign footer_column_width = 'medium-up--one-half medium-up--push-one-quarter' %}
+        {% when 2 %}
+          {% assign footer_column_width = 'medium-up--one-half' %}
+        {% when 3 %}
+          {% assign footer_column_width = 'medium-up--one-third' %}
+        {% when 4 %}
+          {% assign footer_column_width = 'medium-up--one-quarter' %}
+        {% when 5 %}
+          {% assign footer_column_width = 'medium-up--custom5' %}
+      {% when 6 %}
+          {% assign footer_column_width = 'medium-up--custom6' %}
+      {% endcase %}
+
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'linklist' %}
+            {% assign linklist = linklists[block.settings.linklist] %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <ul class="footer-quicklinks" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">
+                {% for link in linklist.links %}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+
+          {% when 'page' %}
+            {% assign page = pages[block.settings.page] %}
+            {% if page == blank or page.empty? %}
+              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+                <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                  data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-haspopup="true" 
+                  aria-expanded="true">
+                    {{ shop.name }}
+                    {% render 'icon-arrow-medium-right' %}
+                </p>
+
+                <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ 'home_page.onboarding.no_content' | t }}</div>
+              </div>
+            {% else %}
+              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+                <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                  data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-haspopup="true" 
+                  aria-expanded="true">
+                    {{ page.title | escape }}
+                    {% render 'icon-arrow-medium-right' %}
+                </p>
+
+                <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ page.content }}</div>
+              </div>
+            {% endif %}
+
+          {% when 'text' %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-haspopup="true" 
+                aria-expanded="true">
+                  {{ block.settings.title | escape }}
+                  {% render 'icon-arrow-medium-right' %}
+              </p>
+              <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ block.settings.text }}</div>
+            </div>
+
+          {% when 'newsletter' %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+
+              <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">
+                {{ block.settings.richtext }}
+                
+                {% render 'newsletter-form' unique: 'footer-newsletter' %}
+              </div>
+            </div>
+
+          {% else %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    <div class="grid footer-secondary-wrapper">
+
+
+      <ul class="footer-secondary inline-list">
+          <li>&copy; {{ shop.name | link_to: routes.root_url }} {{ 'now' | date: "%Y" }}</li>
+        {% for link in linklists[section.settings.footer_secondary_linklist].links %}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+
+
+        <!-- Remove the following line to delete 'Powered by Shopify' from your footer -->
+          <li data-powered-link>{{ powered_by_link }}</li>
+        <!-- Do not delete below this line -->
+
+
+      </ul>
+
+      {% if section.settings.footer_social_enable %}
+        <ul class="footer-social social-icons grid__item inline-list">
+          {%- assign social_accounts = 'Facebook, Twitter, Tiktok, Pinterest, Instagram, Snapchat, Tumblr, Linkedin, YouTube, Vimeo, Medium, ' | split: ', ' -%}
+          {%- for social in social_accounts -%}
+            {%- assign social_handle = social | handleize -%}
+            {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+
+            {%- if settings[social_link] != blank -%}
+              <li>
+                <a href="{{ settings[social_link] }}" title="{{ social }}" target="_blank">
+                  {% render 'social-icon' handle: social_handle %}
+                  <span class="visually-hidden">{{ social }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {% for custom_social_icon_idx in (1..3) %}
+            {% capture custom_social_icon_capture %}custom_social_icon_{{ custom_social_icon_idx }}{% endcapture %}
+            {% capture custom_social_link_capture %}custom_social_link_{{ custom_social_icon_idx }}{% endcapture %}
+            {%- assign custom_social_icon = settings[custom_social_icon_capture] -%}
+            {%- assign custom_social_icon_downcase = custom_social_icon | downcase -%}
+            {%- assign custom_social_link = settings[custom_social_link_capture] -%}
+            {%- if custom_social_icon != blank and custom_social_link != blank and custom_social_icon_downcase contains '.png' -%}
+              {%- assign custom_social_icon_title = custom_social_icon.alt | default: custom_social_link -%}
+              <li>
+                <a href="{{ custom_social_link }}" title="{{ custom_social_icon_title }}" target="_blank">
+                  <img 
+                    loading="lazy" 
+                    alt="{{ custom_social_icon_title | strip_html | escape }}" 
+                    src="{{ custom_social_icon | img_url: '100x100' }}"
+                    width="20"
+                    height="20">
+                  <span class="visually-hidden">{{ custom_social_icon_title }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if section.settings.footer_payment_enable %}
+        {% unless shop.enabled_payment_types == empty %}
+        <ul class="footer-payment payment-icons inline-list">
+          {% for type in shop.enabled_payment_types %}
+          <li>
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+            <span class="visually-hidden">{{ type | capitalize | replace: '_', ' ' }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endunless %}
+      {% endif %}
+
+    </div>
   </div>
-  {%- endif -%}
-  <div class="f-copyright">
-    <div class="row">
-      <div class="medium-12 columns socials">
-        <div class="footer-divider"></div>
-        {%- if section.settings.footer_social != '' -%}
-          {%- include 'shortcode' load: section.settings.footer_social_content -%}
-        {%- endif -%}            
-      </div>
-      {%- if section.settings.footer_copyright != '' -%}
-      <div class="medium-12 columns copytxt">
-        <p class="copyright">
-          {{ section.settings.footer_copyright }}
-        </p>
-      </div>
-      {%- endif -%}
-    </div>    
-  </div> 
 </footer>
 
 {% schema %}
-  {
-    "name": "Footer",
-    "settings": [
-      {
-        "type": "select",
-        "id": "footer_area",
-        "label": "Footer Widget Areas [( ? )](\/\/goo.gl\/xqR9oQ)",
-        "options": [
-          {
-            "value": "0",
-            "label": "None"
-          },
-          {
-            "value": "1",
-            "label": "Area 1"
-          },
-          {
-            "value": "2",
-            "label": "Area 2"
-          },
-          {
-            "value": "3",
-            "label": "Area 3"
-          },
-          {
-            "value": "4",
-            "label": "Area 4"
-          },
-          {
-            "value": "5",
-            "label": "Area 5"
-          },
-          {
-            "value": "6",
-            "label": "Area 6"
-          },
-          {
-            "value": "7",
-            "label": "Area 7"
-          },
-          {
-            "value": "8",
-            "label": "Area 8"
-          },
-          {
-            "value": "9",
-            "label": "Area 9"
-          }
-        ]
-      },
-      {
-        "type": "header",
-        "content": "Footer 1"
-      },
-      {
-        "type": "select",
-        "id": "footer_1_align",
-        "label": "Text Align",
-        "options": [
-          {
-            "label": "Left",
-            "value": "left-align"
-          },
-          {
-            "label": "Right",
-            "value": "right-align"
-          }
-        ]
-      },
-      {
-        "type": "html",
-        "id": "footer_1_content",
-        "label": "Content"
-      },
-      {
-        "type": "header",
-        "content": "Footer 2"
-      },
-      {
-        "type": "select",
-        "id": "footer_2_align",
-        "label": "Text Align",
-        "options": [
-          {
-            "label": "Left",
-            "value": "left-align"
-          },
-          {
-            "label": "Right",
-            "value": "right-align"
-          }
-        ]
-      },
-      {
-        "type": "html",
-        "id": "footer_2_content",
-        "label": "Content"
-      },
-      {
-        "type": "header",
-        "content": "Footer 3"
-      },
-      {
-        "type": "select",
-        "id": "footer_3_align",
-        "label": "Text Align",
-        "options": [
-          {
-            "label": "Left",
-            "value": "left-align"
-          },
-          {
-            "label": "Right",
-            "value": "right-align"
-          }
-        ]
-      },
-      {
-        "type": "html",
-        "id": "footer_3_content",
-        "label": "Content"
-      },
-      {
-        "type": "header",
-        "content": "Footer 4"
-      },
-      {
-        "type": "select",
-        "id": "footer_4_align",
-        "label": "Text Align",
-        "options": [
-          {
-            "label": "Left",
-            "value": "left-align"
-          },
-          {
-            "label": "Right",
-            "value": "right-align"
-          }
-        ]
-      },
-      {
-        "type": "html",
-        "id": "footer_4_content",
-        "label": "Content"
-      },
-      {
-        "type": "header",
-        "content": "Footer 5"
-      },
-      {
-        "type": "select",
-        "id": "footer_5_align",
-        "label": "Text Align",
-        "options": [
-          {
-            "label": "Left",
-            "value": "left-align"
-          },
-          {
-            "label": "Right",
-            "value": "right-align"
-          }
-        ]
-      },
-      {
-        "type": "html",
-        "id": "footer_5_content",
-        "label": "Content"
-      },
-      {
-        "type": "header",
-        "content": "Instagram Feed"
-      },
-      {
-        "type": "select",
-        "id": "footer_instagram",
-        "label": "Instagram Feed",
-        "options": [
-          {
-            "label": "Disable",
-            "value": ""
-          },
-          {
-            "label": "Enable",
-            "value": "1"
-          }
-        ]
-      },
-      {
-        "type": "text",
-        "id": "footer_instagram_username",
-        "label": "Username"
-      },
-      {
-        "type": "text",
-        "id": "footer_instagram_token",
-        "label": "Access Token [( ? )](\/\/goo.gl\/OypFlG)"
-      },
-      {
-        "type": "range",
-        "id": "footer_instagram_limit",
-        "min": 4,
-        "max": 16,
-        "step": 1,
-        "label": "Limit",
-        "default": 8
-      },
-      {
-        "type": "header",
-        "content": "Social Media Icons"
-      },
-      {
-        "type": "select",
-        "id": "footer_social",
-        "label": "Social Media Icons",
-        "options": [
-          {
-            "label": "Disable",
-            "value": ""
-          },
-          {
-            "label": "Enable",
-            "value": "1"
-          }
-        ]
-      },
-      {
-        "type": "html",
-        "id": "footer_social_content",
-        "label": "Social Icons"
-      },
-      {
-        "type": "header",
-        "content": "Copyright"
-      },
-      {
-        "type": "html",
-        "id": "footer_copyright",
-        "label": "Copyright Text"
-      }
-    ]
-  }
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "label": "Footer logo",
+      "type": "image_picker",
+      "id": "footer_image",
+      "info": "400 x 200px .png"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_secondary_linklist",
+      "label": "Link List",
+      "info": "This menu won't show dropdown items"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_payment_enable",
+      "label": "Show payment types"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_social_enable",
+      "label": "Show social icons"
+    },
+    {
+      "type": "header",
+      "content": "language selector",
+      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_locale_selector",
+      "label": "Show language selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Currency selector",
+      "info": "To add a currency, go to your [payment settings.](/admin/settings/payments)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "Show currency selector",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "currency_select_type",
+      "label": "Type",
+      "default": "country",
+      "options": [
+        {
+          "value": "country",
+          "label": "Country"
+        },
+        {
+          "value": "currency",
+          "label": "Currency"
+        }
+      ]
+    }
+  ],
+  "blocks" : [
+    {
+      "type": "linklist",
+      "name": "Link list",
+      "settings": [
+        {
+           "type": "link_list",
+           "id": "linklist",
+           "label": "Link list",
+           "default": "main-menu",
+           "info": "This menu won't show dropdown items"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
+        },
+        {
+          "id": "richtext",
+          "type": "richtext",
+          "label": "Newsletter description",
+          "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Text column"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share store details, promotions, or brand content with your customers.</p>"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "id": "page",
+          "type": "page",
+          "label": "Page"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
+        }
+      ]
+    }
+  ]
+}
 {% endschema %}
