@@ -14967,16 +14967,20 @@
     };
   });
 
-   register('featured-collection', {
+  register('featured-collection', {
     onLoad() {
+    if (window.innerWidth > 767) {
       const carouselWraps = this.container.dataset.carouselWraps === 'true';
       this.carousel = Carousel(this.container, 'featured-collection', {
         wrapAround: carouselWraps
       });
+      }
     },
 
     onUnload() {
+    if (window.innerWidth > 767) {
       this.carousel.destroy();
+      }
     }
 
   });
