@@ -1,0 +1,34 @@
+<div class="accordion rte {{ classes }}">
+  <div
+    class="accordion__group"
+    data-index="{{ forloop.index0 }}"
+    {{ block.shopify_attributes }}
+  >
+    <a class="accordion__label" href="#">
+      {{ heading }}
+    </a>
+    <div class="accordion__text{% if small_text %} fs-body-small{% endif %}">
+      {{ content }}
+       {% if heading == 'Product details' and product.metafields.custom.s_c_warning_detail_2 %}
+                <div class="warning" style="margin-top:20px !important;">
+                  <div class="warning-row">
+                    <img src='{{ product.metafields.custom.safety_compliance_warning | img_url: '19px' }}' class='warning-icon' />
+                    <strong>{{ product.metafields.custom.s_c_warning_title_2 }}</strong>
+                  </div>
+                  <div class="warning-row">
+                    <p>{{ product.metafields.custom.s_c_warning_detail_2 }}</p>
+                  </div>
+         {% if product.metafields.custom.s_c_warning_detail_3 %}
+                  <div class="warning-row" style="margin-top:10px;">
+                    <img src='{{ product.metafields.custom.safety_compliance_warning | img_url: '19px' }}' class='warning-icon' />
+                    <strong>{{ product.metafields.custom.s_c_warning_title_3 }}</strong>
+                  </div>
+                  <div class="warning-row">
+                    <p>{{ product.metafields.custom.s_c_warning_detail_3 }}</p>
+                  </div>
+           {% endif %}
+                </div>
+              {% endif %}
+    </div>
+  </div>
+</div>

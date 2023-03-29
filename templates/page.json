@@ -1,12 +1,1 @@
-{
-  "sections": {
-    "main": {
-      "type": "page",
-      "settings": {
-      }
-    }
-  },
-  "order": [
-    "main"
-  ]
-}
+{"sections":{"main":{"type":"main-page","settings":{"content_max_width":1500}},"1663866775e1aeae4e":{"type":"newsletter","settings":{"title":"Be the first to know","subheading":"<p>Sign up for our emails to learn about upcoming collections.<\/p>","section_contrast":false,"section_padding":"section--vertical-padding-top-only","padding_amount":"0.5"}}},"order":["main","1663866775e1aeae4e"]}

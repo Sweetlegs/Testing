@@ -1,67 +1,32 @@
-<!-- /snippets/newsletter-form.liquid -->
-{% comment %}
-  {% render 'newsletter-form', unique: unique, text: block.settings.button_text, style: block.settings.button_style, color: block.settings.button_color %}
-{% endcomment %}
-{%- liquid 
-  assign style = style | default: 'btn'
-  assign color = color | default: 'btn--secondary'
-  assign translation = 'general.newsletter_form.submit' | t 
-  assign text = text | default: translation
-  assign class = 'newsletter--default-messages'
+{%- assign success_msg = 'general.newsletter_form.confirmation' | t -%}
 
-  if success_text != blank
-    assign class = ''
-  endif  
--%}
+{% form 'customer', class: class, id: id %}
+  {% render 'form-status', form: form, form_id: id, success_message: success_msg %}
 
-{%- if unique -%}
-  {% form 'customer', id: unique, data-newsletter-form: '', class: class %}
-    {% if content != blank %}
-      {{ content }}
-    {% endif %}
-
-    {% if success_text != blank %}
-      <p class="newsletter__message newsletter__message--success">{{ success_text | newline_to_br }}</p>
-
-      <p class="newsletter__message newsletter__message--error"><em>{{ 'general.newsletter_form.error_message' | t }}</em></p>
-    {% else %}
-      {% if form.posted_successfully? %}
-        <p><em>{{ 'general.newsletter_form.subscribed' | t }}</em></p>
-      {% elsif form.errors %}
-        {% for field in form.errors %}
-          <p><em>{{ field }} - {{ form.errors.messages[field] }}</em></p>
-        {% endfor %}
-      {% endif %}
-    {% endif %}
-    
-    <input type="hidden" name="contact[tags]" value="newsletter">
-    <input type="hidden" name="contact[accepts_marketing]" value="true">
-    <div class="input-group input-group--inner-button float__wrapper">
-      <label for="mail-{{ unique }}">{{ 'general.newsletter_form.email' | t }}</label>
-      <input class="input-group-field" 
-        type="email" 
-        placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" 
-        id="mail-{{ unique }}" 
-        aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" 
-        autocorrect="off" 
-        autocapitalize="off" 
+  {%- unless form.posted_successfully? -%}
+    <div class="newsletter-form-inner">
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label for="{{ id }}-email" class="visually-hidden">{{ 'general.newsletter_form.email_placeholder' | t }}</label>
+      <input type="email"
+        class="input"
         name="contact[email]"
-        data-newsletter-field />
-      <span class="input-group-button">
-        <button 
-          type="submit" {% unless show_icon %}class="{{ style }} {{ color }} uppercase"{% endunless %} 
-          aria-label="{{ text }}"
-          name="subscribe" 
-          id="subscribe-{{ unique }}">
-          {%- if show_icon -%}
-            {%- render 'icon-arrow-right-long' -%}
-            {%- render 'icon-check-slim' -%}
-          {%- else -%}  
-            {{ text }}
-          {%- endif -%}
-        </button>
-      </span>
-    </div>
-  {% endform %}
-{%- endif -%}
+        id="{{ id }}-email"
+        value="{% if customer.email != blank %}{{ customer.email }}{% endif %}"
+        placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+        autocorrect="off"
+        autocapitalize="off"
+      >
 
+      <div class='guarantee_box'>
+        <input type="checkbox" id="newsletterGuaranteeCheck" />
+        <p class='guarantee_rte'>
+          By submitting your email address, you acknowledge receipt of, review of, and agreement to Chick-fil-A’s <a href="https://www.chick-fil-a.com/legal#terms_and_conditions" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>, as well as receipt of Chick-fil-A’s <a href="https://www.chick-fil-a.com/legal#privacy_policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and <a href="https://www.chick-fil-a.com/legal#your_california_privacy_rights" target="_blank" rel="noopener noreferrer">California Privacy Notice</a>.
+        </p>
+      </div>
+      
+      <button type="submit" name="commit" id="Subscribe" class="newsletter-form__button btn btn--primary btn--small btn--medium-ns">
+        {{ 'general.newsletter_form.submit' | t }}
+      </button>
+    </div>
+  {%- endunless -%}
+{% endform %}

@@ -1,12 +1,1 @@
-{
-  "sections": {
-    "main": {
-      "type": "cart",
-      "settings": {
-      }
-    }
-  },
-  "order": [
-    "main"
-  ]
-}
+{"sections":{"main":{"type":"main-cart","custom_css":[".cart__form-header {opacity: 1;}",".cart__item-qty-selector {border-radius: 20px;}",".cart-item__remove {font-size: 0.8em;}"],"settings":{"cart_ajax_enable":true}},"1663866861fb0f2fe8":{"type":"newsletter","settings":{"title":"Be the first to know","subheading":"<p>Sign up for our emails to learn about upcoming collections.<\/p>","section_contrast":false,"section_padding":"section--vertical-padding-none","padding_amount":"0.075"}}},"order":["main","1663866861fb0f2fe8"]}

@@ -1,0 +1,42 @@
+<div
+  data-section-id="{{ section.id }}"
+  class="instagram_follow"
+>
+  <div class='row'>
+    {% render 'icon', icon: 'instagram' %}
+  </div>
+  <div class='row'>
+    <p>Follow us on Instagram <br>
+    @TheOriginalDrops</p>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Instagram Follow",
+    "tag": "section",
+    "class": "section-instagram_follow",
+    "settings": [
+    ],
+    "presets": [
+      {
+        "name": "Instagram Follow"
+      }
+    ]
+  }
+{% endschema %}
+
+<style type='text/css'>
+  .instagram_follow {
+    text-align: center;
+    padding: 30px 0 50px;
+    color: #dd0031;
+    font-size: 1.6em;
+    line-height: 1.2;
+  }
+  
+  .instagram_follow .icon {
+    width: 50px;
+    height: 50px;
+  }
+</style>

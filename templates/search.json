@@ -1,12 +1,1 @@
-{
-  "sections": {
-    "main": {
-      "type": "search",
-      "settings": {
-      }
-    }
-  },
-  "order": [
-    "main"
-  ]
-}
+{"sections":{"main":{"type":"main-search","settings":{"enable_filtering":false,"enable_sorting":false}},"1663866892a26e2218":{"type":"newsletter","settings":{"title":"Get on the list","subheading":"<p>We will send updates on our latest launches.<\/p>","section_contrast":false,"section_padding":"section--vertical-padding-top-bottom","padding_amount":"0.5"}}},"order":["main","1663866892a26e2218"]}
