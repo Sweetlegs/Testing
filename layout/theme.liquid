@@ -380,51 +380,8 @@
       }
     });
   }
-function n$1(n, t) {
-  return void 0 === t && (t = document), t.querySelector(n);
-}
-function t$3(n, t) {
-  return void 0 === t && (t = document), [].slice.call(t.querySelectorAll(n));
-}
-function c$1(n, t) {
-  return Array.isArray(n) ? n.forEach(t) : t(n);
-}
-function r$3(n) {
-  return function (t, r, e) {
-    return c$1(t, function (t) {
-      return t[n + "EventListener"](r, e);
-    });
-  };
-}
-function e$2(n, t, c) {
-  return (
-    r$3("add")(n, t, c),
-    function () {
-      return r$3("remove")(n, t, c);
-    }
-  );
-}
-function o$1(n) {
-  return function (t) {
-    var r = arguments;
-    return c$1(t, function (t) {
-      var c;
-      return (c = t.classList)[n].apply(c, [].slice.call(r, 1));
-    });
-  };
-}
-function u(n) {
-  o$1("add").apply(void 0, [n].concat([].slice.call(arguments, 1)));
-}
-function i$1(n) {
-  o$1("remove").apply(void 0, [n].concat([].slice.call(arguments, 1)));
-}
-function l(n) {
-  o$1("toggle").apply(void 0, [n].concat([].slice.call(arguments, 1)));
-}
-function a$1(n, t) {
-  return n.classList.contains(t);
-}
+
+  function n$1(n,t){return void 0===t&&(t=document),t.querySelector(n)}function t$3(n,t){return void 0===t&&(t=document),[].slice.call(t.querySelectorAll(n))}function c$1(n,t){return Array.isArray(n)?n.forEach(t):t(n)}function r$3(n){return function(t,r,e){return c$1(t,function(t){return t[n+"EventListener"](r,e)})}}function e$2(n,t,c){return r$3("add")(n,t,c),function(){return r$3("remove")(n,t,c)}}function o$1(n){return function(t){var r=arguments;return c$1(t,function(t){var c;return (c=t.classList)[n].apply(c,[].slice.call(r,1))})}}function u(n){o$1("add").apply(void 0,[n].concat([].slice.call(arguments,1)));}function i$1(n){o$1("remove").apply(void 0,[n].concat([].slice.call(arguments,1)));}function l(n){o$1("toggle").apply(void 0,[n].concat([].slice.call(arguments,1)));}function a$1(n,t){return n.classList.contains(t)}
 
   var commonjsGlobal$1 = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -3583,7 +3540,7 @@ function a$1(n, t) {
     if (!quantityWrapper) return;
     const quantityInput = n$1('[data-quantity-input]', quantityWrapper);
     const addQuantity = n$1('[data-add-quantity]', quantityWrapper);
-    const subtractQuanity = n$1('#main [data-subtract-quantity]', quantityWrapper);
+    const subtractQuanity = n$1('[data-subtract-quantity]', quantityWrapper);
 
     const handleAddQuantity = () => {
       const currentValue = parseInt(quantityInput.value);
@@ -14869,7 +14826,6 @@ function a$1(n, t) {
     prev: '[data-prev]',
     next: '[data-next]'
   };
-
   var Carousel = ((node, type, opts = {}) => {
     const sliderElement = n$1(selectors$i.slider, node);
     const previousButton = n$1(selectors$i.prev, node);
@@ -15010,7 +14966,7 @@ function a$1(n, t) {
     };
   });
 
-   register('featured-collection', {
+  register('featured-collection', {
     onLoad() {
       const carouselWraps = this.container.dataset.carouselWraps === 'true';
       this.carousel = Carousel(this.container, 'featured-collection', {
@@ -15026,7 +14982,6 @@ function a$1(n, t) {
 
   register('collection-list', {
     onLoad() {
-    
       this.carousel = Carousel(this.container, 'collection-list', {
         wrapAround: true
       });
@@ -15035,13 +14990,13 @@ function a$1(n, t) {
     onUnload() {
       this.carousel.destroy();
     }
+
   });
 
   register('featured-collection-row', {
     events: [],
 
     onLoad() {
-    
       this.carousel = Carousel(this.container, 'featured-collection-row', {
         wrapAround: false,
         adaptiveHeight: false
@@ -15051,14 +15006,11 @@ function a$1(n, t) {
           this.carousel.select(1);
         }
       }));
-
     },
 
     onUnload() {
-
       this.events.forEach(unsubscribe => unsubscribe());
       this.carousel && this.carousel.destroy();
-
     }
 
   });
