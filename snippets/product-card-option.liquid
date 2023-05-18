@@ -13,9 +13,9 @@
   data-limit="{{ values_limit }}"
   data-pcard-variant-picker
   data-product-url="/products/{{ product.handle }}"
-  {% unless show_variant_options %}style="display: none;"{% endunless %}
+  {% unless settings.show_swatch_option %}style="display: none;"{% endunless %}
 >
-  <pcard-swatch class="pcard-variant-option{% if settings.pcard_option_design == 'button' or settings.pcard_option_design == 'color' %} -mx-[5px]{% endif %} mt-3 flex flex-wrap items-center justify-{{ alignment }}">
+  <pcard-swatch class="pcard-variant-option -mx-[5px] mt-3 flex flex-wrap items-center justify-{{ alignment }}">
     {%- for option in product.options_with_values -%}
       {%- liquid
         assign option_name = option.name | downcase

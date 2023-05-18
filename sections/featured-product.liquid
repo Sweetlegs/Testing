@@ -1,5 +1,4 @@
 {{ 'product.css' | asset_url | stylesheet_tag }}
-{{ 'featured-product.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign product = all_products[section.settings.featured_product]
   assign first_3d_model = product.media | where: "media_type", "model" | first
@@ -66,8 +65,8 @@
         {% unless section_onboarding %}
           {% render 'product-media', section: section, media_layout: 'layout-4', product: product, show_thumbnails: show_thumbnails %}
         {% else %}
-          <div style="--aspect-ratio: 1/1;">
-            {{ 'product-1' | placeholder_svg_tag: 'sf__placeholder-svg object-cover w-full h-full transition-all duration-500 group-hover:scale-105' }}
+          <div style="--aspect-ratio: 1/1;" class="bg-gray-100">
+            {{ 'product-1' | placeholder_svg_tag: 'object-cover w-full h-full transition-all duration-500 group-hover:scale-105' }}
           </div>
         {% endunless %}
       </div>

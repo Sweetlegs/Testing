@@ -144,11 +144,7 @@
       "zipcode_validate": "Ο ταχυδρομικός κώδικας δεν μπορεί να είναι κενός",
       "shipping_rates_result": "Εντοπίσαμε {{count}} τιμές αποστολής για τη διεύθυνσή σας",
       "no_found_shipping_rate": "Δεν υπάρχουν τιμές αποστολής για τη διεύθυνσή σας.",
-      "recommend_title": "Σύσταση για εσάς",
-      "delivery_days": {
-        "one": "μέρα",
-        "other": "Ημέρες"
-      }
+      "recommend_title": "Σύσταση για εσάς"
     },
     "label": {
       "product": "Προϊόν",

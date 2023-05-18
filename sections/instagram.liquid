@@ -1,5 +1,4 @@
 {{ 'instagram.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'instagram-feed.min.js' | asset_url }}" defer="defer"></script>
 
 {% liquid
   assign section_settings = section.settings
@@ -26,6 +25,8 @@
     class="sf-instagram sf-section-padding {{ section.settings.custom_class }}"
     data-section-type="instagram"
     data-section-id="{{ section.id }}"
+    data-access-token="{{ settings.instagram_token }}"
+    data-images-count="{{ section_settings.images_count }}"
     data-layout="{{ section_settings.layout }}"
     {% if has_bg %}
         data-bg="{{ bg_color | color_to_hsl }}"
@@ -53,8 +54,7 @@
             {% endif %}
         </div>
 
-        <m-instagram class="sf-instagram__wrapper" data-access-token="{{ settings.instagram_token }}"
-          data-images-count="{{ section_settings.images_count }}">
+        <div class="sf-instagram__wrapper">
             <div class="sf__ms">
                 <div class="sf__ms-wrapper instagram-images sf-grid grid-{{ section.id }} md:grid md:grid-cols-{{ columns | minus: 2 }} xl:grid-cols-{{ columns }}">
                     {% if section_settings.layout == 'metro' %}
@@ -92,7 +92,7 @@
                     {% endif %}
                 </div>
             </div>
-        </m-instagram>
+        </div>
     </div>
 </section>
 

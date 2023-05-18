@@ -80,6 +80,7 @@
     assign variant_id = product.selected_or_first_available_variant.id
     assign selected_variant_id = product.selected_variant.id
   endif
+
 %}
 {% if type == 'add-to-cart' %}
   <product-form class="f-product-form product-form form" data-product-id="{{ product.id }}">
@@ -90,11 +91,6 @@
       novalidate: 'novalidate'
     -%}
       <input type="hidden" name="id" value="{{ variant_id }}" data-selected-variant="{{ selected_variant_id }}">
-      {% if is_preorder == "true" %}
-        <input type="hidden" name="properties[_{% render 'new-locale', key: 'products.product.preorder_note' %}]" value="true">
-        <input type="hidden" name="properties[_foxDiscount[plugin]]" value="PreOrder">
-        <input type="hidden" name="properties[_foxDiscount[offer_id]]" value="{{ product.metafields.foxkit.preorder.id }}">
-      {% endif %}
       <button
         class="sf__tooltip-item sf__btn-icon {{ class }} {{ class_name | default: 'sf__tooltip-left' }} sf__tooltip-style-{{ style | default: '1' }}"
         data-product-handle="{{ product.handle }}"

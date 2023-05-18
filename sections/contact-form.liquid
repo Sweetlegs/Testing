@@ -15,7 +15,7 @@
           {%- endcapture -%}
           {% render 'form__success', form: form, success_message: success_message %}
           {% render 'form__error', form: form %}
-          <div class="grid grid-cols-1 sm:grid-cols-2 mb-[15px] gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 mb-[15px]">
             {% if section.settings.show_name %}
             <div class="w-full">
               <input type="text" class="w-full align-middle" name="contact[name]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" id="inputName" placeholder="{{ 'contact.form.name' | t }}">

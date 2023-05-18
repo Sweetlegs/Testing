@@ -5,10 +5,14 @@
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "gM": function() { return /* binding */ MinimogLibs; }
+/* harmony export */   "MinimogEvents": function() { return /* binding */ MinimogEvents; },
+/* harmony export */   "MinimogTheme": function() { return /* binding */ MinimogTheme; },
+/* harmony export */   "MinimogSettings": function() { return /* binding */ MinimogSettings; },
+/* harmony export */   "MinimogStrings": function() { return /* binding */ MinimogStrings; },
+/* harmony export */   "MinimogLibs": function() { return /* binding */ MinimogLibs; }
 /* harmony export */ });
-/* unused harmony exports MinimogEvents, MinimogTheme, MinimogSettings, MinimogStrings */
 /* harmony import */ var _utils_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8971);
 /* harmony import */ var _libs_loadjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9280);
 /* harmony import */ var _libs_loadjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_libs_loadjs__WEBPACK_IMPORTED_MODULE_0__);
@@ -30,29 +34,32 @@ const MinimogLibs = window.MinimogLibs || {};
 
 __loadjs = function () {
   var h = function () {},
-    c = {},
-    u = {},
-    f = {};
+      c = {},
+      u = {},
+      f = {};
+
   function o(e, n) {
     if (e) {
       var r = f[e];
       if (u[e] = n, r) for (; r.length;) r[0](e, n), r.splice(0, 1);
     }
   }
+
   function l(e, n) {
     e.call && (e = {
       success: e
     }), n.length ? (e.error || h)(n) : (e.success || h)(e);
   }
+
   function d(r, t, s, i) {
     var c,
-      o,
-      e = document,
-      n = s.async,
-      u = (s.numRetries || 0) + 1,
-      f = s.before || h,
-      l = r.replace(/[\?|#].*$/, ""),
-      a = r.replace(/^(css|img)!/, "");
+        o,
+        e = document,
+        n = s.async,
+        u = (s.numRetries || 0) + 1,
+        f = s.before || h,
+        l = r.replace(/[\?|#].*$/, ""),
+        a = r.replace(/^(css|img)!/, "");
     i = i || 0, /(^css!|\.css$)/.test(l) ? ((o = e.createElement("link")).rel = "stylesheet", o.href = a, (c = "hideFocus" in o) && o.relList && (c = 0, o.rel = "preload", o.as = "style")) : /(^img!|\.(png|gif|jpg|svg|webp)$)/.test(l) ? (o = e.createElement("img")).src = a : ((o = e.createElement("script")).src = r, o.async = void 0 === n || n), !(o.onload = o.onerror = o.onbeforeload = function (e) {
       var n = e.type[0];
       if (c) try {
@@ -60,30 +67,37 @@ __loadjs = function () {
       } catch (e) {
         18 != e.code && (n = "e");
       }
+
       if ("e" == n) {
         if ((i += 1) < u) return d(r, t, s, i);
       } else if ("preload" == o.rel && "style" == o.as) return o.rel = "stylesheet";
+
       t(r, n, e.defaultPrevented);
     }) !== f(r, o) && e.head.appendChild(o);
   }
+
   function r(e, n, r) {
     var t, s;
+
     if (n && n.trim && (t = n), s = (t ? r : n) || {}, t) {
       if (t in c) throw "LoadJS";
       c[t] = !0;
     }
+
     function i(n, r) {
       !function (e, t, n) {
         var r,
-          s,
-          i = (e = e.push ? e : [e]).length,
-          c = i,
-          o = [];
+            s,
+            i = (e = e.push ? e : [e]).length,
+            c = i,
+            o = [];
+
         for (r = function (e, n, r) {
           if ("e" == n && o.push(e), "b" == n) {
             if (!r) return;
             o.push(e);
           }
+
           --i || t(o);
         }, s = 0; s < c; s++) d(e[s], r, n);
       }(e, function (e) {
@@ -93,18 +107,21 @@ __loadjs = function () {
         }, e), o(t, e);
       }, s);
     }
+
     if (s.returnPromise) return new Promise(i);
     i();
   }
+
   return r.ready = function (e, n) {
     return function (e, r) {
       e = e.push ? e : [e];
       var n,
-        t,
-        s,
-        i = [],
-        c = e.length,
-        o = c;
+          t,
+          s,
+          i = [],
+          c = e.length,
+          o = c;
+
       for (n = function (e, n) {
         n.length && i.push(e), --o || r(i);
       }; c--;) t = e[c], (s = u[t]) ? n(t, s) : (f[t] = f[t] || []).push(n);
@@ -138,6 +155,7 @@ const addEventDelegate = _ref => {
     handler,
     capture = false
   } = _ref;
+
   const listener = function (e) {
     // loop parent nodes from the target to the delegation node
     for (let target = e.target; target && target !== this; target = target.parentNode) {
@@ -147,6 +165,7 @@ const addEventDelegate = _ref => {
       }
     }
   };
+
   context.addEventListener(event, listener, capture);
   return () => {
     context.removeEventListener(event, listener, capture);
@@ -156,16 +175,20 @@ class Event {
   constructor() {
     this.events = {};
   }
+
   get evts() {
     return Object.keys(this.events);
   }
+
   subscribe(event, handler) {
     this.events[event] = this.events[event] || [];
     this.events[event].push(handler);
     return () => this.unSubscribe(event, handler);
   }
+
   unSubscribe(event, handler) {
     const handlers = this.events[event];
+
     if (handlers && Array.isArray(handlers)) {
       for (let i = 0; i < handlers.length; i++) {
         if (handlers[i] === handler) {
@@ -175,10 +198,12 @@ class Event {
       }
     }
   }
+
   emit(event) {
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
+
     console.groupCollapsed(`Event emitted: ${event}`);
     console.trace();
     console.groupEnd();
@@ -186,6 +211,7 @@ class Event {
       handler(...args);
     });
   }
+
 }
 
 /***/ }),
@@ -206,12 +232,14 @@ class Event {
       writable: !0
     }) : e[t] = i, e;
   }
+
   function t(e, t) {
     for (var i = 0; i < t.length; i++) {
       var s = t[i];
       s.enumerable = s.enumerable || !1, s.configurable = !0, "value" in s && (s.writable = !0), Object.defineProperty(e, s.key, s);
     }
   }
+
   function i(e, t, i) {
     return t in e ? Object.defineProperty(e, t, {
       value: i,
@@ -220,16 +248,20 @@ class Event {
       writable: !0
     }) : e[t] = i, e;
   }
+
   function s(e, t) {
     var i = Object.keys(e);
+
     if (Object.getOwnPropertySymbols) {
       var s = Object.getOwnPropertySymbols(e);
       t && (s = s.filter(function (t) {
         return Object.getOwnPropertyDescriptor(e, t).enumerable;
       })), i.push.apply(i, s);
     }
+
     return i;
   }
+
   function n(e) {
     for (var t = 1; t < arguments.length; t++) {
       var n = null != arguments[t] ? arguments[t] : {};
@@ -239,67 +271,76 @@ class Event {
         Object.defineProperty(e, t, Object.getOwnPropertyDescriptor(n, t));
       });
     }
+
     return e;
   }
+
   var a = {
     addCSS: !0,
     thumbWidth: 15,
     watch: !0
   };
+
   function l(e, t) {
     return function () {
       return Array.from(document.querySelectorAll(t)).includes(this);
     }.call(e, t);
   }
+
   var o = function (e) {
-      return null != e ? e.constructor : null;
-    },
-    r = function (e, t) {
-      return !!(e && t && e instanceof t);
-    },
-    c = function (e) {
-      return null == e;
-    },
-    h = function (e) {
-      return o(e) === Object;
-    },
-    u = function (e) {
-      return o(e) === String;
-    },
-    d = function (e) {
-      return Array.isArray(e);
-    },
-    m = function (e) {
-      return r(e, NodeList);
-    },
-    p = u,
-    g = d,
-    f = m,
-    b = function (e) {
-      return r(e, Element);
-    },
-    y = function (e) {
-      return r(e, Event);
-    },
-    v = function (e) {
-      return c(e) || (u(e) || d(e) || m(e)) && !e.length || h(e) && !Object.keys(e).length;
-    };
+    return null != e ? e.constructor : null;
+  },
+      r = function (e, t) {
+    return !!(e && t && e instanceof t);
+  },
+      c = function (e) {
+    return null == e;
+  },
+      h = function (e) {
+    return o(e) === Object;
+  },
+      u = function (e) {
+    return o(e) === String;
+  },
+      d = function (e) {
+    return Array.isArray(e);
+  },
+      m = function (e) {
+    return r(e, NodeList);
+  },
+      p = u,
+      g = d,
+      f = m,
+      b = function (e) {
+    return r(e, Element);
+  },
+      y = function (e) {
+    return r(e, Event);
+  },
+      v = function (e) {
+    return c(e) || (u(e) || d(e) || m(e)) && !e.length || h(e) && !Object.keys(e).length;
+  };
+
   function w(e, t) {
     if (1 > t) {
       var i = function (e) {
         var t = "".concat(e).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
         return t ? Math.max(0, (t[1] ? t[1].length : 0) - (t[2] ? +t[2] : 0)) : 0;
       }(t);
+
       return parseFloat(e.toFixed(i));
     }
+
     return Math.round(e / t) * t;
   }
+
   var T = function () {
     function e(t, i) {
       (function (e, t) {
         if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
       })(this, e), b(t) ? this.element = t : p(t) && (this.element = document.querySelector(t)), b(this.element) && v(this.element.rangeTouch) && (this.config = n({}, a, {}, i), this.init());
     }
+
     return function (e, i, s) {
       i && t(e.prototype, i), s && t(e, s);
     }(e, [{
@@ -316,7 +357,7 @@ class Event {
       key: "listeners",
       value: function (e) {
         var t = this,
-          i = e ? "addEventListener" : "removeEventListener";
+            i = e ? "addEventListener" : "removeEventListener";
         ["touchstart", "touchmove", "touchend"].forEach(function (e) {
           t.element[i](e, function (e) {
             return t.set(e);
@@ -328,13 +369,13 @@ class Event {
       value: function (t) {
         if (!e.enabled || !y(t)) return null;
         var i,
-          s = t.target,
-          n = t.changedTouches[0],
-          a = parseFloat(s.getAttribute("min")) || 0,
-          l = parseFloat(s.getAttribute("max")) || 100,
-          o = parseFloat(s.getAttribute("step")) || 1,
-          r = s.getBoundingClientRect(),
-          c = 100 / r.width * (this.config.thumbWidth / 2) / 100;
+            s = t.target,
+            n = t.changedTouches[0],
+            a = parseFloat(s.getAttribute("min")) || 0,
+            l = parseFloat(s.getAttribute("max")) || 100,
+            o = parseFloat(s.getAttribute("step")) || 1,
+            r = s.getBoundingClientRect(),
+            c = 100 / r.width * (this.config.thumbWidth / 2) / 100;
         return 0 > (i = 100 / r.width * (n.clientX - r.left)) ? i = 0 : 100 < i && (i = 100), 50 > i ? i -= (100 - 2 * i) * c : 50 < i && (i += 2 * (i - 50) * c), a + w(i / 100 * (l - a), o);
       }
     }, {
@@ -353,9 +394,10 @@ class Event {
       key: "setup",
       value: function (t) {
         var i = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {},
-          s = null;
+            s = null;
         if (v(t) || p(t) ? s = Array.from(document.querySelectorAll(p(t) ? t : 'input[type="range"]')) : b(t) ? s = [t] : f(t) ? s = Array.from(t) : g(t) && (s = t.filter(b)), v(s)) return null;
         var o = n({}, a, {}, i);
+
         if (p(t) && o.watch) {
           var r = new MutationObserver(function (i) {
             Array.from(i).forEach(function (i) {
@@ -369,6 +411,7 @@ class Event {
             subtree: !0
           });
         }
+
         return s.map(function (t) {
           return new e(t, i);
         });
@@ -380,51 +423,56 @@ class Event {
       }
     }]), e;
   }();
+
   const k = e => null != e ? e.constructor : null,
-    C = (e, t) => Boolean(e && t && e instanceof t),
-    A = e => null == e,
-    S = e => k(e) === Object,
-    E = e => k(e) === String,
-    P = e => "function" == typeof e,
-    M = e => Array.isArray(e),
-    N = e => C(e, NodeList),
-    x = e => A(e) || (E(e) || M(e) || N(e)) && !e.length || S(e) && !Object.keys(e).length;
+        C = (e, t) => Boolean(e && t && e instanceof t),
+        A = e => null == e,
+        S = e => k(e) === Object,
+        E = e => k(e) === String,
+        P = e => k(e) === Function,
+        N = e => Array.isArray(e),
+        x = e => C(e, NodeList),
+        M = e => A(e) || (E(e) || N(e) || x(e)) && !e.length || S(e) && !Object.keys(e).length;
+
   var I = A,
-    L = S,
-    $ = e => k(e) === Number && !Number.isNaN(e),
-    _ = E,
-    O = e => k(e) === Boolean,
-    j = P,
-    D = M,
-    q = N,
-    H = e => null !== e && "object" == typeof e && 1 === e.nodeType && "object" == typeof e.style && "object" == typeof e.ownerDocument,
-    R = e => C(e, Event),
-    F = e => C(e, KeyboardEvent),
-    V = e => C(e, TextTrack) || !A(e) && E(e.kind),
-    B = e => C(e, Promise) && P(e.then),
-    U = e => {
-      if (C(e, window.URL)) return !0;
-      if (!E(e)) return !1;
-      let t = e;
-      e.startsWith("http://") && e.startsWith("https://") || (t = `http://${e}`);
-      try {
-        return !x(new URL(t).hostname);
-      } catch (e) {
-        return !1;
-      }
-    },
-    W = x;
+      L = S,
+      $ = e => k(e) === Number && !Number.isNaN(e),
+      _ = E,
+      O = e => k(e) === Boolean,
+      j = P,
+      q = N,
+      D = x,
+      H = e => null !== e && "object" == typeof e && 1 === e.nodeType && "object" == typeof e.style && "object" == typeof e.ownerDocument,
+      F = e => C(e, Event),
+      R = e => C(e, KeyboardEvent),
+      V = e => C(e, TextTrack) || !A(e) && E(e.kind),
+      B = e => C(e, Promise) && P(e.then),
+      U = e => {
+    if (C(e, window.URL)) return !0;
+    if (!E(e)) return !1;
+    let t = e;
+    e.startsWith("http://") && e.startsWith("https://") || (t = `http://${e}`);
+
+    try {
+      return !M(new URL(t).hostname);
+    } catch (e) {
+      return !1;
+    }
+  },
+      W = M;
+
   const z = (() => {
     const e = document.createElement("span"),
-      t = {
-        WebkitTransition: "webkitTransitionEnd",
-        MozTransition: "transitionend",
-        OTransition: "oTransitionEnd otransitionend",
-        transition: "transitionend"
-      },
-      i = Object.keys(t).find(t => void 0 !== e.style[t]);
+          t = {
+      WebkitTransition: "webkitTransitionEnd",
+      MozTransition: "transitionend",
+      OTransition: "oTransitionEnd otransitionend",
+      transition: "transitionend"
+    },
+          i = Object.keys(t).find(t => void 0 !== e.style[t]);
     return !!_(i) && t[i];
   })();
+
   function K(e, t) {
     setTimeout(() => {
       try {
@@ -432,21 +480,26 @@ class Event {
       } catch (e) {}
     }, t);
   }
+
   const Y = {
     isIE: Boolean(window.document.documentMode),
-    isEdge: /Edge/g.test(navigator.userAgent),
-    isWebkit: "WebkitAppearance" in document.documentElement.style && !/Edge/g.test(navigator.userAgent),
-    isIPhone: /iPhone|iPod/gi.test(navigator.userAgent) && navigator.maxTouchPoints > 1,
-    isIos: /iPad|iPhone|iPod/gi.test(navigator.userAgent) && navigator.maxTouchPoints > 1
+    isEdge: window.navigator.userAgent.includes("Edge"),
+    isWebkit: "WebkitAppearance" in document.documentElement.style && !/Edge/.test(navigator.userAgent),
+    isIPhone: /(iPhone|iPod)/gi.test(navigator.platform),
+    isIos: "MacIntel" === navigator.platform && navigator.maxTouchPoints > 1 || /(iPad|iPhone|iPod)/gi.test(navigator.platform)
   };
+
   function Q(e, t) {
     return t.split(".").reduce((e, t) => e && e[t], e);
   }
+
   function X() {
     let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     for (var _len = arguments.length, t = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       t[_key - 1] = arguments[_key];
     }
+
     if (!t.length) return e;
     const i = t.shift();
     return L(i) ? (Object.keys(i).forEach(t => {
@@ -457,15 +510,17 @@ class Event {
       });
     }), X(e, ...t)) : e;
   }
+
   function J(e, t) {
     const i = e.length ? e : [e];
     Array.from(i).reverse().forEach((e, i) => {
       const s = i > 0 ? t.cloneNode(!0) : t,
-        n = e.parentNode,
-        a = e.nextSibling;
+            n = e.parentNode,
+            a = e.nextSibling;
       s.appendChild(e), a ? n.insertBefore(s, a) : n.appendChild(s);
     });
   }
+
   function G(e, t) {
     H(e) && !W(t) && Object.entries(t).filter(_ref => {
       let [, e] = _ref;
@@ -475,64 +530,80 @@ class Event {
       return e.setAttribute(t, i);
     });
   }
+
   function Z(e, t, i) {
     const s = document.createElement(e);
     return L(t) && G(s, t), _(i) && (s.innerText = i), s;
   }
+
   function ee(e, t, i, s) {
     H(t) && t.appendChild(Z(e, i, s));
   }
+
   function te(e) {
-    q(e) || D(e) ? Array.from(e).forEach(te) : H(e) && H(e.parentNode) && e.parentNode.removeChild(e);
+    D(e) || q(e) ? Array.from(e).forEach(te) : H(e) && H(e.parentNode) && e.parentNode.removeChild(e);
   }
+
   function ie(e) {
     if (!H(e)) return;
     let {
       length: t
     } = e.childNodes;
+
     for (; t > 0;) e.removeChild(e.lastChild), t -= 1;
   }
+
   function se(e, t) {
     return H(t) && H(t.parentNode) && H(e) ? (t.parentNode.replaceChild(e, t), e) : null;
   }
+
   function ne(e, t) {
     if (!_(e) || W(e)) return {};
     const i = {},
-      s = X({}, t);
+          s = X({}, t);
     return e.split(",").forEach(e => {
       const t = e.trim(),
-        n = t.replace(".", ""),
-        a = t.replace(/[[\]]/g, "").split("="),
-        [l] = a,
-        o = a.length > 1 ? a[1].replace(/["']/g, "") : "";
+            n = t.replace(".", ""),
+            a = t.replace(/[[\]]/g, "").split("="),
+            [l] = a,
+            o = a.length > 1 ? a[1].replace(/["']/g, "") : "";
+
       switch (t.charAt(0)) {
         case ".":
           _(s.class) ? i.class = `${s.class} ${n}` : i.class = n;
           break;
+
         case "#":
           i.id = t.replace("#", "");
           break;
+
         case "[":
           i[l] = o;
       }
     }), X(s, i);
   }
+
   function ae(e, t) {
     if (!H(e)) return;
     let i = t;
     O(i) || (i = !e.hidden), e.hidden = i;
   }
+
   function le(e, t, i) {
-    if (q(e)) return Array.from(e).map(e => le(e, t, i));
+    if (D(e)) return Array.from(e).map(e => le(e, t, i));
+
     if (H(e)) {
       let s = "toggle";
       return void 0 !== i && (s = i ? "add" : "remove"), e.classList[s](t), e.classList.contains(t);
     }
+
     return !1;
   }
+
   function oe(e, t) {
     return H(e) && e.classList.contains(t);
   }
+
   function re(e, t) {
     const {
       prototype: i
@@ -541,12 +612,15 @@ class Event {
       return Array.from(document.querySelectorAll(t)).includes(this);
     }).call(e, t);
   }
+
   function ce(e) {
     return this.elements.container.querySelectorAll(e);
   }
+
   function he(e) {
     return this.elements.container.querySelector(e);
   }
+
   function ue() {
     let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !1;
@@ -554,58 +628,67 @@ class Event {
       preventScroll: !0
     }), t && le(e, this.config.classNames.tabFocus));
   }
+
   const de = {
-      "audio/ogg": "vorbis",
-      "audio/wav": "1",
-      "video/webm": "vp8, vorbis",
-      "video/mp4": "avc1.42E01E, mp4a.40.2",
-      "video/ogg": "theora"
+    "audio/ogg": "vorbis",
+    "audio/wav": "1",
+    "video/webm": "vp8, vorbis",
+    "video/mp4": "avc1.42E01E, mp4a.40.2",
+    "video/ogg": "theora"
+  },
+        me = {
+    audio: "canPlayType" in document.createElement("audio"),
+    video: "canPlayType" in document.createElement("video"),
+
+    check(e, t, i) {
+      const s = Y.isIPhone && i && me.playsinline,
+            n = me[e] || "html5" !== t;
+      return {
+        api: n,
+        ui: n && me.rangeInput && ("video" !== e || !Y.isIPhone || s)
+      };
     },
-    me = {
-      audio: "canPlayType" in document.createElement("audio"),
-      video: "canPlayType" in document.createElement("video"),
-      check(e, t, i) {
-        const s = Y.isIPhone && i && me.playsinline,
-          n = me[e] || "html5" !== t;
-        return {
-          api: n,
-          ui: n && me.rangeInput && ("video" !== e || !Y.isIPhone || s)
-        };
-      },
-      pip: !(Y.isIPhone || !j(Z("video").webkitSetPresentationMode) && (!document.pictureInPictureEnabled || Z("video").disablePictureInPicture)),
-      airplay: j(window.WebKitPlaybackTargetAvailabilityEvent),
-      playsinline: "playsInline" in document.createElement("video"),
-      mime(e) {
-        if (W(e)) return !1;
-        const [t] = e.split("/");
-        let i = e;
-        if (!this.isHTML5 || t !== this.type) return !1;
-        Object.keys(de).includes(i) && (i += `; codecs="${de[e]}"`);
-        try {
-          return Boolean(i && this.media.canPlayType(i).replace(/no/, ""));
-        } catch (e) {
-          return !1;
-        }
-      },
-      textTracks: "textTracks" in document.createElement("video"),
-      rangeInput: (() => {
-        const e = document.createElement("input");
-        return e.type = "range", "range" === e.type;
-      })(),
-      touch: "ontouchstart" in document.documentElement,
-      transitions: !1 !== z,
-      reducedMotion: "matchMedia" in window && window.matchMedia("(prefers-reduced-motion)").matches
-    },
-    pe = (() => {
-      let e = !1;
+
+    pip: !(Y.isIPhone || !j(Z("video").webkitSetPresentationMode) && (!document.pictureInPictureEnabled || Z("video").disablePictureInPicture)),
+    airplay: j(window.WebKitPlaybackTargetAvailabilityEvent),
+    playsinline: "playsInline" in document.createElement("video"),
+
+    mime(e) {
+      if (W(e)) return !1;
+      const [t] = e.split("/");
+      let i = e;
+      if (!this.isHTML5 || t !== this.type) return !1;
+      Object.keys(de).includes(i) && (i += `; codecs="${de[e]}"`);
+
       try {
-        const t = Object.defineProperty({}, "passive", {
-          get: () => (e = !0, null)
-        });
-        window.addEventListener("test", null, t), window.removeEventListener("test", null, t);
-      } catch (e) {}
-      return e;
-    })();
+        return Boolean(i && this.media.canPlayType(i).replace(/no/, ""));
+      } catch (e) {
+        return !1;
+      }
+    },
+
+    textTracks: "textTracks" in document.createElement("video"),
+    rangeInput: (() => {
+      const e = document.createElement("input");
+      return e.type = "range", "range" === e.type;
+    })(),
+    touch: "ontouchstart" in document.documentElement,
+    transitions: !1 !== z,
+    reducedMotion: "matchMedia" in window && window.matchMedia("(prefers-reduced-motion)").matches
+  },
+        pe = (() => {
+    let e = !1;
+
+    try {
+      const t = Object.defineProperty({}, "passive", {
+        get: () => (e = !0, null)
+      });
+      window.addEventListener("test", null, t), window.removeEventListener("test", null, t);
+    } catch (e) {}
+
+    return e;
+  })();
+
   function ge(e, t, i) {
     let s = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : !1;
     let n = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : !0;
@@ -625,6 +708,7 @@ class Event {
       }), e[s ? "addEventListener" : "removeEventListener"](t, i, o);
     });
   }
+
   function fe(e) {
     let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
     let i = arguments.length > 2 ? arguments[2] : undefined;
@@ -632,6 +716,7 @@ class Event {
     let n = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : !1;
     ge.call(this, e, t, i, !0, s, n);
   }
+
   function be(e) {
     let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
     let i = arguments.length > 2 ? arguments[2] : undefined;
@@ -639,20 +724,26 @@ class Event {
     let n = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : !1;
     ge.call(this, e, t, i, !1, s, n);
   }
+
   function ye(e) {
     var _this = this;
+
     let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
     let i = arguments.length > 2 ? arguments[2] : undefined;
     let s = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : !0;
     let n = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : !1;
+
     const a = function () {
       for (var _len2 = arguments.length, l = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         l[_key2] = arguments[_key2];
       }
+
       be(e, t, a, s, n), i.apply(_this, l);
     };
+
     ge.call(this, e, t, a, !0, s, n);
   }
+
   function ve(e) {
     let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
     let i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : !1;
@@ -660,13 +751,13 @@ class Event {
     if (!H(e) || W(t)) return;
     const n = new CustomEvent(t, {
       bubbles: i,
-      detail: {
-        ...s,
+      detail: { ...s,
         plyr: this
       }
     });
     e.dispatchEvent(n);
   }
+
   function we() {
     this && this.eventListeners && (this.eventListeners.forEach(e => {
       const {
@@ -678,43 +769,55 @@ class Event {
       t.removeEventListener(i, s, n);
     }), this.eventListeners = []);
   }
+
   function Te() {
     return new Promise(e => this.ready ? setTimeout(e, 0) : fe.call(this, this.elements.container, "ready", e)).then(() => {});
   }
+
   function ke(e) {
     B(e) && e.then(null, () => {});
   }
+
   function Ce(e) {
-    return D(e) ? e.filter((t, i) => e.indexOf(t) === i) : e;
+    return q(e) ? e.filter((t, i) => e.indexOf(t) === i) : e;
   }
+
   function Ae(e, t) {
-    return D(e) && e.length ? e.reduce((e, i) => Math.abs(i - t) < Math.abs(e - t) ? i : e) : null;
+    return q(e) && e.length ? e.reduce((e, i) => Math.abs(i - t) < Math.abs(e - t) ? i : e) : null;
   }
+
   function Se(e) {
     return !(!window || !window.CSS) && window.CSS.supports(e);
   }
+
   const Ee = [[1, 1], [4, 3], [3, 4], [5, 4], [4, 5], [3, 2], [2, 3], [16, 10], [10, 16], [16, 9], [9, 16], [21, 9], [9, 21], [32, 9], [9, 32]].reduce((e, _ref3) => {
     let [t, i] = _ref3;
-    return {
-      ...e,
+    return { ...e,
       [t / i]: [t, i]
     };
   }, {});
+
   function Pe(e) {
-    if (!(D(e) || _(e) && e.includes(":"))) return !1;
-    return (D(e) ? e : e.split(":")).map(Number).every($);
+    if (!(q(e) || _(e) && e.includes(":"))) return !1;
+    return (q(e) ? e : e.split(":")).map(Number).every($);
   }
-  function Me(e) {
-    if (!D(e) || !e.every($)) return null;
+
+  function Ne(e) {
+    if (!q(e) || !e.every($)) return null;
+
     const [t, i] = e,
-      s = (e, t) => 0 === t ? e : s(t, e % t),
-      n = s(t, i);
+          s = (e, t) => 0 === t ? e : s(t, e % t),
+          n = s(t, i);
+
     return [t / n, i / n];
   }
-  function Ne(e) {
+
+  function xe(e) {
     const t = e => Pe(e) ? e.split(":").map(Number) : null;
+
     let i = t(e);
-    if (null === i && (i = t(this.config.ratio)), null === i && !W(this.embed) && D(this.embed.ratio) && ({
+
+    if (null === i && (i = t(this.config.ratio)), null === i && !W(this.embed) && q(this.embed.ratio) && ({
       ratio: i
     } = this.embed), null === i && this.isHTML5) {
       const {
@@ -723,33 +826,39 @@ class Event {
       } = this.media;
       i = [e, t];
     }
-    return Me(i);
+
+    return Ne(i);
   }
-  function xe(e) {
+
+  function Me(e) {
     if (!this.isVideo) return {};
     const {
-        wrapper: t
-      } = this.elements,
-      i = Ne.call(this, e);
-    if (!D(i)) return {};
-    const [s, n] = Me(i),
-      a = 100 / s * n;
+      wrapper: t
+    } = this.elements,
+          i = xe.call(this, e);
+    if (!q(i)) return {};
+    const [s, n] = Ne(i),
+          a = 100 / s * n;
+
     if (Se(`aspect-ratio: ${s}/${n}`) ? t.style.aspectRatio = `${s}/${n}` : t.style.paddingBottom = `${a}%`, this.isVimeo && !this.config.vimeo.premium && this.supported.ui) {
       const e = 100 / this.media.offsetWidth * parseInt(window.getComputedStyle(this.media).paddingBottom, 10),
-        i = (e - a) / (e / 50);
+            i = (e - a) / (e / 50);
       this.fullscreen.active ? t.style.paddingBottom = null : this.media.style.transform = `translateY(-${i}%)`;
     } else this.isHTML5 && t.classList.add(this.config.classNames.videoFixedRatio);
+
     return {
       padding: a,
       ratio: i
     };
   }
+
   function Ie(e, t) {
     let i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : .05;
     const s = e / t,
-      n = Ae(Object.keys(Ee), s);
+          n = Ae(Object.keys(Ee), s);
     return Math.abs(n - s) <= i ? Ee[n] : [e, t];
   }
+
   const Le = {
     getSources() {
       if (!this.isHTML5) return [];
@@ -758,17 +867,20 @@ class Event {
         return !!W(t) || me.mime.call(this, t);
       });
     },
+
     getQualityOptions() {
       return this.config.quality.forced ? this.config.quality.options : Le.getSources.call(this).map(e => Number(e.getAttribute("size"))).filter(Boolean);
     },
+
     setup() {
       if (!this.isHTML5) return;
       const e = this;
-      e.options.speed = e.config.speed.options, W(this.config.ratio) || xe.call(e), Object.defineProperty(e.media, "quality", {
+      e.options.speed = e.config.speed.options, W(this.config.ratio) || Me.call(e), Object.defineProperty(e.media, "quality", {
         get() {
           const t = Le.getSources.call(e).find(t => t.getAttribute("src") === e.source);
           return t && Number(t.getAttribute("size"));
         },
+
         set(t) {
           if (e.quality !== t) {
             if (e.config.quality.forced && j(e.config.quality.onChange)) e.config.quality.onChange(t);else {
@@ -790,28 +902,35 @@ class Event {
             });
           }
         }
+
       });
     },
+
     cancelRequests() {
       this.isHTML5 && (te(Le.getSources.call(this)), this.media.setAttribute("src", this.config.blankVideo), this.media.load(), this.debug.log("Cancelled network requests"));
     }
+
   };
+
   function $e(e) {
     for (var _len3 = arguments.length, t = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
       t[_key3 - 1] = arguments[_key3];
     }
+
     return W(e) ? e : e.toString().replace(/{(\d+)}/g, (e, i) => t[i].toString());
   }
+
   const _e = function () {
-      let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-      let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
-      let i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
-      return e.replace(new RegExp(t.toString().replace(/([.*+?^=!:${}()|[\]/\\])/g, "\\$1"), "g"), i.toString());
-    },
-    Oe = function () {
-      let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-      return e.toString().replace(/\w\S*/g, e => e.charAt(0).toUpperCase() + e.slice(1).toLowerCase());
-    };
+    let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+    let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+    let i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+    return e.replace(new RegExp(t.toString().replace(/([.*+?^=!:${}()|[\]/\\])/g, "\\$1"), "g"), i.toString());
+  },
+        Oe = function () {
+    let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+    return e.toString().replace(/\w\S*/g, e => e.charAt(0).toUpperCase() + e.substr(1).toLowerCase());
+  };
+
   function je() {
     let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
     let t = e.toString();
@@ -821,52 +940,58 @@ class Event {
       return t = _e(t, "-", " "), t = _e(t, "_", " "), t = Oe(t), _e(t, " ", "");
     }(t), t.charAt(0).toLowerCase() + t.slice(1);
   }
-  function De(e) {
+
+  function qe(e) {
     const t = document.createElement("div");
     return t.appendChild(e), t.innerHTML;
   }
-  const qe = {
-      pip: "PIP",
-      airplay: "AirPlay",
-      html5: "HTML5",
-      vimeo: "Vimeo",
-      youtube: "YouTube"
-    },
-    He = {
-      get() {
-        let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-        let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        if (W(e) || W(t)) return "";
-        let i = Q(t.i18n, e);
-        if (W(i)) return Object.keys(qe).includes(e) ? qe[e] : "";
-        const s = {
-          "{seektime}": t.seekTime,
-          "{title}": t.title
-        };
-        return Object.entries(s).forEach(_ref4 => {
-          let [e, t] = _ref4;
-          i = _e(i, e, t);
-        }), i;
-      }
-    };
-  class Re {
+
+  const De = {
+    pip: "PIP",
+    airplay: "AirPlay",
+    html5: "HTML5",
+    vimeo: "Vimeo",
+    youtube: "YouTube"
+  },
+        He = {
+    get() {
+      let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+      let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      if (W(e) || W(t)) return "";
+      let i = Q(t.i18n, e);
+      if (W(i)) return Object.keys(De).includes(e) ? De[e] : "";
+      const s = {
+        "{seektime}": t.seekTime,
+        "{title}": t.title
+      };
+      return Object.entries(s).forEach(_ref4 => {
+        let [e, t] = _ref4;
+        i = _e(i, e, t);
+      }), i;
+    }
+
+  };
+
+  class Fe {
     constructor(t) {
       e(this, "get", e => {
-        if (!Re.supported || !this.enabled) return null;
+        if (!Fe.supported || !this.enabled) return null;
         const t = window.localStorage.getItem(this.key);
         if (W(t)) return null;
         const i = JSON.parse(t);
         return _(e) && e.length ? i[e] : i;
       }), e(this, "set", e => {
-        if (!Re.supported || !this.enabled) return;
+        if (!Fe.supported || !this.enabled) return;
         if (!L(e)) return;
         let t = this.get();
         W(t) && (t = {}), X(t, e);
+
         try {
           window.localStorage.setItem(this.key, JSON.stringify(t));
         } catch (e) {}
       }), this.enabled = t.config.storage.enabled, this.key = t.config.storage.key;
     }
+
     static get supported() {
       try {
         if (!("localStorage" in window)) return !1;
@@ -876,8 +1001,10 @@ class Event {
         return !1;
       }
     }
+
   }
-  function Fe(e) {
+
+  function Re(e) {
     let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "text";
     return new Promise((i, s) => {
       try {
@@ -897,25 +1024,33 @@ class Event {
       }
     });
   }
+
   function Ve(e, t) {
     if (!_(e)) return;
+
     const i = _(t);
+
     let s = !1;
+
     const n = () => null !== document.getElementById(t),
-      a = (e, t) => {
-        e.innerHTML = t, i && n() || document.body.insertAdjacentElement("afterbegin", e);
-      };
+          a = (e, t) => {
+      e.innerHTML = t, i && n() || document.body.insertAdjacentElement("afterbegin", e);
+    };
+
     if (!i || !n()) {
-      const n = Re.supported,
-        l = document.createElement("div");
+      const n = Fe.supported,
+            l = document.createElement("div");
+
       if (l.setAttribute("hidden", ""), i && l.setAttribute("id", t), n) {
         const e = window.localStorage.getItem(`cache-${t}`);
+
         if (s = null !== e, s) {
           const t = JSON.parse(e);
           a(l, t.content);
         }
       }
-      Fe(e).then(e => {
+
+      Re(e).then(e => {
         if (!W(e)) {
           if (n) try {
             window.localStorage.setItem(`cache-${t}`, JSON.stringify({
@@ -927,29 +1062,37 @@ class Event {
       }).catch(() => {});
     }
   }
+
   const Be = e => Math.trunc(e / 60 / 60 % 60, 10);
+
   function Ue() {
     let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
     let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !1;
     let i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : !1;
     if (!$(e)) return Ue(void 0, t, i);
+
     const s = e => `0${e}`.slice(-2);
+
     let n = Be(e);
     const a = (l = e, Math.trunc(l / 60 % 60, 10));
     var l;
+
     const o = (e => Math.trunc(e % 60, 10))(e);
+
     return n = t || n > 0 ? `${n}:` : "", `${i && e > 0 ? "-" : ""}${n}${s(a)}:${s(o)}`;
   }
+
   const We = {
     getIconUrl() {
       const e = new URL(this.config.iconUrl, window.location),
-        t = window.location.host ? window.location.host : window.top.location.host,
-        i = e.host !== t || Y.isIE && !window.svg4everybody;
+            t = window.location.host ? window.location.host : window.top.location.host,
+            i = e.host !== t || Y.isIE && !window.svg4everybody;
       return {
         url: this.config.iconUrl,
         cors: i
       };
     },
+
     findElements() {
       try {
         return this.elements.controls = he.call(this, this.config.selectors.controls.wrapper), this.elements.buttons = {
@@ -976,27 +1119,29 @@ class Event {
         return this.debug.warn("It looks like there is a problem with your custom controls HTML", e), this.toggleNativeControls(!0), !1;
       }
     },
+
     createIcon(e, t) {
       const i = "http://www.w3.org/2000/svg",
-        s = We.getIconUrl.call(this),
-        n = `${s.cors ? "" : s.url}#${this.config.iconPrefix}`,
-        a = document.createElementNS(i, "svg");
+            s = We.getIconUrl.call(this),
+            n = `${s.cors ? "" : s.url}#${this.config.iconPrefix}`,
+            a = document.createElementNS(i, "svg");
       G(a, X(t, {
         "aria-hidden": "true",
         focusable: "false"
       }));
       const l = document.createElementNS(i, "use"),
-        o = `${n}-${e}`;
+            o = `${n}-${e}`;
       return "href" in l && l.setAttributeNS("http://www.w3.org/1999/xlink", "href", o), l.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", o), a.appendChild(l), a;
     },
+
     createLabel(e) {
       let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       const i = He.get(e, this.config);
-      return Z("span", {
-        ...t,
+      return Z("span", { ...t,
         class: [t.class, this.config.classNames.hidden].filter(Boolean).join(" ")
       }, i);
     },
+
     createBadge(e) {
       if (W(e)) return null;
       const t = Z("span", {
@@ -1006,6 +1151,7 @@ class Event {
         class: this.config.classNames.menu.badge
       }, e)), t;
     },
+
     createButton(e, t) {
       const i = X({}, t);
       let s = je(e);
@@ -1017,6 +1163,7 @@ class Event {
         labelPressed: null,
         iconPressed: null
       };
+
       switch (["element", "icon", "label"].forEach(e => {
         Object.keys(i).includes(e) && (n[e] = i[e], delete i[e]);
       }), "button" !== n.element || Object.keys(i).includes("type") || (i.type = "button"), Object.keys(i).includes("class") ? i.class.split(" ").some(e => e === this.config.classNames.control) || X(i, {
@@ -1025,21 +1172,27 @@ class Event {
         case "play":
           n.toggle = !0, n.label = "play", n.labelPressed = "pause", n.icon = "play", n.iconPressed = "pause";
           break;
+
         case "mute":
           n.toggle = !0, n.label = "mute", n.labelPressed = "unmute", n.icon = "volume", n.iconPressed = "muted";
           break;
+
         case "captions":
           n.toggle = !0, n.label = "enableCaptions", n.labelPressed = "disableCaptions", n.icon = "captions-off", n.iconPressed = "captions-on";
           break;
+
         case "fullscreen":
           n.toggle = !0, n.label = "enterFullscreen", n.labelPressed = "exitFullscreen", n.icon = "enter-fullscreen", n.iconPressed = "exit-fullscreen";
           break;
+
         case "play-large":
           i.class += ` ${this.config.classNames.control}--overlaid`, s = "play", n.label = "play", n.icon = "play";
           break;
+
         default:
           W(n.label) && (n.label = s), W(n.icon) && (n.icon = e);
       }
+
       const a = Z(n.element);
       return n.toggle ? (a.appendChild(We.createIcon.call(this, n.iconPressed, {
         class: "icon--pressed"
@@ -1049,8 +1202,9 @@ class Event {
         class: "label--pressed"
       })), a.appendChild(We.createLabel.call(this, n.label, {
         class: "label--not-pressed"
-      }))) : (a.appendChild(We.createIcon.call(this, n.icon)), a.appendChild(We.createLabel.call(this, n.label))), X(i, ne(this.config.selectors.buttons[s], i)), G(a, i), "play" === s ? (D(this.elements.buttons[s]) || (this.elements.buttons[s] = []), this.elements.buttons[s].push(a)) : this.elements.buttons[s] = a, a;
+      }))) : (a.appendChild(We.createIcon.call(this, n.icon)), a.appendChild(We.createLabel.call(this, n.label))), X(i, ne(this.config.selectors.buttons[s], i)), G(a, i), "play" === s ? (q(this.elements.buttons[s]) || (this.elements.buttons[s] = []), this.elements.buttons[s].push(a)) : this.elements.buttons[s] = a, a;
     },
+
     createRange(e, t) {
       const i = Z("input", X(ne(this.config.selectors.inputs[e]), {
         type: "range",
@@ -1067,6 +1221,7 @@ class Event {
       }, t));
       return this.elements.inputs[e] = i, We.updateRangeFill.call(this, i), T.setup(i), i;
     },
+
     createProgress(e, t) {
       const i = Z("progress", X(ne(this.config.selectors.display[e]), {
         min: 0,
@@ -1075,38 +1230,43 @@ class Event {
         role: "progressbar",
         "aria-hidden": !0
       }, t));
+
       if ("volume" !== e) {
         i.appendChild(Z("span", null, "0"));
         const t = {
-            played: "played",
-            buffer: "buffered"
-          }[e],
-          s = t ? He.get(t, this.config) : "";
+          played: "played",
+          buffer: "buffered"
+        }[e],
+              s = t ? He.get(t, this.config) : "";
         i.innerText = `% ${s.toLowerCase()}`;
       }
+
       return this.elements.display[e] = i, i;
     },
+
     createTime(e, t) {
       const i = ne(this.config.selectors.display[e], t),
-        s = Z("div", X(i, {
-          class: `${i.class ? i.class : ""} ${this.config.classNames.display.time} `.trim(),
-          "aria-label": He.get(e, this.config)
-        }), "00:00");
+            s = Z("div", X(i, {
+        class: `${i.class ? i.class : ""} ${this.config.classNames.display.time} `.trim(),
+        "aria-label": He.get(e, this.config)
+      }), "00:00");
       return this.elements.display[e] = s, s;
     },
+
     bindMenuItemShortcuts(e, t) {
       fe.call(this, e, "keydown keyup", i => {
-        if (!["Space", "ArrowUp", "ArrowDown", "ArrowRight"].includes(i.key)) return;
+        if (![32, 38, 39, 40].includes(i.which)) return;
         if (i.preventDefault(), i.stopPropagation(), "keydown" === i.type) return;
         const s = re(e, '[role="menuitemradio"]');
-        if (!s && ["Space", "ArrowRight"].includes(i.key)) We.showMenuPanel.call(this, t, !0);else {
+        if (!s && [32, 39].includes(i.which)) We.showMenuPanel.call(this, t, !0);else {
           let t;
-          "Space" !== i.key && ("ArrowDown" === i.key || s && "ArrowRight" === i.key ? (t = e.nextElementSibling, H(t) || (t = e.parentNode.firstElementChild)) : (t = e.previousElementSibling, H(t) || (t = e.parentNode.lastElementChild)), ue.call(this, t, !0));
+          32 !== i.which && (40 === i.which || s && 39 === i.which ? (t = e.nextElementSibling, H(t) || (t = e.parentNode.firstElementChild)) : (t = e.previousElementSibling, H(t) || (t = e.parentNode.lastElementChild)), ue.call(this, t, !0));
         }
       }, !1), fe.call(this, e, "keyup", e => {
-        "Return" === e.key && We.focusFirstMenuItem.call(this, null, !0);
+        13 === e.which && We.focusFirstMenuItem.call(this, null, !0);
       });
     },
+
     createMenuItem(_ref5) {
       let {
         value: e,
@@ -1117,137 +1277,150 @@ class Event {
         checked: a = !1
       } = _ref5;
       const l = ne(this.config.selectors.inputs[i]),
-        o = Z("button", X(l, {
-          type: "button",
-          role: "menuitemradio",
-          class: `${this.config.classNames.control} ${l.class ? l.class : ""}`.trim(),
-          "aria-checked": a,
-          value: e
-        })),
-        r = Z("span");
+            o = Z("button", X(l, {
+        type: "button",
+        role: "menuitemradio",
+        class: `${this.config.classNames.control} ${l.class ? l.class : ""}`.trim(),
+        "aria-checked": a,
+        value: e
+      })),
+            r = Z("span");
       r.innerHTML = s, H(n) && r.appendChild(n), o.appendChild(r), Object.defineProperty(o, "checked", {
         enumerable: !0,
         get: () => "true" === o.getAttribute("aria-checked"),
+
         set(e) {
           e && Array.from(o.parentNode.children).filter(e => re(e, '[role="menuitemradio"]')).forEach(e => e.setAttribute("aria-checked", "false")), o.setAttribute("aria-checked", e ? "true" : "false");
         }
+
       }), this.listeners.bind(o, "click keyup", t => {
-        if (!F(t) || "Space" === t.key) {
+        if (!R(t) || 32 === t.which) {
           switch (t.preventDefault(), t.stopPropagation(), o.checked = !0, i) {
             case "language":
               this.currentTrack = Number(e);
               break;
+
             case "quality":
               this.quality = e;
               break;
+
             case "speed":
               this.speed = parseFloat(e);
           }
-          We.showMenuPanel.call(this, "home", F(t));
+
+          We.showMenuPanel.call(this, "home", R(t));
         }
       }, i, !1), We.bindMenuItemShortcuts.call(this, o, i), t.appendChild(o);
     },
+
     formatTime() {
       let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !1;
       if (!$(e)) return e;
       return Ue(e, Be(this.duration) > 0, t);
     },
+
     updateTimeDisplay() {
       let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       let i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : !1;
       H(e) && $(t) && (e.innerText = We.formatTime(t, i));
     },
+
     updateVolume() {
       this.supported.ui && (H(this.elements.inputs.volume) && We.setRange.call(this, this.elements.inputs.volume, this.muted ? 0 : this.volume), H(this.elements.buttons.mute) && (this.elements.buttons.mute.pressed = this.muted || 0 === this.volume));
     },
+
     setRange(e) {
       let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       H(e) && (e.value = t, We.updateRangeFill.call(this, e));
     },
+
     updateProgress(e) {
-      if (!this.supported.ui || !R(e)) return;
+      if (!this.supported.ui || !F(e)) return;
       let t = 0;
+
       const i = (e, t) => {
         const i = $(t) ? t : 0,
-          s = H(e) ? e : this.elements.display.buffer;
+              s = H(e) ? e : this.elements.display.buffer;
+
         if (H(s)) {
           s.value = i;
           const e = s.getElementsByTagName("span")[0];
           H(e) && (e.childNodes[0].nodeValue = i);
         }
       };
+
       if (e) switch (e.type) {
         case "timeupdate":
         case "seeking":
         case "seeked":
           s = this.currentTime, n = this.duration, t = 0 === s || 0 === n || Number.isNaN(s) || Number.isNaN(n) ? 0 : (s / n * 100).toFixed(2), "timeupdate" === e.type && We.setRange.call(this, this.elements.inputs.seek, t);
           break;
+
         case "playing":
         case "progress":
           i(this.elements.display.buffer, 100 * this.buffered);
       }
       var s, n;
     },
+
     updateRangeFill(e) {
-      const t = R(e) ? e.target : e;
+      const t = F(e) ? e.target : e;
+
       if (H(t) && "range" === t.getAttribute("type")) {
         if (re(t, this.config.selectors.inputs.seek)) {
           t.setAttribute("aria-valuenow", this.currentTime);
           const e = We.formatTime(this.currentTime),
-            i = We.formatTime(this.duration),
-            s = He.get("seekLabel", this.config);
+                i = We.formatTime(this.duration),
+                s = He.get("seekLabel", this.config);
           t.setAttribute("aria-valuetext", s.replace("{currentTime}", e).replace("{duration}", i));
         } else if (re(t, this.config.selectors.inputs.volume)) {
           const e = 100 * t.value;
           t.setAttribute("aria-valuenow", e), t.setAttribute("aria-valuetext", `${e.toFixed(1)}%`);
         } else t.setAttribute("aria-valuenow", t.value);
+
         Y.isWebkit && t.style.setProperty("--value", t.value / t.max * 100 + "%");
       }
     },
+
     updateSeekTooltip(e) {
-      var t, i;
       if (!this.config.tooltips.seek || !H(this.elements.inputs.seek) || !H(this.elements.display.seekTooltip) || 0 === this.duration) return;
-      const s = this.elements.display.seekTooltip,
-        n = `${this.config.classNames.tooltip}--visible`,
-        a = e => le(s, n, e);
-      if (this.touch) return void a(!1);
-      let l = 0;
-      const o = this.elements.progress.getBoundingClientRect();
-      if (R(e)) l = 100 / o.width * (e.pageX - o.left);else {
-        if (!oe(s, n)) return;
-        l = parseFloat(s.style.left, 10);
+
+      const t = `${this.config.classNames.tooltip}--visible`,
+            i = e => le(this.elements.display.seekTooltip, t, e);
+
+      if (this.touch) return void i(!1);
+      let s = 0;
+      const n = this.elements.progress.getBoundingClientRect();
+      if (F(e)) s = 100 / n.width * (e.pageX - n.left);else {
+        if (!oe(this.elements.display.seekTooltip, t)) return;
+        s = parseFloat(this.elements.display.seekTooltip.style.left, 10);
       }
-      l < 0 ? l = 0 : l > 100 && (l = 100);
-      const r = this.duration / 100 * l;
-      s.innerText = We.formatTime(r);
-      const c = null === (t = this.config.markers) || void 0 === t || null === (i = t.points) || void 0 === i ? void 0 : i.find(_ref6 => {
-        let {
-          time: e
-        } = _ref6;
-        return e === Math.round(r);
-      });
-      c && s.insertAdjacentHTML("afterbegin", `${c.label}<br>`), s.style.left = `${l}%`, R(e) && ["mouseenter", "mouseleave"].includes(e.type) && a("mouseenter" === e.type);
+      s < 0 ? s = 0 : s > 100 && (s = 100), We.updateTimeDisplay.call(this, this.elements.display.seekTooltip, this.duration / 100 * s), this.elements.display.seekTooltip.style.left = `${s}%`, F(e) && ["mouseenter", "mouseleave"].includes(e.type) && i("mouseenter" === e.type);
     },
+
     timeUpdate(e) {
       const t = !H(this.elements.display.duration) && this.config.invertTime;
       We.updateTimeDisplay.call(this, this.elements.display.currentTime, t ? this.duration - this.currentTime : this.currentTime, t), e && "timeupdate" === e.type && this.media.seeking || We.updateProgress.call(this, e);
     },
+
     durationUpdate() {
       if (!this.supported.ui || !this.config.invertTime && this.currentTime) return;
       if (this.duration >= 2 ** 32) return ae(this.elements.display.currentTime, !0), void ae(this.elements.progress, !0);
       H(this.elements.inputs.seek) && this.elements.inputs.seek.setAttribute("aria-valuemax", this.duration);
       const e = H(this.elements.display.duration);
-      !e && this.config.displayDuration && this.paused && We.updateTimeDisplay.call(this, this.elements.display.currentTime, this.duration), e && We.updateTimeDisplay.call(this, this.elements.display.duration, this.duration), this.config.markers.enabled && We.setMarkers.call(this), We.updateSeekTooltip.call(this);
+      !e && this.config.displayDuration && this.paused && We.updateTimeDisplay.call(this, this.elements.display.currentTime, this.duration), e && We.updateTimeDisplay.call(this, this.elements.display.duration, this.duration), We.updateSeekTooltip.call(this);
     },
+
     toggleMenuButton(e, t) {
       ae(this.elements.settings.buttons[e], !t);
     },
+
     updateSetting(e, t, i) {
       const s = this.elements.settings.panels[e];
       let n = null,
-        a = t;
+          a = t;
       if ("captions" === e) n = this.currentTrack;else {
         if (n = W(i) ? this[e] : i, W(n) && (n = this.config[e].default), !W(this.options[e]) && !this.options[e].includes(n)) return void this.debug.warn(`Unsupported value of '${n}' for ${e}`);
         if (!this.config[e].options.includes(n)) return void this.debug.warn(`Disabled value of '${n}' for ${e}`);
@@ -1257,33 +1430,41 @@ class Event {
       const l = a && a.querySelector(`[value="${n}"]`);
       H(l) && (l.checked = !0);
     },
+
     getLabel(e, t) {
       switch (e) {
         case "speed":
           return 1 === t ? He.get("normal", this.config) : `${t}&times;`;
+
         case "quality":
           if ($(t)) {
             const e = He.get(`qualityLabel.${t}`, this.config);
             return e.length ? e : `${t}p`;
           }
+
           return Oe(t);
+
         case "captions":
           return Ye.getLabel.call(this);
+
         default:
           return null;
       }
     },
+
     setQualityMenu(e) {
       if (!H(this.elements.settings.panels.quality)) return;
       const t = "quality",
-        i = this.elements.settings.panels.quality.querySelector('[role="menu"]');
-      D(e) && (this.options.quality = Ce(e).filter(e => this.config.quality.options.includes(e)));
+            i = this.elements.settings.panels.quality.querySelector('[role="menu"]');
+      q(e) && (this.options.quality = Ce(e).filter(e => this.config.quality.options.includes(e)));
       const s = !W(this.options.quality) && this.options.quality.length > 1;
       if (We.toggleMenuButton.call(this, t, s), ie(i), We.checkMenu.call(this), !s) return;
+
       const n = e => {
         const t = He.get(`qualityBadge.${e}`, this.config);
         return t.length ? We.createBadge.call(this, t) : null;
       };
+
       this.options.quality.sort((e, t) => {
         const i = this.config.quality.options;
         return i.indexOf(e) > i.indexOf(t) ? 1 : -1;
@@ -1297,12 +1478,13 @@ class Event {
         });
       }), We.updateSetting.call(this, t, i);
     },
+
     setCaptionsMenu() {
       if (!H(this.elements.settings.panels.captions)) return;
       const e = "captions",
-        t = this.elements.settings.panels.captions.querySelector('[role="menu"]'),
-        i = Ye.getTracks.call(this),
-        s = Boolean(i.length);
+            t = this.elements.settings.panels.captions.querySelector('[role="menu"]'),
+            i = Ye.getTracks.call(this),
+            s = Boolean(i.length);
       if (We.toggleMenuButton.call(this, e, s), ie(t), We.checkMenu.call(this), !s) return;
       const n = i.map((e, i) => ({
         value: i,
@@ -1320,10 +1502,11 @@ class Event {
         type: "language"
       }), n.forEach(We.createMenuItem.bind(this)), We.updateSetting.call(this, e, t);
     },
+
     setSpeedMenu() {
       if (!H(this.elements.settings.panels.speed)) return;
       const e = "speed",
-        t = this.elements.settings.panels.speed.querySelector('[role="menu"]');
+            t = this.elements.settings.panels.speed.querySelector('[role="menu"]');
       this.options.speed = this.options.speed.filter(e => e >= this.minimumSpeed && e <= this.maximumSpeed);
       const i = !W(this.options.speed) && this.options.speed.length > 1;
       We.toggleMenuButton.call(this, e, i), ie(t), We.checkMenu.call(this), i && (this.options.speed.forEach(i => {
@@ -1335,13 +1518,15 @@ class Event {
         });
       }), We.updateSetting.call(this, e, t));
     },
+
     checkMenu() {
       const {
-          buttons: e
-        } = this.elements.settings,
-        t = !W(e) && Object.values(e).some(e => !e.hidden);
+        buttons: e
+      } = this.elements.settings,
+            t = !W(e) && Object.values(e).some(e => !e.hidden);
       ae(this.elements.settings.menu, !t);
     },
+
     focusFirstMenuItem(e) {
       let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !1;
       if (this.elements.settings.popup.hidden) return;
@@ -1350,54 +1535,63 @@ class Event {
       const s = i.querySelector('[role^="menuitem"]');
       ue.call(this, s, t);
     },
+
     toggleMenu(e) {
       const {
-          popup: t
-        } = this.elements.settings,
-        i = this.elements.buttons.settings;
+        popup: t
+      } = this.elements.settings,
+            i = this.elements.buttons.settings;
       if (!H(t) || !H(i)) return;
       const {
         hidden: s
       } = t;
       let n = s;
-      if (O(e)) n = e;else if (F(e) && "Escape" === e.key) n = !1;else if (R(e)) {
+      if (O(e)) n = e;else if (R(e) && 27 === e.which) n = !1;else if (F(e)) {
         const s = j(e.composedPath) ? e.composedPath()[0] : e.target,
-          a = t.contains(s);
+              a = t.contains(s);
         if (a || !a && e.target !== i && n) return;
       }
-      i.setAttribute("aria-expanded", n), ae(t, !n), le(this.elements.container, this.config.classNames.menu.open, n), n && F(e) ? We.focusFirstMenuItem.call(this, null, !0) : n || s || ue.call(this, i, F(e));
+      i.setAttribute("aria-expanded", n), ae(t, !n), le(this.elements.container, this.config.classNames.menu.open, n), n && R(e) ? We.focusFirstMenuItem.call(this, null, !0) : n || s || ue.call(this, i, R(e));
     },
+
     getMenuSize(e) {
       const t = e.cloneNode(!0);
       t.style.position = "absolute", t.style.opacity = 0, t.removeAttribute("hidden"), e.parentNode.appendChild(t);
       const i = t.scrollWidth,
-        s = t.scrollHeight;
+            s = t.scrollHeight;
       return te(t), {
         width: i,
         height: s
       };
     },
+
     showMenuPanel() {
       let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
       let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !1;
       const i = this.elements.container.querySelector(`#plyr-settings-${this.id}-${e}`);
       if (!H(i)) return;
       const s = i.parentNode,
-        n = Array.from(s.children).find(e => !e.hidden);
+            n = Array.from(s.children).find(e => !e.hidden);
+
       if (me.transitions && !me.reducedMotion) {
         s.style.width = `${n.scrollWidth}px`, s.style.height = `${n.scrollHeight}px`;
+
         const e = We.getMenuSize.call(this, i),
-          t = e => {
-            e.target === s && ["width", "height"].includes(e.propertyName) && (s.style.width = "", s.style.height = "", be.call(this, s, z, t));
-          };
+              t = e => {
+          e.target === s && ["width", "height"].includes(e.propertyName) && (s.style.width = "", s.style.height = "", be.call(this, s, z, t));
+        };
+
         fe.call(this, s, z, t), s.style.width = `${e.width}px`, s.style.height = `${e.height}px`;
       }
+
       ae(n, !0), ae(i, !1), We.focusFirstMenuItem.call(this, i, t);
     },
+
     setDownloadUrl() {
       const e = this.elements.buttons.download;
       H(e) && e.setAttribute("href", this.download);
     },
+
     create(e) {
       const {
         bindMenuItemShortcuts: t,
@@ -1409,18 +1603,19 @@ class Event {
         setSpeedMenu: o,
         showMenuPanel: r
       } = We;
-      this.elements.controls = null, D(this.config.controls) && this.config.controls.includes("play-large") && this.elements.container.appendChild(i.call(this, "play-large"));
+      this.elements.controls = null, q(this.config.controls) && this.config.controls.includes("play-large") && this.elements.container.appendChild(i.call(this, "play-large"));
       const c = Z("div", ne(this.config.selectors.controls.wrapper));
       this.elements.controls = c;
       const h = {
         class: "plyr__controls__item"
       };
-      return Ce(D(this.config.controls) ? this.config.controls : []).forEach(l => {
+      return Ce(q(this.config.controls) ? this.config.controls : []).forEach(l => {
         if ("restart" === l && c.appendChild(i.call(this, "restart", h)), "rewind" === l && c.appendChild(i.call(this, "rewind", h)), "play" === l && c.appendChild(i.call(this, "play", h)), "fast-forward" === l && c.appendChild(i.call(this, "fast-forward", h)), "progress" === l) {
           const t = Z("div", {
-              class: `${h.class} plyr__progress__container`
-            }),
-            i = Z("div", ne(this.config.selectors.progress));
+            class: `${h.class} plyr__progress__container`
+          }),
+                i = Z("div", ne(this.config.selectors.progress));
+
           if (i.appendChild(n.call(this, "seek", {
             id: `plyr-seek-${e.id}`
           })), i.appendChild(s.call(this, "buffer")), this.config.tooltips.seek) {
@@ -1429,12 +1624,15 @@ class Event {
             }, "00:00");
             i.appendChild(e), this.elements.display.seekTooltip = e;
           }
+
           this.elements.progress = i, t.appendChild(this.elements.progress), c.appendChild(t);
         }
+
         if ("current-time" === l && c.appendChild(a.call(this, "currentTime", h)), "duration" === l && c.appendChild(a.call(this, "duration", h)), "mute" === l || "volume" === l) {
           let {
             volume: t
           } = this.elements;
+
           if (H(t) && c.contains(t) || (t = Z("div", X({}, h, {
             class: `${h.class} plyr__volume`.trim()
           })), this.elements.volume = t, c.appendChild(t)), "mute" === l && t.appendChild(i.call(this, "mute")), "volume" === l && !Y.isIos) {
@@ -1448,6 +1646,7 @@ class Event {
             })));
           }
         }
+
         if ("captions" === l && c.appendChild(i.call(this, "captions", h)), "settings" === l && !W(this.config.settings)) {
           const s = Z("div", X({}, h, {
             class: `${h.class} plyr__menu`.trim(),
@@ -1459,17 +1658,17 @@ class Event {
             "aria-expanded": !1
           }));
           const n = Z("div", {
-              class: "plyr__menu__container",
-              id: `plyr-settings-${e.id}`,
-              hidden: ""
-            }),
-            a = Z("div"),
-            l = Z("div", {
-              id: `plyr-settings-${e.id}-home`
-            }),
-            o = Z("div", {
-              role: "menu"
-            });
+            class: "plyr__menu__container",
+            id: `plyr-settings-${e.id}`,
+            hidden: ""
+          }),
+                a = Z("div"),
+                l = Z("div", {
+            id: `plyr-settings-${e.id}-home`
+          }),
+                o = Z("div", {
+            role: "menu"
+          });
           l.appendChild(o), a.appendChild(l), this.elements.settings.panels.home = l, this.config.settings.forEach(i => {
             const s = Z("button", X(ne(this.config.selectors.buttons.settings), {
               type: "button",
@@ -1482,24 +1681,24 @@ class Event {
               r.call(this, i, !1);
             });
             const n = Z("span", null, He.get(i, this.config)),
-              l = Z("span", {
-                class: this.config.classNames.menu.value
-              });
+                  l = Z("span", {
+              class: this.config.classNames.menu.value
+            });
             l.innerHTML = e[i], n.appendChild(l), s.appendChild(n), o.appendChild(s);
             const c = Z("div", {
-                id: `plyr-settings-${e.id}-${i}`,
-                hidden: ""
-              }),
-              h = Z("button", {
-                type: "button",
-                class: `${this.config.classNames.control} ${this.config.classNames.control}--back`
-              });
+              id: `plyr-settings-${e.id}-${i}`,
+              hidden: ""
+            }),
+                  h = Z("button", {
+              type: "button",
+              class: `${this.config.classNames.control} ${this.config.classNames.control}--back`
+            });
             h.appendChild(Z("span", {
               "aria-hidden": !0
             }, He.get(i, this.config))), h.appendChild(Z("span", {
               class: this.config.classNames.hidden
             }, He.get("menuBack", this.config))), fe.call(this, c, "keydown", e => {
-              "ArrowLeft" === e.key && (e.preventDefault(), e.stopPropagation(), r.call(this, "home", !0));
+              37 === e.which && (e.preventDefault(), e.stopPropagation(), r.call(this, "home", !0));
             }, !1), fe.call(this, h, "click", () => {
               r.call(this, "home", !1);
             }), c.appendChild(h), c.appendChild(Z("div", {
@@ -1507,6 +1706,7 @@ class Event {
             })), a.appendChild(c), this.elements.settings.buttons[i] = s, this.elements.settings.panels[i] = c;
           }), n.appendChild(a), s.appendChild(n), c.appendChild(s), this.elements.settings.popup = n, this.elements.settings.menu = s;
         }
+
         if ("pip" === l && me.pip && c.appendChild(i.call(this, "pip", h)), "airplay" === l && me.airplay && c.appendChild(i.call(this, "airplay", h)), "download" === l) {
           const e = X({}, h, {
             element: "a",
@@ -1522,14 +1722,17 @@ class Event {
             label: this.provider
           }), c.appendChild(i.call(this, "download", e));
         }
+
         "fullscreen" === l && c.appendChild(i.call(this, "fullscreen", h));
       }), this.isHTML5 && l.call(this, Le.getQualityOptions.call(this)), o.call(this), c;
     },
+
     inject() {
       if (this.config.loadSprite) {
         const e = We.getIconUrl.call(this);
         e.cors && Ve(e.url, "sprite-plyr");
       }
+
       this.id = Math.floor(1e4 * Math.random());
       let e = null;
       this.elements.controls = null;
@@ -1549,556 +1752,542 @@ class Event {
       let s;
       i && _(this.config.controls) && (e = (e => {
         let i = e;
-        return Object.entries(t).forEach(_ref7 => {
-          let [e, t] = _ref7;
+        return Object.entries(t).forEach(_ref6 => {
+          let [e, t] = _ref6;
           i = _e(i, `{${e}}`, t);
         }), i;
       })(e)), _(this.config.selectors.controls.container) && (s = document.querySelector(this.config.selectors.controls.container)), H(s) || (s = this.elements.container);
+
       if (s[H(e) ? "insertAdjacentElement" : "insertAdjacentHTML"]("afterbegin", e), H(this.elements.controls) || We.findElements.call(this), !W(this.elements.buttons)) {
         const e = e => {
           const t = this.config.classNames.controlPressed;
-          e.setAttribute("aria-pressed", "false"), Object.defineProperty(e, "pressed", {
-            configurable: !0,
+          Object.defineProperty(e, "pressed", {
             enumerable: !0,
             get: () => oe(e, t),
+
             set() {
               let i = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : !1;
-              le(e, t, i), e.setAttribute("aria-pressed", i ? "true" : "false");
+              le(e, t, i);
             }
+
           });
         };
+
         Object.values(this.elements.buttons).filter(Boolean).forEach(t => {
-          D(t) || q(t) ? Array.from(t).filter(Boolean).forEach(e) : e(t);
+          q(t) || D(t) ? Array.from(t).filter(Boolean).forEach(e) : e(t);
         });
       }
+
       if (Y.isEdge && K(s), this.config.tooltips.controls) {
         const {
-            classNames: e,
-            selectors: t
-          } = this.config,
-          i = `${t.controls.wrapper} ${t.labels} .${e.hidden}`,
-          s = ce.call(this, i);
+          classNames: e,
+          selectors: t
+        } = this.config,
+              i = `${t.controls.wrapper} ${t.labels} .${e.hidden}`,
+              s = ce.call(this, i);
         Array.from(s).forEach(e => {
           le(e, this.config.classNames.hidden, !1), le(e, this.config.classNames.tooltip, !0);
         });
       }
-    },
-    setMediaMetadata() {
-      try {
-        "mediaSession" in navigator && (navigator.mediaSession.metadata = new window.MediaMetadata({
-          title: this.config.mediaMetadata.title,
-          artist: this.config.mediaMetadata.artist,
-          album: this.config.mediaMetadata.album,
-          artwork: this.config.mediaMetadata.artwork
-        }));
-      } catch (e) {}
-    },
-    setMarkers() {
-      var e, t;
-      if (!this.duration || this.elements.markers) return;
-      const i = null === (e = this.config.markers) || void 0 === e || null === (t = e.points) || void 0 === t ? void 0 : t.filter(_ref8 => {
-        let {
-          time: e
-        } = _ref8;
-        return e > 0 && e < this.duration;
-      });
-      if (null == i || !i.length) return;
-      const s = document.createDocumentFragment(),
-        n = document.createDocumentFragment();
-      let a = null;
-      const l = `${this.config.classNames.tooltip}--visible`,
-        o = e => le(a, l, e);
-      i.forEach(e => {
-        const t = Z("span", {
-            class: this.config.classNames.marker
-          }, ""),
-          i = e.time / this.duration * 100 + "%";
-        a && (t.addEventListener("mouseenter", () => {
-          e.label || (a.style.left = i, a.innerHTML = e.label, o(!0));
-        }), t.addEventListener("mouseleave", () => {
-          o(!1);
-        })), t.addEventListener("click", () => {
-          this.currentTime = e.time;
-        }), t.style.left = i, n.appendChild(t);
-      }), s.appendChild(n), this.config.tooltips.seek || (a = Z("span", {
-        class: this.config.classNames.tooltip
-      }, ""), s.appendChild(a)), this.elements.markers = {
-        points: n,
-        tip: a
-      }, this.elements.progress.appendChild(s);
     }
+
   };
+
   function ze(e) {
     let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !0;
     let i = e;
+
     if (t) {
       const e = document.createElement("a");
       e.href = i, i = e.href;
     }
+
     try {
       return new URL(i);
     } catch (e) {
       return null;
     }
   }
+
   function Ke(e) {
     const t = new URLSearchParams();
-    return L(e) && Object.entries(e).forEach(_ref9 => {
-      let [e, i] = _ref9;
+    return L(e) && Object.entries(e).forEach(_ref7 => {
+      let [e, i] = _ref7;
       t.set(e, i);
     }), t;
   }
+
   const Ye = {
-      setup() {
-        if (!this.supported.ui) return;
-        if (!this.isVideo || this.isYouTube || this.isHTML5 && !me.textTracks) return void (D(this.config.controls) && this.config.controls.includes("settings") && this.config.settings.includes("captions") && We.setCaptionsMenu.call(this));
-        var e, t;
-        if (H(this.elements.captions) || (this.elements.captions = Z("div", ne(this.config.selectors.captions)), this.elements.captions.setAttribute("dir", "auto"), e = this.elements.captions, t = this.elements.wrapper, H(e) && H(t) && t.parentNode.insertBefore(e, t.nextSibling)), Y.isIE && window.URL) {
-          const e = this.media.querySelectorAll("track");
-          Array.from(e).forEach(e => {
-            const t = e.getAttribute("src"),
-              i = ze(t);
-            null !== i && i.hostname !== window.location.href.hostname && ["http:", "https:"].includes(i.protocol) && Fe(t, "blob").then(t => {
-              e.setAttribute("src", window.URL.createObjectURL(t));
-            }).catch(() => {
-              te(e);
-            });
+    setup() {
+      if (!this.supported.ui) return;
+      if (!this.isVideo || this.isYouTube || this.isHTML5 && !me.textTracks) return void (q(this.config.controls) && this.config.controls.includes("settings") && this.config.settings.includes("captions") && We.setCaptionsMenu.call(this));
+      var e, t;
+
+      if (H(this.elements.captions) || (this.elements.captions = Z("div", ne(this.config.selectors.captions)), e = this.elements.captions, t = this.elements.wrapper, H(e) && H(t) && t.parentNode.insertBefore(e, t.nextSibling)), Y.isIE && window.URL) {
+        const e = this.media.querySelectorAll("track");
+        Array.from(e).forEach(e => {
+          const t = e.getAttribute("src"),
+                i = ze(t);
+          null !== i && i.hostname !== window.location.href.hostname && ["http:", "https:"].includes(i.protocol) && Re(t, "blob").then(t => {
+            e.setAttribute("src", window.URL.createObjectURL(t));
+          }).catch(() => {
+            te(e);
           });
-        }
-        const i = Ce((navigator.languages || [navigator.language || navigator.userLanguage || "en"]).map(e => e.split("-")[0]));
-        let s = (this.storage.get("language") || this.config.captions.language || "auto").toLowerCase();
-        "auto" === s && ([s] = i);
-        let n = this.storage.get("captions");
-        if (O(n) || ({
-          active: n
-        } = this.config.captions), Object.assign(this.captions, {
-          toggled: !1,
-          active: n,
-          language: s,
-          languages: i
-        }), this.isHTML5) {
-          const e = this.config.captions.update ? "addtrack removetrack" : "removetrack";
-          fe.call(this, this.media.textTracks, e, Ye.update.bind(this));
-        }
-        setTimeout(Ye.update.bind(this), 0);
-      },
-      update() {
-        const e = Ye.getTracks.call(this, !0),
-          {
-            active: t,
-            language: i,
-            meta: s,
-            currentTrackNode: n
-          } = this.captions,
-          a = Boolean(e.find(e => e.language === i));
-        this.isHTML5 && this.isVideo && e.filter(e => !s.get(e)).forEach(e => {
-          this.debug.log("Track added", e), s.set(e, {
-            default: "showing" === e.mode
-          }), "showing" === e.mode && (e.mode = "hidden"), fe.call(this, e, "cuechange", () => Ye.updateCues.call(this));
-        }), (a && this.language !== i || !e.includes(n)) && (Ye.setLanguage.call(this, i), Ye.toggle.call(this, t && a)), this.elements && le(this.elements.container, this.config.classNames.captions.enabled, !W(e)), D(this.config.controls) && this.config.controls.includes("settings") && this.config.settings.includes("captions") && We.setCaptionsMenu.call(this);
-      },
-      toggle(e) {
-        let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !0;
-        if (!this.supported.ui) return;
-        const {
-            toggled: i
-          } = this.captions,
-          s = this.config.classNames.captions.active,
-          n = I(e) ? !i : e;
-        if (n !== i) {
-          if (t || (this.captions.active = n, this.storage.set({
-            captions: n
-          })), !this.language && n && !t) {
-            const e = Ye.getTracks.call(this),
-              t = Ye.findTrack.call(this, [this.captions.language, ...this.captions.languages], !0);
-            return this.captions.language = t.language, void Ye.set.call(this, e.indexOf(t));
-          }
-          this.elements.buttons.captions && (this.elements.buttons.captions.pressed = n), le(this.elements.container, s, n), this.captions.toggled = n, We.updateSetting.call(this, "captions"), ve.call(this, this.media, n ? "captionsenabled" : "captionsdisabled");
-        }
-        setTimeout(() => {
-          n && this.captions.toggled && (this.captions.currentTrackNode.mode = "hidden");
         });
-      },
-      set(e) {
-        let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !0;
-        const i = Ye.getTracks.call(this);
-        if (-1 !== e) {
-          if ($(e)) {
-            if (e in i) {
-              if (this.captions.currentTrack !== e) {
-                this.captions.currentTrack = e;
-                const s = i[e],
-                  {
-                    language: n
-                  } = s || {};
-                this.captions.currentTrackNode = s, We.updateSetting.call(this, "captions"), t || (this.captions.language = n, this.storage.set({
-                  language: n
-                })), this.isVimeo && this.embed.enableTextTrack(n), ve.call(this, this.media, "languagechange");
-              }
-              Ye.toggle.call(this, !0, t), this.isHTML5 && this.isVideo && Ye.updateCues.call(this);
-            } else this.debug.warn("Track not found", e);
-          } else this.debug.warn("Invalid caption argument", e);
-        } else Ye.toggle.call(this, !1, t);
-      },
-      setLanguage(e) {
-        let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !0;
-        if (!_(e)) return void this.debug.warn("Invalid language argument", e);
-        const i = e.toLowerCase();
-        this.captions.language = i;
-        const s = Ye.getTracks.call(this),
-          n = Ye.findTrack.call(this, [i]);
-        Ye.set.call(this, s.indexOf(n), t);
-      },
-      getTracks() {
-        let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : !1;
-        return Array.from((this.media || {}).textTracks || []).filter(t => !this.isHTML5 || e || this.captions.meta.has(t)).filter(e => ["captions", "subtitles"].includes(e.kind));
-      },
-      findTrack(e) {
-        let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !1;
-        const i = Ye.getTracks.call(this),
-          s = e => Number((this.captions.meta.get(e) || {}).default),
-          n = Array.from(i).sort((e, t) => s(t) - s(e));
-        let a;
-        return e.every(e => (a = n.find(t => t.language === e), !a)), a || (t ? n[0] : void 0);
-      },
-      getCurrentTrack() {
-        return Ye.getTracks.call(this)[this.currentTrack];
-      },
-      getLabel(e) {
-        let t = e;
-        return !V(t) && me.textTracks && this.captions.toggled && (t = Ye.getCurrentTrack.call(this)), V(t) ? W(t.label) ? W(t.language) ? He.get("enabled", this.config) : e.language.toUpperCase() : t.label : He.get("disabled", this.config);
-      },
-      updateCues(e) {
-        if (!this.supported.ui) return;
-        if (!H(this.elements.captions)) return void this.debug.warn("No captions element to render to");
-        if (!I(e) && !Array.isArray(e)) return void this.debug.warn("updateCues: Invalid input", e);
-        let t = e;
-        if (!t) {
-          const e = Ye.getCurrentTrack.call(this);
-          t = Array.from((e || {}).activeCues || []).map(e => e.getCueAsHTML()).map(De);
+      }
+
+      const i = Ce((navigator.languages || [navigator.language || navigator.userLanguage || "en"]).map(e => e.split("-")[0]));
+      let s = (this.storage.get("language") || this.config.captions.language || "auto").toLowerCase();
+      "auto" === s && ([s] = i);
+      let n = this.storage.get("captions");
+
+      if (O(n) || ({
+        active: n
+      } = this.config.captions), Object.assign(this.captions, {
+        toggled: !1,
+        active: n,
+        language: s,
+        languages: i
+      }), this.isHTML5) {
+        const e = this.config.captions.update ? "addtrack removetrack" : "removetrack";
+        fe.call(this, this.media.textTracks, e, Ye.update.bind(this));
+      }
+
+      setTimeout(Ye.update.bind(this), 0);
+    },
+
+    update() {
+      const e = Ye.getTracks.call(this, !0),
+            {
+        active: t,
+        language: i,
+        meta: s,
+        currentTrackNode: n
+      } = this.captions,
+            a = Boolean(e.find(e => e.language === i));
+      this.isHTML5 && this.isVideo && e.filter(e => !s.get(e)).forEach(e => {
+        this.debug.log("Track added", e), s.set(e, {
+          default: "showing" === e.mode
+        }), "showing" === e.mode && (e.mode = "hidden"), fe.call(this, e, "cuechange", () => Ye.updateCues.call(this));
+      }), (a && this.language !== i || !e.includes(n)) && (Ye.setLanguage.call(this, i), Ye.toggle.call(this, t && a)), this.elements && le(this.elements.container, this.config.classNames.captions.enabled, !W(e)), q(this.config.controls) && this.config.controls.includes("settings") && this.config.settings.includes("captions") && We.setCaptionsMenu.call(this);
+    },
+
+    toggle(e) {
+      let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !0;
+      if (!this.supported.ui) return;
+      const {
+        toggled: i
+      } = this.captions,
+            s = this.config.classNames.captions.active,
+            n = I(e) ? !i : e;
+
+      if (n !== i) {
+        if (t || (this.captions.active = n, this.storage.set({
+          captions: n
+        })), !this.language && n && !t) {
+          const e = Ye.getTracks.call(this),
+                t = Ye.findTrack.call(this, [this.captions.language, ...this.captions.languages], !0);
+          return this.captions.language = t.language, void Ye.set.call(this, e.indexOf(t));
         }
-        const i = t.map(e => e.trim()).join("\n");
-        if (i !== this.elements.captions.innerHTML) {
-          ie(this.elements.captions);
-          const e = Z("span", ne(this.config.selectors.caption));
-          e.innerHTML = i, this.elements.captions.appendChild(e), ve.call(this, this.media, "cuechange");
-        }
+
+        this.elements.buttons.captions && (this.elements.buttons.captions.pressed = n), le(this.elements.container, s, n), this.captions.toggled = n, We.updateSetting.call(this, "captions"), ve.call(this, this.media, n ? "captionsenabled" : "captionsdisabled");
+      }
+
+      setTimeout(() => {
+        n && this.captions.toggled && (this.captions.currentTrackNode.mode = "hidden");
+      });
+    },
+
+    set(e) {
+      let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !0;
+      const i = Ye.getTracks.call(this);
+      if (-1 !== e) {
+        if ($(e)) {
+          if (e in i) {
+            if (this.captions.currentTrack !== e) {
+              this.captions.currentTrack = e;
+              const s = i[e],
+                    {
+                language: n
+              } = s || {};
+              this.captions.currentTrackNode = s, We.updateSetting.call(this, "captions"), t || (this.captions.language = n, this.storage.set({
+                language: n
+              })), this.isVimeo && this.embed.enableTextTrack(n), ve.call(this, this.media, "languagechange");
+            }
+
+            Ye.toggle.call(this, !0, t), this.isHTML5 && this.isVideo && Ye.updateCues.call(this);
+          } else this.debug.warn("Track not found", e);
+        } else this.debug.warn("Invalid caption argument", e);
+      } else Ye.toggle.call(this, !1, t);
+    },
+
+    setLanguage(e) {
+      let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !0;
+      if (!_(e)) return void this.debug.warn("Invalid language argument", e);
+      const i = e.toLowerCase();
+      this.captions.language = i;
+      const s = Ye.getTracks.call(this),
+            n = Ye.findTrack.call(this, [i]);
+      Ye.set.call(this, s.indexOf(n), t);
+    },
+
+    getTracks() {
+      let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : !1;
+      return Array.from((this.media || {}).textTracks || []).filter(t => !this.isHTML5 || e || this.captions.meta.has(t)).filter(e => ["captions", "subtitles"].includes(e.kind));
+    },
+
+    findTrack(e) {
+      let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !1;
+
+      const i = Ye.getTracks.call(this),
+            s = e => Number((this.captions.meta.get(e) || {}).default),
+            n = Array.from(i).sort((e, t) => s(t) - s(e));
+
+      let a;
+      return e.every(e => (a = n.find(t => t.language === e), !a)), a || (t ? n[0] : void 0);
+    },
+
+    getCurrentTrack() {
+      return Ye.getTracks.call(this)[this.currentTrack];
+    },
+
+    getLabel(e) {
+      let t = e;
+      return !V(t) && me.textTracks && this.captions.toggled && (t = Ye.getCurrentTrack.call(this)), V(t) ? W(t.label) ? W(t.language) ? He.get("enabled", this.config) : e.language.toUpperCase() : t.label : He.get("disabled", this.config);
+    },
+
+    updateCues(e) {
+      if (!this.supported.ui) return;
+      if (!H(this.elements.captions)) return void this.debug.warn("No captions element to render to");
+      if (!I(e) && !Array.isArray(e)) return void this.debug.warn("updateCues: Invalid input", e);
+      let t = e;
+
+      if (!t) {
+        const e = Ye.getCurrentTrack.call(this);
+        t = Array.from((e || {}).activeCues || []).map(e => e.getCueAsHTML()).map(qe);
+      }
+
+      const i = t.map(e => e.trim()).join("\n");
+
+      if (i !== this.elements.captions.innerHTML) {
+        ie(this.elements.captions);
+        const e = Z("span", ne(this.config.selectors.caption));
+        e.innerHTML = i, this.elements.captions.appendChild(e), ve.call(this, this.media, "cuechange");
+      }
+    }
+
+  },
+        Qe = {
+    enabled: !0,
+    title: "",
+    debug: !1,
+    autoplay: !1,
+    autopause: !0,
+    playsinline: !0,
+    seekTime: 10,
+    volume: 1,
+    muted: !1,
+    duration: null,
+    displayDuration: !0,
+    invertTime: !0,
+    toggleInvert: !0,
+    ratio: null,
+    clickToPlay: !0,
+    hideControls: !0,
+    resetOnEnd: !1,
+    disableContextMenu: !0,
+    loadSprite: !0,
+    iconPrefix: "plyr",
+    iconUrl: "https://cdn.plyr.io/3.6.12/plyr.svg",
+    blankVideo: "https://cdn.plyr.io/static/blank.mp4",
+    quality: {
+      default: 576,
+      options: [4320, 2880, 2160, 1440, 1080, 720, 576, 480, 360, 240],
+      forced: !1,
+      onChange: null
+    },
+    loop: {
+      active: !1
+    },
+    speed: {
+      selected: 1,
+      options: [.5, .75, 1, 1.25, 1.5, 1.75, 2, 4]
+    },
+    keyboard: {
+      focused: !0,
+      global: !1
+    },
+    tooltips: {
+      controls: !1,
+      seek: !0
+    },
+    captions: {
+      active: !1,
+      language: "auto",
+      update: !1
+    },
+    fullscreen: {
+      enabled: !0,
+      fallback: !0,
+      iosNative: !1
+    },
+    storage: {
+      enabled: !0,
+      key: "plyr"
+    },
+    controls: ["play-large", "play", "progress", "current-time", "mute", "volume", "captions", "settings", "pip", "airplay", "fullscreen"],
+    settings: ["captions", "quality", "speed"],
+    i18n: {
+      restart: "Restart",
+      rewind: "Rewind {seektime}s",
+      play: "Play",
+      pause: "Pause",
+      fastForward: "Forward {seektime}s",
+      seek: "Seek",
+      seekLabel: "{currentTime} of {duration}",
+      played: "Played",
+      buffered: "Buffered",
+      currentTime: "Current time",
+      duration: "Duration",
+      volume: "Volume",
+      mute: "Mute",
+      unmute: "Unmute",
+      enableCaptions: "Enable captions",
+      disableCaptions: "Disable captions",
+      download: "Download",
+      enterFullscreen: "Enter fullscreen",
+      exitFullscreen: "Exit fullscreen",
+      frameTitle: "Player for {title}",
+      captions: "Captions",
+      settings: "Settings",
+      pip: "PIP",
+      menuBack: "Go back to previous menu",
+      speed: "Speed",
+      normal: "Normal",
+      quality: "Quality",
+      loop: "Loop",
+      start: "Start",
+      end: "End",
+      all: "All",
+      reset: "Reset",
+      disabled: "Disabled",
+      enabled: "Enabled",
+      advertisement: "Ad",
+      qualityBadge: {
+        2160: "4K",
+        1440: "HD",
+        1080: "HD",
+        720: "HD",
+        576: "SD",
+        480: "SD"
       }
     },
-    Qe = {
-      enabled: !0,
-      title: "",
-      debug: !1,
-      autoplay: !1,
-      autopause: !0,
-      playsinline: !0,
-      seekTime: 10,
-      volume: 1,
-      muted: !1,
-      duration: null,
-      displayDuration: !0,
-      invertTime: !0,
-      toggleInvert: !0,
-      ratio: null,
-      clickToPlay: !0,
-      hideControls: !0,
-      resetOnEnd: !1,
-      disableContextMenu: !0,
-      loadSprite: !0,
-      iconPrefix: "plyr",
-      iconUrl: "https://cdn.plyr.io/3.7.3/plyr.svg",
-      blankVideo: "https://cdn.plyr.io/static/blank.mp4",
-      quality: {
-        default: 576,
-        options: [4320, 2880, 2160, 1440, 1080, 720, 576, 480, 360, 240],
-        forced: !1,
-        onChange: null
-      },
-      loop: {
-        active: !1
-      },
-      speed: {
-        selected: 1,
-        options: [.5, .75, 1, 1.25, 1.5, 1.75, 2, 4]
-      },
-      keyboard: {
-        focused: !0,
-        global: !1
-      },
-      tooltips: {
-        controls: !1,
-        seek: !0
-      },
-      captions: {
-        active: !1,
-        language: "auto",
-        update: !1
-      },
-      fullscreen: {
-        enabled: !0,
-        fallback: !0,
-        iosNative: !1
-      },
-      storage: {
-        enabled: !0,
-        key: "plyr"
-      },
-      controls: ["play-large", "play", "progress", "current-time", "mute", "volume", "captions", "settings", "pip", "airplay", "fullscreen"],
-      settings: ["captions", "quality", "speed"],
-      i18n: {
-        restart: "Restart",
-        rewind: "Rewind {seektime}s",
-        play: "Play",
-        pause: "Pause",
-        fastForward: "Forward {seektime}s",
-        seek: "Seek",
-        seekLabel: "{currentTime} of {duration}",
-        played: "Played",
-        buffered: "Buffered",
-        currentTime: "Current time",
-        duration: "Duration",
-        volume: "Volume",
-        mute: "Mute",
-        unmute: "Unmute",
-        enableCaptions: "Enable captions",
-        disableCaptions: "Disable captions",
-        download: "Download",
-        enterFullscreen: "Enter fullscreen",
-        exitFullscreen: "Exit fullscreen",
-        frameTitle: "Player for {title}",
-        captions: "Captions",
-        settings: "Settings",
-        pip: "PIP",
-        menuBack: "Go back to previous menu",
-        speed: "Speed",
-        normal: "Normal",
-        quality: "Quality",
-        loop: "Loop",
-        start: "Start",
-        end: "End",
-        all: "All",
-        reset: "Reset",
-        disabled: "Disabled",
-        enabled: "Enabled",
-        advertisement: "Ad",
-        qualityBadge: {
-          2160: "4K",
-          1440: "HD",
-          1080: "HD",
-          720: "HD",
-          576: "SD",
-          480: "SD"
-        }
-      },
-      urls: {
-        download: null,
-        vimeo: {
-          sdk: "https://player.vimeo.com/api/player.js",
-          iframe: "https://player.vimeo.com/video/{0}?{1}",
-          api: "https://vimeo.com/api/oembed.json?url={0}"
-        },
-        youtube: {
-          sdk: "https://www.youtube.com/iframe_api",
-          api: "https://noembed.com/embed?url=https://www.youtube.com/watch?v={0}"
-        },
-        googleIMA: {
-          sdk: "https://imasdk.googleapis.com/js/sdkloader/ima3.js"
-        }
-      },
-      listeners: {
-        seek: null,
-        play: null,
-        pause: null,
-        restart: null,
-        rewind: null,
-        fastForward: null,
-        mute: null,
-        volume: null,
-        captions: null,
-        download: null,
-        fullscreen: null,
-        pip: null,
-        airplay: null,
-        speed: null,
-        quality: null,
-        loop: null,
-        language: null
-      },
-      events: ["ended", "progress", "stalled", "playing", "waiting", "canplay", "canplaythrough", "loadstart", "loadeddata", "loadedmetadata", "timeupdate", "volumechange", "play", "pause", "error", "seeking", "seeked", "emptied", "ratechange", "cuechange", "download", "enterfullscreen", "exitfullscreen", "captionsenabled", "captionsdisabled", "languagechange", "controlshidden", "controlsshown", "ready", "statechange", "qualitychange", "adsloaded", "adscontentpause", "adscontentresume", "adstarted", "adsmidpoint", "adscomplete", "adsallcomplete", "adsimpression", "adsclick"],
-      selectors: {
-        editable: "input, textarea, select, [contenteditable]",
-        container: ".plyr",
-        controls: {
-          container: null,
-          wrapper: ".plyr__controls"
-        },
-        labels: "[data-plyr]",
-        buttons: {
-          play: '[data-plyr="play"]',
-          pause: '[data-plyr="pause"]',
-          restart: '[data-plyr="restart"]',
-          rewind: '[data-plyr="rewind"]',
-          fastForward: '[data-plyr="fast-forward"]',
-          mute: '[data-plyr="mute"]',
-          captions: '[data-plyr="captions"]',
-          download: '[data-plyr="download"]',
-          fullscreen: '[data-plyr="fullscreen"]',
-          pip: '[data-plyr="pip"]',
-          airplay: '[data-plyr="airplay"]',
-          settings: '[data-plyr="settings"]',
-          loop: '[data-plyr="loop"]'
-        },
-        inputs: {
-          seek: '[data-plyr="seek"]',
-          volume: '[data-plyr="volume"]',
-          speed: '[data-plyr="speed"]',
-          language: '[data-plyr="language"]',
-          quality: '[data-plyr="quality"]'
-        },
-        display: {
-          currentTime: ".plyr__time--current",
-          duration: ".plyr__time--duration",
-          buffer: ".plyr__progress__buffer",
-          loop: ".plyr__progress__loop",
-          volume: ".plyr__volume--display"
-        },
-        progress: ".plyr__progress",
-        captions: ".plyr__captions",
-        caption: ".plyr__caption"
-      },
-      classNames: {
-        type: "plyr--{0}",
-        provider: "plyr--{0}",
-        video: "plyr__video-wrapper",
-        embed: "plyr__video-embed",
-        videoFixedRatio: "plyr__video-wrapper--fixed-ratio",
-        embedContainer: "plyr__video-embed__container",
-        poster: "plyr__poster",
-        posterEnabled: "plyr__poster-enabled",
-        ads: "plyr__ads",
-        control: "plyr__control",
-        controlPressed: "plyr__control--pressed",
-        playing: "plyr--playing",
-        paused: "plyr--paused",
-        stopped: "plyr--stopped",
-        loading: "plyr--loading",
-        hover: "plyr--hover",
-        tooltip: "plyr__tooltip",
-        cues: "plyr__cues",
-        marker: "plyr__progress__marker",
-        hidden: "plyr__sr-only",
-        hideControls: "plyr--hide-controls",
-        isIos: "plyr--is-ios",
-        isTouch: "plyr--is-touch",
-        uiSupported: "plyr--full-ui",
-        noTransition: "plyr--no-transition",
-        display: {
-          time: "plyr__time"
-        },
-        menu: {
-          value: "plyr__menu__value",
-          badge: "plyr__badge",
-          open: "plyr--menu-open"
-        },
-        captions: {
-          enabled: "plyr--captions-enabled",
-          active: "plyr--captions-active"
-        },
-        fullscreen: {
-          enabled: "plyr--fullscreen-enabled",
-          fallback: "plyr--fullscreen-fallback"
-        },
-        pip: {
-          supported: "plyr--pip-supported",
-          active: "plyr--pip-active"
-        },
-        airplay: {
-          supported: "plyr--airplay-supported",
-          active: "plyr--airplay-active"
-        },
-        tabFocus: "plyr__tab-focus",
-        previewThumbnails: {
-          thumbContainer: "plyr__preview-thumb",
-          thumbContainerShown: "plyr__preview-thumb--is-shown",
-          imageContainer: "plyr__preview-thumb__image-container",
-          timeContainer: "plyr__preview-thumb__time-container",
-          scrubbingContainer: "plyr__preview-scrubbing",
-          scrubbingContainerShown: "plyr__preview-scrubbing--is-shown"
-        }
-      },
-      attributes: {
-        embed: {
-          provider: "data-plyr-provider",
-          id: "data-plyr-embed-id",
-          hash: "data-plyr-embed-hash"
-        }
-      },
-      ads: {
-        enabled: !1,
-        publisherId: "",
-        tagUrl: ""
-      },
-      previewThumbnails: {
-        enabled: !1,
-        src: ""
-      },
+    urls: {
+      download: null,
       vimeo: {
-        byline: !1,
-        portrait: !1,
-        title: !1,
-        speed: !0,
-        transparent: !1,
-        customControls: !0,
-        referrerPolicy: null,
-        premium: !1
+        sdk: "https://player.vimeo.com/api/player.js",
+        iframe: "https://player.vimeo.com/video/{0}?{1}",
+        api: "https://vimeo.com/api/oembed.json?url={0}"
       },
       youtube: {
-        rel: 0,
-        showinfo: 0,
-        iv_load_policy: 3,
-        modestbranding: 1,
-        customControls: !0,
-        noCookie: !1
+        sdk: "https://www.youtube.com/iframe_api",
+        api: "https://noembed.com/embed?url=https://www.youtube.com/watch?v={0}"
       },
-      mediaMetadata: {
-        title: "",
-        artist: "",
-        album: "",
-        artwork: []
-      },
-      markers: {
-        enabled: !1,
-        points: []
+      googleIMA: {
+        sdk: "https://imasdk.googleapis.com/js/sdkloader/ima3.js"
       }
     },
-    Xe = "picture-in-picture",
-    Je = "inline",
-    Ge = {
-      html5: "html5",
-      youtube: "youtube",
-      vimeo: "vimeo"
+    listeners: {
+      seek: null,
+      play: null,
+      pause: null,
+      restart: null,
+      rewind: null,
+      fastForward: null,
+      mute: null,
+      volume: null,
+      captions: null,
+      download: null,
+      fullscreen: null,
+      pip: null,
+      airplay: null,
+      speed: null,
+      quality: null,
+      loop: null,
+      language: null
     },
-    Ze = "audio",
-    et = "video";
+    events: ["ended", "progress", "stalled", "playing", "waiting", "canplay", "canplaythrough", "loadstart", "loadeddata", "loadedmetadata", "timeupdate", "volumechange", "play", "pause", "error", "seeking", "seeked", "emptied", "ratechange", "cuechange", "download", "enterfullscreen", "exitfullscreen", "captionsenabled", "captionsdisabled", "languagechange", "controlshidden", "controlsshown", "ready", "statechange", "qualitychange", "adsloaded", "adscontentpause", "adscontentresume", "adstarted", "adsmidpoint", "adscomplete", "adsallcomplete", "adsimpression", "adsclick"],
+    selectors: {
+      editable: "input, textarea, select, [contenteditable]",
+      container: ".plyr",
+      controls: {
+        container: null,
+        wrapper: ".plyr__controls"
+      },
+      labels: "[data-plyr]",
+      buttons: {
+        play: '[data-plyr="play"]',
+        pause: '[data-plyr="pause"]',
+        restart: '[data-plyr="restart"]',
+        rewind: '[data-plyr="rewind"]',
+        fastForward: '[data-plyr="fast-forward"]',
+        mute: '[data-plyr="mute"]',
+        captions: '[data-plyr="captions"]',
+        download: '[data-plyr="download"]',
+        fullscreen: '[data-plyr="fullscreen"]',
+        pip: '[data-plyr="pip"]',
+        airplay: '[data-plyr="airplay"]',
+        settings: '[data-plyr="settings"]',
+        loop: '[data-plyr="loop"]'
+      },
+      inputs: {
+        seek: '[data-plyr="seek"]',
+        volume: '[data-plyr="volume"]',
+        speed: '[data-plyr="speed"]',
+        language: '[data-plyr="language"]',
+        quality: '[data-plyr="quality"]'
+      },
+      display: {
+        currentTime: ".plyr__time--current",
+        duration: ".plyr__time--duration",
+        buffer: ".plyr__progress__buffer",
+        loop: ".plyr__progress__loop",
+        volume: ".plyr__volume--display"
+      },
+      progress: ".plyr__progress",
+      captions: ".plyr__captions",
+      caption: ".plyr__caption"
+    },
+    classNames: {
+      type: "plyr--{0}",
+      provider: "plyr--{0}",
+      video: "plyr__video-wrapper",
+      embed: "plyr__video-embed",
+      videoFixedRatio: "plyr__video-wrapper--fixed-ratio",
+      embedContainer: "plyr__video-embed__container",
+      poster: "plyr__poster",
+      posterEnabled: "plyr__poster-enabled",
+      ads: "plyr__ads",
+      control: "plyr__control",
+      controlPressed: "plyr__control--pressed",
+      playing: "plyr--playing",
+      paused: "plyr--paused",
+      stopped: "plyr--stopped",
+      loading: "plyr--loading",
+      hover: "plyr--hover",
+      tooltip: "plyr__tooltip",
+      cues: "plyr__cues",
+      hidden: "plyr__sr-only",
+      hideControls: "plyr--hide-controls",
+      isIos: "plyr--is-ios",
+      isTouch: "plyr--is-touch",
+      uiSupported: "plyr--full-ui",
+      noTransition: "plyr--no-transition",
+      display: {
+        time: "plyr__time"
+      },
+      menu: {
+        value: "plyr__menu__value",
+        badge: "plyr__badge",
+        open: "plyr--menu-open"
+      },
+      captions: {
+        enabled: "plyr--captions-enabled",
+        active: "plyr--captions-active"
+      },
+      fullscreen: {
+        enabled: "plyr--fullscreen-enabled",
+        fallback: "plyr--fullscreen-fallback"
+      },
+      pip: {
+        supported: "plyr--pip-supported",
+        active: "plyr--pip-active"
+      },
+      airplay: {
+        supported: "plyr--airplay-supported",
+        active: "plyr--airplay-active"
+      },
+      tabFocus: "plyr__tab-focus",
+      previewThumbnails: {
+        thumbContainer: "plyr__preview-thumb",
+        thumbContainerShown: "plyr__preview-thumb--is-shown",
+        imageContainer: "plyr__preview-thumb__image-container",
+        timeContainer: "plyr__preview-thumb__time-container",
+        scrubbingContainer: "plyr__preview-scrubbing",
+        scrubbingContainerShown: "plyr__preview-scrubbing--is-shown"
+      }
+    },
+    attributes: {
+      embed: {
+        provider: "data-plyr-provider",
+        id: "data-plyr-embed-id",
+        hash: "data-plyr-embed-hash"
+      }
+    },
+    ads: {
+      enabled: !1,
+      publisherId: "",
+      tagUrl: ""
+    },
+    previewThumbnails: {
+      enabled: !1,
+      src: ""
+    },
+    vimeo: {
+      byline: !1,
+      portrait: !1,
+      title: !1,
+      speed: !0,
+      transparent: !1,
+      customControls: !0,
+      referrerPolicy: null,
+      premium: !1
+    },
+    youtube: {
+      rel: 0,
+      showinfo: 0,
+      iv_load_policy: 3,
+      modestbranding: 1,
+      customControls: !0,
+      noCookie: !1
+    }
+  },
+        Xe = "picture-in-picture",
+        Je = "inline",
+        Ge = {
+    html5: "html5",
+    youtube: "youtube",
+    vimeo: "vimeo"
+  },
+        Ze = "audio",
+        et = "video";
+
   const tt = () => {};
+
   class it {
     constructor() {
       let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : !1;
       this.enabled = window.console && e, this.enabled && this.log("Debugging enabled");
     }
+
     get log() {
       return this.enabled ? Function.prototype.bind.call(console.log, console) : tt;
     }
+
     get warn() {
       return this.enabled ? Function.prototype.bind.call(console.warn, console) : tt;
     }
+
     get error() {
       return this.enabled ? Function.prototype.bind.call(console.error, console) : tt;
     }
+
   }
+
   class st {
     constructor(t) {
       var _this2 = this;
+
       e(this, "onChange", () => {
         if (!this.enabled) return;
         const e = this.player.elements.buttons.fullscreen;
@@ -2107,6 +2296,7 @@ class Event {
         ve.call(this.player, t, this.active ? "enterfullscreen" : "exitfullscreen", !0);
       }), e(this, "toggleFallback", function () {
         let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : !1;
+
         if (e ? _this2.scrollPosition = {
           x: window.scrollX || 0,
           y: window.scrollY || 0
@@ -2117,19 +2307,21 @@ class Event {
           const s = _(t.content) && t.content.includes(i);
           e ? (_this2.cleanupViewport = !s, s || (t.content += `,${i}`)) : _this2.cleanupViewport && (t.content = t.content.split(",").filter(e => e.trim() !== i).join(","));
         }
+
         _this2.onChange();
       }), e(this, "trapFocus", e => {
-        if (Y.isIos || !this.active || "Tab" !== e.key) return;
+        if (Y.isIos || !this.active || "Tab" !== e.key || 9 !== e.keyCode) return;
         const t = document.activeElement,
-          i = ce.call(this.player, "a[href], button:not(:disabled), input:not(:disabled), [tabindex]"),
-          [s] = i,
-          n = i[i.length - 1];
+              i = ce.call(this.player, "a[href], button:not(:disabled), input:not(:disabled), [tabindex]"),
+              [s] = i,
+              n = i[i.length - 1];
         t !== n || e.shiftKey ? t === s && e.shiftKey && (n.focus(), e.preventDefault()) : (s.focus(), e.preventDefault());
       }), e(this, "update", () => {
         if (this.enabled) {
           let e;
           e = this.forceFallback ? "Fallback (forced)" : st.native ? "Native" : "Fallback", this.player.debug.log(`${e} fullscreen enabled`);
         } else this.player.debug.log("Fullscreen not supported and fallback disabled");
+
         le(this.player.elements.container, this.player.config.classNames.fullscreen.enabled, this.enabled);
       }), e(this, "enter", () => {
         this.enabled && (Y.isIos && this.player.config.fullscreen.iosNative ? this.player.isVimeo ? this.player.embed.requestFullscreen() : this.target.webkitEnterFullscreen() : !st.native || this.forceFallback ? this.toggleFallback(!0) : this.prefix ? W(this.prefix) || this.target[`${this.prefix}Request${this.property}`]() : this.target.requestFullscreen({
@@ -2153,10 +2345,12 @@ class Event {
         } = Element;
         return (i.closest || function () {
           let e = this;
+
           do {
             if (re.matches(e, t)) return e;
             e = e.parentElement || e.parentNode;
           } while (null !== e && 1 === e.nodeType);
+
           return null;
         }).call(e, t);
       }(this.player.elements.container, t.config.fullscreen.container), fe.call(this.player, document, "ms" === this.prefix ? "MSFullscreenChange" : `${this.prefix}fullscreenchange`, () => {
@@ -2165,40 +2359,50 @@ class Event {
         H(this.player.elements.controls) && this.player.elements.controls.contains(e.target) || this.player.listeners.proxy(e, this.toggle, "fullscreen");
       }), fe.call(this, this.player.elements.container, "keydown", e => this.trapFocus(e)), this.update();
     }
+
     static get native() {
       return !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled);
     }
+
     get usingNative() {
       return st.native && !this.forceFallback;
     }
+
     static get prefix() {
       if (j(document.exitFullscreen)) return "";
       let e = "";
       return ["webkit", "moz", "ms"].some(t => !(!j(document[`${t}ExitFullscreen`]) && !j(document[`${t}CancelFullScreen`])) && (e = t, !0)), e;
     }
+
     static get property() {
       return "moz" === this.prefix ? "FullScreen" : "Fullscreen";
     }
+
     get enabled() {
       return (st.native || this.player.config.fullscreen.fallback) && this.player.config.fullscreen.enabled && this.player.supported.ui && this.player.isVideo;
     }
+
     get active() {
       if (!this.enabled) return !1;
       if (!st.native || this.forceFallback) return oe(this.target, this.player.config.classNames.fullscreen.fallback);
       const e = this.prefix ? this.target.getRootNode()[`${this.prefix}${this.property}Element`] : this.target.getRootNode().fullscreenElement;
       return e && e.shadowRoot ? e === this.target.getRootNode().host : e === this.target;
     }
+
     get target() {
       return Y.isIos && this.player.config.fullscreen.iosNative ? this.player.media : this.player.elements.fullscreen || this.player.elements.container;
     }
+
   }
+
   function nt(e) {
     let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
     return new Promise((i, s) => {
       const n = new Image(),
-        a = () => {
-          delete n.onload, delete n.onerror, (n.naturalWidth >= t ? i : s)(n);
-        };
+            a = () => {
+        delete n.onload, delete n.onerror, (n.naturalWidth >= t ? i : s)(n);
+      };
+
       Object.assign(n, {
         onload: a,
         onerror: a,
@@ -2206,35 +2410,42 @@ class Event {
       });
     });
   }
+
   const at = {
     addStyleHook() {
       le(this.elements.container, this.config.selectors.container.replace(".", ""), !0), le(this.elements.container, this.config.classNames.uiSupported, this.supported.ui);
     },
+
     toggleNativeControls() {
       let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : !1;
       e && this.isHTML5 ? this.media.setAttribute("controls", "") : this.media.removeAttribute("controls");
     },
+
     build() {
       if (this.listeners.media(), !this.supported.ui) return this.debug.warn(`Basic support only for ${this.provider} ${this.type}`), void at.toggleNativeControls.call(this, !0);
       H(this.elements.controls) || (We.inject.call(this), this.listeners.controls()), at.toggleNativeControls.call(this), this.isHTML5 && Ye.setup.call(this), this.volume = null, this.muted = null, this.loop = null, this.quality = null, this.speed = null, We.updateVolume.call(this), We.timeUpdate.call(this), We.durationUpdate.call(this), at.checkPlaying.call(this), le(this.elements.container, this.config.classNames.pip.supported, me.pip && this.isHTML5 && this.isVideo), le(this.elements.container, this.config.classNames.airplay.supported, me.airplay && this.isHTML5), le(this.elements.container, this.config.classNames.isIos, Y.isIos), le(this.elements.container, this.config.classNames.isTouch, this.touch), this.ready = !0, setTimeout(() => {
         ve.call(this, this.media, "ready");
-      }, 0), at.setTitle.call(this), this.poster && at.setPoster.call(this, this.poster, !1).catch(() => {}), this.config.duration && We.durationUpdate.call(this), this.config.mediaMetadata && We.setMediaMetadata.call(this);
+      }, 0), at.setTitle.call(this), this.poster && at.setPoster.call(this, this.poster, !1).catch(() => {}), this.config.duration && We.durationUpdate.call(this);
     },
+
     setTitle() {
       let e = He.get("play", this.config);
+
       if (_(this.config.title) && !W(this.config.title) && (e += `, ${this.config.title}`), Array.from(this.elements.buttons.play || []).forEach(t => {
         t.setAttribute("aria-label", e);
       }), this.isEmbed) {
         const e = he.call(this, "iframe");
         if (!H(e)) return;
         const t = W(this.config.title) ? "video" : this.config.title,
-          i = He.get("frameTitle", this.config);
+              i = He.get("frameTitle", this.config);
         e.setAttribute("title", i.replace("{title}", t));
       }
     },
+
     togglePoster(e) {
       le(this.elements.container, this.config.classNames.posterEnabled, e);
     },
+
     setPoster(e) {
       let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !0;
       return t && this.poster ? Promise.reject(new Error("Poster already set")) : (this.media.setAttribute("data-poster", e), this.elements.poster.removeAttribute("hidden"), Te.call(this).then(() => nt(e)).catch(t => {
@@ -2246,65 +2457,67 @@ class Event {
         backgroundSize: ""
       }), at.togglePoster.call(this, !0), e)));
     },
+
     checkPlaying(e) {
       le(this.elements.container, this.config.classNames.playing, this.playing), le(this.elements.container, this.config.classNames.paused, this.paused), le(this.elements.container, this.config.classNames.stopped, this.stopped), Array.from(this.elements.buttons.play || []).forEach(e => {
         Object.assign(e, {
           pressed: this.playing
         }), e.setAttribute("aria-label", He.get(this.playing ? "pause" : "play", this.config));
-      }), R(e) && "timeupdate" === e.type || at.toggleControls.call(this);
+      }), F(e) && "timeupdate" === e.type || at.toggleControls.call(this);
     },
+
     checkLoading(e) {
       this.loading = ["stalled", "waiting"].includes(e.type), clearTimeout(this.timers.loading), this.timers.loading = setTimeout(() => {
         le(this.elements.container, this.config.classNames.loading, this.loading), at.toggleControls.call(this);
       }, this.loading ? 250 : 0);
     },
+
     toggleControls(e) {
       const {
         controls: t
       } = this.elements;
+
       if (t && this.config.hideControls) {
         const i = this.touch && this.lastSeekTime + 2e3 > Date.now();
         this.toggleControls(Boolean(e || this.loading || this.paused || t.pressed || t.hover || i));
       }
     },
+
     migrateStyles() {
-      Object.values({
-        ...this.media.style
+      Object.values({ ...this.media.style
       }).filter(e => !W(e) && _(e) && e.startsWith("--plyr")).forEach(e => {
         this.elements.container.style.setProperty(e, this.media.style.getPropertyValue(e)), this.media.style.removeProperty(e);
       }), W(this.media.style) && this.media.removeAttribute("style");
     }
+
   };
+
   class lt {
     constructor(t) {
       var _this3 = this;
+
       e(this, "firstTouch", () => {
         const {
-            player: e
-          } = this,
-          {
-            elements: t
-          } = e;
+          player: e
+        } = this,
+              {
+          elements: t
+        } = e;
         e.touch = !0, le(t.container, e.config.classNames.isTouch, !0);
       }), e(this, "setTabFocus", e => {
         const {
-            player: t
-          } = this,
-          {
-            elements: i
-          } = t,
-          {
-            key: s,
-            type: n,
-            timeStamp: a
-          } = e;
-        if (clearTimeout(this.focusTimer), "keydown" === n && "Tab" !== s) return;
-        "keydown" === n && (this.lastKeyDown = a);
-        const l = a - this.lastKeyDown <= 20;
-        ("focus" !== n || l) && ((() => {
+          player: t
+        } = this,
+              {
+          elements: i
+        } = t;
+        if (clearTimeout(this.focusTimer), "keydown" === e.type && 9 !== e.which) return;
+        "keydown" === e.type && (this.lastKeyDown = e.timeStamp);
+        const s = e.timeStamp - this.lastKeyDown <= 20;
+        ("focus" !== e.type || s) && ((() => {
           const e = t.config.classNames.tabFocus;
           le(ce.call(t, `.${e}`), e, !1);
-        })(), "focusout" !== n && (this.focusTimer = setTimeout(() => {
+        })(), "focusout" !== e.type && (this.focusTimer = setTimeout(() => {
           const e = document.activeElement;
           i.container.contains(e) && le(document.activeElement, t.config.classNames.tabFocus, !0);
         }, 10)));
@@ -2316,13 +2529,13 @@ class Event {
         t.config.keyboard.global && ge.call(t, window, "keydown keyup", _this3.handleKey, e, !1), ge.call(t, document.body, "click", _this3.toggleMenu, e), ye.call(t, document.body, "touchstart", _this3.firstTouch), ge.call(t, document.body, "keydown focus blur focusout", _this3.setTabFocus, e, !1, !0);
       }), e(this, "container", () => {
         const {
-            player: e
-          } = this,
-          {
-            config: t,
-            elements: i,
-            timers: s
-          } = e;
+          player: e
+        } = this,
+              {
+          config: t,
+          elements: i,
+          timers: s
+        } = e;
         !t.keyboard.global && t.keyboard.focused && fe.call(e, i.container, "keydown keyup", this.handleKey, !1), fe.call(e, i.container, "mousemove mouseleave touchstart touchmove enterfullscreen exitfullscreen", t => {
           const {
             controls: n
@@ -2331,22 +2544,24 @@ class Event {
           let a = 0;
           ["touchstart", "touchmove", "mousemove"].includes(t.type) && (at.toggleControls.call(e, !0), a = e.touch ? 3e3 : 2e3), clearTimeout(s.controls), s.controls = setTimeout(() => at.toggleControls.call(e, !1), a);
         });
+
         const n = () => {
-            if (!e.isVimeo || e.config.vimeo.premium) return;
-            const t = i.wrapper,
-              {
-                active: s
-              } = e.fullscreen,
-              [n, a] = Ne.call(e),
-              l = Se(`aspect-ratio: ${n} / ${a}`);
-            if (!s) return void (l ? (t.style.width = null, t.style.height = null) : (t.style.maxWidth = null, t.style.margin = null));
-            const [o, r] = [Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0), Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)],
-              c = o / r > n / a;
-            l ? (t.style.width = c ? "auto" : "100%", t.style.height = c ? "100%" : "auto") : (t.style.maxWidth = c ? r / a * n + "px" : null, t.style.margin = c ? "0 auto" : null);
-          },
-          a = () => {
-            clearTimeout(s.resized), s.resized = setTimeout(n, 50);
-          };
+          if (!e.isVimeo || e.config.vimeo.premium) return;
+          const t = i.wrapper,
+                {
+            active: s
+          } = e.fullscreen,
+                [n, a] = xe.call(e),
+                l = Se(`aspect-ratio: ${n} / ${a}`);
+          if (!s) return void (l ? (t.style.width = null, t.style.height = null) : (t.style.maxWidth = null, t.style.margin = null));
+          const [o, r] = [Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0), Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)],
+                c = o / r > n / a;
+          l ? (t.style.width = c ? "auto" : "100%", t.style.height = c ? "100%" : "auto") : (t.style.maxWidth = c ? r / a * n + "px" : null, t.style.margin = c ? "0 auto" : null);
+        },
+              a = () => {
+          clearTimeout(s.resized), s.resized = setTimeout(n, 50);
+        };
+
         fe.call(e, i.container, "enterfullscreen exitfullscreen", t => {
           const {
             target: s
@@ -2358,11 +2573,12 @@ class Event {
         });
       }), e(this, "media", () => {
         const {
-            player: e
-          } = this,
-          {
-            elements: t
-          } = e;
+          player: e
+        } = this,
+              {
+          elements: t
+        } = e;
+
         if (fe.call(e, e.media, "timeupdate seeking seeked", t => We.timeUpdate.call(e, t)), fe.call(e, e.media, "durationchange loadeddata loadedmetadata", t => We.durationUpdate.call(e, t)), fe.call(e, e.media, "ended", () => {
           e.isHTML5 && e.isVideo && e.config.resetOnEnd && (e.restart(), e.pause());
         }), fe.call(e, e.media, "progress playing seeking seeked", t => We.updateProgress.call(e, t)), fe.call(e, e.media, "volumechange", t => We.updateVolume.call(e, t)), fe.call(e, e.media, "playing play pause ended emptied timeupdate", t => at.checkPlaying.call(e, t)), fe.call(e, e.media, "waiting canplay seeked playing", t => at.checkLoading.call(e, t)), e.supported.ui && e.config.clickToPlay && !e.isAudio) {
@@ -2376,6 +2592,7 @@ class Event {
             }, "play")));
           });
         }
+
         e.supported.ui && e.config.disableContextMenu && fe.call(e, t.wrapper, "contextmenu", e => {
           e.preventDefault();
         }, !1), fe.call(e, e.media, "volumechange", () => {
@@ -2401,27 +2618,28 @@ class Event {
         });
       }), e(this, "proxy", (e, t, i) => {
         const {
-            player: s
-          } = this,
-          n = s.config.listeners[i];
+          player: s
+        } = this,
+              n = s.config.listeners[i];
         let a = !0;
         j(n) && (a = n.call(s, e)), !1 !== a && j(t) && t.call(s, e);
       }), e(this, "bind", function (e, t, i, s) {
         let n = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : !0;
         const {
-            player: a
-          } = _this3,
-          l = a.config.listeners[s],
-          o = j(l);
+          player: a
+        } = _this3,
+              l = a.config.listeners[s],
+              o = j(l);
         fe.call(a, e, t, e => _this3.proxy(e, i, s), n && !o);
       }), e(this, "controls", () => {
         const {
-            player: e
-          } = this,
-          {
-            elements: t
-          } = e,
-          i = Y.isIE ? "change" : "input";
+          player: e
+        } = this,
+              {
+          elements: t
+        } = e,
+              i = Y.isIE ? "change" : "input";
+
         if (t.buttons.play && Array.from(t.buttons.play).forEach(t => {
           this.bind(t, "click", () => {
             ke(e.togglePlay());
@@ -2441,25 +2659,28 @@ class Event {
         }, "pip"), this.bind(t.buttons.airplay, "click", e.airplay, "airplay"), this.bind(t.buttons.settings, "click", t => {
           t.stopPropagation(), t.preventDefault(), We.toggleMenu.call(e, t);
         }, null, !1), this.bind(t.buttons.settings, "keyup", t => {
-          ["Space", "Enter"].includes(t.key) && ("Enter" !== t.key ? (t.preventDefault(), t.stopPropagation(), We.toggleMenu.call(e, t)) : We.focusFirstMenuItem.call(e, null, !0));
+          const i = t.which;
+          [13, 32].includes(i) && (13 !== i ? (t.preventDefault(), t.stopPropagation(), We.toggleMenu.call(e, t)) : We.focusFirstMenuItem.call(e, null, !0));
         }, null, !1), this.bind(t.settings.menu, "keydown", t => {
-          "Escape" === t.key && We.toggleMenu.call(e, t);
+          27 === t.which && We.toggleMenu.call(e, t);
         }), this.bind(t.inputs.seek, "mousedown mousemove", e => {
           const i = t.progress.getBoundingClientRect(),
-            s = 100 / i.width * (e.pageX - i.left);
+                s = 100 / i.width * (e.pageX - i.left);
           e.currentTarget.setAttribute("seek-value", s);
         }), this.bind(t.inputs.seek, "mousedown mouseup keydown keyup touchstart touchend", t => {
           const i = t.currentTarget,
-            s = "play-on-seeked";
-          if (F(t) && !["ArrowLeft", "ArrowRight"].includes(t.key)) return;
+                s = t.keyCode ? t.keyCode : t.which,
+                n = "play-on-seeked";
+          if (R(t) && 39 !== s && 37 !== s) return;
           e.lastSeekTime = Date.now();
-          const n = i.hasAttribute(s),
-            a = ["mouseup", "touchend", "keyup"].includes(t.type);
-          n && a ? (i.removeAttribute(s), ke(e.play())) : !a && e.playing && (i.setAttribute(s, ""), e.pause());
+          const a = i.hasAttribute(n),
+                l = ["mouseup", "touchend", "keyup"].includes(t.type);
+          a && l ? (i.removeAttribute(n), ke(e.play())) : !l && e.playing && (i.setAttribute(n, ""), e.pause());
         }), Y.isIos) {
           const t = ce.call(e, 'input[type="range"]');
           Array.from(t).forEach(e => this.bind(e, i, e => K(e.target)));
         }
+
         this.bind(t.inputs.seek, i, t => {
           const i = t.currentTarget;
           let s = i.getAttribute("seek-value");
@@ -2510,8 +2731,8 @@ class Event {
           clearTimeout(s.controls), s.controls = setTimeout(() => at.toggleControls.call(e, !1), n);
         }), this.bind(t.inputs.volume, "wheel", t => {
           const i = t.webkitDirectionInvertedFromDevice,
-            [s, n] = [t.deltaX, -t.deltaY].map(e => i ? -e : e),
-            a = Math.sign(Math.abs(s) > Math.abs(n) ? s : n);
+                [s, n] = [t.deltaX, -t.deltaY].map(e => i ? -e : e),
+                a = Math.sign(Math.abs(s) > Math.abs(n) ? s : n);
           e.increaseVolume(a / 50);
           const {
             volume: l
@@ -2520,87 +2741,97 @@ class Event {
         }, "volume", !1);
       }), this.player = t, this.lastKey = null, this.focusTimer = null, this.lastKeyDown = null, this.handleKey = this.handleKey.bind(this), this.toggleMenu = this.toggleMenu.bind(this), this.setTabFocus = this.setTabFocus.bind(this), this.firstTouch = this.firstTouch.bind(this);
     }
+
     handleKey(e) {
       const {
-          player: t
-        } = this,
-        {
-          elements: i
-        } = t,
-        {
-          key: s,
-          type: n,
-          altKey: a,
-          ctrlKey: l,
-          metaKey: o,
-          shiftKey: r
-        } = e,
-        c = "keydown" === n,
-        h = c && s === this.lastKey;
-      if (a || l || o || r) return;
-      if (!s) return;
-      if (c) {
+        player: t
+      } = this,
+            {
+        elements: i
+      } = t,
+            s = e.keyCode ? e.keyCode : e.which,
+            n = "keydown" === e.type,
+            a = n && s === this.lastKey;
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      if (!$(s)) return;
+
+      if (n) {
         const n = document.activeElement;
+
         if (H(n)) {
           const {
-              editable: s
-            } = t.config.selectors,
-            {
-              seek: a
-            } = i.inputs;
+            editable: s
+          } = t.config.selectors,
+                {
+            seek: a
+          } = i.inputs;
           if (n !== a && re(n, s)) return;
-          if ("Space" === e.key && re(n, 'button, [role^="menuitem"]')) return;
+          if (32 === e.which && re(n, 'button, [role^="menuitem"]')) return;
         }
-        switch (["Space", "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "c", "f", "k", "l", "m"].includes(s) && (e.preventDefault(), e.stopPropagation()), s) {
-          case "0":
-          case "1":
-          case "2":
-          case "3":
-          case "4":
-          case "5":
-          case "6":
-          case "7":
-          case "8":
-          case "9":
-            h || (u = parseInt(s, 10), t.currentTime = t.duration / 10 * u);
+
+        switch ([32, 37, 38, 39, 40, 48, 49, 50, 51, 52, 53, 54, 56, 57, 67, 70, 73, 75, 76, 77, 79].includes(s) && (e.preventDefault(), e.stopPropagation()), s) {
+          case 48:
+          case 49:
+          case 50:
+          case 51:
+          case 52:
+          case 53:
+          case 54:
+          case 55:
+          case 56:
+          case 57:
+            a || (t.currentTime = t.duration / 10 * (s - 48));
             break;
-          case "Space":
-          case "k":
-            h || ke(t.togglePlay());
+
+          case 32:
+          case 75:
+            a || ke(t.togglePlay());
             break;
-          case "ArrowUp":
+
+          case 38:
             t.increaseVolume(.1);
             break;
-          case "ArrowDown":
+
+          case 40:
             t.decreaseVolume(.1);
             break;
-          case "m":
-            h || (t.muted = !t.muted);
+
+          case 77:
+            a || (t.muted = !t.muted);
             break;
-          case "ArrowRight":
+
+          case 39:
             t.forward();
             break;
-          case "ArrowLeft":
+
+          case 37:
             t.rewind();
             break;
-          case "f":
+
+          case 70:
             t.fullscreen.toggle();
             break;
-          case "c":
-            h || t.toggleCaptions();
+
+          case 67:
+            a || t.toggleCaptions();
             break;
-          case "l":
+
+          case 76:
             t.loop = !t.loop;
         }
-        "Escape" === s && !t.fullscreen.usingNative && t.fullscreen.active && t.fullscreen.toggle(), this.lastKey = s;
+
+        27 === s && !t.fullscreen.usingNative && t.fullscreen.active && t.fullscreen.toggle(), this.lastKey = s;
       } else this.lastKey = null;
-      var u;
     }
+
     toggleMenu(e) {
       We.toggleMenu.call(this.player, e);
     }
+
   }
+
   "undefined" != typeof globalThis ? globalThis : "undefined" != typeof window ? window : "undefined" != typeof __webpack_require__.g ? __webpack_require__.g : "undefined" != typeof self && self;
+
   var ot = function (e, t) {
     return e(t = {
       exports: {}
@@ -2608,41 +2839,46 @@ class Event {
   }(function (e, t) {
     e.exports = function () {
       var e = function () {},
-        t = {},
-        i = {},
-        s = {};
+          t = {},
+          i = {},
+          s = {};
+
       function n(e, t) {
         e = e.push ? e : [e];
         var n,
-          a,
-          l,
-          o = [],
-          r = e.length,
-          c = r;
+            a,
+            l,
+            o = [],
+            r = e.length,
+            c = r;
+
         for (n = function (e, i) {
           i.length && o.push(e), --c || t(o);
         }; r--;) a = e[r], (l = i[a]) ? n(a, l) : (s[a] = s[a] || []).push(n);
       }
+
       function a(e, t) {
         if (e) {
           var n = s[e];
           if (i[e] = t, n) for (; n.length;) n[0](e, t), n.splice(0, 1);
         }
       }
+
       function l(t, i) {
         t.call && (t = {
           success: t
         }), i.length ? (t.error || e)(i) : (t.success || e)(t);
       }
+
       function o(t, i, s, n) {
         var a,
-          l,
-          r = document,
-          c = s.async,
-          h = (s.numRetries || 0) + 1,
-          u = s.before || e,
-          d = t.replace(/[\?|#].*$/, ""),
-          m = t.replace(/^(css|img)!/, "");
+            l,
+            r = document,
+            c = s.async,
+            h = (s.numRetries || 0) + 1,
+            u = s.before || e,
+            d = t.replace(/[\?|#].*$/, ""),
+            m = t.replace(/^(css|img)!/, "");
         n = n || 0, /(^css!|\.css$)/.test(d) ? ((l = r.createElement("link")).rel = "stylesheet", l.href = m, (a = "hideFocus" in l) && l.relList && (a = 0, l.rel = "preload", l.as = "style")) : /(^img!|\.(png|gif|jpg|svg|webp)$)/.test(d) ? (l = r.createElement("img")).src = m : ((l = r.createElement("script")).src = t, l.async = void 0 === c || c), l.onload = l.onerror = l.onbeforeload = function (e) {
           var r = e.type[0];
           if (a) try {
@@ -2650,32 +2886,40 @@ class Event {
           } catch (e) {
             18 != e.code && (r = "e");
           }
+
           if ("e" == r) {
             if ((n += 1) < h) return o(t, i, s, n);
           } else if ("preload" == l.rel && "style" == l.as) return l.rel = "stylesheet";
+
           i(t, r, e.defaultPrevented);
         }, !1 !== u(t, l) && r.head.appendChild(l);
       }
+
       function r(e, t, i) {
         var s,
-          n,
-          a = (e = e.push ? e : [e]).length,
-          l = a,
-          r = [];
+            n,
+            a = (e = e.push ? e : [e]).length,
+            l = a,
+            r = [];
+
         for (s = function (e, i, s) {
           if ("e" == i && r.push(e), "b" == i) {
             if (!s) return;
             r.push(e);
           }
+
           --a || t(r);
         }, n = 0; n < l; n++) o(e[n], s, i);
       }
+
       function c(e, i, s) {
         var n, o;
+
         if (i && i.trim && (n = i), o = (n ? s : i) || {}, n) {
           if (n in t) throw "LoadJS";
           t[n] = !0;
         }
+
         function c(t, i) {
           r(e, function (e) {
             l(o, e), t && l({
@@ -2684,9 +2928,11 @@ class Event {
             }, e), a(n, e);
           }, o);
         }
+
         if (o.returnPromise) return new Promise(c);
         c();
       }
+
       return c.ready = function (e, t) {
         return n(e, function (e) {
           l(t, e);
@@ -2700,6 +2946,7 @@ class Event {
       }, c;
     }();
   });
+
   function rt(e) {
     return new Promise((t, i) => {
       ot(e, {
@@ -2708,31 +2955,34 @@ class Event {
       });
     });
   }
+
   function ct(e) {
     e && !this.embed.hasPlayed && (this.embed.hasPlayed = !0), this.media.paused === e && (this.media.paused = !e, ve.call(this, this.media, e ? "play" : "pause"));
   }
+
   const ht = {
     setup() {
       const e = this;
-      le(e.elements.wrapper, e.config.classNames.embed, !0), e.options.speed = e.config.speed.options, xe.call(e), L(window.Vimeo) ? ht.ready.call(e) : rt(e.config.urls.vimeo.sdk).then(() => {
+      le(e.elements.wrapper, e.config.classNames.embed, !0), e.options.speed = e.config.speed.options, Me.call(e), L(window.Vimeo) ? ht.ready.call(e) : rt(e.config.urls.vimeo.sdk).then(() => {
         ht.ready.call(e);
       }).catch(t => {
         e.debug.warn("Vimeo SDK (player.js) failed to load", t);
       });
     },
+
     ready() {
       const e = this,
-        t = e.config.vimeo,
-        {
-          premium: i,
-          referrerPolicy: s,
-          ...n
-        } = t;
+            t = e.config.vimeo,
+            {
+        premium: i,
+        referrerPolicy: s,
+        ...n
+      } = t;
       let a = e.media.getAttribute("src"),
-        l = "";
+          l = "";
       W(a) ? (a = e.media.getAttribute(e.config.attributes.embed.id), l = e.media.getAttribute(e.config.attributes.embed.hash)) : l = function (e) {
-        const t = e.match(/^.*(vimeo.com\/|video\/)(\d+)(\?.*&*h=|\/)+([\d,a-f]+)/);
-        return t && 5 === t.length ? t[4] : null;
+        const t = e.match(/^.*(?:vimeo.com\/|video\/)(?:\d+)(?:\?.*&*h=|\/)+(?<hash>[\d,a-f]+)/);
+        return t ? t.groups.hash : null;
       }(a);
       const o = l ? {
         h: l
@@ -2742,18 +2992,18 @@ class Event {
         sidedock: !1
       });
       const r = Ke({
-          loop: e.config.loop.active,
-          autoplay: e.autoplay,
-          muted: e.muted,
-          gesture: "media",
-          playsinline: !this.config.fullscreen.iosNative,
-          ...o,
-          ...n
-        }),
-        c = W(h = a) ? null : $(Number(h)) ? h : h.match(/^.*(vimeo.com\/|video\/)(\d+).*/) ? RegExp.$2 : h;
+        loop: e.config.loop.active,
+        autoplay: e.autoplay,
+        muted: e.muted,
+        gesture: "media",
+        playsinline: !this.config.fullscreen.iosNative,
+        ...o,
+        ...n
+      }),
+            c = W(h = a) ? null : $(Number(h)) ? h : h.match(/^.*(vimeo.com\/|video\/)(\d+).*/) ? RegExp.$2 : h;
       var h;
       const u = Z("iframe"),
-        d = $e(e.config.urls.vimeo.iframe, c, r);
+            d = $e(e.config.urls.vimeo.iframe, c, r);
       if (u.setAttribute("src", d), u.setAttribute("allowfullscreen", ""), u.setAttribute("allow", ["autoplay", "fullscreen", "picture-in-picture", "encrypted-media", "accelerometer", "gyroscope"].join("; ")), W(s) || u.setAttribute("referrerPolicy", s), i || !t.customControls) u.setAttribute("data-poster", e.poster), e.media = se(u, e.media);else {
         const t = Z("div", {
           class: e.config.classNames.embedContainer,
@@ -2761,7 +3011,7 @@ class Event {
         });
         t.appendChild(u), e.media = se(t, e.media);
       }
-      t.customControls || Fe($e(e.config.urls.vimeo.api, d)).then(t => {
+      t.customControls || Re($e(e.config.urls.vimeo.api, d)).then(t => {
         !W(t) && t.thumbnail_url && at.setPoster.call(e, t.thumbnail_url).catch(() => {});
       }), e.embed = new window.Vimeo.Player(u, {
         autopause: e.config.autopause,
@@ -2774,20 +3024,23 @@ class Event {
       } = e.media;
       Object.defineProperty(e.media, "currentTime", {
         get: () => m,
+
         set(t) {
           const {
-              embed: i,
-              media: s,
-              paused: n,
-              volume: a
-            } = e,
-            l = n && !i.hasPlayed;
+            embed: i,
+            media: s,
+            paused: n,
+            volume: a
+          } = e,
+                l = n && !i.hasPlayed;
           s.seeking = !0, ve.call(e, s, "seeking"), Promise.resolve(l && i.setVolume(0)).then(() => i.setCurrentTime(t)).then(() => l && i.pause()).then(() => l && i.setVolume(a)).catch(() => {});
         }
+
       });
       let p = e.config.speed.selected;
       Object.defineProperty(e.media, "playbackRate", {
         get: () => p,
+
         set(t) {
           e.embed.setPlaybackRate(t).then(() => {
             p = t, ve.call(e, e.media, "ratechange");
@@ -2795,42 +3048,49 @@ class Event {
             e.options.speed = [1];
           });
         }
+
       });
       let {
         volume: g
       } = e.config;
       Object.defineProperty(e.media, "volume", {
         get: () => g,
+
         set(t) {
           e.embed.setVolume(t).then(() => {
             g = t, ve.call(e, e.media, "volumechange");
           });
         }
+
       });
       let {
         muted: f
       } = e.config;
       Object.defineProperty(e.media, "muted", {
         get: () => f,
+
         set(t) {
           const i = !!O(t) && t;
           e.embed.setVolume(i ? 0 : e.config.volume).then(() => {
             f = i, ve.call(e, e.media, "volumechange");
           });
         }
+
       });
       let b,
-        {
-          loop: y
-        } = e.config;
+          {
+        loop: y
+      } = e.config;
       Object.defineProperty(e.media, "loop", {
         get: () => y,
+
         set(t) {
           const i = O(t) ? t : e.config.loop.active;
           e.embed.setLoop(i).then(() => {
             y = i;
           });
         }
+
       }), e.embed.getVideoUrl().then(t => {
         b = t, We.setDownloadUrl.call(e);
       }).catch(e => {
@@ -2841,7 +3101,7 @@ class Event {
         get: () => e.currentTime === e.duration
       }), Promise.all([e.embed.getVideoWidth(), e.embed.getVideoHeight()]).then(t => {
         const [i, s] = t;
-        e.embed.ratio = Ie(i, s), xe.call(this);
+        e.embed.ratio = Ie(i, s), Me.call(this);
       }), e.embed.setAutopause(e.config.autopause).then(t => {
         e.config.autopause = t;
       }), e.embed.getVideoTitle().then(t => {
@@ -2852,13 +3112,13 @@ class Event {
         e.media.duration = t, ve.call(e, e.media, "durationchange");
       }), e.embed.getTextTracks().then(t => {
         e.media.textTracks = t, Ye.setup.call(e);
-      }), e.embed.on("cuechange", _ref10 => {
+      }), e.embed.on("cuechange", _ref8 => {
         let {
           cues: t = []
-        } = _ref10;
+        } = _ref8;
         const i = t.map(e => function (e) {
           const t = document.createDocumentFragment(),
-            i = document.createElement("div");
+                i = document.createElement("div");
           return t.appendChild(i), i.innerHTML = e, t.firstChild.innerText;
         }(e.text));
         Ye.updateCues.call(e, i);
@@ -2890,181 +3150,213 @@ class Event {
         e.media.error = t, ve.call(e, e.media, "error");
       }), t.customControls && setTimeout(() => at.build.call(e), 0);
     }
+
   };
+
   function ut(e) {
     e && !this.embed.hasPlayed && (this.embed.hasPlayed = !0), this.media.paused === e && (this.media.paused = !e, ve.call(this, this.media, e ? "play" : "pause"));
   }
+
   function dt(e) {
     return e.noCookie ? "https://www.youtube-nocookie.com" : "http:" === window.location.protocol ? "http://www.youtube.com" : void 0;
   }
+
   const mt = {
-      setup() {
-        if (le(this.elements.wrapper, this.config.classNames.embed, !0), L(window.YT) && j(window.YT.Player)) mt.ready.call(this);else {
-          const e = window.onYouTubeIframeAPIReady;
-          window.onYouTubeIframeAPIReady = () => {
-            j(e) && e(), mt.ready.call(this);
-          }, rt(this.config.urls.youtube.sdk).catch(e => {
-            this.debug.warn("YouTube API failed to load", e);
-          });
-        }
-      },
-      getTitle(e) {
-        Fe($e(this.config.urls.youtube.api, e)).then(e => {
-          if (L(e)) {
-            const {
-              title: t,
-              height: i,
-              width: s
-            } = e;
-            this.config.title = t, at.setTitle.call(this), this.embed.ratio = Ie(s, i);
-          }
-          xe.call(this);
-        }).catch(() => {
-          xe.call(this);
-        });
-      },
-      ready() {
-        const e = this,
-          t = e.config.youtube,
-          i = e.media && e.media.getAttribute("id");
-        if (!W(i) && i.startsWith("youtube-")) return;
-        let s = e.media.getAttribute("src");
-        W(s) && (s = e.media.getAttribute(this.config.attributes.embed.id));
-        const n = W(a = s) ? null : a.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/) ? RegExp.$2 : a;
-        var a;
-        const l = Z("div", {
-          id: `${e.provider}-${Math.floor(1e4 * Math.random())}`,
-          "data-poster": t.customControls ? e.poster : void 0
-        });
-        if (e.media = se(l, e.media), t.customControls) {
-          const t = e => `https://i.ytimg.com/vi/${n}/${e}default.jpg`;
-          nt(t("maxres"), 121).catch(() => nt(t("sd"), 121)).catch(() => nt(t("hq"))).then(t => at.setPoster.call(e, t.src)).then(t => {
-            t.includes("maxres") || (e.elements.poster.style.backgroundSize = "cover");
-          }).catch(() => {});
-        }
-        e.embed = new window.YT.Player(e.media, {
-          videoId: n,
-          host: dt(t),
-          playerVars: X({}, {
-            autoplay: e.config.autoplay ? 1 : 0,
-            hl: e.config.hl,
-            controls: e.supported.ui && t.customControls ? 0 : 1,
-            disablekb: 1,
-            playsinline: e.config.fullscreen.iosNative ? 0 : 1,
-            cc_load_policy: e.captions.active ? 1 : 0,
-            cc_lang_pref: e.config.captions.language,
-            widget_referrer: window ? window.location.href : null
-          }, t),
-          events: {
-            onError(t) {
-              if (!e.media.error) {
-                const i = t.data,
-                  s = {
-                    2: "The request contains an invalid parameter value. For example, this error occurs if you specify a video ID that does not have 11 characters, or if the video ID contains invalid characters, such as exclamation points or asterisks.",
-                    5: "The requested content cannot be played in an HTML5 player or another error related to the HTML5 player has occurred.",
-                    100: "The video requested was not found. This error occurs when a video has been removed (for any reason) or has been marked as private.",
-                    101: "The owner of the requested video does not allow it to be played in embedded players.",
-                    150: "The owner of the requested video does not allow it to be played in embedded players."
-                  }[i] || "An unknown error occured";
-                e.media.error = {
-                  code: i,
-                  message: s
-                }, ve.call(e, e.media, "error");
-              }
-            },
-            onPlaybackRateChange(t) {
-              const i = t.target;
-              e.media.playbackRate = i.getPlaybackRate(), ve.call(e, e.media, "ratechange");
-            },
-            onReady(i) {
-              if (j(e.media.play)) return;
-              const s = i.target;
-              mt.getTitle.call(e, n), e.media.play = () => {
-                ut.call(e, !0), s.playVideo();
-              }, e.media.pause = () => {
-                ut.call(e, !1), s.pauseVideo();
-              }, e.media.stop = () => {
-                s.stopVideo();
-              }, e.media.duration = s.getDuration(), e.media.paused = !0, e.media.currentTime = 0, Object.defineProperty(e.media, "currentTime", {
-                get: () => Number(s.getCurrentTime()),
-                set(t) {
-                  e.paused && !e.embed.hasPlayed && e.embed.mute(), e.media.seeking = !0, ve.call(e, e.media, "seeking"), s.seekTo(t);
-                }
-              }), Object.defineProperty(e.media, "playbackRate", {
-                get: () => s.getPlaybackRate(),
-                set(e) {
-                  s.setPlaybackRate(e);
-                }
-              });
-              let {
-                volume: a
-              } = e.config;
-              Object.defineProperty(e.media, "volume", {
-                get: () => a,
-                set(t) {
-                  a = t, s.setVolume(100 * a), ve.call(e, e.media, "volumechange");
-                }
-              });
-              let {
-                muted: l
-              } = e.config;
-              Object.defineProperty(e.media, "muted", {
-                get: () => l,
-                set(t) {
-                  const i = O(t) ? t : l;
-                  l = i, s[i ? "mute" : "unMute"](), s.setVolume(100 * a), ve.call(e, e.media, "volumechange");
-                }
-              }), Object.defineProperty(e.media, "currentSrc", {
-                get: () => s.getVideoUrl()
-              }), Object.defineProperty(e.media, "ended", {
-                get: () => e.currentTime === e.duration
-              });
-              const o = s.getAvailablePlaybackRates();
-              e.options.speed = o.filter(t => e.config.speed.options.includes(t)), e.supported.ui && t.customControls && e.media.setAttribute("tabindex", -1), ve.call(e, e.media, "timeupdate"), ve.call(e, e.media, "durationchange"), clearInterval(e.timers.buffering), e.timers.buffering = setInterval(() => {
-                e.media.buffered = s.getVideoLoadedFraction(), (null === e.media.lastBuffered || e.media.lastBuffered < e.media.buffered) && ve.call(e, e.media, "progress"), e.media.lastBuffered = e.media.buffered, 1 === e.media.buffered && (clearInterval(e.timers.buffering), ve.call(e, e.media, "canplaythrough"));
-              }, 200), t.customControls && setTimeout(() => at.build.call(e), 50);
-            },
-            onStateChange(i) {
-              const s = i.target;
-              clearInterval(e.timers.playing);
-              switch (e.media.seeking && [1, 2].includes(i.data) && (e.media.seeking = !1, ve.call(e, e.media, "seeked")), i.data) {
-                case -1:
-                  ve.call(e, e.media, "timeupdate"), e.media.buffered = s.getVideoLoadedFraction(), ve.call(e, e.media, "progress");
-                  break;
-                case 0:
-                  ut.call(e, !1), e.media.loop ? (s.stopVideo(), s.playVideo()) : ve.call(e, e.media, "ended");
-                  break;
-                case 1:
-                  t.customControls && !e.config.autoplay && e.media.paused && !e.embed.hasPlayed ? e.media.pause() : (ut.call(e, !0), ve.call(e, e.media, "playing"), e.timers.playing = setInterval(() => {
-                    ve.call(e, e.media, "timeupdate");
-                  }, 50), e.media.duration !== s.getDuration() && (e.media.duration = s.getDuration(), ve.call(e, e.media, "durationchange")));
-                  break;
-                case 2:
-                  e.muted || e.embed.unMute(), ut.call(e, !1);
-                  break;
-                case 3:
-                  ve.call(e, e.media, "waiting");
-              }
-              ve.call(e, e.elements.container, "statechange", !1, {
-                code: i.data
-              });
-            }
-          }
+    setup() {
+      if (le(this.elements.wrapper, this.config.classNames.embed, !0), L(window.YT) && j(window.YT.Player)) mt.ready.call(this);else {
+        const e = window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady = () => {
+          j(e) && e(), mt.ready.call(this);
+        }, rt(this.config.urls.youtube.sdk).catch(e => {
+          this.debug.warn("YouTube API failed to load", e);
         });
       }
     },
-    pt = {
-      setup() {
-        this.media ? (le(this.elements.container, this.config.classNames.type.replace("{0}", this.type), !0), le(this.elements.container, this.config.classNames.provider.replace("{0}", this.provider), !0), this.isEmbed && le(this.elements.container, this.config.classNames.type.replace("{0}", "video"), !0), this.isVideo && (this.elements.wrapper = Z("div", {
-          class: this.config.classNames.video
-        }), J(this.media, this.elements.wrapper), this.elements.poster = Z("div", {
-          class: this.config.classNames.poster
-        }), this.elements.wrapper.appendChild(this.elements.poster)), this.isHTML5 ? Le.setup.call(this) : this.isYouTube ? mt.setup.call(this) : this.isVimeo && ht.setup.call(this)) : this.debug.warn("No media element found!");
+
+    getTitle(e) {
+      Re($e(this.config.urls.youtube.api, e)).then(e => {
+        if (L(e)) {
+          const {
+            title: t,
+            height: i,
+            width: s
+          } = e;
+          this.config.title = t, at.setTitle.call(this), this.embed.ratio = Ie(s, i);
+        }
+
+        Me.call(this);
+      }).catch(() => {
+        Me.call(this);
+      });
+    },
+
+    ready() {
+      const e = this,
+            t = e.config.youtube,
+            i = e.media && e.media.getAttribute("id");
+      if (!W(i) && i.startsWith("youtube-")) return;
+      let s = e.media.getAttribute("src");
+      W(s) && (s = e.media.getAttribute(this.config.attributes.embed.id));
+      const n = W(a = s) ? null : a.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/) ? RegExp.$2 : a;
+      var a;
+      const l = Z("div", {
+        id: `${e.provider}-${Math.floor(1e4 * Math.random())}`,
+        "data-poster": t.customControls ? e.poster : void 0
+      });
+
+      if (e.media = se(l, e.media), t.customControls) {
+        const t = e => `https://i.ytimg.com/vi/${n}/${e}default.jpg`;
+
+        nt(t("maxres"), 121).catch(() => nt(t("sd"), 121)).catch(() => nt(t("hq"))).then(t => at.setPoster.call(e, t.src)).then(t => {
+          t.includes("maxres") || (e.elements.poster.style.backgroundSize = "cover");
+        }).catch(() => {});
       }
-    };
+
+      e.embed = new window.YT.Player(e.media, {
+        videoId: n,
+        host: dt(t),
+        playerVars: X({}, {
+          autoplay: e.config.autoplay ? 1 : 0,
+          hl: e.config.hl,
+          controls: e.supported.ui && t.customControls ? 0 : 1,
+          disablekb: 1,
+          playsinline: e.config.fullscreen.iosNative ? 0 : 1,
+          cc_load_policy: e.captions.active ? 1 : 0,
+          cc_lang_pref: e.config.captions.language,
+          widget_referrer: window ? window.location.href : null
+        }, t),
+        events: {
+          onError(t) {
+            if (!e.media.error) {
+              const i = t.data,
+                    s = {
+                2: "The request contains an invalid parameter value. For example, this error occurs if you specify a video ID that does not have 11 characters, or if the video ID contains invalid characters, such as exclamation points or asterisks.",
+                5: "The requested content cannot be played in an HTML5 player or another error related to the HTML5 player has occurred.",
+                100: "The video requested was not found. This error occurs when a video has been removed (for any reason) or has been marked as private.",
+                101: "The owner of the requested video does not allow it to be played in embedded players.",
+                150: "The owner of the requested video does not allow it to be played in embedded players."
+              }[i] || "An unknown error occured";
+              e.media.error = {
+                code: i,
+                message: s
+              }, ve.call(e, e.media, "error");
+            }
+          },
+
+          onPlaybackRateChange(t) {
+            const i = t.target;
+            e.media.playbackRate = i.getPlaybackRate(), ve.call(e, e.media, "ratechange");
+          },
+
+          onReady(i) {
+            if (j(e.media.play)) return;
+            const s = i.target;
+            mt.getTitle.call(e, n), e.media.play = () => {
+              ut.call(e, !0), s.playVideo();
+            }, e.media.pause = () => {
+              ut.call(e, !1), s.pauseVideo();
+            }, e.media.stop = () => {
+              s.stopVideo();
+            }, e.media.duration = s.getDuration(), e.media.paused = !0, e.media.currentTime = 0, Object.defineProperty(e.media, "currentTime", {
+              get: () => Number(s.getCurrentTime()),
+
+              set(t) {
+                e.paused && !e.embed.hasPlayed && e.embed.mute(), e.media.seeking = !0, ve.call(e, e.media, "seeking"), s.seekTo(t);
+              }
+
+            }), Object.defineProperty(e.media, "playbackRate", {
+              get: () => s.getPlaybackRate(),
+
+              set(e) {
+                s.setPlaybackRate(e);
+              }
+
+            });
+            let {
+              volume: a
+            } = e.config;
+            Object.defineProperty(e.media, "volume", {
+              get: () => a,
+
+              set(t) {
+                a = t, s.setVolume(100 * a), ve.call(e, e.media, "volumechange");
+              }
+
+            });
+            let {
+              muted: l
+            } = e.config;
+            Object.defineProperty(e.media, "muted", {
+              get: () => l,
+
+              set(t) {
+                const i = O(t) ? t : l;
+                l = i, s[i ? "mute" : "unMute"](), s.setVolume(100 * a), ve.call(e, e.media, "volumechange");
+              }
+
+            }), Object.defineProperty(e.media, "currentSrc", {
+              get: () => s.getVideoUrl()
+            }), Object.defineProperty(e.media, "ended", {
+              get: () => e.currentTime === e.duration
+            });
+            const o = s.getAvailablePlaybackRates();
+            e.options.speed = o.filter(t => e.config.speed.options.includes(t)), e.supported.ui && t.customControls && e.media.setAttribute("tabindex", -1), ve.call(e, e.media, "timeupdate"), ve.call(e, e.media, "durationchange"), clearInterval(e.timers.buffering), e.timers.buffering = setInterval(() => {
+              e.media.buffered = s.getVideoLoadedFraction(), (null === e.media.lastBuffered || e.media.lastBuffered < e.media.buffered) && ve.call(e, e.media, "progress"), e.media.lastBuffered = e.media.buffered, 1 === e.media.buffered && (clearInterval(e.timers.buffering), ve.call(e, e.media, "canplaythrough"));
+            }, 200), t.customControls && setTimeout(() => at.build.call(e), 50);
+          },
+
+          onStateChange(i) {
+            const s = i.target;
+            clearInterval(e.timers.playing);
+
+            switch (e.media.seeking && [1, 2].includes(i.data) && (e.media.seeking = !1, ve.call(e, e.media, "seeked")), i.data) {
+              case -1:
+                ve.call(e, e.media, "timeupdate"), e.media.buffered = s.getVideoLoadedFraction(), ve.call(e, e.media, "progress");
+                break;
+
+              case 0:
+                ut.call(e, !1), e.media.loop ? (s.stopVideo(), s.playVideo()) : ve.call(e, e.media, "ended");
+                break;
+
+              case 1:
+                t.customControls && !e.config.autoplay && e.media.paused && !e.embed.hasPlayed ? e.media.pause() : (ut.call(e, !0), ve.call(e, e.media, "playing"), e.timers.playing = setInterval(() => {
+                  ve.call(e, e.media, "timeupdate");
+                }, 50), e.media.duration !== s.getDuration() && (e.media.duration = s.getDuration(), ve.call(e, e.media, "durationchange")));
+                break;
+
+              case 2:
+                e.muted || e.embed.unMute(), ut.call(e, !1);
+                break;
+
+              case 3:
+                ve.call(e, e.media, "waiting");
+            }
+
+            ve.call(e, e.elements.container, "statechange", !1, {
+              code: i.data
+            });
+          }
+
+        }
+      });
+    }
+
+  },
+        pt = {
+    setup() {
+      this.media ? (le(this.elements.container, this.config.classNames.type.replace("{0}", this.type), !0), le(this.elements.container, this.config.classNames.provider.replace("{0}", this.provider), !0), this.isEmbed && le(this.elements.container, this.config.classNames.type.replace("{0}", "video"), !0), this.isVideo && (this.elements.wrapper = Z("div", {
+        class: this.config.classNames.video
+      }), J(this.media, this.elements.wrapper), this.elements.poster = Z("div", {
+        class: this.config.classNames.poster
+      }), this.elements.wrapper.appendChild(this.elements.poster)), this.isHTML5 ? Le.setup.call(this) : this.isYouTube ? mt.setup.call(this) : this.isVimeo && ht.setup.call(this)) : this.debug.warn("No media element found!");
+    }
+
+  };
+
   class gt {
     constructor(t) {
       var _this4 = this;
+
       e(this, "load", () => {
         this.enabled && (L(window.google) && L(window.google.ima) ? this.ready() : rt(this.player.config.urls.googleIMA.sdk).then(() => {
           this.ready();
@@ -3084,6 +3376,7 @@ class Event {
         const {
           container: e
         } = this.player.elements;
+
         try {
           const t = new google.ima.AdsRequest();
           t.adTagUrl = this.tagUrl, t.linearAdSlotWidth = e.offsetWidth, t.linearAdSlotHeight = e.offsetHeight, t.nonLinearAdSlotWidth = e.offsetWidth, t.nonLinearAdSlotHeight = e.offsetHeight, t.forceNonLinearFullSlot = !1, t.setAdWillPlayMuted(!this.player.muted), this.loader.requestAds(t);
@@ -3095,7 +3388,8 @@ class Event {
         if (!e) return clearInterval(_this4.countdownTimer), void _this4.elements.container.removeAttribute("data-badge-text");
         _this4.countdownTimer = setInterval(() => {
           const e = Ue(Math.max(_this4.manager.getRemainingTime(), 0)),
-            t = `${He.get("advertisement", _this4.player.config)} - ${e}`;
+                t = `${He.get("advertisement", _this4.player.config)} - ${e}`;
+
           _this4.elements.container.setAttribute("data-badge-text", t);
         }, 100);
       }), e(this, "onAdsManagerLoaded", e => {
@@ -3108,39 +3402,46 @@ class Event {
         W(this.cuePoints) || this.cuePoints.forEach(e => {
           if (0 !== e && -1 !== e && e < this.player.duration) {
             const t = this.player.elements.progress;
+
             if (H(t)) {
               const i = 100 / this.player.duration * e,
-                s = Z("span", {
-                  class: this.player.config.classNames.cues
-                });
+                    s = Z("span", {
+                class: this.player.config.classNames.cues
+              });
               s.style.left = `${i.toString()}%`, t.appendChild(s);
             }
           }
         });
       }), e(this, "onAdEvent", e => {
         const {
-            container: t
-          } = this.player.elements,
-          i = e.getAd(),
-          s = e.getAdData();
+          container: t
+        } = this.player.elements,
+              i = e.getAd(),
+              s = e.getAdData();
+
         switch ((e => {
           ve.call(this.player, this.player.media, `ads${e.replace(/_/g, "").toLowerCase()}`);
         })(e.type), e.type) {
           case google.ima.AdEvent.Type.LOADED:
             this.trigger("loaded"), this.pollCountdown(!0), i.isLinear() || (i.width = t.offsetWidth, i.height = t.offsetHeight);
             break;
+
           case google.ima.AdEvent.Type.STARTED:
             this.manager.setVolume(this.player.volume);
             break;
+
           case google.ima.AdEvent.Type.ALL_ADS_COMPLETED:
             this.player.ended ? this.loadAds() : this.loader.contentComplete();
             break;
+
           case google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED:
             this.pauseContent();
             break;
+
           case google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED:
             this.pollCountdown(), this.resumeContent();
             break;
+
           case google.ima.AdEvent.Type.LOG:
             s.adError && this.player.debug.warn(`Non-fatal ad error: ${s.adError.getMessage()}`);
         }
@@ -3171,6 +3472,7 @@ class Event {
         } = this.player.elements;
         this.managerPromise || this.resumeContent(), this.managerPromise.then(() => {
           this.manager.setVolume(this.player.volume), this.elements.displayContainer.initialize();
+
           try {
             this.initialized || (this.manager.init(e.offsetWidth, e.offsetHeight, google.ima.ViewMode.NORMAL), this.manager.start()), this.initialized = !0;
           } catch (e) {
@@ -3193,11 +3495,12 @@ class Event {
         for (var _len4 = arguments.length, t = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
           t[_key4 - 1] = arguments[_key4];
         }
+
         const i = _this4.events[e];
-        D(i) && i.forEach(e => {
+        q(i) && i.forEach(e => {
           j(e) && e.apply(_this4, t);
         });
-      }), e(this, "on", (e, t) => (D(this.events[e]) || (this.events[e] = []), this.events[e].push(t), this)), e(this, "startSafetyTimer", (e, t) => {
+      }), e(this, "on", (e, t) => (q(this.events[e]) || (this.events[e] = []), this.events[e].push(t), this)), e(this, "startSafetyTimer", (e, t) => {
         this.player.debug.log(`Safety timer invoked from: ${t}`), this.safetyTimer = setTimeout(() => {
           this.cancel(), this.clearSafetyTimer("startSafetyTimer()");
         }, e);
@@ -3210,12 +3513,14 @@ class Event {
         this.on("loaded", e), this.on("error", t);
       }), this.load();
     }
+
     get enabled() {
       const {
         config: e
       } = this;
       return this.player.isHTML5 && this.player.isVideo && e.enabled && (!W(e.publisherId) || U(e.tagUrl));
     }
+
     get tagUrl() {
       const {
         config: e
@@ -3231,37 +3536,35 @@ class Event {
         AV_CDIM2: e.publisherId
       })}`;
     }
+
   }
-  function ft() {
-    let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-    let i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 255;
-    return Math.min(Math.max(e, t), i);
-  }
-  const bt = e => {
-      const t = [];
-      return e.split(/\r\n\r\n|\n\n|\r\r/).forEach(e => {
-        const i = {};
-        e.split(/\r\n|\n|\r/).forEach(e => {
-          if ($(i.startTime)) {
-            if (!W(e.trim()) && W(i.text)) {
-              const t = e.trim().split("#xywh=");
-              [i.text] = t, t[1] && ([i.x, i.y, i.w, i.h] = t[1].split(","));
-            }
-          } else {
-            const t = e.match(/([0-9]{2})?:?([0-9]{2}):([0-9]{2}).([0-9]{2,3})( ?--> ?)([0-9]{2})?:?([0-9]{2}):([0-9]{2}).([0-9]{2,3})/);
-            t && (i.startTime = 60 * Number(t[1] || 0) * 60 + 60 * Number(t[2]) + Number(t[3]) + Number(`0.${t[4]}`), i.endTime = 60 * Number(t[6] || 0) * 60 + 60 * Number(t[7]) + Number(t[8]) + Number(`0.${t[9]}`));
-          }
-        }), i.text && t.push(i);
-      }), t;
-    },
-    yt = (e, t) => {
+
+  const ft = e => {
+    const t = [];
+    return e.split(/\r\n\r\n|\n\n|\r\r/).forEach(e => {
       const i = {};
-      return e > t.width / t.height ? (i.width = t.width, i.height = 1 / e * t.width) : (i.height = t.height, i.width = e * t.height), i;
-    };
-  class vt {
+      e.split(/\r\n|\n|\r/).forEach(e => {
+        if ($(i.startTime)) {
+          if (!W(e.trim()) && W(i.text)) {
+            const t = e.trim().split("#xywh=");
+            [i.text] = t, t[1] && ([i.x, i.y, i.w, i.h] = t[1].split(","));
+          }
+        } else {
+          const t = e.match(/([0-9]{2})?:?([0-9]{2}):([0-9]{2}).([0-9]{2,3})( ?--> ?)([0-9]{2})?:?([0-9]{2}):([0-9]{2}).([0-9]{2,3})/);
+          t && (i.startTime = 60 * Number(t[1] || 0) * 60 + 60 * Number(t[2]) + Number(t[3]) + Number(`0.${t[4]}`), i.endTime = 60 * Number(t[6] || 0) * 60 + 60 * Number(t[7]) + Number(t[8]) + Number(`0.${t[9]}`));
+        }
+      }), i.text && t.push(i);
+    }), t;
+  },
+        bt = (e, t) => {
+    const i = {};
+    return e > t.width / t.height ? (i.width = t.width, i.height = 1 / e * t.width) : (i.height = t.height, i.width = e * t.height), i;
+  };
+
+  class yt {
     constructor(t) {
       var _this5 = this;
+
       e(this, "load", () => {
         this.player.elements.display.seekTooltip && (this.player.elements.display.seekTooltip.hidden = this.enabled), this.enabled && this.getThumbnails().then(() => {
           this.enabled && (this.render(), this.determineContainerAutoSizing(), this.loaded = !0);
@@ -3271,9 +3574,11 @@ class Event {
           src: t
         } = this.player.config.previewThumbnails;
         if (W(t)) throw new Error("Missing previewThumbnails.src config attribute");
+
         const i = () => {
           this.thumbnails.sort((e, t) => e.height - t.height), this.player.debug.log("Preview thumbnails", this.thumbnails), e();
         };
+
         if (j(t)) t(e => {
           this.thumbnails = e, i();
         });else {
@@ -3281,9 +3586,9 @@ class Event {
           Promise.all(e).then(i);
         }
       })), e(this, "getThumbnail", e => new Promise(t => {
-        Fe(e).then(i => {
+        Re(e).then(i => {
           const s = {
-            frames: bt(i),
+            frames: ft(i),
             height: null,
             urlPrefix: ""
           };
@@ -3294,19 +3599,11 @@ class Event {
           }, n.src = s.urlPrefix + s.frames[0].text;
         });
       })), e(this, "startMove", e => {
-        if (this.loaded && R(e) && ["touchmove", "mousemove"].includes(e.type) && this.player.media.duration) {
+        if (this.loaded && F(e) && ["touchmove", "mousemove"].includes(e.type) && this.player.media.duration) {
           if ("touchmove" === e.type) this.seekTime = this.player.media.duration * (this.player.elements.inputs.seek.value / 100);else {
-            var t, i;
-            const s = this.player.elements.progress.getBoundingClientRect(),
-              n = 100 / s.width * (e.pageX - s.left);
-            this.seekTime = this.player.media.duration * (n / 100), this.seekTime < 0 && (this.seekTime = 0), this.seekTime > this.player.media.duration - 1 && (this.seekTime = this.player.media.duration - 1), this.mousePosX = e.pageX, this.elements.thumb.time.innerText = Ue(this.seekTime);
-            const a = null === (t = this.player.config.markers) || void 0 === t || null === (i = t.points) || void 0 === i ? void 0 : i.find(_ref11 => {
-              let {
-                time: e
-              } = _ref11;
-              return e === Math.round(this.seekTime);
-            });
-            a && this.elements.thumb.time.insertAdjacentHTML("afterbegin", `${a.label}<br>`);
+            const t = this.player.elements.progress.getBoundingClientRect(),
+                  i = 100 / t.width * (e.pageX - t.left);
+            this.seekTime = this.player.media.duration * (i / 100), this.seekTime < 0 && (this.seekTime = 0), this.seekTime > this.player.media.duration - 1 && (this.seekTime = this.player.media.duration - 1), this.mousePosX = e.pageX, this.elements.thumb.time.innerText = Ue(this.seekTime);
           }
           this.showImageAtCurrentTime();
         }
@@ -3335,7 +3632,7 @@ class Event {
         const e = Z("div", {
           class: this.player.config.classNames.previewThumbnails.timeContainer
         });
-        this.elements.thumb.time = Z("span", {}, "00:00"), e.appendChild(this.elements.thumb.time), this.elements.thumb.imageContainer.appendChild(e), H(this.player.elements.progress) && this.player.elements.progress.appendChild(this.elements.thumb.container), this.elements.scrubbing.container = Z("div", {
+        this.elements.thumb.time = Z("span", {}, "00:00"), e.appendChild(this.elements.thumb.time), this.elements.thumb.container.appendChild(e), H(this.player.elements.progress) && this.player.elements.progress.appendChild(this.elements.thumb.container), this.elements.scrubbing.container = Z("div", {
           class: this.player.config.classNames.previewThumbnails.scrubbingContainer
         }), this.player.elements.wrapper.appendChild(this.elements.scrubbing.container);
       }), e(this, "destroy", () => {
@@ -3343,7 +3640,7 @@ class Event {
       }), e(this, "showImageAtCurrentTime", () => {
         this.mouseDown ? this.setScrubbingContainerSize() : this.setThumbContainerSizeAndPos();
         const e = this.thumbnails[0].frames.findIndex(e => this.seekTime >= e.startTime && this.seekTime <= e.endTime),
-          t = e >= 0;
+              t = e >= 0;
         let i = 0;
         this.mouseDown || this.toggleThumbContainer(t), t && (this.thumbnails.forEach((t, s) => {
           this.loadedImages.includes(t.frames[e].text) && (i = s);
@@ -3351,13 +3648,13 @@ class Event {
       }), e(this, "loadImage", function () {
         let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
         const t = _this5.showingThumb,
-          i = _this5.thumbnails[e],
-          {
-            urlPrefix: s
-          } = i,
-          n = i.frames[t],
-          a = i.frames[t].text,
-          l = s + a;
+              i = _this5.thumbnails[e],
+              {
+          urlPrefix: s
+        } = i,
+              n = i.frames[t],
+              a = i.frames[t].text,
+              l = s + a;
         if (_this5.currentImageElement && _this5.currentImageElement.dataset.filename === a) _this5.showImage(_this5.currentImageElement, n, e, t, a, !1), _this5.currentImageElement.dataset.index = t, _this5.removeOldImages(_this5.currentImageElement);else {
           _this5.loadingImage && _this5.usingSprites && (_this5.loadingImage.onload = null);
           const i = new Image();
@@ -3370,6 +3667,7 @@ class Event {
         Array.from(this.currentImageContainer.children).forEach(t => {
           if ("img" !== t.tagName.toLowerCase()) return;
           const i = this.usingSprites ? 500 : 1e3;
+
           if (t.dataset.index !== e.dataset.index && !t.dataset.deleting) {
             t.dataset.deleting = !0;
             const {
@@ -3385,19 +3683,21 @@ class Event {
         return new Promise(i => {
           setTimeout(() => {
             const s = _this5.thumbnails[0].frames[e].text;
+
             if (_this5.showingThumbFilename === s) {
               let n;
               n = t ? _this5.thumbnails[0].frames.slice(e) : _this5.thumbnails[0].frames.slice(0, e).reverse();
               let a = !1;
               n.forEach(e => {
                 const t = e.text;
+
                 if (t !== s && !_this5.loadedImages.includes(t)) {
                   a = !0, _this5.player.debug.log(`Preloading thumb filename: ${t}`);
                   const {
-                      urlPrefix: e
-                    } = _this5.thumbnails[0],
-                    s = e + t,
-                    n = new Image();
+                    urlPrefix: e
+                  } = _this5.thumbnails[0],
+                        s = e + t,
+                        n = new Image();
                   n.src = s, n.onload = () => {
                     _this5.player.debug.log(`Preloaded thumb filename: ${t}`), _this5.loadedImages.includes(t) || _this5.loadedImages.push(t), i();
                   };
@@ -3425,38 +3725,35 @@ class Event {
       }), e(this, "determineContainerAutoSizing", () => {
         (this.elements.thumb.imageContainer.clientHeight > 20 || this.elements.thumb.imageContainer.clientWidth > 20) && (this.sizeSpecifiedInCSS = !0);
       }), e(this, "setThumbContainerSizeAndPos", () => {
-        const {
-          imageContainer: e
-        } = this.elements.thumb;
         if (this.sizeSpecifiedInCSS) {
-          if (e.clientHeight > 20 && e.clientWidth < 20) {
-            const t = Math.floor(e.clientHeight * this.thumbAspectRatio);
-            e.style.width = `${t}px`;
-          } else if (e.clientHeight < 20 && e.clientWidth > 20) {
-            const t = Math.floor(e.clientWidth / this.thumbAspectRatio);
-            e.style.height = `${t}px`;
+          if (this.elements.thumb.imageContainer.clientHeight > 20 && this.elements.thumb.imageContainer.clientWidth < 20) {
+            const e = Math.floor(this.elements.thumb.imageContainer.clientHeight * this.thumbAspectRatio);
+            this.elements.thumb.imageContainer.style.width = `${e}px`;
+          } else if (this.elements.thumb.imageContainer.clientHeight < 20 && this.elements.thumb.imageContainer.clientWidth > 20) {
+            const e = Math.floor(this.elements.thumb.imageContainer.clientWidth / this.thumbAspectRatio);
+            this.elements.thumb.imageContainer.style.height = `${e}px`;
           }
         } else {
-          const t = Math.floor(this.thumbContainerHeight * this.thumbAspectRatio);
-          e.style.height = `${this.thumbContainerHeight}px`, e.style.width = `${t}px`;
+          const e = Math.floor(this.thumbContainerHeight * this.thumbAspectRatio);
+          this.elements.thumb.imageContainer.style.height = `${this.thumbContainerHeight}px`, this.elements.thumb.imageContainer.style.width = `${e}px`;
         }
+
         this.setThumbContainerPos();
       }), e(this, "setThumbContainerPos", () => {
         const e = this.player.elements.progress.getBoundingClientRect(),
-          t = this.player.elements.container.getBoundingClientRect(),
-          {
-            container: i
-          } = this.elements.thumb,
-          s = t.left - e.left + 10,
-          n = t.right - e.left - i.clientWidth - 10,
-          a = this.mousePosX - e.left - i.clientWidth / 2,
-          l = ft(a, s, n);
-        i.style.left = `${l}px`, i.style.setProperty("--preview-arrow-offset", a - l + "px");
+              t = this.player.elements.container.getBoundingClientRect(),
+              {
+          container: i
+        } = this.elements.thumb,
+              s = t.left - e.left + 10,
+              n = t.right - e.left - i.clientWidth - 10;
+        let a = this.mousePosX - e.left - i.clientWidth / 2;
+        a < s && (a = s), a > n && (a = n), i.style.left = `${a}px`;
       }), e(this, "setScrubbingContainerSize", () => {
         const {
           width: e,
           height: t
-        } = yt(this.thumbAspectRatio, {
+        } = bt(this.thumbAspectRatio, {
           width: this.player.media.clientWidth,
           height: this.player.media.clientHeight
         });
@@ -3470,72 +3767,86 @@ class Event {
         scrubbing: {}
       }, this.load();
     }
+
     get enabled() {
       return this.player.isHTML5 && this.player.isVideo && this.player.config.previewThumbnails.enabled;
     }
+
     get currentImageContainer() {
       return this.mouseDown ? this.elements.scrubbing.container : this.elements.thumb.imageContainer;
     }
+
     get usingSprites() {
       return Object.keys(this.thumbnails[0].frames[0]).includes("w");
     }
+
     get thumbAspectRatio() {
       return this.usingSprites ? this.thumbnails[0].frames[0].w / this.thumbnails[0].frames[0].h : this.thumbnails[0].width / this.thumbnails[0].height;
     }
+
     get thumbContainerHeight() {
       if (this.mouseDown) {
         const {
           height: e
-        } = yt(this.thumbAspectRatio, {
+        } = bt(this.thumbAspectRatio, {
           width: this.player.media.clientWidth,
           height: this.player.media.clientHeight
         });
         return e;
       }
+
       return this.sizeSpecifiedInCSS ? this.elements.thumb.imageContainer.clientHeight : Math.floor(this.player.media.clientWidth / this.thumbAspectRatio / 4);
     }
+
     get currentImageElement() {
       return this.mouseDown ? this.currentScrubbingImageElement : this.currentThumbnailImageElement;
     }
+
     set currentImageElement(e) {
       this.mouseDown ? this.currentScrubbingImageElement = e : this.currentThumbnailImageElement = e;
     }
+
   }
-  const wt = {
+
+  const vt = {
     insertElements(e, t) {
       _(t) ? ee(e, this.media, {
         src: t
-      }) : D(t) && t.forEach(t => {
+      }) : q(t) && t.forEach(t => {
         ee(e, this.media, t);
       });
     },
+
     change(e) {
       Q(e, "sources.length") ? (Le.cancelRequests.call(this), this.destroy.call(this, () => {
         this.options.quality = [], te(this.media), this.media = null, H(this.elements.container) && this.elements.container.removeAttribute("class");
         const {
-            sources: t,
-            type: i
-          } = e,
-          [{
-            provider: s = Ge.html5,
-            src: n
-          }] = t,
-          a = "html5" === s ? i : "div",
-          l = "html5" === s ? {} : {
-            src: n
-          };
+          sources: t,
+          type: i
+        } = e,
+              [{
+          provider: s = Ge.html5,
+          src: n
+        }] = t,
+              a = "html5" === s ? i : "div",
+              l = "html5" === s ? {} : {
+          src: n
+        };
         Object.assign(this, {
           provider: s,
           type: i,
           supported: me.check(i, s, this.config.playsinline),
           media: Z(a, l)
-        }), this.elements.container.appendChild(this.media), O(e.autoplay) && (this.config.autoplay = e.autoplay), this.isHTML5 && (this.config.crossorigin && this.media.setAttribute("crossorigin", ""), this.config.autoplay && this.media.setAttribute("autoplay", ""), W(e.poster) || (this.poster = e.poster), this.config.loop.active && this.media.setAttribute("loop", ""), this.config.muted && this.media.setAttribute("muted", ""), this.config.playsinline && this.media.setAttribute("playsinline", "")), at.addStyleHook.call(this), this.isHTML5 && wt.insertElements.call(this, "source", t), this.config.title = e.title, pt.setup.call(this), this.isHTML5 && Object.keys(e).includes("tracks") && wt.insertElements.call(this, "track", e.tracks), (this.isHTML5 || this.isEmbed && !this.supported.ui) && at.build.call(this), this.isHTML5 && this.media.load(), W(e.previewThumbnails) || (Object.assign(this.config.previewThumbnails, e.previewThumbnails), this.previewThumbnails && this.previewThumbnails.loaded && (this.previewThumbnails.destroy(), this.previewThumbnails = null), this.config.previewThumbnails.enabled && (this.previewThumbnails = new vt(this))), this.fullscreen.update();
+        }), this.elements.container.appendChild(this.media), O(e.autoplay) && (this.config.autoplay = e.autoplay), this.isHTML5 && (this.config.crossorigin && this.media.setAttribute("crossorigin", ""), this.config.autoplay && this.media.setAttribute("autoplay", ""), W(e.poster) || (this.poster = e.poster), this.config.loop.active && this.media.setAttribute("loop", ""), this.config.muted && this.media.setAttribute("muted", ""), this.config.playsinline && this.media.setAttribute("playsinline", "")), at.addStyleHook.call(this), this.isHTML5 && vt.insertElements.call(this, "source", t), this.config.title = e.title, pt.setup.call(this), this.isHTML5 && Object.keys(e).includes("tracks") && vt.insertElements.call(this, "track", e.tracks), (this.isHTML5 || this.isEmbed && !this.supported.ui) && at.build.call(this), this.isHTML5 && this.media.load(), W(e.previewThumbnails) || (Object.assign(this.config.previewThumbnails, e.previewThumbnails), this.previewThumbnails && this.previewThumbnails.loaded && (this.previewThumbnails.destroy(), this.previewThumbnails = null), this.config.previewThumbnails.enabled && (this.previewThumbnails = new yt(this))), this.fullscreen.update();
       }, !0)) : this.debug.warn("Invalid source format");
     }
+
   };
-  class Tt {
+
+  class wt {
     constructor(t, i) {
       var _this6 = this;
+
       if (e(this, "play", () => j(this.media.play) ? (this.ads && this.ads.enabled && this.ads.managerPromise.then(() => this.ads.play()).catch(() => ke(this.media.play())), this.media.play()) : null), e(this, "pause", () => this.playing && j(this.media.pause) ? this.media.pause() : null), e(this, "togglePlay", e => (O(e) ? e : !this.playing) ? this.play() : this.pause()), e(this, "stop", () => {
         this.isHTML5 ? (this.pause(), this.restart()) : j(this.media.stop) && this.media.stop();
       }), e(this, "restart", () => {
@@ -3554,14 +3865,17 @@ class Event {
       }), e(this, "toggleControls", e => {
         if (this.supported.ui && !this.isAudio) {
           const t = oe(this.elements.container, this.config.classNames.hideControls),
-            i = void 0 === e ? void 0 : !e,
-            s = le(this.elements.container, this.config.classNames.hideControls, i);
-          if (s && D(this.config.controls) && this.config.controls.includes("settings") && !W(this.config.settings) && We.toggleMenu.call(this, !1), s !== t) {
+                i = void 0 === e ? void 0 : !e,
+                s = le(this.elements.container, this.config.classNames.hideControls, i);
+
+          if (s && q(this.config.controls) && this.config.controls.includes("settings") && !W(this.config.settings) && We.toggleMenu.call(this, !1), s !== t) {
             const e = s ? "controlshidden" : "controlsshown";
             ve.call(this, this.media, e);
           }
+
           return !s;
         }
+
         return !1;
       }), e(this, "on", (e, t) => {
         fe.call(this, this.elements.container, e, t);
@@ -3572,13 +3886,15 @@ class Event {
       }), e(this, "destroy", function (e) {
         let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : !1;
         if (!_this6.ready) return;
+
         const i = () => {
           document.body.style.overflow = "", _this6.embed = null, t ? (Object.keys(_this6.elements).length && (te(_this6.elements.buttons.play), te(_this6.elements.captions), te(_this6.elements.controls), te(_this6.elements.wrapper), _this6.elements.buttons.play = null, _this6.elements.captions = null, _this6.elements.controls = null, _this6.elements.wrapper = null), j(e) && e()) : (we.call(_this6), Le.cancelRequests.call(_this6), se(_this6.elements.original, _this6.elements.container), ve.call(_this6, _this6.elements.original, "destroyed", !0), j(e) && e.call(_this6.elements.original), _this6.ready = !1, setTimeout(() => {
             _this6.elements = null, _this6.media = null;
           }, 200));
         };
+
         _this6.stop(), clearTimeout(_this6.timers.loading), clearTimeout(_this6.timers.controls), clearTimeout(_this6.timers.resized), _this6.isHTML5 ? (at.toggleNativeControls.call(_this6, !0), i()) : _this6.isYouTube ? (clearInterval(_this6.timers.buffering), clearInterval(_this6.timers.playing), null !== _this6.embed && j(_this6.embed.destroy) && _this6.embed.destroy(), i()) : _this6.isVimeo && (null !== _this6.embed && _this6.embed.unload().then(i), setTimeout(i, 200));
-      }), e(this, "supports", e => me.mime.call(this, e)), this.timers = {}, this.ready = !1, this.loading = !1, this.failed = !1, this.touch = me.touch, this.media = t, _(this.media) && (this.media = document.querySelectorAll(this.media)), (window.jQuery && this.media instanceof jQuery || q(this.media) || D(this.media)) && (this.media = this.media[0]), this.config = X({}, Qe, Tt.defaults, i || {}, (() => {
+      }), e(this, "supports", e => me.mime.call(this, e)), this.timers = {}, this.ready = !1, this.loading = !1, this.failed = !1, this.touch = me.touch, this.media = t, _(this.media) && (this.media = document.querySelectorAll(this.media)), (window.jQuery && this.media instanceof jQuery || D(this.media) || q(this.media)) && (this.media = this.media[0]), this.config = X({}, Qe, wt.defaults, i || {}, (() => {
         try {
           return JSON.parse(this.media.getAttribute("data-plyr-config"));
         } catch (e) {
@@ -3615,7 +3931,8 @@ class Event {
       s.autoplay = !1, this.elements.original = s;
       const n = this.media.tagName.toLowerCase();
       let a = null,
-        l = null;
+          l = null;
+
       switch (n) {
         case "div":
           if (a = this.media.querySelector("iframe"), H(a)) {
@@ -3626,94 +3943,119 @@ class Event {
               e.includes(l.searchParams.get("autoplay")) && (this.config.autoplay = !0), e.includes(l.searchParams.get("loop")) && (this.config.loop.active = !0), this.isYouTube ? (this.config.playsinline = e.includes(l.searchParams.get("playsinline")), this.config.youtube.hl = l.searchParams.get("hl")) : this.config.playsinline = !0;
             }
           } else this.provider = this.media.getAttribute(this.config.attributes.embed.provider), this.media.removeAttribute(this.config.attributes.embed.provider);
+
           if (W(this.provider) || !Object.values(Ge).includes(this.provider)) return void this.debug.error("Setup failed: Invalid provider");
           this.type = et;
           break;
+
         case "video":
         case "audio":
           this.type = n, this.provider = Ge.html5, this.media.hasAttribute("crossorigin") && (this.config.crossorigin = !0), this.media.hasAttribute("autoplay") && (this.config.autoplay = !0), (this.media.hasAttribute("playsinline") || this.media.hasAttribute("webkit-playsinline")) && (this.config.playsinline = !0), this.media.hasAttribute("muted") && (this.config.muted = !0), this.media.hasAttribute("loop") && (this.config.loop.active = !0);
           break;
+
         default:
           return void this.debug.error("Setup failed: unsupported type");
       }
-      this.supported = me.check(this.type, this.provider, this.config.playsinline), this.supported.api ? (this.eventListeners = [], this.listeners = new lt(this), this.storage = new Re(this), this.media.plyr = this, H(this.elements.container) || (this.elements.container = Z("div", {
+
+      this.supported = me.check(this.type, this.provider, this.config.playsinline), this.supported.api ? (this.eventListeners = [], this.listeners = new lt(this), this.storage = new Fe(this), this.media.plyr = this, H(this.elements.container) || (this.elements.container = Z("div", {
         tabindex: 0
       }), J(this.media, this.elements.container)), at.migrateStyles.call(this), at.addStyleHook.call(this), pt.setup.call(this), this.config.debug && fe.call(this, this.elements.container, this.config.events.join(" "), e => {
         this.debug.log(`event: ${e.type}`);
-      }), this.fullscreen = new st(this), (this.isHTML5 || this.isEmbed && !this.supported.ui) && at.build.call(this), this.listeners.container(), this.listeners.global(), this.config.ads.enabled && (this.ads = new gt(this)), this.isHTML5 && this.config.autoplay && this.once("canplay", () => ke(this.play())), this.lastSeekTime = 0, this.config.previewThumbnails.enabled && (this.previewThumbnails = new vt(this))) : this.debug.error("Setup failed: no support");
+      }), this.fullscreen = new st(this), (this.isHTML5 || this.isEmbed && !this.supported.ui) && at.build.call(this), this.listeners.container(), this.listeners.global(), this.config.ads.enabled && (this.ads = new gt(this)), this.isHTML5 && this.config.autoplay && this.once("canplay", () => ke(this.play())), this.lastSeekTime = 0, this.config.previewThumbnails.enabled && (this.previewThumbnails = new yt(this))) : this.debug.error("Setup failed: no support");
     }
+
     get isHTML5() {
       return this.provider === Ge.html5;
     }
+
     get isEmbed() {
       return this.isYouTube || this.isVimeo;
     }
+
     get isYouTube() {
       return this.provider === Ge.youtube;
     }
+
     get isVimeo() {
       return this.provider === Ge.vimeo;
     }
+
     get isVideo() {
       return this.type === et;
     }
+
     get isAudio() {
       return this.type === Ze;
     }
+
     get playing() {
       return Boolean(this.ready && !this.paused && !this.ended);
     }
+
     get paused() {
       return Boolean(this.media.paused);
     }
+
     get stopped() {
       return Boolean(this.paused && 0 === this.currentTime);
     }
+
     get ended() {
       return Boolean(this.media.ended);
     }
+
     set currentTime(e) {
       if (!this.duration) return;
       const t = $(e) && e > 0;
       this.media.currentTime = t ? Math.min(e, this.duration) : 0, this.debug.log(`Seeking to ${this.currentTime} seconds`);
     }
+
     get currentTime() {
       return Number(this.media.currentTime);
     }
+
     get buffered() {
       const {
         buffered: e
       } = this.media;
       return $(e) ? e : e && e.length && this.duration > 0 ? e.end(0) / this.duration : 0;
     }
+
     get seeking() {
       return Boolean(this.media.seeking);
     }
+
     get duration() {
       const e = parseFloat(this.config.duration),
-        t = (this.media || {}).duration,
-        i = $(t) && t !== 1 / 0 ? t : 0;
+            t = (this.media || {}).duration,
+            i = $(t) && t !== 1 / 0 ? t : 0;
       return e || i;
     }
+
     set volume(e) {
       let t = e;
       _(t) && (t = Number(t)), $(t) || (t = this.storage.get("volume")), $(t) || ({
         volume: t
       } = this.config), t > 1 && (t = 1), t < 0 && (t = 0), this.config.volume = t, this.media.volume = t, !W(e) && this.muted && t > 0 && (this.muted = !1);
     }
+
     get volume() {
       return Number(this.media.volume);
     }
+
     set muted(e) {
       let t = e;
       O(t) || (t = this.storage.get("muted")), O(t) || (t = this.config.muted), this.config.muted = t, this.media.muted = t;
     }
+
     get muted() {
       return Boolean(this.media.muted);
     }
+
     get hasAudio() {
       return !this.isHTML5 || !!this.isAudio || Boolean(this.media.mozHasAudio) || Boolean(this.media.webkitAudioDecodedByteCount) || Boolean(this.media.audioTracks && this.media.audioTracks.length);
     }
+
     set speed(e) {
       let t = null;
       $(e) && (t = e), $(t) || (t = this.storage.get("speed")), $(t) || (t = this.config.speed.selected);
@@ -3721,84 +4063,112 @@ class Event {
         minimumSpeed: i,
         maximumSpeed: s
       } = this;
-      t = ft(t, i, s), this.config.speed.selected = t, setTimeout(() => {
+      t = function () {
+        let e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        let i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 255;
+        return Math.min(Math.max(e, t), i);
+      }(t, i, s), this.config.speed.selected = t, setTimeout(() => {
         this.media && (this.media.playbackRate = t);
       }, 0);
     }
+
     get speed() {
       return Number(this.media.playbackRate);
     }
+
     get minimumSpeed() {
       return this.isYouTube ? Math.min(...this.options.speed) : this.isVimeo ? .5 : .0625;
     }
+
     get maximumSpeed() {
       return this.isYouTube ? Math.max(...this.options.speed) : this.isVimeo ? 2 : 16;
     }
+
     set quality(e) {
       const t = this.config.quality,
-        i = this.options.quality;
+            i = this.options.quality;
       if (!i.length) return;
       let s = [!W(e) && Number(e), this.storage.get("quality"), t.selected, t.default].find($),
-        n = !0;
+          n = !0;
+
       if (!i.includes(s)) {
         const e = Ae(i, s);
         this.debug.warn(`Unsupported quality option: ${s}, using ${e} instead`), s = e, n = !1;
       }
+
       t.selected = s, this.media.quality = s, n && this.storage.set({
         quality: s
       });
     }
+
     get quality() {
       return this.media.quality;
     }
+
     set loop(e) {
       const t = O(e) ? e : this.config.loop.active;
       this.config.loop.active = t, this.media.loop = t;
     }
+
     get loop() {
       return Boolean(this.media.loop);
     }
+
     set source(e) {
-      wt.change.call(this, e);
+      vt.change.call(this, e);
     }
+
     get source() {
       return this.media.currentSrc;
     }
+
     get download() {
       const {
         download: e
       } = this.config.urls;
       return U(e) ? e : this.source;
     }
+
     set download(e) {
       U(e) && (this.config.urls.download = e, We.setDownloadUrl.call(this));
     }
+
     set poster(e) {
       this.isVideo ? at.setPoster.call(this, e, !1).catch(() => {}) : this.debug.warn("Poster can only be set for video");
     }
+
     get poster() {
       return this.isVideo ? this.media.getAttribute("poster") || this.media.getAttribute("data-poster") : null;
     }
+
     get ratio() {
       if (!this.isVideo) return null;
-      const e = Me(Ne.call(this));
-      return D(e) ? e.join(":") : e;
+      const e = Ne(xe.call(this));
+      return q(e) ? e.join(":") : e;
     }
+
     set ratio(e) {
-      this.isVideo ? _(e) && Pe(e) ? (this.config.ratio = Me(e), xe.call(this)) : this.debug.error(`Invalid aspect ratio specified (${e})`) : this.debug.warn("Aspect ratio can only be set for video");
+      this.isVideo ? _(e) && Pe(e) ? (this.config.ratio = Ne(e), Me.call(this)) : this.debug.error(`Invalid aspect ratio specified (${e})`) : this.debug.warn("Aspect ratio can only be set for video");
     }
+
     set autoplay(e) {
-      this.config.autoplay = O(e) ? e : this.config.autoplay;
+      const t = O(e) ? e : this.config.autoplay;
+      this.config.autoplay = t;
     }
+
     get autoplay() {
       return Boolean(this.config.autoplay);
     }
+
     toggleCaptions(e) {
       Ye.toggle.call(this, e, !1);
     }
+
     set currentTrack(e) {
-      Ye.set.call(this, e, !1), Ye.setup.call(this);
+      Ye.set.call(this, e, !1), Ye.setup();
     }
+
     get currentTrack() {
       const {
         toggled: e,
@@ -3806,37 +4176,47 @@ class Event {
       } = this.captions;
       return e ? t : -1;
     }
+
     set language(e) {
       Ye.setLanguage.call(this, e, !1);
     }
+
     get language() {
       return (Ye.getCurrentTrack.call(this) || {}).language;
     }
+
     set pip(e) {
       if (!me.pip) return;
       const t = O(e) ? e : !this.pip;
       j(this.media.webkitSetPresentationMode) && this.media.webkitSetPresentationMode(t ? Xe : Je), j(this.media.requestPictureInPicture) && (!this.pip && t ? this.media.requestPictureInPicture() : this.pip && !t && document.exitPictureInPicture());
     }
+
     get pip() {
       return me.pip ? W(this.media.webkitPresentationMode) ? this.media === document.pictureInPictureElement : this.media.webkitPresentationMode === Xe : null;
     }
+
     setPreviewThumbnails(e) {
-      this.previewThumbnails && this.previewThumbnails.loaded && (this.previewThumbnails.destroy(), this.previewThumbnails = null), Object.assign(this.config.previewThumbnails, e), this.config.previewThumbnails.enabled && (this.previewThumbnails = new vt(this));
+      this.previewThumbnails && this.previewThumbnails.loaded && (this.previewThumbnails.destroy(), this.previewThumbnails = null), Object.assign(this.config.previewThumbnails, e), this.config.previewThumbnails.enabled && (this.previewThumbnails = new yt(this));
     }
+
     static supported(e, t, i) {
       return me.check(e, t, i);
     }
+
     static loadSprite(e, t) {
       return Ve(e, t);
     }
+
     static setup(e) {
       let t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       let i = null;
-      return _(e) ? i = Array.from(document.querySelectorAll(e)) : q(e) ? i = Array.from(e) : D(e) && (i = e.filter(H)), W(i) ? null : i.map(e => new Tt(e, t));
+      return _(e) ? i = Array.from(document.querySelectorAll(e)) : D(e) ? i = Array.from(e) : q(e) && (i = e.filter(H)), W(i) ? null : i.map(e => new wt(e, t));
     }
+
   }
-  var kt;
-  return Tt.defaults = (kt = Qe, JSON.parse(JSON.stringify(kt))), Tt;
+
+  var Tt;
+  return wt.defaults = (Tt = Qe, JSON.parse(JSON.stringify(Tt))), wt;
 });
 
 /***/ })
@@ -3909,6 +4289,17 @@ class Event {
 /******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
 /******/ 	}();
 /******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
@@ -3916,7 +4307,7 @@ var __webpack_exports__ = {};
 "use strict";
 /* harmony import */ var plyr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9792);
 /* harmony import */ var plyr__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(plyr__WEBPACK_IMPORTED_MODULE_0__);
-/* provided dependency */ var MinimogLibs = __webpack_require__(4558)["gM"];
+/* provided dependency */ var MinimogLibs = __webpack_require__(4558)["MinimogLibs"];
 
 
 MinimogLibs.Plyr = (plyr__WEBPACK_IMPORTED_MODULE_0___default());

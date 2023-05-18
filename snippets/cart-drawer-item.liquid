@@ -59,28 +59,12 @@
         {%- if item.original_price != item.final_price -%}
           <div class="cart-drawer__discounted-prices">
             <del class="scd-item__original-price text-color-sale-price">
-              {% if settings.currency_code_enabled %}
-                {{- item.original_price | money_with_currency -}}
-              {% else %}
-                {{- item.original_price | money -}}
-              {% endif %}
+              {{- item.original_price | money -}}
             </del>
-            <span class="scd-item__price scd-item__price--discount sf-currency text-color-regular-price">
-              {% if settings.currency_code_enabled %}
-                {{- item.final_price | money_with_currency -}}
-              {% else %}
-                {{- item.final_price | money -}}
-              {% endif %}
-            </span>
+            <span class="scd-item__price scd-item__price--discount sf-currency text-color-regular-price">{{- item.final_price | money -}}</span>
           </div>
         {%- else -%}
-          <span class="scd-item__original-price scd-item__price sf-currency text-color-regular-price">
-            {% if settings.currency_code_enabled %}
-              {{- item.original_price | money_with_currency -}}
-            {% else %}
-            {{- item.original_price | money -}}
-            {% endif %}
-          </span>
+          <span class="scd-item__original-price scd-item__price sf-currency text-color-regular-price">{{- item.original_price | money -}}</span>
         {%- endif -%}
 
         <div {% unless item.unit_price_measurement %}class="hidden"{% endunless %}>

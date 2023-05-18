@@ -8,13 +8,11 @@
   unless bg_color == "rgba(0,0,0,0)" or bg_color == blank
     assign has_bg = true
   endunless
-
-  assign pagination_type = 'fraction'
 %}
 
 <section
     id="st__testimonial-{{ section.id }}"
-    class="sf-testimonials{% if settings.design == 'testimonials-6' and pagination_type == 'fraction' %} sf-slider__fraction{% endif %} relative sf-section-padding {{ settings.custom_class }} {{ settings.design }}"
+    class="sf-testimonials relative sf-section-padding {{ settings.custom_class }} {{ settings.design }}"
     data-section-type="testimonials"
     data-section-id="{{ section.id }}"
     data-design="{{ settings.design }}"
@@ -28,20 +26,12 @@
     <div class="{{ settings.container }}{% if has_bg == false %} section-my{% else %} section-py{% endif %}">
         <div class="sf-testimonials__header relative text-{{ settings.header_alignment }}">
             {% render 'index-section-header', section_settings: settings %}
-            {% if settings.design == 'testimonials-6' and settings.show_navigation or settings.show_pagination %}
-                {% render 'slider-controls', show_nav: settings.show_navigation, show_pagination: settings.show_pagination, pagination_type: pagination_type %}
+            {% if settings.design == 'testimonials-6' %}
+                {% render 'slider-controls', show_nav: settings.show_navigation, show_pagination: settings.show_pagination %}
             {% endif %}
         </div>
 
         <div class="sf-testimonials__container relative{% if settings.container == 'w-full' %} px-5{% endif %}">
-          <m-testimonials
-            data-container="{{ settings.container }}"
-            data-design="{{ settings.design }}"
-            data-autoplay="{% if request.design_mode %}false{% else %}{{ settings.autorotate }}{% endif %}"
-            {% if settings.design == 'testimonials-6' %}
-              data-pagination-type="{{ pagination_type }}"
-            {% endif %}
-          >
             {% liquid
               case settings.design
                 when 'testimonials-1'
@@ -58,7 +48,6 @@
                     render 'testimonials-6', section: section, container_class: settings.container
               endcase
             %}
-            </m-testimonials>
         </div>
     </div>
 </section>

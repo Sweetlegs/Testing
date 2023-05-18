@@ -5,11 +5,14 @@
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "LE": function() { return /* binding */ MinimogTheme; },
-/* harmony export */   "gM": function() { return /* binding */ MinimogLibs; }
+/* harmony export */   "MinimogEvents": function() { return /* binding */ MinimogEvents; },
+/* harmony export */   "MinimogTheme": function() { return /* binding */ MinimogTheme; },
+/* harmony export */   "MinimogSettings": function() { return /* binding */ MinimogSettings; },
+/* harmony export */   "MinimogStrings": function() { return /* binding */ MinimogStrings; },
+/* harmony export */   "MinimogLibs": function() { return /* binding */ MinimogLibs; }
 /* harmony export */ });
-/* unused harmony exports MinimogEvents, MinimogSettings, MinimogStrings */
 /* harmony import */ var _utils_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8971);
 /* harmony import */ var _libs_loadjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9280);
 /* harmony import */ var _libs_loadjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_libs_loadjs__WEBPACK_IMPORTED_MODULE_0__);
@@ -31,29 +34,32 @@ const MinimogLibs = window.MinimogLibs || {};
 
 __loadjs = function () {
   var h = function () {},
-    c = {},
-    u = {},
-    f = {};
+      c = {},
+      u = {},
+      f = {};
+
   function o(e, n) {
     if (e) {
       var r = f[e];
       if (u[e] = n, r) for (; r.length;) r[0](e, n), r.splice(0, 1);
     }
   }
+
   function l(e, n) {
     e.call && (e = {
       success: e
     }), n.length ? (e.error || h)(n) : (e.success || h)(e);
   }
+
   function d(r, t, s, i) {
     var c,
-      o,
-      e = document,
-      n = s.async,
-      u = (s.numRetries || 0) + 1,
-      f = s.before || h,
-      l = r.replace(/[\?|#].*$/, ""),
-      a = r.replace(/^(css|img)!/, "");
+        o,
+        e = document,
+        n = s.async,
+        u = (s.numRetries || 0) + 1,
+        f = s.before || h,
+        l = r.replace(/[\?|#].*$/, ""),
+        a = r.replace(/^(css|img)!/, "");
     i = i || 0, /(^css!|\.css$)/.test(l) ? ((o = e.createElement("link")).rel = "stylesheet", o.href = a, (c = "hideFocus" in o) && o.relList && (c = 0, o.rel = "preload", o.as = "style")) : /(^img!|\.(png|gif|jpg|svg|webp)$)/.test(l) ? (o = e.createElement("img")).src = a : ((o = e.createElement("script")).src = r, o.async = void 0 === n || n), !(o.onload = o.onerror = o.onbeforeload = function (e) {
       var n = e.type[0];
       if (c) try {
@@ -61,30 +67,37 @@ __loadjs = function () {
       } catch (e) {
         18 != e.code && (n = "e");
       }
+
       if ("e" == n) {
         if ((i += 1) < u) return d(r, t, s, i);
       } else if ("preload" == o.rel && "style" == o.as) return o.rel = "stylesheet";
+
       t(r, n, e.defaultPrevented);
     }) !== f(r, o) && e.head.appendChild(o);
   }
+
   function r(e, n, r) {
     var t, s;
+
     if (n && n.trim && (t = n), s = (t ? r : n) || {}, t) {
       if (t in c) throw "LoadJS";
       c[t] = !0;
     }
+
     function i(n, r) {
       !function (e, t, n) {
         var r,
-          s,
-          i = (e = e.push ? e : [e]).length,
-          c = i,
-          o = [];
+            s,
+            i = (e = e.push ? e : [e]).length,
+            c = i,
+            o = [];
+
         for (r = function (e, n, r) {
           if ("e" == n && o.push(e), "b" == n) {
             if (!r) return;
             o.push(e);
           }
+
           --i || t(o);
         }, s = 0; s < c; s++) d(e[s], r, n);
       }(e, function (e) {
@@ -94,18 +107,21 @@ __loadjs = function () {
         }, e), o(t, e);
       }, s);
     }
+
     if (s.returnPromise) return new Promise(i);
     i();
   }
+
   return r.ready = function (e, n) {
     return function (e, r) {
       e = e.push ? e : [e];
       var n,
-        t,
-        s,
-        i = [],
-        c = e.length,
-        o = c;
+          t,
+          s,
+          i = [],
+          c = e.length,
+          o = c;
+
       for (n = function (e, n) {
         n.length && i.push(e), --o || r(i);
       }; c--;) t = e[c], (s = u[t]) ? n(t, s) : (f[t] = f[t] || []).push(n);
@@ -139,6 +155,7 @@ const addEventDelegate = _ref => {
     handler,
     capture = false
   } = _ref;
+
   const listener = function (e) {
     // loop parent nodes from the target to the delegation node
     for (let target = e.target; target && target !== this; target = target.parentNode) {
@@ -148,6 +165,7 @@ const addEventDelegate = _ref => {
       }
     }
   };
+
   context.addEventListener(event, listener, capture);
   return () => {
     context.removeEventListener(event, listener, capture);
@@ -157,16 +175,20 @@ class Event {
   constructor() {
     this.events = {};
   }
+
   get evts() {
     return Object.keys(this.events);
   }
+
   subscribe(event, handler) {
     this.events[event] = this.events[event] || [];
     this.events[event].push(handler);
     return () => this.unSubscribe(event, handler);
   }
+
   unSubscribe(event, handler) {
     const handlers = this.events[event];
+
     if (handlers && Array.isArray(handlers)) {
       for (let i = 0; i < handlers.length; i++) {
         if (handlers[i] === handler) {
@@ -176,10 +198,12 @@ class Event {
       }
     }
   }
+
   emit(event) {
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
+
     console.groupCollapsed(`Event emitted: ${event}`);
     console.trace();
     console.groupEnd();
@@ -187,6 +211,7 @@ class Event {
       handler(...args);
     });
   }
+
 }
 
 /***/ })
@@ -247,12 +272,22 @@ class Event {
 /******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
 /******/ 	}();
 /******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
-/* provided dependency */ var MinimogLibs = __webpack_require__(4558)["gM"];
-/* provided dependency */ var MinimogTheme = __webpack_require__(4558)["LE"];
+/* provided dependency */ var MinimogLibs = __webpack_require__(4558)["MinimogLibs"];
 if (!customElements.get("media-gallery")) {
   customElements.define("media-gallery", class MediaGallery extends HTMLElement {
     constructor() {
@@ -272,77 +307,64 @@ if (!customElements.get("media-gallery")) {
         videos: [".media-video"],
         productBlock: ".sf-prod__block",
         mediaMobile: ".sf-product-media__mobile",
-        variantIdNode: '.main-product-form [name="id"]'
+        variantIdNode: '[name="id"]'
       };
       this.container = this.closest(this.selectors.container);
       this.domNodes = queryDomNodes(this.selectors, this);
       this.enableVideoAutoplay = this.dataset.enableVideoAutoplay === "true";
       this.enableImageZoom = this.dataset.enableImageZoom === "true";
       this.enableVariantGroupImages = this.dataset.enableVariantGroupImages === "true";
-      if (this.closest('.sf-prod__block')) {
-        this.view = this.closest('.sf-prod__block').dataset.view || 'product-template';
-      }
+      this.view = this.closest('.sf-prod__block')?.dataset?.view || 'product-template';
       this.section = this.closest(`[data-section-id="${this.sectionId}"]`);
       this.layout = this.dataset.layout;
       this.setupData();
     }
+
     async init() {
       switch (this.view) {
         case 'product-template':
           await this.initSlider();
+
           if (!this.enableVariantGroupImages) {
             this.addEventToMainMedias();
             this.initLightbox();
           }
+
           if (this.mediaMode !== 'slider') {
             this.mediaMode = 'gallery';
           }
+
           break;
+
         case 'featured-product':
           this.initSlider();
           break;
+
         case 'card':
           this.mediaMode = 'featured-image';
           break;
+
         case 'sticky-atc':
           this.mediaMode = 'featured-image';
           break;
+
         case 'quick-view':
           this.mediaMode = 'featured-image';
           this.initSlider();
           break;
+
         default:
           console.warn('Unknown product view: ', this, this.view);
           break;
       }
-      if (this.mediaMode === 'slider') {
-        const mediaWrapper = this.querySelector('.swiper-wrapper');
-        const firstELM = mediaWrapper.firstElementChild;
-        const firstElmMediaType = firstELM.dataset.mediaType;
-        if (firstElmMediaType === 'video' || firstElmMediaType == 'external_video') {
-          const deferredMedia = firstELM.querySelector(".deferred-media");
-          const autoplay = deferredMedia.dataset.autoPlay === "true";
-          if (deferredMedia && autoplay) deferredMedia.loadContent(false);
-        }
-      } else {
-        const allMedia = this.querySelectorAll('.sf-prod-media-item');
-        if (allMedia) {
-          allMedia.forEach(media => {
-            const mediaType = media.dataset.mediaType;
-            if (mediaType === 'video' || mediaType === 'external_video') {
-              const deferredMedia = media.querySelector(".deferred-media");
-              const autoplay = deferredMedia.dataset.autoPlay === "true";
-              if (deferredMedia && autoplay) deferredMedia.loadContent(false);
-            }
-          });
-        }
-      }
     }
+
     getProductJson(productUrl) {
       return fetch(productUrl + '.js').then(function (response) {
         return response.json();
       });
     }
+
     async setupData() {
       this.productHandle = this.dataset.productHandle;
       this.productUrl = this.dataset.productUrl;
@@ -354,101 +376,155 @@ if (!customElements.get("media-gallery")) {
         } = {}
       } = this;
       const variantIdNode = this.container.querySelector(this.selectors.variantIdNode);
+
       if (productData && variantIdNode) {
         let currentVariantId = Number(variantIdNode.value);
+
         if (!currentVariantId) {
-          currentVariantId = productData.selected_or_first_available_variant.id;
+          currentVariantId = productData.selected_or_first_available_variant?.id;
         }
+
         const currentVariant = variants.find(v => v.id === currentVariantId) || variants[0];
         this.productData.initialVariant = currentVariant;
+
         if (!this.productData.selected_variant && variantIdNode.dataset.selectedVariant) {
           this.productData.selected_variant = variants.find(v => v.id === Number(variantIdNode.dataset.selectedVariant));
         }
+
+        this.init();
       }
-      this.init();
     }
+
     initSlider() {
-      if (!this.domNodes.slider) return;
+      if (!this?.domNodes?.slider) return;
       this.mediaMode = "slider";
-      const {
-        domNodes: {
-          slider,
-          sliderPagination,
-          navSlider,
-          sliderNextEl: nextEl,
-          sliderPrevEl: prevEl
-        }
-      } = this;
-      let initialSlide = 0,
-        configNav = {},
-        config = {};
-      if (this.productData.initialVariant && this.productData.selected_variant) {
-        initialSlide = this.productData.initialVariant.featured_media.position - 1 || 0;
-      }
-      configNav = {
-        loop: false,
-        initialSlide,
-        slidesPerView: 5,
-        freeMode: true,
-        spaceBetween: 10,
-        threshold: 2,
-        watchSlidesVisibility: true,
-        watchSlidesProgress: true,
-        direction: this.layout === "layout-6" ? "vertical" : "horizontal",
-        on: {
-          init: () => navSlider.style.opacity = 1
-        }
-      };
-      this.navSlider = navSlider ? new MinimogLibs.Swiper(navSlider, configNav) : null;
-      const thumbs = this.navSlider ? {
-        thumbs: {
-          swiper: this.navSlider
-        }
-      } : {};
-      config = Object.assign({}, getProductSliderConfig(this.layout), {
-        initialSlide,
-        autoHeight: true,
-        navigation: {
-          nextEl,
-          prevEl
-        },
-        threshold: 2,
-        loop: this.enableVariantGroupImages ? false : true,
-        pagination: {
-          el: sliderPagination,
-          clickable: true,
-          type: "bullets"
-        },
-        ...thumbs,
-        on: {
-          init: () => {
-            slider.style.opacity = 1;
-            this.domNodes = queryDomNodes(this.selectors, this.container);
+      loadAssets(["swiper.css", "swiper.js"]).then(() => {
+        const {
+          domNodes: {
+            slider,
+            sliderPagination,
+            navSlider,
+            sliderNextEl: nextEl,
+            sliderPrevEl: prevEl
           }
+        } = this;
+        let initialSlide = 0,
+            configNav = {},
+            config = {};
+
+        if (this.productData.initialVariant && this.productData.selected_variant) {
+          initialSlide = this.productData.initialVariant.featured_media?.position - 1 || 0;
         }
-      });
-      if (this.view === 'product-template') {
-        if (MinimogTheme.config.mqlMobile) {
-          if (this.dataset.screen === 'mobile') this.slider = new MinimogLibs.Swiper(slider, config);
+
+        if (this.enableVariantGroupImages) {
+          configNav = {
+            initialSlide,
+            slidesPerView: 5,
+            freeMode: true,
+            spaceBetween: 10,
+            loop: false,
+            threshold: 2,
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+            direction: this.layout === "layout-6" ? "vertical" : "horizontal",
+            on: {
+              init: () => navSlider.style.opacity = 1
+            }
+          };
         } else {
-          if (this.dataset.screen === 'desktop') this.slider = new MinimogLibs.Swiper(slider, config);
+          configNav = {
+            initialSlide,
+            slidesPerView: 5,
+            freeMode: true,
+            spaceBetween: 10,
+            threshold: 2,
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+            direction: this.layout === "layout-6" ? "vertical" : "horizontal",
+            on: {
+              init: () => navSlider.style.opacity = 1
+            }
+          };
         }
-        document.addEventListener('matchMobile', () => {
-          if (this.dataset.screen === 'mobile') this.slider = new MinimogLibs.Swiper(slider, config);
-        });
-        document.addEventListener('unmatchMobile', () => {
-          if (this.dataset.screen === 'desktop') this.slider = new MinimogLibs.Swiper(slider, config);
-        });
-      } else {
-        this.slider = new MinimogLibs.Swiper(slider, config);
-      }
-      if (!this.enableVariantGroupImages) this.handleSlideChange();
+
+        this.navSlider = navSlider ? new MinimogLibs.Swiper(navSlider, configNav) : null;
+        const thumbs = this.navSlider ? {
+          thumbs: {
+            swiper: this.navSlider
+          }
+        } : {};
+
+        if (this.enableVariantGroupImages) {
+          config = Object.assign({}, getProductSliderConfig(this.layout), {
+            initialSlide,
+            autoHeight: true,
+            navigation: {
+              nextEl,
+              prevEl
+            },
+            threshold: 2,
+            loop: false,
+            pagination: {
+              el: sliderPagination,
+              clickable: true,
+              type: "bullets"
+            },
+            ...thumbs,
+            on: {
+              init: () => {
+                slider.style.opacity = 1;
+                this.domNodes = queryDomNodes(this.selectors, this.container);
+              }
+            }
+          });
+        } else {
+          config = Object.assign({}, getProductSliderConfig(this.layout), {
+            initialSlide,
+            autoHeight: true,
+            navigation: {
+              nextEl,
+              prevEl
+            },
+            threshold: 2,
+            pagination: {
+              el: sliderPagination,
+              clickable: true,
+              type: "bullets"
+            },
+            ...thumbs,
+            on: {
+              init: () => {
+                slider.style.opacity = 1;
+                this.domNodes = queryDomNodes(this.selectors, this.container);
+              }
+            }
+          });
+        }
+
+        const isMobile = window.matchMedia('(max-width: 767px)');
+
+        if (this.view === 'product-template') {
+          if (isMobile.matches) {
+            if (this.dataset.screen === 'mobile') this.slider = new MinimogLibs.Swiper(slider, config);
+          } else {
+            if (this.dataset.screen === 'desktop') this.slider = new MinimogLibs.Swiper(slider, config);
+          }
+        } else {
+          this.slider = new MinimogLibs.Swiper(slider, config);
+        }
+
+        if (!this.enableVariantGroupImages) this.handleSlideChange();
+      }).catch(err => console.error("Failed to init Slider", err));
     }
+
     handleSlideChange() {
       if (!this.slider) return;
       let draggable = true,
-        mediaType = "",
-        visibleSlides = [];
+          mediaType = "",
+          visibleSlides = [];
+      const {
+        previewWrapper
+      } = this.domNodes;
       this.slider.on("slideChange", swiper => {
         try {
           // Change previewWrapper aspectRatio
@@ -456,18 +532,28 @@ if (!customElements.get("media-gallery")) {
             slides,
             activeIndex
           } = swiper;
-          this.playActiveMedia(slides[activeIndex]);
 
-          // Change touchMove state, for making the model inside slide draggable
+          if (previewWrapper) {
+            const aspectRatio = slides[activeIndex].dataset.aspectRatio || 1;
+            const layout = this.view === "product-template" ? this.layout : this.view;
+            const scale = layout === "layout-5" ? 2 : 1;
+            previewWrapper.style.setProperty("--aspect-ratio", aspectRatio * scale);
+          }
+
+          this.playActiveMedia(slides[activeIndex]); // Change touchMove state, for making the model inside slide draggable
+
           visibleSlides = [activeIndex];
+
           if (this.layout === "layout-5" || this.layout === "layout-7") {
             visibleSlides.push(activeIndex + 1);
           }
+
           for (let index of visibleSlides) {
             const currSlide = slides[index];
-            mediaType = currSlide.dataset.mediaType;
+            mediaType = currSlide?.dataset?.mediaType;
             if (mediaType === "model") break;
           }
+
           if (mediaType === "model") {
             this.slider.allowTouchMove = false;
             draggable = false;
@@ -480,20 +566,19 @@ if (!customElements.get("media-gallery")) {
         }
       });
     }
+
     playActiveMedia(selected) {
-      const deferredMedia = selected.querySelector(".deferred-media");
-      if (deferredMedia) {
-        const autoplay = deferredMedia.dataset.autoPlay === "true";
-        if (autoplay) {
-          deferredMedia.loadContent(false);
-        }
-      }
+      window.pauseAllMedia();
+      const deferredMedia = selected?.querySelector(".deferred-media");
+      const autoplay = deferredMedia?.dataset.autoPlay === "true";
+      if (deferredMedia && autoplay) deferredMedia.loadContent(false);
     }
+
     initLightbox() {
-      let data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.productData.media;
+      let data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this?.productData?.media;
       if (!this.enableImageZoom) return;
       loadAssets(["glightbox.css", "glightbox.js"]).then(() => {
-        const elements = data.map(media => {
+        const elements = data?.map(media => {
           if (media.media_type === "image") {
             return {
               href: media.src,
@@ -501,9 +586,10 @@ if (!customElements.get("media-gallery")) {
               id_media: media.id
             };
           }
+
           if (media.media_type === "external_video") {
             // TODO: fix Youtube video on lightbox
-            const href = window.MinimogLibs.getVideoURL(media.external_id, media.host);
+            const href = getVideoURL(media.external_id, media.host);
             return {
               href,
               type: "video",
@@ -511,15 +597,17 @@ if (!customElements.get("media-gallery")) {
               id_media: media.id
             };
           }
+
           if (media.media_type === "video") {
-            const href = media.sources[0].url;
+            const href = media?.sources?.[0]?.url;
             return {
               href,
               type: "video"
             };
           }
+
           if (media.media_type === "model") {
-            const mediaElem = document.querySelector(`.media-model[data-media-id="${media.id}"]`).cloneNode(true);
+            const mediaElem = document.querySelector(`.media-model[data-media-id="${media.id}"]`)?.cloneNode(true);
             mediaElem.classList.remove("hidden");
             mediaElem.classList.add("model-in-lightbox");
             return {
@@ -536,59 +624,69 @@ if (!customElements.get("media-gallery")) {
           closeEffect: "fade",
           draggable: false,
           autofocusVideos: true
-        });
+        }); // TODO: fix video width https://github.com/biati-digital/glightbox/issues/203
       }).catch(err => console.error("Failed to init Glightbox", err));
     }
+
     addEventToMainMedias() {
       addEventDelegate({
         selector: this.selectors.medias[0],
         context: this,
         handler: (e, media) => {
           const isImage = media.classList.contains('media-type-image');
-          const isZoomButton = e.target.closest(this.selectors.mediaZoomIns[0]);
+          const isZoomButton = e?.target?.closest(this.selectors.mediaZoomIns[0]);
+
           if (isImage || isZoomButton) {
-            const index = Number(media.dataset.index) || 0;
-            this.lightbox.openAt(index);
+            const index = Number(media?.dataset?.index) || 0;
+            this?.lightbox?.openAt(index);
           }
         }
       });
     }
+
     setActiveMedia(variant) {
       if (!variant) return;
+
       if (this.mediaMode === 'slider') {
         if (variant.featured_media) {
-          const slideIndex = variant.featured_media.position || 0;
-          if (this.slider && this.slider.wrapperEl) {
-            this.slider.slideToLoop(slideIndex - 1);
-          }
+          const slideIndex = variant?.featured_media?.position || 0;
+
+          if (this.slider && this.slider?.wrapperEl) {
+            this?.slider?.slideToLoop?.(slideIndex - 1);
+          } // if (this.mobileSlider && this.mobileSlider?.wrapperEl) {
+          // 	this?.mobileSlider?.slideToLoop?.(slideIndex - 1)
+          // }
+
         }
       } else if (this.mediaMode === 'featured-image') {
-        const src = variant.featured_image.src;
+        const src = variant?.featured_image?.src;
         const {
           featuredImage
         } = this.domNodes;
-        const img = featuredImage.querySelector('img');
+        const img = featuredImage?.querySelector('img');
+
         if (img && src) {
           img.src = src;
           img.removeAttribute('srcset');
-          const method = this.productData.initialVariant.id === variant.id ? 'add' : 'remove';
-          featuredImage.classList[method]('group-hover:opacity-0');
+          const method = this.productData?.initialVariant?.id === variant?.id ? 'add' : 'remove';
+          featuredImage?.classList?.[method]?.('group-hover:opacity-0');
         }
       } else {
         // handle change image in gallery mode
-        if (variant.featured_media) {
-          const selectedMedia = this.querySelector(`[data-media-id="${variant.featured_media.id}"]`);
-          if (selectedMedia) {
-            this.scrollIntoView(selectedMedia);
-          }
+        const selectedMedia = this.domNodes.mediaWrapper?.querySelector(`[data-media-id="${variant.featured_media.id}"]`);
+
+        if (selectedMedia) {
+          this.scrollIntoView(selectedMedia);
         }
       }
     }
+
     scrollIntoView(selectedMedia) {
       selectedMedia.scrollIntoView({
         behavior: 'smooth'
       });
     }
+
   });
 }
 }();

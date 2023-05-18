@@ -55,6 +55,12 @@
     class="sf-icon-box sf-section-padding {{ section.settings.custom_class }}"
     data-section-type="icon-box"
     data-section-id="{{ section.id }}"
+    data-enable-slider="{{ enable_slider }}"
+    {% if enable_slider %}
+    data-show-pagination="{{ section.settings.show_pagination }}"
+    data-show-navigation="{{ section.settings.show_navigation }}"
+    data-items="{{ section.settings.item_per_row }}"
+    {% endif %}
     {% if has_bg %}
         data-bg="{{ bg_color | color_to_hsl }}"
     {% endif %}
@@ -62,63 +68,54 @@
 >
     <div class="{{ section.settings.container }}{% if has_bg == false %} section-my{% else %} section-py{% endif %}" style="--column-gap: {{ section.settings.item_gap }}px; --column-gap-mobile: {{ section.settings.item_gap_mobile }}px; --row-gap: {{ section.settings.item_gap | plus: 10 }}px; --row-gap-mobile: 30px; --items: {{ section.settings.item_per_row }};">
         {% render 'index-section-header', section_settings: section.settings %}
-        <m-icon-box
-          data-enable-slider="{{ enable_slider }}"
-          {% if enable_slider %}
-          data-show-pagination="{{ section.settings.show_pagination }}"
-          data-show-navigation="{{ section.settings.show_navigation }}"
-          data-items="{{ section.settings.item_per_row }}"
-          {% endif %}
-        >
-          <div class="relative{% if use_scroll_mobile %} sf__ms{% endif %}{% if enable_slider %} sf__ms--slider{% endif %}">
-              {% if section.settings.use_grid_column_mb %}
-                  {% capture grid_two_column_mb %} grid grid-cols-2{% endcapture %}
-              {% endif %}
-              <div class="sf-grid {% if use_scroll_mobile %}sf__ms-wrapper{% endif %}{{ grid_two_column_mb }} md:grid md:grid-cols-2 lg:grid-cols-{{ section.settings.item_per_row }} {% if enable_slider %}swiper-container{% endif %}">
-                  {% if enable_slider == true %}<!-- Start .swiper-wrapper --><div class="swiper-wrapper">{% endif %}
-                  {% for block in blocks %}
-                      {% assign bs = block.settings %}
-                      {% assign image_by_url = bs.image_by_url %}
-                      <div class="sf-column{% if enable_slider == true %} swiper-slide{% endif %}" {% if enable_slider %}data-slide="{{ forloop.index0 }}"{% endif %} {{ block.shopify_attributes }}>
-                          <div class="sf-icon-box sf-icon-box--{{ card_style }} {{ hover }}">
-                              <div class="sf-icon-box__inner flex {{ card_classes }} {{ alignment }}">
-                                  {% if block.settings.link != blank %}
-                                      {%- assign tag = 'a' -%}
-                                  {% else %}
-                                      {%- assign tag = 'div' -%}
+        <div class="relative{% if use_scroll_mobile %} sf__ms{% endif %}{% if enable_slider %} sf__ms--slider{% endif %}">
+            {% if section.settings.use_grid_column_mb %}
+                {% capture grid_two_column_mb %} grid grid-cols-2{% endcapture %}
+            {% endif %}
+            <div class="sf-grid {% if use_scroll_mobile %}sf__ms-wrapper{% endif %}{{ grid_two_column_mb }} md:grid md:grid-cols-2 lg:grid-cols-{{ section.settings.item_per_row }} {% if enable_slider %}swiper-container{% endif %}">
+                {% if enable_slider == true %}<!-- Start .swiper-wrapper --><div class="swiper-wrapper">{% endif %}
+                {% for block in blocks %}
+                    {% assign bs = block.settings %}
+                    {% assign image_by_url = bs.image_by_url %}
+                    <div class="sf-column{% if enable_slider == true %} swiper-slide{% endif %}" {{ block.shopify_attributes }}>
+                        <div class="sf-icon-box sf-icon-box--{{ card_style }} {{ hover }}">
+                            <div class="sf-icon-box__inner flex {{ card_classes }} {{ alignment }}">
+                                {% if block.settings.link != blank %}
+                                    {%- assign tag = 'a' -%}
+                                {% else %}
+                                    {%- assign tag = 'div' -%}
+                                {% endif %}
+                                <{{ tag }}{% if block.settings.link != blank %} href="{{ block.settings.link }}"{% endif %} class="sf-icon-box__icon w-full flex shrink-0 justify-center max-w-full mb-5 md:mb-0 sf-image--loaded {{ icon_classes }}" {% if st.image_max_width != blank %} style="width: {{ st.image_max_width }};"{% endif %}>
+                                  {% if image_by_url != blank %}
+                                    <img src="{{ image_by_url }}" width="auto" height="auto" loading="lazy" alt="{{ bs.title }}">
+                                  {% elsif bs.image != blank %}
+                                    {% render 'responsive-image', image: bs.image, wrapper_class: 'w-full', image_class: "w-full" %}
                                   {% endif %}
-                                  <{{ tag }}{% if block.settings.link != blank %} href="{{ block.settings.link }}"{% endif %} class="sf-icon-box__icon w-full flex shrink-0 justify-center max-w-full mb-5 md:mb-0 sf-image--loaded {{ icon_classes }}" {% if st.image_max_width != blank %} style="width: {{ st.image_max_width }};"{% endif %}>
-                                    {% if image_by_url != blank %}
-                                      <img src="{{ image_by_url }}" width="auto" height="auto" loading="lazy" alt="{{ bs.title }}">
-                                    {% elsif bs.image != blank %}
-                                      {% render 'responsive-image', image: bs.image, wrapper_class: 'w-full', image_class: "w-full" %}
-                                    {% endif %}
-                                    {% if bs.image == blank %}
-                                      {{ 'product-1' | placeholder_svg_tag: 'sf__placeholder-svg w-full' }}
-                                  {% endif %}
-                                </{{ tag }}>
-                              <div class="{% if card_style == 'vertical' %}md:mt-5 {% endif %}sf-icon-box__text flex-1 {{ text_alignment }}">
-                                {% if bs.title != blank %}
-                                  <h3 class="h4 mb-1.5 font-medium">{{ bs.title }}</h3>
+                                  {% if bs.image == blank and request.design_mode %}
+                                    {{ 'product-1' | placeholder_svg_tag: 'sf__placeholder-svg w-full' }}
                                 {% endif %}
-                                {% if bs.description != blank %}
-                                  <div class="rte text-color-subtext">{{ bs.description }}</div>
-                                {% endif %}
-                                {% if bs.button_label != blank %}
-                                  <a href="{{ bs.button_link | default: "#" }}" class="sf__btn mt-3 {{ bs.button_style }} {{ bs.button_size }}">{{ bs.button_label }}</a>
-                                {% endif %}
-                              </div>
-                          </div>
-                      </div>
-                      </div>
-                  {% endfor %}
-                  {% if enable_slider == true %}</div> <!-- End .swiper-wrapper -->{% endif %}
-              </div>
-              {% if enable_slider %}
-                  {% render 'slider-controls', absolute: true, container: section.settings.container, show_nav: section.settings.show_navigation, show_pagination: section.settings.show_pagination, dots_class: 'mt-0', custom_class: 'hidden' %}
-              {% endif %}
-          </div>
-        </m-icon-box>
+                              </{{ tag }}>
+                            <div class="{% if card_style == 'vertical' %}md:mt-5 {% endif %}sf-icon-box__text flex-1 {{ text_alignment }}">
+                              {% if bs.title != blank %}
+                                <h3 class="h4 mb-1.5 font-medium">{{ bs.title }}</h3>
+                              {% endif %}
+                              {% if bs.description != blank %}
+                                <div class="rte text-color-subtext">{{ bs.description }}</div>
+                              {% endif %}
+                              {% if bs.button_label != blank %}
+                                <a href="{{ bs.button_link | default: "#" }}" class="sf__btn mt-3 {{ bs.button_style }} {{ bs.button_size }}">{{ bs.button_label }}</a>
+                              {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                {% endfor %}
+                {% if enable_slider == true %}</div> <!-- End .swiper-wrapper -->{% endif %}
+            </div>
+            {% if enable_slider %}
+                {% render 'slider-controls', absolute: true, container: section.settings.container, show_nav: section.settings.show_navigation, dots_class: 'mt-0', custom_class: 'hidden' %}
+            {% endif %}
+        </div>
     </div>
 </section>
 

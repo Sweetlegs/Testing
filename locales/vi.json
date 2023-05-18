@@ -144,11 +144,7 @@
       "zipcode_validate": "Mã zip không được để trống",
       "shipping_rates_result": "Chúng tôi đã tìm thấy {{count}} phí vận chuyển cho địa chỉ của bạn",
       "no_found_shipping_rate": "Không có phí vận chuyển cho địa chỉ của bạn.",
-      "recommend_title": "Đề xuất cho bạn",
-      "delivery_days": {
-        "one": "ngày",
-        "other": "Ngày"
-      }
+      "recommend_title": "Đề xuất cho bạn"
     },
     "label": {
       "product": "Sản phẩm",

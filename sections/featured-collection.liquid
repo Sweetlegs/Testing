@@ -50,40 +50,39 @@
     endif
   %}
 
-  <m-featured-collection
-    id="sf__featured-collection-{{ section.id }}"
-    data-id="{{ section.id }}"
-    data-section-type="featured-collection"
-    data-section-id="{{ section.id }}"
-    {% if has_bg %}
-      data-bg="{{ bg_color | color_to_hsl }}"
-    {% endif %}
-    data-enable-slider="{{ enable_slider }}"
-    {% if enable_slider %}
-      data-show-pagination="{{ section.settings.show_pagination }}"
-      data-show-navigation="{{ section.settings.show_navigation }}"
-    {% endif %}
-    data-url="{{ current_collection.url }}"
-    data-items="{{ section.settings.items_per_row }}"
-    data-total-pages="{{ paginate.pages }}"
-    data-button-type="{{ button_type }}"
-    {% if infinite_load %}
-      data-infinite-load="{{ infinite_load }}"
-      data-max-pages="{{ max_pages }}"
-    {% endif %}
-    class="block sf__featured-collection sf-section-padding {{ section.settings.custom_class }}{% if section.settings.button_text == blank %} show__more-disabled{% endif %}"
-    data-enable-flashsale="{{ enable_flashsale }}"
-    data-enable-countdown="{{ show_countdown }}"
-    data-collection-id="{{ current_collection.id }}"
-    style="
-    background-color: {{ bg_color }};
-    --column-gap: {{ section.settings.item_gap }}px;
-    --column-gap-mobile: {{ section.settings.item_gap_mobile }}px;
-    --row-gap: {{ section.settings.item_gap | plus: 10 }}px;
-    --items: {{ section.settings.items_per_row }};
-    --section-padding-top: {{ section.settings.padding_top }}px;
-    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
-    "
+  <section
+          id="sf__featured-collection-{{ section.id }}"
+          data-section-type="featured-collection"
+          data-section-id="{{ section.id }}"
+          {% if has_bg %}
+            data-bg="{{ bg_color | color_to_hsl }}"
+          {% endif %}
+          data-enable-slider="{{ enable_slider }}"
+          {% if enable_slider %}
+            data-show-pagination="{{ section.settings.show_pagination }}"
+            data-show-navigation="{{ section.settings.show_navigation }}"
+          {% endif %}
+          data-url="{{ current_collection.url }}"
+          data-items="{{ section.settings.items_per_row }}"
+          data-total-pages="{{ paginate.pages }}"
+          data-button-type="{{ button_type }}"
+          {% if infinite_load %}
+            data-infinite-load="{{ infinite_load }}"
+            data-max-pages="{{ max_pages }}"
+          {% endif %}
+          class="sf__featured-collection sf-section-padding {{ section.settings.custom_class }}{% if section.settings.button_text == blank %} show__more-disabled{% endif %}"
+          data-enable-flashsale="{{ enable_flashsale }}"
+          data-enable-countdown="{{ show_countdown }}"
+          data-collection-id="{{ current_collection.id }}"
+          style="
+          background-color: {{ bg_color }};
+          --column-gap: {{ section.settings.item_gap }}px;
+          --column-gap-mobile: {{ section.settings.item_gap_mobile }}px;
+          --row-gap: {{ section.settings.item_gap | plus: 10 }}px;
+          --items: {{ section.settings.items_per_row }};
+          --section-padding-top: {{ section.settings.padding_top }}px;
+          --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+          "
   >
     <div class="{{ section.settings.container }}{% if has_bg == false %} section-my{% else %} section-py{% endif %}">
       {% if enable_flashsale and show_countdown %}
@@ -133,9 +132,9 @@
             {% else %}
               {% for i in (1..product_to_show) %}
                 <div class="swiper-slide sf-column text-{{ settings.pcard_alignment }}">
-                  <div style="--aspect-ratio: 1/1;">
+                  <div style="--aspect-ratio: 1/1;" class="bg-gray-100">
                     {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-                    {{ 'product-' | append: current | placeholder_svg_tag: 'sf__placeholder-svg object-cover w-full h-full transition-all duration-500 group-hover:scale-105' }}
+                    {{ 'product-' | append: current | placeholder_svg_tag: 'object-cover w-full h-full transition-all duration-500 group-hover:scale-105' }}
                   </div>
                   <div class="block mb-2 sf__pcard-name mt-4 font-medium hover:text-color-secondary{% if settings.uppercase_prd_name %} uppercase{% endif %}">{{ 'homepage.onboarding.product_title' | t }}</div>
                   <div class="mb-2.5 sf__pcard-price">
@@ -178,7 +177,7 @@
         </div>
       {% endif %}
     </div>
-  </m-featured-collection>
+  </section>
 {%- endpaginate -%}
 
 {% schema %}
@@ -334,10 +333,6 @@
         {
           "value": "4",
           "label": "Style 4"
-        },
-        {
-          "value": "5",
-          "label": "Style 5"
         }
       ]
     },

@@ -1,4 +1,3 @@
-{{ 'product-tabs.css' | asset_url | stylesheet_tag }}
 {%- liquid 
 	assign bg_color = section.settings.background_color
 	assign has_bg = false
@@ -126,7 +125,7 @@
 						 data-page="{{ paginate.current_page }}"
 						 data-total-items="{{ paginate.items }}"
 					>
-						<div class="{% if button_type == 'link' %}sf__ms{% endif %}{% if enable_slider %} relative sf__ms--slider{% endif %}{% unless use_scroll_mobile %} sf__ms--mb-grid{% endunless %}">
+						<div class="{% if button_type == 'link' %}sf__ms{% endif %}{% if enable_slider %} sf__ms--slider{% endif %}{% unless use_scroll_mobile %} sf__ms--mb-grid{% endunless %}">
 							<div class="sf-grid{% if button_type == 'link' %} sf__ms-wrapper{% endif %} grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-{{ section.settings.items_per_row }}{% if enable_slider %} swiper-container{% endif %}" data-products-container>
 								{% if enable_slider == true %}<!-- Start .swiper-wrapper --><div class="swiper-wrapper">{% endif %}
 								{% for product in current_collection.products limit: product_limit %}
@@ -140,9 +139,9 @@
 								{% else %}
 									{% for i in (1..product_limit) %}
 										<div class="swiper-slide sf-column text-{{ settings.pcard_alignment }}">
-											<div style="--aspect-ratio: 1/1;">
+											<div style="--aspect-ratio: 1/1;" class="bg-gray-100">
 												{% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-												{{ 'product-' | append: current | placeholder_svg_tag: 'sf__placeholder-svg object-cover w-full h-full transition-all duration-500 group-hover:scale-105' }}
+												{{ 'product-' | append: current | placeholder_svg_tag: 'object-cover w-full h-full transition-all duration-500 group-hover:scale-105' }}
 											</div>
 											<div class="block mb-2 sf__pcard-name mt-4 font-medium hover:text-color-secondary{% if settings.uppercase_prd_name %} uppercase{% endif %}">{{ 'homepage.onboarding.product_title' | t }}</div>
 											<div class="mb-2.5 sf__pcard-price">
@@ -386,10 +385,6 @@
         {
           "value": "4",
           "label": "Style 4"
-        },
-        {
-          "value": "5",
-          "label": "Style 5"
         }
       ]
     },

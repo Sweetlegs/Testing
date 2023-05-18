@@ -1,5 +1,5 @@
 {% if section.settings.image_custom_payment == blank %}
-  <div class="payment-icons flex justify-center lg:justify-start">
+  <div class="payment-icons flex">
     <span class="hidden">{{ 'general.payment.options' | t }}: </span>
     <ul class="flex flex-wrap -m-2.5">
       {%- for type in shop.enabled_payment_types -%}

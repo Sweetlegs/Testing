@@ -18,11 +18,6 @@
   if section.settings.autoplay and section.settings.muted
     assign autoplay = true
   endif
-
-  assign cover_image = false
-  if section.settings.image != blank
-    assign cover_image = true
-  endif
 %}
 
 <section
@@ -42,7 +37,7 @@
     {%- if section.settings.video_link != blank -%}
       <div class="sf-video__container mx-auto max-w-full" style="width: {{- width -}};">
         <div class="sf-video__wrapper" style="--aspect-ratio: {{ section.settings.ratio | replace: ':', '/' }}">
-          <video-component class="deferred-media no-js-hidden" data-media-id="{{ section.settings.video_link.id }}" data-auto-play="{{ autoplay }}" data-cover-image="{{ cover_image }}">
+          <deferred-media class="deferred-media no-js-hidden" data-media-id="{{ section.settings.video_link.id }}" data-auto-play="{{ autoplay }}">
             <button id="Deferred-Poster-Modal-{{ section.settings.video_link.id }}" class="deferred-media__poster" type="button" aria-label="{{ 'sections.video.play' | t }}">
               <span class="deferred-media__poster-button motion-reduce absolute sf-video__play sf-video__play--style-{{ section.settings.play_style }} sf-video__play--size-{{ section.settings.play_size }} text-{{ section.settings.text_color }}">
                 <svg class="w-[20px] h-[20px]" viewBox="0 0 18 18" fill="currentColor">
@@ -56,6 +51,8 @@
               {%- endunless -%}
               {%- if section.settings.image != blank -%}
                 <div class="sf-video__cover bg-center" style="background-image: url({{ section.settings.image | image_url: width: 1920 }})"></div>
+              {%- else -%}
+                <div class="sf-video__cover sf-video__cover-placeholder">{{ 'lifestyle-2' | placeholder_svg_tag: 'sf__placeholder-svg w-full h-full' }}</div>
               {%- endif -%}
             </button>  
             <template>
@@ -101,7 +98,7 @@
                 <iframe src="{{ vimeoURL }}" class="js-vimeo" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.video_title | escape }}"></iframe>
               {%- endif -%}
             </template>
-          </video-component>
+          </deferred-media>
         </div>
       </div>
     {%- else -%}

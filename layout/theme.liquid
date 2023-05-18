@@ -21,71 +21,70 @@ template-{{ template.name | handle }} {{ template.name }}-{{ template.suffix }} 
   class="no-js supports-no-cookies"
   lang="{{ request.locale.iso_code }}"
   data-template="{{ template.name }}"
-  {% if enable_rtl %}
-    dir="rtl"
-  {% endif %}
+  {% if enable_rtl %}dir="rtl"{% endif %}
 >
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
-    <meta name="theme-color" content="{{ settings.color_primary }}">
+<head>
+  <meta name="facebook-domain-verification" content="1z6jqg7qujg5f6ag6owl2951fj2exp" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+	<meta name="theme-color" content="{{ settings.color_primary }}">
 
-    {%- liquid
-      render 'preload'
-      render 'SEO'
-      render 'social-meta-tags'
-      render 'font-face'
-    -%}
+  {%- liquid
+    render 'preload'
+    render 'SEO'
+    render 'social-meta-tags'
+    render 'font-face'
+  -%}
 
-    {% render 'critical-css' %}
-    {% render 'critical-scripts' %}
-    {% render 'custom-code-head' %}
+  {% render 'critical-css' %}
+  {% render 'critical-scripts' %}
+  {% render 'custom-code-head' %}
 
-    {{ 'theme.css' | asset_url | stylesheet_tag }}
-    {{ 'chunk.css' | asset_url | stylesheet_tag }}
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  {{ 'chunk.css' | asset_url | stylesheet_tag }}
+  {{ 'custom.css' | asset_url | stylesheet_tag }}
 
-    {% render 'style-tags' %}
+  {% render 'style-tags' %}
 
-    <script src="{{ 'vendor.min.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'theme-global.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'app.min.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'theme-global.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.min.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'lazy-image.min.js' | asset_url }}" defer="defer"></script>
 
-    {{ content_for_header }} 
-  </head>
+  {{ content_for_header }}
+  
+</head>
 
-  <body
-    id="sf-theme"
-    class="{{ body_classes }} relative min-h-screen{% if customer %} customer-logged-in{% endif %}"
-    {% if template.name == 'product' %}
-      data-product-id="{{ product.id }}"
-    {% endif %}
-  >
-    {% render 'theme-data' %}
-    {% section 'annoucement' %}
-    {% section 'header' %}
-    {% render 'scroll-top-button' %}
+<body
+  id="sf-theme"
+  class="{{ body_classes }} relative min-h-screen{% if customer %} customer-logged-in{% endif %}"
+  {% if template.name == 'product' %}data-product-id="{{ product.id }}"{% endif %}
+>
+  {% render 'theme-data' %}
+  {% section 'annoucement' %}
+  {% section 'header' %}
+  {% render 'scroll-top-button' %}
 
-    <main role="main" id="MainContent">
-      {{ content_for_layout }}
-      <div id="cart-drawer-container"></div>
-    </main>
+  <main role="main" id="MainContent">
+    {{ content_for_layout }}
+    <div id="cart-drawer-container"></div>
+  </main>
 
-    {%- liquid
-      section 'footer'
-      section 'mobile-sticky-bar'
-    -%}
+  {%- liquid
+    section 'footer'
+  -%}
 
-    {% render 'custom-code-body' %}
-    {% render 'foxkit-messenger' %}
-    {% render 'script-tags' %}
-    {% render 'cookie-banner' %}
-     
-    <script src="{{ 'foxkit-app.min.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'quick-view.min.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'product-card-swatch.min.js' | asset_url }}" defer="defer"></script>
-    {%- if settings.enable_predictive_search -%}
-      <script src="{{ 'predictive-search.min.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
-  </body>
+  {% section 'mobile-sticky-bar' %}
+
+  {% render 'custom-code-body' %}
+  {% render 'foxkit-messenger' %}
+  {% render 'script-tags' %}
+
+  <script src="{{ 'app.min.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'foxkit-app.min.js' | asset_url }}" defer="defer"></script>
+
+  <script src="{{ 'quick-view.min.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-card-swatch.min.js' | asset_url }}" defer="defer"></script>
+{% render 'wholesale-now', customer: customer, template: template, product: product, cart: cart %}
+      </body>
 </html>

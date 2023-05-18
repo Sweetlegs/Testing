@@ -1,8 +1,8 @@
-{{ 'press.css' | asset_url | stylesheet_tag }}
 {% liquid
   assign settings = section.settings
   assign bg_color = section.settings.background_color
   assign has_bg = false
+
   unless bg_color == "rgba(0,0,0,0)" or bg_color == blank
     assign has_bg = true
   endunless
@@ -17,23 +17,21 @@
     {% if has_bg %}
         data-bg="{{ bg_color | color_to_hsl }}"
     {% endif %}
-    
+    data-autoplay="{{ section.settings.autoplay | default: false }}"
+    data-items="{{ items }}"
     style="background-color: {{ settings.background_color }};--section-padding-top: {{ section.settings.padding_top }}px;--section-padding-bottom: {{ section.settings.padding_bottom }}px;"
 >
     <div class="{{ section.settings.container }}{% if has_bg == false %} section-my{% else %} section-py{% endif %}">
         {% render 'index-section-header', section_settings: section.settings %}
-        <m-press
-          data-autoplay="{{ section.settings.autoplay | default: false }}"
-          data-items="{{ items }}"
-        >
-          <div class="press-inner">
+
+        <div class="press-inner">
             <div class="press-content swiper-container">
                 <div class="swiper-wrapper flex">
                     {% for block in section.blocks %}
                         {% if block.settings.title == blank %}
                             {% continue %}
                         {% endif %}
-                        <div class="press-content__item swiper-slide" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+                        <div class="press-content__item swiper-slide">
                             <div class="rte text-lg sm:text-2xl xl:text-3xl 2xl:text-4xl px-4 leading-normal sm:leading-normal max-w-screen-md text-center mx-auto">
                                 {{ block.settings.title }}
                             </div>
@@ -66,8 +64,7 @@
                 </div>
             </div>
             {% render 'slider-controls', show_nav: false, custom_class: 'sm:hidden' %}
-          </div>
-        </m-press>
+        </div>
     </div>
 </section>
 
@@ -207,6 +204,11 @@
           "placeholder": "eg: 100px",
           "default": "150px",
           "info": "Leave blank to use original width."
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Link"
         }
       ]
     }

@@ -144,11 +144,7 @@
       "zipcode_validate": "Пощенският код не може да бъде празен",
       "shipping_rates_result": "Намерихме {{count}} скорост(и) на изпращане за вашия адрес",
       "no_found_shipping_rate": "Няма тарифи за доставка за вашия адрес.",
-      "recommend_title": "Препоръка за вас",
-      "delivery_days": {
-        "one": "ден",
-        "other": "Дни"
-      }
+      "recommend_title": "Препоръка за вас"
     },
     "label": {
       "product": "Продукт",

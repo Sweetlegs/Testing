@@ -144,11 +144,7 @@
       "zipcode_validate": "Poštna številka ne more biti prazna",
       "shipping_rates_result": "Našli smo {{count}} hitrost(-e) pošiljanja za vaš naslov",
       "no_found_shipping_rate": "Ni cene pošiljanja za vaš naslov.",
-      "recommend_title": "Priporočilo za vas",
-      "delivery_days": {
-        "one": "dan",
-        "other": "dnevi"
-      }
+      "recommend_title": "Priporočilo za vas"
     },
     "label": {
       "product": "Izdelek",

@@ -1,51 +1,30 @@
-{%- liquid
-  assign product_id = product.id
-  assign st = section.settings
--%}
-{%- capture gridClass -%}
-  md:grid-cols-{{ st.columns | minus: 1 }} xl:grid-cols-{{ st.columns }}
-{%- endcapture -%}
+{%- assign st = section.settings -%}
 <div
-  class="sf-product__section product-recommendations"
+  class="sf-product__section product-recommendations hidden"
+  data-section-type="product-recommendations"
+  data-section-id="{{ section.id }}"
+  data-products-to-show="{{ st.limit }}"
+  data-products-per-row="{{ st.columns }}"
+  data-enable-slider="{{ st.enable_slider }}"
   style="--column-gap: {{ st.column_gap }}px; --column-gap-mobile: 20px; --row-gap: {{ st.column_gap | plus: 10 }}px; --items: {{ st.columns }}"
 >
-  <product-recommendations
-    data-items-per-page="{{ st.columns }}"
-    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product_id }}&limit={{ section.settings.limit | default: 4 }}"
-  >
-    {% if recommendations.performed and recommendations.products_count > 0 %}
-      <div class="{{ section.settings.container }} section-my">
-        {% assign default_heading = 'products.product.product_recommendation_heading' | t %}
-        <div class="section__header text-{{ section.settings.text_align | default: 'left' }}">
-          <h2 class="section__heading">{{ st.heading | default: default_heading }}</h2>
-        </div>
-        <div class="relative">
-          <div
-            class="sf-grid md:grid {{ gridClass | strip_newlines }} {% if st.enable_slider %} swiper-container{% endif %}"
-          >
-            {%- if st.enable_slider -%}
-              <div class="swiper-wrapper">
-                {% for product in recommendations.products %}
-                  <div class="sf-column swiper-slide">
-                    {% render 'product-card', product: product %}
-                  </div>
-                {% endfor %}
-              </div>
-            {%- else -%}
-              {% for product in recommendations.products %}
-                <div class="sf-column">
-                  {% render 'product-card', product: product %}
-                </div>
-              {% endfor %}
-            {%- endif -%}
-          </div>
-          {% if st.enable_slider %}
-            {% render 'slider-controls', absolute: true, show_nav: true, container: st.container %}
-          {% endif %}
-        </div>
+  <div class="{{ section.settings.container }} section-my">
+    {% assign default_heading = 'products.product.product_recommendation_heading' | t %}
+    <div class="section__header text-{{ section.settings.text_align | default: 'left' }}">
+      <h2 class="section__heading">{{ st.heading | default: default_heading }}</h2>
+    </div>
+    <div class="relative">
+      {%- capture grid_class -%}
+        md:grid-cols-{{ st.columns | minus: 1 }} xl:grid-cols-{{ st.columns }}
+      {%- endcapture -%}
+      <div class="sf-grid md:grid {{ grid_class | strip_newlines }}" data-grid-container>
+        <div class="swiper-wrapper" data-product-list></div>
       </div>
-    {% endif %}
-  </product-recommendations>
+      {% if st.enable_slider %}
+        {% render 'slider-controls', absolute: true, show_nav: true, container: st.container, custom_class: 'hidden' %}
+      {% endif %}
+    </div>
+  </div>
 </div>
 
 {% schema %}

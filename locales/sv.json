@@ -144,11 +144,7 @@
       "zipcode_validate": "Postnummer kan inte vara tomt",
       "shipping_rates_result": "Vi hittade {{count}} fraktkostnader för din adress",
       "no_found_shipping_rate": "Det finns inga fraktkostnader för din adress.",
-      "recommend_title": "Rekommendation för dig",
-      "delivery_days": {
-        "one": "dag",
-        "other": "Dagar"
-      }
+      "recommend_title": "Rekommendation för dig"
     },
     "label": {
       "product": "Produkt",

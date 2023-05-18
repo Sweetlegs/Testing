@@ -144,11 +144,7 @@
       "zipcode_validate": "邮政编码不能为空",
       "shipping_rates_result": "我们找到了您地址的{{count}}运费",
       "no_found_shipping_rate": "您的地址没有运费。",
-      "recommend_title": "为您推荐",
-      "delivery_days": {
-        "one": "日",
-        "other": "日"
-      }
+      "recommend_title": "为您推荐"
     },
     "label": {
       "product": "产品",

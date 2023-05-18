@@ -144,11 +144,7 @@
       "zipcode_validate": "Postcode mag niet leeg zijn",
       "shipping_rates_result": "We hebben {{count}} verzendkosten gevonden voor uw adres",
       "no_found_shipping_rate": "Er zijn geen verzendkosten voor uw adres.",
-      "recommend_title": "Aanbeveling voor u",
-      "delivery_days": {
-        "one": "dag",
-        "other": "Dagen"
-      }
+      "recommend_title": "Aanbeveling voor u"
     },
     "label": {
       "product": "Product",

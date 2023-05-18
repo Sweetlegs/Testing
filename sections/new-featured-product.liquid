@@ -1,5 +1,4 @@
 {{ 'product.css' | asset_url | stylesheet_tag }}
-{{ 'featured-product.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign product = all_products[section.settings.featured_product]
   assign first_3d_model = product.media | where: "media_type", "model" | first
@@ -15,6 +14,7 @@
     assign has_bg = true
   endunless
 
+  assign current_variant = product.selected_or_first_available_variant
   assign image_placement = section.settings.image_placement
 
   capture is_preorder
@@ -65,7 +65,7 @@
 {% endcapture %}
 
 <div
-  id="sf__featured-product-{{ section.id }}"
+  id="sf__featured-product-{{ section.id }} dungpv"
   data-section-type="featured-product"
   data-section-id="{{ section.id }}"
   class="sf-featured-product sf-section-padding {{ section.settings.custom_class }} {{ first_3d_model }}"
@@ -102,8 +102,8 @@
         {% unless section_onboarding %}
           {% render 'product-media', section: section, media_layout: 'layout-4', product: product %}
         {% else %}
-          <div style="--aspect-ratio: 1/1;">
-            {{ 'product-1' | placeholder_svg_tag: 'sf__placeholder-svg object-cover w-full h-full' }}
+          <div style="--aspect-ratio: 1/1;" class="bg-gray-100">
+            {{ 'product-1' | placeholder_svg_tag: 'object-cover w-full h-full' }}
           </div>
         {% endunless %}
       </div>
@@ -111,7 +111,7 @@
         {% if section_onboarding %}
           {{ onboarding }}
         {% else %}
-          {% render 'main-product-blocks', product: product, section: section, update_browser_history: false, is_featured: true, is_preorder: is_preorder %}
+          {% render 'main-product-blocks', product: product, section: section, update_browser_history: false %}
         {% endif %}
       </div>
     </div>
@@ -121,13 +121,52 @@
   <script src="{{ 'product-media.min.js' | asset_url }}" defer="defer"></script>
 {% endif %}
 {%- if first_3d_model -%}
+  <script type="application/json" id="ModelJSON-{{ product.id }}">
+    {{ product.media | where: 'media_type', 'model' | json }}
+  </script>
   <script src="{{ 'product-model-new.min.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 {% if product.options_with_values.size > 0 %}
   <script src="{{ 'variant-picker.min.js' | asset_url }}" defer="defer"></script>
 {% endif %}
 
-{% render 'product-data', product: product %}
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ shop.url | append: product.url | json }},
+    {%- if product.featured_media -%}
+    {%- assign media_size = product.featured_media.preview_image.width -%}
+      "image": [
+        {{ product.featured_media | image_url: width: media_size | prepend: "https:" | json }}
+      ],
+    {%- endif -%}
+    "description": {{ product.description | strip_html | json }},
+    {%- if current_variant.sku != blank -%}
+      "sku": {{ current_variant.sku | json }},
+    {%- endif -%}
+    "brand": {
+      "@type": "Thing",
+      "name": {{ product.vendor | json }}
+    },
+    "offers": [
+      {%- for variant in product.variants -%}
+        {
+          "@type" : "Offer",
+          {%- if variant.sku != blank -%}
+            "sku": {{ variant.sku | json }},
+          {%- endif -%}
+          "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price" : {{ variant.price | divided_by: 100.00 | json }},
+          "priceCurrency" : {{ cart.currency.iso_code | json }},
+          "url" : {{ shop.url | append: variant.url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
 {% schema %}
 {
   "name": {

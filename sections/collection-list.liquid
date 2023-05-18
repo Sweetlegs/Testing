@@ -37,91 +37,78 @@
     assign container_fluid_offset = settings.container_fluid_offset | times: 2
     assign use_scroll_mobile = section.settings.use_scroll_mobile
 
-    assign row_gap = section.settings.item_gap
-    assign row_gap_mobile = section.settings.mobile_gap
-    assign expanded = section.settings.expanded
-
     assign container = section.settings.container
-    if enable_slider and expanded
+    if enable_slider
       assign container = 'w-full'
     endif
 
-    assign show_controls = false
-    if show_pagination or show_navigation
-      assign show_controls = true
-    endif
+    assign row_gap = section.settings.item_gap
+    assign row_gap_mobile = section.settings.mobile_gap
 %}
 
 {% style %}
-  {% if enable_slider and section.settings.container == 'container' and expanded %}
-      {% if layout != 'left-side' %}
-          .collection-list .collection-list__inner--overflow {
-              padding-left: 1rem;
-          }
-          @media (min-width: {{ container_width }}px) {
-              .collection-list .collection-list__inner--overflow {
-                  padding-left: calc((100vw - {{ container_width }}px)/ 2);
-              }
-          }
-      {% else %}
-          .collection-list__inner {
-              padding-left: 1rem;
-          }
-          @media (min-width: {{ container_width }}px) {
-              .collection-list__inner {
-                  padding-left: calc((100vw - {{ container_width }}px + {{ section.settings.item_gap }}px)/ 2);
-              }
-          }
-      {% endif %}
-  {% endif %}
-  {% if enable_slider and section.settings.container == 'container-fluid' and expanded %}
-      {% if layout != 'left-side' %}
-          .collection-list .collection-list__inner--overflow {
-              padding-left: 1rem;
-          }
-          @media (min-width: 1024px) {
-              .collection-list {
-                  padding-left: 0;
-                  padding-right: 0;
-              }
-              .collection-list .collection-list__inner--overflow {
-                  padding-left: 0;
-                  padding-left: calc(var(--fluid-container-offset, 6rem) / 1.25);
-              }
-          }
-          @media (min-width: {{ fluid_container_width | plus: container_fluid_offset }}px) {
-              .collection-list .collection-list__inner--overflow {
-                  padding-left: calc((100vw - {{ fluid_container_width }}px)/ 2);
-              }
-          }
-      {% else %}
-          .collection-list__inner {
-              padding-left: 1rem;
-          }
-          @media (min-width: 1024px) {
-              .collection-list__inner {
-                  padding-left: calc(var(--fluid-container-offset, 6rem) / 1.25);
-              }
-          }
-          @media (min-width: {{ fluid_container_width | plus: container_fluid_offset }}px) {
-              .collection-list__inner {
-                  padding-left: calc((100vw - {{ fluid_container_width }}px)/ 2);
-              }
-          }
-      {% endif %}
-  {% endif %}
-  {% if enable_slider and expanded %}
-    @media (min-width: 1280px) {
-      .collection-list .swiper-container {
-        margin-right: calc( 1 / {{ section.settings.items_per_row | plus: 1 }} * -20%);
-      }
-    }
-  {% endif %}
+{% if enable_slider and section.settings.container == 'container' %}
+    {% if layout != 'left-side' %}
+        .collection-list .collection-list__inner--overflow {
+            padding-left: 1rem;
+        }
+        @media (min-width: {{ container_width }}px) {
+            .collection-list .collection-list__inner--overflow {
+                padding-left: calc((100vw - {{ container_width }}px)/ 2);
+            }
+        }
+    {% else %}
+        .collection-list__inner {
+            padding-left: 1rem;
+        }
+        @media (min-width: {{ container_width }}px) {
+            .collection-list__inner {
+                padding-left: calc((100vw - {{ container_width }}px + {{ section.settings.item_gap }}px)/ 2);
+            }
+        }
+    {% endif %}
+{% endif %}
+{% if enable_slider and section.settings.container == 'container-fluid' %}
+    {% if layout != 'left-side' %}
+        .collection-list .collection-list__inner--overflow {
+            padding-left: 1rem;
+        }
+        @media (min-width: 1024px) {
+            .collection-list {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .collection-list .collection-list__inner--overflow {
+                padding-left: 0;
+                padding-left: calc(var(--fluid-container-offset, 6rem) / 1.25);
+            }
+        }
+        @media (min-width: {{ fluid_container_width | plus: container_fluid_offset }}px) {
+            .collection-list .collection-list__inner--overflow {
+                padding-left: calc((100vw - {{ fluid_container_width }}px)/ 2);
+            }
+        }
+    {% else %}
+        .collection-list__inner {
+            padding-left: 1rem;
+        }
+        @media (min-width: 1024px) {
+            .collection-list__inner {
+                padding-left: calc(var(--fluid-container-offset, 6rem) / 1.25);
+            }
+        }
+        @media (min-width: {{ fluid_container_width | plus: container_fluid_offset }}px) {
+            .collection-list__inner {
+                padding-left: calc((100vw - {{ fluid_container_width }}px)/ 2);
+            }
+        }
+    {% endif %}
+{% endif %}
 {% endstyle %}
 
 {% capture section_content %}
     {% if section.settings.heading != blank or section.settings.subheading != blank or section.settings.description != blank %}
-        {% if enable_slider and section.settings.layout != 'left-side' %}<div class="section-header__container {% if expanded %}{{ section.settings.container }}{% endif %}">{% endif %}
+        {% if enable_slider and section.settings.layout != 'left-side' %}<div class="section-header__container {{ section.settings.container }}">{% endif %}
         <div class="section__header relative w-full text-{{ section.settings.header_alignment }}{% if section.settings.layout == 'left-side' %} xl:ml-0{% endif %}">
             {% if section.settings.subheading != blank %}
                 <p class="section__subheading">{{ section.settings.subheading }}</p>
@@ -132,12 +119,10 @@
             {% if section.settings.description != blank %}
                 <div class="rte section__description">{{ section.settings.description }}</div>
             {% endif %}
-            {% if enable_slider and expanded %}
-              {% if section.settings.show_pagination or section.settings.show_navigation %}
-                <div class="collection-list__controls sf-slider__controls-wrapper {% if layout == 'left-side' %} xl:mt-10{% else %} flex items-center absolute{% endif %}">
-                    {% render 'slider-controls', custom_class: 'justify-start', show_nav: show_navigation, show_pagination: show_pagination, dots_class: 'sf__dot-dark', pagination_type: 'fraction' %}
+            {% if enable_slider %}
+                <div class="collection-list__controls{% if section.settings.hidden_slide_control_mobile %} hide-on-mb{% endif %} flex{% if layout == 'left-side' %} xl:mt-10{% else %} absolute{% endif %}">
+                    {% render 'slider-controls', custom_class: 'justify-start', show_nav: show_navigation, show_pagination: show_pagination, dots_class: 'sf__dot-dark' %}
                 </div>
-              {% endif %}
             {% endif %}
         </div>
         {% if enable_slider and section.settings.layout != 'left-side' %}</div>{% endif %}
@@ -186,14 +171,8 @@
                 {% endcase %}
             {% endfor %}
             {% if enable_slider == true %}</div> <!-- End .swiper-wrapper -->{% endif %}
+
         </div>
-        {% if enable_slider and expanded == false %}
-          {% if section.settings.show_pagination or section.settings.show_navigation %}
-            <div class="collection-list__controls collection-list__controls--bottom sf-slider__controls-wrapper text-center mt-5">
-                {% render 'slider-controls', custom_class: 'justify-start mt-0', show_nav: show_navigation, show_pagination: show_pagination, dots_class: 'sf__dot-dark', pagination_type: 'fraction' %}
-            </div>
-          {% endif %}
-        {% endif %}
     </div>
 {% endcapture %}
 
@@ -207,7 +186,14 @@
     id="sf__collection-list-{{ section.id }}"
     data-section-type="collection-list"
     data-section-id="{{ section.id }}"
-    class="collection-list collection-list--{{ layout }}{% if enable_slider %} sf-slider__fraction collection-list--slider-initialized{% endif %} sf-section-padding {{ section.settings.custom_class }}"
+    class="collection-list collection-list--{{ layout }}{% if enable_slider %} collection-list--slider-initialized{% endif %} sf-section-padding {{ section.settings.custom_class }}"
+    data-enable-slider="{{ enable_slider }}"
+    {% if enable_slider %}
+    data-gutter="{{ section.settings.item_gap }}"
+    data-items="{{ section.settings.items_per_row }}"
+    data-autoplay="{{ autorotate }}"
+    data-autoplay-speed="{{ autorotate_speed }}"
+    {% endif %}
     {% if has_bg %}
     data-bg="{{ bg_color | color_to_hsl }}"
     {% endif %}
@@ -215,31 +201,18 @@
     data-container="{{ section.settings.container }}"
     style="background-color: {{ bg_color }};--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
 >
-    <m-collection-list
-      data-enable-slider="{{ enable_slider }}"
-      {% if enable_slider %}
-      data-gutter="{{ section.settings.item_gap }}"
-      data-items="{{ section.settings.items_per_row }}"
-      data-autoplay="{{ autorotate }}"
-      data-autoplay-speed="{{ autorotate_speed }}"
-      data-pagination-type="fraction"
-      data-show-controls="{{ show_controls }}"
-      {% endif %}
-      data-expanded="{{ expanded }}"
-    >
-        <div class="{{ container }}{% if section.settings.container == 'w-full' %} px-4{% endif %}{% if has_bg == false %} section-my{% else %} section-py{% endif %}" 
-          style="--column-gap: {{ section.settings.item_gap }}px; --column-gap-mobile: {{ section.settings.mobile_gap }}px; --row-gap-mobile: {{ row_gap_mobile }}px; --row-gap: {{ row_gap }}px; --items: {{ section.settings.items_per_row | plus: 1 }}">
-          {% if layout == 'left-side' %}
-            <div class="collection-list__inner{% if section.settings.container == 'w-full' %} px-4{% endif %}{% if section.settings.hidden_slide_control_mobile %} hide-control--mobile{% endif %}">
+    <div class="{{ container }}{% if section.settings.container == 'w-full' %} px-4{% endif %}{% if has_bg == false %} section-my{% else %} section-py{% endif %}" 
+    style="--column-gap: {{ section.settings.item_gap }}px; --column-gap-mobile: {{ section.settings.mobile_gap }}px; --row-gap-mobile: {{ row_gap_mobile }}px; --row-gap: {{ row_gap }}px; --items: {{ section.settings.items_per_row | plus: 1 }}">
+        {% if layout == 'left-side' %}
+            <div class="collection-list__inner{% if section.settings.container == 'w-full' %} px-4{% endif %}{% if enable_slider %}{% if section.settings.hidden_slide_control_mobile %} pb-0{% else %} pb-[70px] md:pb-0{% endif %}{% endif %}">
                 {{ section_content }}
             </div>
-          {% else %}
-              <div class="collection-list__wrapper{% if section.settings.hidden_slide_control_mobile %} hide-control--mobile{% endif %}">
-                  {{ section_content }}
-              </div>
-          {% endif %}
-        </div>
-    </m-collection-list>
+        {% else %}
+            <div class="collection-list__wrapper {% if enable_slider %}{% if section.settings.hidden_slide_control_mobile %} pb-0{% else %} pb-[70px] md:pb-0{% endif %}{% endif %}">
+                {{ section_content }}
+            </div>
+        {% endif %}
+    </div>
 </section>
 
 {% schema %}
@@ -326,13 +299,6 @@
           "label": "Heading left side"
         }
       ]
-    },
-    {
-      "type": "checkbox",
-      "id": "expanded",
-      "label": "Expanded",
-      "default": true,
-      "info": "Work if Enable slider is checked"
     },
     {
       "type": "header",
@@ -606,28 +572,16 @@
       "category": "Collection",
       "blocks": [
         {
-          "type": "collection_block",
-          "settings": {
-            "title": "Example collection title"
-          }
+          "type": "collection_block"
         },
         {
-          "type": "collection_block",
-          "settings": {
-            "title": "Example collection title"
-          }
+          "type": "collection_block"
         },
         {
-          "type": "collection_block",
-          "settings": {
-            "title": "Example collection title"
-          }
+          "type": "collection_block"
         },
         {
-          "type": "collection_block",
-          "settings": {
-            "title": "Example collection title"
-          }
+          "type": "banner"
         }
       ]
     }

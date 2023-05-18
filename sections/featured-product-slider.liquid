@@ -1,4 +1,3 @@
-{{ 'featured-slider.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign bg_color = section.settings.background_color
   assign has_bg = false
@@ -21,6 +20,11 @@
   class="featured-slider sf-section-padding {{ section.settings.custom_class }}"
   data-section-type="featured-slider"
   data-section-id="{{ section.id }}"
+  data-autoplay="{{ section.settings.slide_autoplay }}"
+  data-timeout="{{ section.settings.autorotate_speed | times: 1000 }}"
+  data-show-pagination="{{ section.settings.show_pagination }}"
+  data-show-navigation="{{ section.settings.show_navigation }}"
+  data-container="{{ section.settings.container }}"
   {% if has_bg %}
     data-bg="{{ bg_color | color_to_hsl }}"
   {% endif %}
@@ -28,90 +32,82 @@
 >
   <div class="{{- container -}}">
     {% render 'index-section-header', section_settings: section.settings %}
-    <m-featured-slider
-      data-container="{{ section.settings.container }}"
-      data-autoplay="{{ section.settings.slide_autoplay }}"
-      data-timeout="{{ section.settings.autorotate_speed | times: 1000 }}"
-      data-show-pagination="{{ section.settings.show_pagination }}"
-      data-show-navigation="{{ section.settings.show_navigation }}"
-    >
-      <div class="featured-slider__container relative flex flex-col flex-col-reverse md:items-center{% if section.settings.image_placement == 'left' %} featured-slider--nav-right md:flex-row-reverse {% else %} md:flex-row{% endif %}">
-        <div class="w-full lg:w-1/2 px-0 lg:px-16 lg:py-8 xl:py-12 xl:px-24 relative{% if section.settings.container == 'w-full' %} py-12{% else %} py-0{% endif %}">
-          <div
-            class="featured-slider__products featured-slider__products--{{ section.settings.container }} swiper-container"
-            style="--items: 1;"
-          >
-            <div class="swiper-wrapper">
-              {% for block in section.blocks %}
-                {%- assign product = all_products[block.settings.product] -%}
-                <div class="swiper-slide {% if section.settings.container == 'container' %}xl:px-6{% else %}xl:px-12{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
-                  <div class="featured-slider__product pb-2">
-                    {% if block.settings.heading != blank or block.settings.description != blank %}
-                      <div class="featured-slider__product-content text-center mb-6">
-                        {% if block.settings.heading != blank %}
-                          <h3>{{ block.settings.heading }}</h3>
-                        {% endif %}
-                        {% if block.settings.description != blank %}
-                          <div class="rte text-color-subtext mt-[5px]">{{ block.settings.description }}</div>
-                        {% endif %}
-                      </div>
-                    {% endif %}
-                    {% if product != blank %}
-                      <div class="lg:px-5">
-                        {% render 'product-card', product: product, card_style: card_style, image_ratio: image_ratio, show_vendor: show_vendor, pcard_alignment: pcard_alignment %}
-                      </div>
-                    {% else %}
-                      <div class="text-{{ settings.pcard_alignment }}">
-                        <div style="--aspect-ratio: 1/1;" class="bg-gray-100">
-                          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-                          {{ 'collection-' | append: current | placeholder_svg_tag: 'object-cover w-full h-full transition-all duration-500 group-hover:scale-105' }}
-                        </div>
-                        <div class="block mb-2 sf__pcard-name mt-4 font-medium hover:text-color-secondary{% if settings.uppercase_prd_name %} uppercase{% endif %}">
-                          {{ 'homepage.onboarding.product_title' | t }}
-                        </div>
-                        <div class="mb-2.5 sf__pcard-price">
-                          <p class="prod__price">$19.99</p>
-                        </div>
-                      </div>
-                    {% endif %}
-                  </div>
-                </div>
-              {% endfor %}
-            </div>
-            {% if section.settings.show_navigation and section.settings.container == 'w-full' %}
-              {% render 'slider-controls', absolute: true, show_nav: true, show_pagination: false, nav_class: 'border-black', custom_class: 'hidden md:flex' %}
-            {% endif %}
-          </div>
-          <div class="swiper-pagination swiper-pagination--vertical mt-6 md:mt-0"></div>
-        </div>
-        <div class="hidden lg:block w-full lg:w-1/2 pb-4 sm:pb-0">
-          <div class="featured-slider__images swiper-container">
-            <div class="swiper-wrapper">
-              {% for block in section.blocks %}
-                {%- liquid 
-                  assign image = block.settings.image
-                  assign product = all_products[block.settings.product]
-                  if image == blank and product != blank
-                    assign image = product.featured_image
-                  endif
-                -%}
-
-                <div class="featured-slider__img swiper-slide sf__hover-scale-up" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
-                  {% if image == blank %}
-                    {{ 'image' | placeholder_svg_tag: 'sf__placeholder-svg w-full h-full no-border' }}
+    <div class="featured-slider__container relative flex flex-col flex-col-reverse md:items-center{% if section.settings.image_placement == 'left' %} featured-slider--nav-right md:flex-row-reverse {% else %} md:flex-row{% endif %}">
+      <div class="w-full lg:w-1/2 px-0 lg:px-16 lg:py-8 xl:py-12 xl:px-24 relative{% if section.settings.container == 'w-full' %} py-12{% else %} py-0{% endif %}">
+        <div
+          class="featured-slider__products featured-slider__products--{{ section.settings.container }} swiper-container"
+          style="--items: 1;"
+        >
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+              {%- assign product = all_products[block.settings.product] -%}
+              <div class="swiper-slide {% if section.settings.container == 'container' %}xl:px-6{% else %}xl:px-12{% endif %}">
+                <div class="featured-slider__product pb-2">
+                  {% if block.settings.heading != blank or block.settings.description != blank %}
+                    <div class="featured-slider__product-content text-center mb-6">
+                      {% if block.settings.heading != blank %}
+                        <h3>{{ block.settings.heading }}</h3>
+                      {% endif %}
+                      {% if block.settings.description != blank %}
+                        <div class="rte text-color-subtext mt-[5px]">{{ block.settings.description }}</div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                  {% if product != blank %}
+                    <div class="lg:px-5">
+                      {% render 'product-card', product: product, card_style: card_style, image_ratio: image_ratio, show_vendor: show_vendor, alignment: pcard_alignment %}
+                    </div>
                   {% else %}
-                    {% render 'responsive-image', image: image %}
+                    <div class="text-{{ settings.pcard_alignment }}">
+                      <div style="--aspect-ratio: 1/1;" class="bg-gray-100">
+                        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                        {{ 'collection-' | append: current | placeholder_svg_tag: 'object-cover w-full h-full transition-all duration-500 group-hover:scale-105' }}
+                      </div>
+                      <div class="block mb-2 sf__pcard-name mt-4 font-medium hover:text-color-secondary{% if settings.uppercase_prd_name %} uppercase{% endif %}">
+                        {{ 'homepage.onboarding.product_title' | t }}
+                      </div>
+                      <div class="mb-2.5 sf__pcard-price">
+                        <p class="prod__price">$19.99</p>
+                      </div>
+                    </div>
                   {% endif %}
                 </div>
-              {% endfor %}
-            </div>
+              </div>
+            {% endfor %}
+          </div>
+          {% if section.settings.show_navigation and section.settings.container == 'w-full' %}
+            {% render 'slider-controls', absolute: true, show_nav: true, show_pagination: false, nav_class: 'border-black', custom_class: 'hidden md:flex' %}
+          {% endif %}
+        </div>
+        <div class="swiper-pagination swiper-pagination--vertical mt-6 md:mt-0"></div>
+      </div>
+      <div class="hidden lg:block w-full lg:w-1/2 pb-4 sm:pb-0">
+        <div class="featured-slider__images swiper-container">
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+              {%- liquid 
+								assign image = block.settings.image
+              	assign product = all_products[block.settings.product]
+              	if image == blank and product != blank
+                	assign image = product.featured_image
+              	endif
+							-%}
+
+              <div class="featured-slider__img swiper-slide sf__hover-scale-up">
+                {% if image == blank %}
+                  {{ 'image' | placeholder_svg_tag: 'sf__placeholder-svg w-full h-full no-border' }}
+                {% else %}
+                  {% render 'responsive-image', image: image %}
+                {% endif %}
+              </div>
+            {% endfor %}
           </div>
         </div>
-        {% if section.settings.show_navigation and section.settings.container != 'w-full' %}
-          {% render 'slider-controls', absolute: true, show_nav: true, show_pagination: false, nav_class: 'bg-white border-0', custom_class: 'hidden md:flex' %}
-        {% endif %}
       </div>
-    </m-featured-slider>
+      {% if section.settings.show_navigation and section.settings.container != 'w-full' %}
+        {% render 'slider-controls', absolute: true, show_nav: true, show_pagination: false, nav_class: 'bg-white border-0', custom_class: 'hidden md:flex' %}
+      {% endif %}
+    </div>
   </div>
 </section>
 
@@ -267,10 +263,6 @@
         {
           "value": "4",
           "label": "Style 4"
-        },
-        {
-          "value": "5",
-          "label": "Style 5"
         }
       ]
     },

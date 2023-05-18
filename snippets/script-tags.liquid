@@ -32,8 +32,4 @@ window.addEventListener('shopify:section:load', function (e) {
   {%- endif -%}
 })
 {%- endif -%}
-
-// Fixed: Largest Contentful Paint image was lazily loaded
-const first_image = document.querySelector('#MainContent .shopify-section img');
-if (first_image) first_image.setAttribute('loading', 'auto');
 </script>

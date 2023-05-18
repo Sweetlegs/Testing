@@ -144,11 +144,7 @@
       "zipcode_validate": "Codul poștal nu poate fi necompletat",
       "shipping_rates_result": "Am găsit {{count}} tarifele de expediere pentru adresa dvs.",
       "no_found_shipping_rate": "Nu există tarife de expediere pentru adresa dvs.",
-      "recommend_title": "Recomandare pentru tine",
-      "delivery_days": {
-        "one": "zi",
-        "other": "Zile"
-      }
+      "recommend_title": "Recomandare pentru tine"
     },
     "label": {
       "product": "Produs",

@@ -30,17 +30,28 @@
             <img src="{{ logo_svg }}" alt="{{ logo_alt }}" width="auto" height="auto" loading="lazy">
           </div>
         {% else %}
-          <div class="sf-image sf-logo-default">
-            {% if default_logo != blank %}
-              {{ section.settings.logo | image_url: width: section.settings.width | image_tag:
-                class: 'inline-block',
-                widths: '50, 100, 150, 200, 250, 300, 400, 500',
-                alt: logo_alt
-              }}
-            {% else %}
-              <strong>{{ header_settings.logo_text | default: shop.name }}</strong>
-            {% endif %}
-          </div>
+          {% comment %} {% render 'responsive-image', image_class: 'inline-block', image: default_logo, wrapper_class: 'sf-logo-default', alt: logo_alt %} {% endcomment %}
+          <responsive-image class="sf-image sf-logo-default" data-image-loading style="--aspect-ratio: {{ default_logo.aspect_ratio }};">
+            <img
+                srcset="{%- if default_logo.width >= 165 -%}{{ default_logo | image_url: width: 165 }} 165w,{%- endif -%}
+                    {%- if default_logo.width >= 360 -%}{{ default_logo | image_url: width: 360 }} 360w,{%- endif -%}
+                    {%- if default_logo.width >= 533 -%}{{ default_logo | image_url: width: 533 }} 533w,{%- endif -%}
+                    {%- if default_logo.width >= 720 -%}{{ default_logo | image_url: width: 720 }} 720w,{%- endif -%}
+                    {%- if default_logo.width >= 940 -%}{{ default_logo | image_url: width: 940 }} 940w,{%- endif -%}
+                    {%- if default_logo.width >= 1066 -%}{{ default_logo | image_url: width: 1066 }} 1066w,{%- endif -%}
+                    {%- if default_logo.width >= 1500 -%}{{ default_logo | image_url: width: 1500 }} 1500w,{%- endif -%}
+                    {%- if default_logo.width >= 1780 -%}{{ default_logo | image_url: width: 1780 }} 1780w,{%- endif -%}
+                    {%- if default_logo.width >= 2000 -%}{{ default_logo | image_url: width: 2000 }} 2000w,{%- endif -%}
+                    {{ default_logo | image_url }} {{ default_logo.width }}w"
+                src="{{ default_logo | image_url: width: 360 }}"
+                sizes="(min-width: {{ settings.container_width }}px) {{ settings.container_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+                alt="{{ logo_alt | default: default_logo.alt | escape }}"
+                class="inline-block"
+                width="{{ default_logo.width }}"
+                height="{{ default_logo.height }}"
+                {{ image_attributes }}
+            >
+          </responsive-image>
         {% endif %}
 
         {% if transparent_on_top %}
@@ -58,16 +69,28 @@
               <img src="{{ logo_transparent_svg }}" alt="{{ logo_alt }}" width="auto" height="auto" loading="lazy">
             </div>
           {% else %}
-            {%- assign logo_height = section.settings.logo_max_width | divided_by: logo_transparent.aspect_ratio -%}
-            <div class="sf-image sf-logo-transparent">
-              {{ logo_transparent | image_url: width: section.settings.width | image_tag:
-                class: 'inline-block',
-                widths: '50, 100, 150, 200, 250, 300, 400, 500',
-                height: logo_height,
-                width: section.settings.logo_max_width,
-                alt: logo_alt
-              }}
-            </div>
+            {% comment %} {% render 'responsive-image', image_class: 'inline-block', image: logo_transparent, wrapper_class: 'sf-logo-transparent', alt: logo_alt %} {% endcomment %}
+            <responsive-image class="sf-image sf-logo-transparent" data-image-loading style="--aspect-ratio: {{ logo_transparent.aspect_ratio }};">
+              <img
+                  srcset="{%- if logo_transparent.width >= 165 -%}{{ logo_transparent | image_url: width: 165 }} 165w,{%- endif -%}
+                      {%- if logo_transparent.width >= 360 -%}{{ logo_transparent | image_url: width: 360 }} 360w,{%- endif -%}
+                      {%- if logo_transparent.width >= 533 -%}{{ logo_transparent | image_url: width: 533 }} 533w,{%- endif -%}
+                      {%- if logo_transparent.width >= 720 -%}{{ logo_transparent | image_url: width: 720 }} 720w,{%- endif -%}
+                      {%- if logo_transparent.width >= 940 -%}{{ logo_transparent | image_url: width: 940 }} 940w,{%- endif -%}
+                      {%- if logo_transparent.width >= 1066 -%}{{ logo_transparent | image_url: width: 1066 }} 1066w,{%- endif -%}
+                      {%- if logo_transparent.width >= 1500 -%}{{ logo_transparent | image_url: width: 1500 }} 1500w,{%- endif -%}
+                      {%- if logo_transparent.width >= 1780 -%}{{ logo_transparent | image_url: width: 1780 }} 1780w,{%- endif -%}
+                      {%- if logo_transparent.width >= 2000 -%}{{ logo_transparent | image_url: width: 2000 }} 2000w,{%- endif -%}
+                      {{ logo_transparent | image_url }} {{ logo_transparent.width }}w"
+                  src="{{ logo_transparent | image_url: width: 360 }}"
+                  sizes="(min-width: {{ settings.container_width }}px) {{ settings.container_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+                  alt="{{ logo_alt | default: logo_transparent.alt | escape }}"
+                  class="inline-block"
+                  width="{{ logo_transparent.width }}"
+                  height="{{ logo_transparent.height }}"
+                  {{ image_attributes }}
+              >
+            </responsive-image>
           {% endif %}
         {% endif %}
       </a>

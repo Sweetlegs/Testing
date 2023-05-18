@@ -144,11 +144,7 @@
       "zipcode_validate": "우편 번호는 비워 둘 수 없습니다.",
       "shipping_rates_result": "귀하의 주소에 대한 {{count}} 배송료를 찾았습니다.",
       "no_found_shipping_rate": "주소에 대한 배송료는 없습니다.",
-      "recommend_title": "당신을 위한 추천",
-      "delivery_days": {
-        "one": "하루",
-        "other": "일"
-      }
+      "recommend_title": "당신을 위한 추천"
     },
     "label": {
       "product": "제품",

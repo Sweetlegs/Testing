@@ -7,7 +7,7 @@
 
 <a
     href="{{ routes.cart_url }}"
-    class="{{ display_class | strip }} {{ icon_class | strip }} px-2 whitespace-nowrap cursor-pointer cart-icon"
+    class="{{ display_class | strip }} {% unless customer.tags contains 'wholesale' %}{{ icon_class | strip }} {% endunless %} px-2 whitespace-nowrap cursor-pointer cart-icon"
     style="{% if display_by == 'text' %} margin-right: 0; {% endif %}"
 >
     {% if display_by == 'full-info' %}

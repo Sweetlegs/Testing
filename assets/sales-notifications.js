@@ -5,14 +5,17 @@
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4942);
-/* provided dependency */ var MinimogSettings = __webpack_require__(4558)["GQ"];
+/* provided dependency */ var MinimogSettings = __webpack_require__(4558)["MinimogSettings"];
+
 
 class I18N {
   constructor() {
-    var _MinimogSettings$shop,
-      _this = this;
-    (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this, "shop_locale", ((_MinimogSettings$shop = MinimogSettings.shop_locale) === null || _MinimogSettings$shop === void 0 ? void 0 : _MinimogSettings$shop.current) || 'en');
+    var _this = this;
+
+    (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this, "shop_locale", MinimogSettings.shop_locale?.current || 'en');
+
     (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this, "locales", {
       'default': {
         date_format: 'MM/dd/yyyy',
@@ -54,32 +57,37 @@ class I18N {
         preorder_end_note: "🔥 Preorder will end at <strong>{end_time}</strong>"
       }
     });
-    // translate
+
     (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this, "tr", function (key) {
-      var _locales$shop_locale;
       let _params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
       const {
         locales,
         shop_locale
       } = _this;
-      let text = ((_locales$shop_locale = locales[shop_locale]) === null || _locales$shop_locale === void 0 ? void 0 : _locales$shop_locale[key]) || locales['default'][key] || `Foxkit: translation missing for ${key}!`;
+      let text = locales[shop_locale]?.[key] || locales['default'][key] || `Foxkit: translation missing for ${key}!`;
       const params = Object.keys(_params);
+
       if (params.length) {
         Object.entries(_params).forEach(_ref => {
           let [k, v] = _ref;
           return text = text.replace(`{${k}}`, v);
         });
       }
+
       return text;
     });
+
     (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this, "setLocales", (locale, data) => {
       this.locales[locale] = data;
     });
   }
+
 }
+
 const i18n = window.__i18n || new I18N();
 window.__i18n = window.__i18n || i18n;
-/* harmony default export */ __webpack_exports__["Z"] = (i18n);
+/* harmony default export */ __webpack_exports__["default"] = (i18n);
 
 /***/ }),
 
@@ -87,12 +95,14 @@ window.__i18n = window.__i18n || i18n;
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GQ": function() { return /* binding */ MinimogSettings; },
-/* harmony export */   "LE": function() { return /* binding */ MinimogTheme; },
-/* harmony export */   "rZ": function() { return /* binding */ MinimogStrings; }
+/* harmony export */   "MinimogEvents": function() { return /* binding */ MinimogEvents; },
+/* harmony export */   "MinimogTheme": function() { return /* binding */ MinimogTheme; },
+/* harmony export */   "MinimogSettings": function() { return /* binding */ MinimogSettings; },
+/* harmony export */   "MinimogStrings": function() { return /* binding */ MinimogStrings; },
+/* harmony export */   "MinimogLibs": function() { return /* binding */ MinimogLibs; }
 /* harmony export */ });
-/* unused harmony exports MinimogEvents, MinimogLibs */
 /* harmony import */ var _utils_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8971);
 /* harmony import */ var _libs_loadjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9280);
 /* harmony import */ var _libs_loadjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_libs_loadjs__WEBPACK_IMPORTED_MODULE_0__);
@@ -114,29 +124,32 @@ const MinimogLibs = window.MinimogLibs || {};
 
 __loadjs = function () {
   var h = function () {},
-    c = {},
-    u = {},
-    f = {};
+      c = {},
+      u = {},
+      f = {};
+
   function o(e, n) {
     if (e) {
       var r = f[e];
       if (u[e] = n, r) for (; r.length;) r[0](e, n), r.splice(0, 1);
     }
   }
+
   function l(e, n) {
     e.call && (e = {
       success: e
     }), n.length ? (e.error || h)(n) : (e.success || h)(e);
   }
+
   function d(r, t, s, i) {
     var c,
-      o,
-      e = document,
-      n = s.async,
-      u = (s.numRetries || 0) + 1,
-      f = s.before || h,
-      l = r.replace(/[\?|#].*$/, ""),
-      a = r.replace(/^(css|img)!/, "");
+        o,
+        e = document,
+        n = s.async,
+        u = (s.numRetries || 0) + 1,
+        f = s.before || h,
+        l = r.replace(/[\?|#].*$/, ""),
+        a = r.replace(/^(css|img)!/, "");
     i = i || 0, /(^css!|\.css$)/.test(l) ? ((o = e.createElement("link")).rel = "stylesheet", o.href = a, (c = "hideFocus" in o) && o.relList && (c = 0, o.rel = "preload", o.as = "style")) : /(^img!|\.(png|gif|jpg|svg|webp)$)/.test(l) ? (o = e.createElement("img")).src = a : ((o = e.createElement("script")).src = r, o.async = void 0 === n || n), !(o.onload = o.onerror = o.onbeforeload = function (e) {
       var n = e.type[0];
       if (c) try {
@@ -144,30 +157,37 @@ __loadjs = function () {
       } catch (e) {
         18 != e.code && (n = "e");
       }
+
       if ("e" == n) {
         if ((i += 1) < u) return d(r, t, s, i);
       } else if ("preload" == o.rel && "style" == o.as) return o.rel = "stylesheet";
+
       t(r, n, e.defaultPrevented);
     }) !== f(r, o) && e.head.appendChild(o);
   }
+
   function r(e, n, r) {
     var t, s;
+
     if (n && n.trim && (t = n), s = (t ? r : n) || {}, t) {
       if (t in c) throw "LoadJS";
       c[t] = !0;
     }
+
     function i(n, r) {
       !function (e, t, n) {
         var r,
-          s,
-          i = (e = e.push ? e : [e]).length,
-          c = i,
-          o = [];
+            s,
+            i = (e = e.push ? e : [e]).length,
+            c = i,
+            o = [];
+
         for (r = function (e, n, r) {
           if ("e" == n && o.push(e), "b" == n) {
             if (!r) return;
             o.push(e);
           }
+
           --i || t(o);
         }, s = 0; s < c; s++) d(e[s], r, n);
       }(e, function (e) {
@@ -177,18 +197,21 @@ __loadjs = function () {
         }, e), o(t, e);
       }, s);
     }
+
     if (s.returnPromise) return new Promise(i);
     i();
   }
+
   return r.ready = function (e, n) {
     return function (e, r) {
       e = e.push ? e : [e];
       var n,
-        t,
-        s,
-        i = [],
-        c = e.length,
-        o = c;
+          t,
+          s,
+          i = [],
+          c = e.length,
+          o = c;
+
       for (n = function (e, n) {
         n.length && i.push(e), --o || r(i);
       }; c--;) t = e[c], (s = u[t]) ? n(t, s) : (f[t] = f[t] || []).push(n);
@@ -210,81 +233,93 @@ __loadjs = function () {
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mdn_polyfills_Node_prototype_append_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2422);
 /* harmony import */ var mdn_polyfills_Node_prototype_append_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mdn_polyfills_Node_prototype_append_js__WEBPACK_IMPORTED_MODULE_0__);
+
 
 class JSX {
   constructor() {
     this.component = this.component.bind(this);
     return this.component;
   }
+
   component(tagName, attrs) {
     for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
       children[_key - 2] = arguments[_key];
     }
+
     if (typeof tagName === 'function') {
       // Override children
-      return tagName({
-        ...attrs,
+      return tagName({ ...attrs,
         children
       });
     }
+
     if (children) {
       children = children.filter(val => val !== null);
     }
+
     if (attrs) {
       if (attrs.class) {
         attrs.className = attrs.class;
       }
-      delete attrs.children;
-    }
 
-    // Normal DOM node tagName
+      delete attrs.children;
+    } // Normal DOM node tagName
+
+
     function createWithAttrs(tagName, attrs) {
       attrs = attrs || {};
       let elem = document.createElement(tagName);
+
       try {
         elem = Object.assign(elem, attrs);
       } catch {
         const attrKeys = Object.keys(attrs);
+
         for (let i = 0; i < attrKeys.length; i++) {
           if (attrs[i] !== 'dataSet') {
             elem.setAttribute(attrKeys[i], attrs[attrKeys[i]]);
           }
         }
       }
+
       return elem;
     }
-    let elem = tagName !== 'fragment' ? createWithAttrs(tagName, attrs) : document.createDocumentFragment();
-    // Evaluate SVG DOM node tagName
 
+    let elem = tagName !== 'fragment' ? createWithAttrs(tagName, attrs) : document.createDocumentFragment(); // Evaluate SVG DOM node tagName
     // All svg inner tags: https://developer.mozilla.org/en-US/docs/Web/SVG/Element
+
     const svgInnerTags = ['svg', 'path', 'rect', 'text', 'circle', 'g'];
+
     if (svgInnerTags.indexOf(tagName) !== -1) {
       elem = document.createElementNS('http://www.w3.org/2000/svg', tagName);
+
       for (const key in attrs) {
         const attrName = key === 'className' ? 'class' : key;
         elem.setAttribute(attrName, attrs[key]);
       }
-    }
+    } // Populate children to created DOM Node
 
-    // Populate children to created DOM Node
+
     for (const child of children) {
       if (Array.isArray(child)) {
         elem.append(...child);
       } else {
         elem.append(child);
       }
-    }
+    } // After elements are created
 
-    // After elements are created
-    if (attrs !== null && attrs !== void 0 && attrs.dataSet) {
+
+    if (attrs?.dataSet) {
       for (const key in attrs.dataSet) {
         if (Object.prototype.hasOwnProperty.call(attrs.dataSet, key)) {
           elem.dataset[key] = attrs.dataSet[key];
         }
       }
     }
+
     if (attrs && !window.__aleartedJSXData) {
       if (Object.keys(attrs).find(key => key.match(/^data-/))) {
         console.trace(`Your "${tagName}" component uses a data-* attribute! Use dataSet instead!!`);
@@ -292,7 +327,8 @@ class JSX {
         window.__aleartedJSXData = true;
       }
     }
-    if (attrs !== null && attrs !== void 0 && attrs.ref) {
+
+    if (attrs?.ref) {
       // Create a custom reference to DOM node
       if (typeof attrs.ref === 'function') {
         attrs.ref(elem);
@@ -300,26 +336,28 @@ class JSX {
         attrs.ref = elem;
       }
     }
-    if (attrs !== null && attrs !== void 0 && attrs.on) {
+
+    if (attrs?.on) {
       Object.entries(attrs.on).forEach(_ref => {
         let [event, handler] = _ref;
         elem.addEventListener(event, handler);
       });
-    }
+    } // Append style attributes to created DOM node
 
-    // Append style attributes to created DOM node
-    if (attrs !== null && attrs !== void 0 && attrs.style) {
+
+    if (attrs?.style) {
       Object.entries(attrs.style).forEach(_ref2 => {
         let [property, value] = _ref2;
         elem.style.setProperty(property, value);
-      });
-      // Object.assign(elem.style, attrs.style);
+      }); // Object.assign(elem.style, attrs.style);
     }
 
     return elem;
   }
+
 }
-/* harmony default export */ __webpack_exports__["Z"] = (new JSX());
+
+/* harmony default export */ __webpack_exports__["default"] = (new JSX());
 
 /***/ }),
 
@@ -339,6 +377,7 @@ const addEventDelegate = _ref => {
     handler,
     capture = false
   } = _ref;
+
   const listener = function (e) {
     // loop parent nodes from the target to the delegation node
     for (let target = e.target; target && target !== this; target = target.parentNode) {
@@ -348,6 +387,7 @@ const addEventDelegate = _ref => {
       }
     }
   };
+
   context.addEventListener(event, listener, capture);
   return () => {
     context.removeEventListener(event, listener, capture);
@@ -357,16 +397,20 @@ class Event {
   constructor() {
     this.events = {};
   }
+
   get evts() {
     return Object.keys(this.events);
   }
+
   subscribe(event, handler) {
     this.events[event] = this.events[event] || [];
     this.events[event].push(handler);
     return () => this.unSubscribe(event, handler);
   }
+
   unSubscribe(event, handler) {
     const handlers = this.events[event];
+
     if (handlers && Array.isArray(handlers)) {
       for (let i = 0; i < handlers.length; i++) {
         if (handlers[i] === handler) {
@@ -376,10 +420,12 @@ class Event {
       }
     }
   }
+
   emit(event) {
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
+
     console.groupCollapsed(`Event emitted: ${event}`);
     console.trace();
     console.groupEnd();
@@ -387,6 +433,7 @@ class Event {
       handler(...args);
     });
   }
+
 }
 
 /***/ }),
@@ -397,12 +444,13 @@ class Event {
 !function () {
   function t() {
     var e = Array.prototype.slice.call(arguments),
-      n = document.createDocumentFragment();
+        n = document.createDocumentFragment();
     e.forEach(function (e) {
       var t = e instanceof Node;
       n.appendChild(t ? e : document.createTextNode(String(e)));
     }), this.appendChild(n);
   }
+
   [Element.prototype, Document.prototype, DocumentFragment.prototype].forEach(function (e) {
     e.hasOwnProperty("append") || Object.defineProperty(e, "append", {
       configurable: !0,
@@ -422,10 +470,7 @@ class Event {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": function() { return /* binding */ _defineProperty; }
 /* harmony export */ });
-/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7343);
-
 function _defineProperty(obj, key, value) {
-  key = (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(key);
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -436,66 +481,8 @@ function _defineProperty(obj, key, value) {
   } else {
     obj[key] = value;
   }
+
   return obj;
-}
-
-/***/ }),
-
-/***/ 5512:
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _toPrimitive; }
-/* harmony export */ });
-/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1002);
-
-function _toPrimitive(input, hint) {
-  if ((0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(input) !== "object" || input === null) return input;
-  var prim = input[Symbol.toPrimitive];
-  if (prim !== undefined) {
-    var res = prim.call(input, hint || "default");
-    if ((0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(res) !== "object") return res;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return (hint === "string" ? String : Number)(input);
-}
-
-/***/ }),
-
-/***/ 7343:
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _toPropertyKey; }
-/* harmony export */ });
-/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1002);
-/* harmony import */ var _toPrimitive_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5512);
-
-
-function _toPropertyKey(arg) {
-  var key = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(arg, "string");
-  return (0,_typeof_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z)(key) === "symbol" ? key : String(key);
-}
-
-/***/ }),
-
-/***/ 1002:
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _typeof; }
-/* harmony export */ });
-function _typeof(obj) {
-  "@babel/helpers - typeof";
-
-  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  }, _typeof(obj);
 }
 
 /***/ })
@@ -556,6 +543,17 @@ function _typeof(obj) {
 /******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
 /******/ 	}();
 /******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
@@ -565,7 +563,7 @@ var __webpack_exports__ = {};
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
 var defineProperty = __webpack_require__(4942);
 ;// CONCATENATED MODULE: ./src/js/components/LazyImage.jsx
-/* provided dependency */ var createElement = __webpack_require__(6295)["Z"];
+/* provided dependency */ var createElement = __webpack_require__(6295)["default"];
 /* harmony default export */ function LazyImage(props) {
   const {
     src,
@@ -578,21 +576,23 @@ var defineProperty = __webpack_require__(4942);
   const image = createElement("img", {
     style: style,
     className: `transition-opacity opacity-0 ${className}`,
-    src: `${src}&width=300`,
-    loading: "lazy",
+    src: src,
     alt: alt
   });
   image.addEventListener('load', imgLoaded);
   image.addEventListener('error', imgError);
+
   if (image.complete && image.naturalWidth) {
     imgLoaded();
   }
+
   function imgLoaded() {
     onLoad && onLoad();
     image.classList.add('opacity-100');
     image.removeEventListener('load', imgLoaded);
     image.removeEventListener('error', imgError);
   }
+
   function imgError(err) {
     console.error('Failed to load LazyImage. ', err, props);
     onError && onError();
@@ -600,6 +600,7 @@ var defineProperty = __webpack_require__(4942);
     image.removeEventListener('load', imgLoaded);
     image.removeEventListener('error', imgError);
   }
+
   return image;
 }
 ;// CONCATENATED MODULE: ./node_modules/@shopify/theme-images/images.js
@@ -616,40 +617,40 @@ var defineProperty = __webpack_require__(4942);
  * @param {Array} images - A list of image urls
  * @param {String} size - A shopify image size attribute
  */
-
 function preload(images, size) {
   if (typeof images === 'string') {
     images = [images];
   }
+
   for (let i = 0; i < images.length; i++) {
     const image = images[i];
     loadImage(getSizedImageUrl(image, size));
   }
 }
-
 /**
  * Loads and caches an image in the browsers cache.
  * @param {string} path - An image url
  */
+
 function loadImage(path) {
   new Image().src = path;
 }
-
 /**
  * Find the Shopify image attribute size
  *
  * @param {string} src
  * @returns {null}
  */
+
 function imageSize(src) {
   const match = src.match(/.+_((?:pico|icon|thumb|small|compact|medium|large|grande)|\d{1,4}x\d{0,4}|x\d{1,4})[_\.@]/);
+
   if (match) {
     return match[1];
   } else {
     return null;
   }
 }
-
 /**
  * Adds a Shopify size attribute to a URL
  *
@@ -657,14 +658,18 @@ function imageSize(src) {
  * @param size
  * @returns {*}
  */
+
 function getSizedImageUrl(src, size) {
   if (size === null) {
     return src;
   }
+
   if (size === 'master') {
     return removeProtocol(src);
   }
+
   const match = src.match(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?$/i);
+
   if (match) {
     const prefix = src.split(match[0]);
     const suffix = match[0];
@@ -677,16 +682,16 @@ function removeProtocol(path) {
   return path.replace(/http(s)?:/, '');
 }
 ;// CONCATENATED MODULE: ./src/js/foxkit/helpers.js
-/* provided dependency */ var MinimogSettings = __webpack_require__(4558)["GQ"];
-/* provided dependency */ var helpers_createElement = __webpack_require__(6295)["Z"];
-/* provided dependency */ var i18n = __webpack_require__(7345)["Z"];
-/* provided dependency */ var MinimogTheme = __webpack_require__(4558)["LE"];
+/* provided dependency */ var MinimogSettings = __webpack_require__(4558)["MinimogSettings"];
+/* provided dependency */ var helpers_createElement = __webpack_require__(6295)["default"];
+/* provided dependency */ var i18n = __webpack_require__(7345)["default"];
+/* provided dependency */ var MinimogTheme = __webpack_require__(4558)["MinimogTheme"];
 if (!String.prototype.capitalize) {
   String.prototype.capitalize = function () {
-    var _this$, _this$$toUpperCase;
-    return this.replace(this[0], (_this$ = this[0]) === null || _this$ === void 0 ? void 0 : (_this$$toUpperCase = _this$.toUpperCase) === null || _this$$toUpperCase === void 0 ? void 0 : _this$$toUpperCase.call(_this$));
+    return this.replace(this[0], this[0]?.toUpperCase?.());
   };
 }
+
 function handleSubscribe(data) {
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -708,6 +713,7 @@ async function applyDiscountCode(code) {
 }
 function copyToClipboard(value, button) {
   navigator.clipboard.writeText(value);
+
   if (button) {
     button.classList.add('copied');
     button.innerText = window.MinimogStrings.copied || 'Copied';
@@ -731,16 +737,15 @@ function addToCart() {
       body: JSON.stringify(data)
     }).then(response => response.json()).then(data => {
       resolve(data);
-      const addedItem = data === null || data === void 0 ? void 0 : data.items[0];
+      const addedItem = data?.items[0];
       addedItem.source = 'quantity-upsell';
       window.Shopify.onItemAdded(addedItem);
     }).catch(reject);
   });
 }
 function getDiscountSummary(discount) {
-  var _window$Shopify, _window$Shopify$curre;
   const discountText = helpers_createElement("span", null);
-  const discountValue = (discount === null || discount === void 0 ? void 0 : discount.type) === 'PERCENTAGE' ? `${discount === null || discount === void 0 ? void 0 : discount.value}%` : formatMoney((discount === null || discount === void 0 ? void 0 : discount.value) * 100 * Number(((_window$Shopify = window.Shopify) === null || _window$Shopify === void 0 ? void 0 : (_window$Shopify$curre = _window$Shopify.currency) === null || _window$Shopify$curre === void 0 ? void 0 : _window$Shopify$curre.rate) || 1), MinimogSettings.money_format);
+  const discountValue = discount?.type === 'PERCENTAGE' ? `${discount?.value}%` : formatMoney(discount?.value * 100 * Number(window.Shopify?.currency?.rate || 1), MinimogSettings.money_format);
   discountText.innerHTML = i18n.tr('discount_summary', {
     'discount_value': discountValue
   });
@@ -748,6 +753,7 @@ function getDiscountSummary(discount) {
 }
 function lightOrDark(color) {
   var r, g, b, hsp;
+
   if (color.match(/^rgb/)) {
     [, r, g, b] = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
   } else {
@@ -756,30 +762,33 @@ function lightOrDark(color) {
     g = color >> 8 & 255;
     b = color & 255;
   }
+
   hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
   return hsp > 127.5 ? 'light' : 'dark';
 }
 const updateCartAttributes = offer => {
   return new Promise((resolve, reject) => {
     try {
-      var _MinimogTheme, _MinimogTheme$Cart;
-      if (!offer || !(offer !== null && offer !== void 0 && offer.offer_id)) return;
+      if (!offer || !offer?.offer_id) return;
       const {
         attributes = {}
-      } = ((_MinimogTheme = MinimogTheme) === null || _MinimogTheme === void 0 ? void 0 : (_MinimogTheme$Cart = _MinimogTheme.Cart) === null || _MinimogTheme$Cart === void 0 ? void 0 : _MinimogTheme$Cart.cart) || {};
+      } = MinimogTheme?.Cart?.cart || {};
       let {
         _foxCartDiscounts
       } = attributes;
       let newAttributes = [];
+
       if (_foxCartDiscounts) {
         _foxCartDiscounts = JSON.parse(_foxCartDiscounts);
+
         const found = _foxCartDiscounts.find(d => JSON.parse(d).product_id === offer.product_id);
+
         if (found) return;
         newAttributes = [..._foxCartDiscounts];
       }
+
       newAttributes.push(JSON.stringify(offer));
-      fetchJSON('/cart/update.js', {
-        ...getRequestDefaultConfigs(),
+      fetchJSON('/cart/update.js', { ...getRequestDefaultConfigs(),
         method: 'POST',
         body: JSON.stringify({
           attributes: {
@@ -798,13 +807,15 @@ const updateCartAttributes = offer => {
 };
 const isMobile = () => {
   let check = false;
+
   (function (a) {
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true;
   })(navigator.userAgent || navigator.vendor || window.opera);
+
   return check;
 };
 ;// CONCATENATED MODULE: ./src/js/components/SalePopup.jsx
-/* provided dependency */ var SalePopup_createElement = __webpack_require__(6295)["Z"];
+/* provided dependency */ var SalePopup_createElement = __webpack_require__(6295)["default"];
 // eslint-disable-next-line no-unused-vars
 
 
@@ -817,17 +828,16 @@ const isMobile = () => {
     time,
     handleRemove,
     handleMouseEnter,
-    handleMouseLeave,
-    position
+    handleMouseLeave
   } = _ref;
   const {
     title,
     handle,
     image
   } = product;
-  const aspectRatio = (image === null || image === void 0 ? void 0 : image.width) / (image === null || image === void 0 ? void 0 : image.height);
+  const aspectRatio = image?.width / image?.height;
   return SalePopup_createElement("div", {
-    className: `sale-pop sale-pop__${position} fixed transition-all duration-300 opacity-0 translate-y-1/3 ${hideOnMobile ? 'hide-on-mobile' : ''}`,
+    className: `sale-pop fixed transition-all duration-300 opacity-0 translate-y-1/3 ${hideOnMobile ? 'hide-on-mobile' : ''}`,
     style: {
       'box-shadow': '0 0 10px 0 rgba(0, 0, 0, 0.09)',
       width: '380px',
@@ -907,25 +917,34 @@ const isMobile = () => {
   })))));
 }
 ;// CONCATENATED MODULE: ./src/js/modules/sales-notifications.js
-/* provided dependency */ var sales_notifications_createElement = __webpack_require__(6295)["Z"];
-/* provided dependency */ var MinimogStrings = __webpack_require__(4558)["rZ"];
+/* provided dependency */ var sales_notifications_createElement = __webpack_require__(6295)["default"];
+/* provided dependency */ var MinimogStrings = __webpack_require__(4558)["MinimogStrings"];
 
 // eslint-disable-next-line no-unused-vars
+
 
 class SalesNotifications {
   constructor() {
     let settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     (0,defineProperty/* default */.Z)(this, "shuffleProducts", []);
+
     (0,defineProperty/* default */.Z)(this, "popupItem", null);
+
     (0,defineProperty/* default */.Z)(this, "showTimeoutId", -1);
+
     (0,defineProperty/* default */.Z)(this, "removeTimeoutId", -1);
+
     (0,defineProperty/* default */.Z)(this, "transitionDuration", 300);
+
     (0,defineProperty/* default */.Z)(this, "showCount", 0);
+
     (0,defineProperty/* default */.Z)(this, "showPopup", () => {
       if (this.popupItem) this.removePopup();
       if (this.showCount >= this.settings.maximum) return;
       setTimeout(() => {
-        const product = this.shuffleProducts.splice(Math.random() * this.shuffleProducts.length | 0, 1)[0];
+        const product = this.shuffleProducts.splice(Math.random() * this.shuffleProducts.length | 0, 1)[0]; // console.log('=========> show prod sale popup', product, this.shuffleProducts, this.showCount + 1)
+
         if (product) {
           const {
             message,
@@ -938,21 +957,23 @@ class SalesNotifications {
             hideOnMobile: this.settings.hideOnMobile,
             handleRemove: this.handleClickRemove,
             handleMouseEnter: this.handleMouseEnter,
-            handleMouseLeave: this.handleMouseLeave,
-            position: this.settings.position
+            handleMouseLeave: this.handleMouseLeave
           });
           document.body.appendChild(this.popupItem);
           setTimeout(() => this.popupItem.classList.add('show'), 50);
           this.removeTimeoutId = setTimeout(this.removePopup, this.settings.duration * 1000);
           this.showCount += 1;
+
           if (!this.shuffleProducts.length) {
             this.shuffleProducts = Array.from(this.settings.products);
           }
+
           const delayTime = this.getRandomDelayTime();
           this.showTimeoutId = setTimeout(this.showPopup, delayTime);
         }
       }, this.transitionDuration);
     });
+
     (0,defineProperty/* default */.Z)(this, "generateData", () => {
       const {
         names = [],
@@ -963,46 +984,53 @@ class SalesNotifications {
       const randomName = names[Math.random() * names.length | 0].trim();
       const randomLocation = locations[Math.random() * locations.length | 0].trim();
       const randomTime = this.generateTime();
-      const message = title === null || title === void 0 ? void 0 : title.replace("{{name}}", randomName).replace("{{location}}", randomLocation);
-      const time = timeTemplate === null || timeTemplate === void 0 ? void 0 : timeTemplate.replace("{{time}}", randomTime).replace("{{location}}", randomLocation);
+      const message = title?.replace("{{name}}", randomName).replace("{{location}}", randomLocation);
+      const time = timeTemplate?.replace("{{time}}", randomTime).replace("{{location}}", randomLocation);
       return {
         message,
         time
       };
     });
+
     (0,defineProperty/* default */.Z)(this, "generateTime", () => {
       const units = [MinimogStrings.mins, MinimogStrings.hours];
       const randomInteger = Math.floor(Math.random() * 54) + 5;
       let unit = units[Math.random() * units.length | 0];
+
       if (randomInteger > 12) {
         unit = units[0];
       }
+
       return `${randomInteger} ${unit}`;
     });
+
     (0,defineProperty/* default */.Z)(this, "handleMouseEnter", () => {
       clearTimeout(this.removeTimeoutId);
       clearTimeout(this.showTimeoutId);
     });
+
     (0,defineProperty/* default */.Z)(this, "handleMouseLeave", () => {
       this.removeTimeoutId = setTimeout(this.removePopup, this.settings.duration * 1000);
       const delayTime = this.getRandomDelayTime();
       this.showTimeoutId = setTimeout(this.showPopup, delayTime);
     });
+
     (0,defineProperty/* default */.Z)(this, "handleClickRemove", () => {
       this.removePopup();
       const delayTime = this.getRandomDelayTime();
       this.showTimeoutId = setTimeout(this.showPopup, delayTime);
     });
+
     (0,defineProperty/* default */.Z)(this, "removePopup", () => {
       clearTimeout(this.removeTimeoutId);
       if (!this.popupItem) return;
       this.popupItem.classList.remove('show');
       setTimeout(() => {
-        var _this$popupItem, _this$popupItem$remov;
-        (_this$popupItem = this.popupItem) === null || _this$popupItem === void 0 ? void 0 : (_this$popupItem$remov = _this$popupItem.remove) === null || _this$popupItem$remov === void 0 ? void 0 : _this$popupItem$remov.call(_this$popupItem);
+        this.popupItem?.remove?.();
         this.popupItem = null;
       }, this.transitionDuration);
     });
+
     (0,defineProperty/* default */.Z)(this, "getRandomDelayTime", () => {
       const {
         delayMin,
@@ -1010,27 +1038,35 @@ class SalesNotifications {
         duration
       } = this.settings;
       let delayTime = delayMin;
+
       if (delayMax !== delayMin) {
         delayTime = Math.floor(Math.random() * (delayMax - delayMin + 1)) + delayMin;
       }
+
       return (delayTime + duration) * 1000;
     });
+
     this.settings = settings;
     const {
       products,
       delay,
       showAfter
     } = this.settings;
+
     if (products && products.length) {
       const _delay = delay || "10-15";
+
       const [delayMin, delayMax] = _delay.split("-");
+
       this.settings.delayMin = Number(delayMin);
       this.settings.delayMax = Number(delayMax || delayMin);
       this.shuffleProducts = Array.from(products);
       setTimeout(this.showPopup, showAfter * 1000);
     }
   }
+
 }
+
 window.FoxKit = window.FoxKit || {};
 window.FoxKit.SalesNotifications = SalesNotifications;
 }();

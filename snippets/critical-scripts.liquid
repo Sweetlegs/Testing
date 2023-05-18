@@ -112,7 +112,7 @@
   }
 
   // activateFontAndCriticalCSS
-  {% comment %} function afnc() {
+  function afnc() {
     // fontStyle & criticalStyle
     var cs = document.getElementById('mn-critical-css');
     var fs = document.getElementById('mn-font-style');
@@ -120,7 +120,7 @@
     if (fs) fs.media = 'all';
   }
 
-  if (!__isPSA) afnc(); {% endcomment %}
+  if (!__isPSA) afnc();
 
   // __activateStyle(this)
   function __as(l) {

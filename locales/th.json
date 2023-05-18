@@ -144,11 +144,7 @@
       "zipcode_validate": "รหัสไปรษณีย์ต้องเว้นว่างไม่ได้",
       "shipping_rates_result": "เราพบอัตราค่าจัดส่ง {{count}} สําหรับที่อยู่ของคุณ",
       "no_found_shipping_rate": "ไม่มีอัตราค่าจัดส่งสําหรับที่อยู่ของคุณ",
-      "recommend_title": "คําแนะนําสําหรับคุณ",
-      "delivery_days": {
-        "one": "วัน",
-        "other": "วัน"
-      }
+      "recommend_title": "คําแนะนําสําหรับคุณ"
     },
     "label": {
       "product": "ผลิตภัณฑ์",

@@ -30,11 +30,11 @@
     {% endif %}
     style="background-color: {{ section.settings.background_color }};--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
 >
-    <div class="{{ section.settings.container }}{% if has_bg == false %} section-my{% else %} section-py{% endif %}" style="--column-gap: {{ section.settings.item_gap }}px; --row-gap: {{ section.settings.item_gap | divided_by: 2 }}px; --column-gap-mobile: {{ section.settings.item_gap_mobile }}px; --row-gap-mobile: {{ section.settings.item_gap_mobile }}px;">
+    <div class="{{ section.settings.container }}{% if has_bg == false %} section-my{% else %} section-py{% endif %}" style="--column-gap: {{ section.settings.item_gap }}px; --row-gap: {{ section.settings.item_gap | divided_by: 2 }}px; --column-gap-mobile: {{ section.settings.item_gap_mobile }}px;">
         {% render 'index-section-header', section_settings: section.settings %}
 
-        <div class="sf-custom__grid sf-grid flex flex-wrap {% if section.settings.layout == 'right' %} flex-row-reverse {% endif %}">
-          <div class="sf-custom__block sf-column img__box-{{ section.id }} w-full md:w-1/2 lg:w-{{ section.settings.image_column_size }}/12">
+        <div class="sf-custom__grid flex flex-wrap {% if section.settings.layout == 'right' %} flex-row-reverse {% endif %}">
+          <div class="sf-custom__block img__box-{{ section.id }} sf w-full lg:w-{{ section.settings.image_column_size }}/12">
             <{% if section.settings.link %}a{% else %}div{% endif %}{% if section.settings.link %} href="{{ section.settings.link }}"{% endif %} class="image__box{% if section.settings.hover_effect %} sf__hover-scale-up overflow-hidden{% endif %} relative">
               {% if section.settings.image != blank %}
                 {% render 'responsive-image', image: section.settings.image, image_class: 'w-full h-full' %}
@@ -43,7 +43,7 @@
               {% endif %}
             </{% if section.settings.link %}a{% else %}div{% endif %}>
           </div>
-          <div class="sf-custom__block sf-column content__box-{{ section.id }} flex items-center w-full md:w-1/2 lg:w-{{ 12 | minus: section.settings.image_column_size }}/12 {% if settings.container == 'w-full' %}px-4{% else %}px-0{% endif %}">
+          <div class="sf-custom__block content__box-{{ section.id }} flex items-center w-full lg:w-{{ 12 | minus: section.settings.image_column_size }}/12 {% if settings.container == 'w-full' %}px-4{% else %}px-0{% endif %}">
             <div class="content__box w-full text-{{ settings.content_alignment }}{% if section.settings.container == 'w-full' %} px-4 md:px-0{% endif %}">
               {% if section.settings.sub_title != blank %}
                 <p class="content__subheading mb-5">{{ section.settings.sub_title }}</p>
@@ -52,7 +52,7 @@
                 <h3 class="content__heading rte text-2xl md:text-5xl {% if section.settings.text_size == 'medium' %}lg:text-5xl {% else %}2xl:text-7xl lg:text-6xl {% endif %} mb-4 lg:mb-6">{{ section.settings.title }}</h3>
               {% endif %}
               {% if section.settings.text != blank %}
-                <div class="md:mb-6 mb-3 lg:mb-8 text-color-subtext rte prose">{{ section.settings.text }}</div>
+                <div class="mb-6 lg:mb-8 text-color-subtext rte prose">{{ section.settings.text }}</div>
               {% endif %}
               {% if section.settings.button_label != blank %}
                 <a href="{{ section.settings.button_link | default: "#" }}" class="sf__btn {{ section.settings.button_style }} {{ section.settings.button_size }}">{{ section.settings.button_label }}</a>

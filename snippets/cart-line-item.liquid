@@ -110,7 +110,7 @@
           {%- if settings.currency_code_enabled -%}
             <s>{{ item.original_price | money_with_currency }}</s>
           {%- else -%}
-            <s>{{ item.original_price | money }}</s>
+            <s><div class="wn-price-item_{{ item.variant_id }}">{{ item.original_price | money }}</div></s>
           {%- endif -%}
         </p>
         <p class="sf-cart__item--final-price">
@@ -132,7 +132,7 @@
           {%- if settings.currency_code_enabled -%}
             {{ item.original_price | money_with_currency }}
           {%- else -%}
-            {{ item.original_price | money }}
+            <div class="wn-price-item_{{ item.variant_id }}">{{ item.original_price | money }}</div>
           {%- endif -%}
         </p>
       </div>
@@ -235,7 +235,7 @@
         {%- if settings.currency_code_enabled -%}
           <s data-cart-item-original-price>{{ item.original_line_price | money_with_currency }}</s>
         {%- else -%}
-          <s data-cart-item-original-price>{{ item.original_line_price | money }}</s>
+          <s data-cart-item-original-price><div class="wn-total-line-item_{{ item.variant_id }}">{{ item.original_line_price | money }}</div></s>
         {%- endif -%}
       </p>
       <p class="sf-cart__item--final-price">
@@ -256,7 +256,7 @@
         {%- if settings.currency_code_enabled -%}
           {{ item.original_line_price | money_with_currency }}
         {%- else -%}
-          {{ item.original_line_price | money }}
+          <div class="wn-total-line-item_{{ item.variant_id }}">{{ item.original_line_price | money }}</div>
         {%- endif -%}
       </span>
     </div>

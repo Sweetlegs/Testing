@@ -144,11 +144,7 @@
       "zipcode_validate": "Почтовый индекс не может быть пустым",
       "shipping_rates_result": "Мы нашли {{count}} стоимость доставки для вашего адреса",
       "no_found_shipping_rate": "Для вашего адреса нет тарифов на доставку.",
-      "recommend_title": "Рекомендация для Вас",
-      "delivery_days": {
-        "one": "день",
-        "other": "Дни недели"
-      }
+      "recommend_title": "Рекомендация для Вас"
     },
     "label": {
       "product": "Продукт",

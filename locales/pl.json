@@ -144,11 +144,7 @@
       "zipcode_validate": "Kod pocztowy nie może być pusty",
       "shipping_rates_result": "Znaleźliśmy {{count}} stawki wysyłki dla Twojego adresu",
       "no_found_shipping_rate": "Nie ma stawek wysyłki dla Twojego adresu.",
-      "recommend_title": "Rekomendacja dla Ciebie",
-      "delivery_days": {
-        "one": "dzień",
-        "other": "Dni"
-      }
+      "recommend_title": "Rekomendacja dla Ciebie"
     },
     "label": {
       "product": "Produkt",

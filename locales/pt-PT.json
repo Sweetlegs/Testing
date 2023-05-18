@@ -144,11 +144,7 @@
       "zipcode_validate": "O código postal não pode estar em branco.",
       "shipping_rates_result": "Encontramos {{count}} taxa de envio para o seu endereço",
       "no_found_shipping_rate": "Não existem tarifas de envio para o seu endereço.",
-      "recommend_title": "Recomendação para si",
-      "delivery_days": {
-        "one": "dia",
-        "other": "Dias"
-      }
+      "recommend_title": "Recomendação para si"
     },
     "label": {
       "product": "Produto",

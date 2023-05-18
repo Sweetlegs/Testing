@@ -1,5 +1,4 @@
 {{ 'slideshow.css' | asset_url | stylesheet_tag }}
-{{ 'banner-with-slider.css' | asset_url | stylesheet_tag }}
 
 {% liquid
   assign bg_color = section.settings.background_color
@@ -15,6 +14,9 @@
   class="slider-{{ section.id }} sf__banner-with-slider sf-section-padding {{ section.settings.custom_class }}"
   data-section-type="banner-with-slider"
   data-section-id="{{ section.id }}"
+  data-autoplay="{% if request.design_mode %}false{% else %}{{ section.settings.slide_autoplay }}{% endif %}"
+  data-timeout="{{ section.settings.autorotate_speed | times: 1000 }}"
+  data-effect="{{ section.settings.slide_effect }}"
   {% if has_bg %}
   data-bg="{{ bg_color | color_to_hsl }}"
   {% endif %}
@@ -22,13 +24,8 @@
 >
     <div class="{{ section.settings.container }}{% if has_bg == false %} section-my{% else %} section-py{% endif %}">
         {% render 'index-section-header', section_settings: section.settings %}
-        <m-banner-with-slide
-          data-id="{{ section.id }}"
-          data-autoplay="{% if request.design_mode %}false{% else %}{{ section.settings.slide_autoplay }}{% endif %}"
-          data-timeout="{{ section.settings.autorotate_speed | times: 1000 }}"
-          class="sm:grid sm:grid-cols-4{% if section.settings.container != 'w-full' %} -mx-4{% endif %} sm:mx-0"
-        >
-            <div class="relative sm:col-start-1 sm:col-end-3 lg:col-start-1 lg:col-end-1 overflow-hidden sf__hover-scale-up hidden sm:grid">
+        <div class="sm:grid sm:grid-cols-4{% if section.settings.container != 'w-full' %} -mx-4{% endif %} sm:mx-0">
+            <div class="hidden sm:block relative sm:col-start-1 sm:col-end-3 lg:col-start-1 lg:col-end-1 overflow-hidden sf__hover-scale-up">
                 <a href="{{ section.settings.button_link_1 }}" class="w-full h-full">
                     {% if section.settings.banner_image_1 %}
                         {% render 'responsive-image', image: section.settings.banner_image_1, wrapper_class: 'w-full h-full' %}
@@ -85,12 +82,12 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="absolute left-1/2 -translate-x-1/2 bottom-0 pb-5 z-10">
+                    <div class="absolute left-0 w-full bottom-0 pb-5 z-10">
                         {% render 'slider-controls', absolute: true, show_nav: false, dots_class: 'sf__dot-dark' %}
                     </div>
                 </div>
             </div>
-            <div class="sm:col-start-3 sm:col-end-5 lg:col-start-4 lg:col-end-5 hidden sm:grid">
+            <div class="hidden sm:block sm:col-start-3 sm:col-end-5 lg:col-start-4 lg:col-end-5">
                 <div class="relative overflow-hidden sf__hover-scale-up">
                     <a href="{{ section.settings.button_link_2 | default: '#' }}" class="w-full">
                         {% if section.settings.banner_image_2 %}
@@ -125,7 +122,7 @@
                 </div>
             </div>
             <div class="sf__ms sm:hidden mt-4">
-                <div class="sf__ms-wrapper grid sf-grid" style="--column-gap: 1rem;">
+                <div class="sf__ms-wrapper grid sf-grid pl-4" style="--column-gap: 1rem;">
                     {% if section.settings.banner_image_2 %}
                         <div class="sf-column">
                             <div class="banner-w-slider__card">
@@ -170,7 +167,7 @@
                 {% endif %}
                 </div>
             </div>
-        </m-banner-with-slide>
+        </div>
     </div>
 </section>
 

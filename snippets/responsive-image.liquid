@@ -24,15 +24,14 @@
     --aspect-ratio: {{ asp_rat }};
   {% endif %}
   {% if max_width %}
-    --image-width: {{ max_width }};
+    --max-width: {{ max_width }};
   {% endif %}
   {% if image_width %}
     --image-width: {{ image_width }};
-  {% endif %}
+{% endif %}
 {%- endcapture -%}
 
 <responsive-image class="sf-image {{ wrapper_class }}" data-image-loading {{ wrapper_attributes }} style="{{ style | strip | strip_newlines }}">
-  {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
   <img
       srcset="{%- if image.width >= 165 -%}{{ image | image_url: width: 165 }} 165w,{%- endif -%}
           {%- if image.width >= 360 -%}{{ image | image_url: width: 360 }} 360w,{%- endif -%}
@@ -53,7 +52,6 @@
       height="{{ image.height }}"
       {{ image_attributes }}
   >
-  {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
   <noscript>
     <img class="{{ image_class }}" loading="lazy" width="" height="" src="{{ image | image_url: width: 2048, height: 2048 }}" alt="{{ alt | default: image.alt | escape }}">
   </noscript>

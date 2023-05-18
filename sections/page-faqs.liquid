@@ -27,24 +27,11 @@
               {% endif %}
             {% else %}
               {% if block.settings.title != blank and block.settings.content != blank %}
-              <div class="sf__accordion-blocks sf__custom-accordion">
-                <collapsible-tab
-                  class="collapsible__item no-js-hidden"
-                  data-block-id="collapsible-tab-{{ block.id }}"
-                  {% if block.settings.open %}open="true"{% endif %}
-                >
-                  <h3 class="collapsible__button text-lg py-4 pr-4 border-b border-color-border" data-trigger>
-                      {% if block.settings.icon != blank and block.settings.icon != 'none' %}
-                          {% render 'icon', name: block.settings.icon %}
-                      {% endif %}
-                      <span>{{ block.settings.title }}</span>
-                  </h3>
-                  <div class="collapsible__content" data-content hidden>
-                      <div class="collapsible__content-inner text-color-subtext">
-                        {{ block.settings.content }}
-                      </div>
-                  </div>
-                </collapsible-tab>
+              <div class="sf__accordio-blocks sf__custom-accordion">
+                <div class="sf__accordion-item{% if block.settings.open %} open{% endif %}">
+                  <h3 class="sf__accordion-button text-lg">{{ block.settings.title }}</h3>
+                  <div class="sf__accordion-content text-base text-color-subtext">{{ block.settings.content }}</div>
+                </div>
               </div>
               {% endif %}
           {% endcase %}

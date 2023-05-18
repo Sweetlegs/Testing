@@ -19,8 +19,8 @@
   data-section-id="{{ section.id }}"
   {%- if has_bg -%}
   data-bg="{{ bg_color | color_to_hsl }}"
+  style="background-color: {{ bg_color }};--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
   {%- endif -%}
-  style="{% if has_bg %}background-color: {{ bg_color }};{% endif %}--section-padding-top: {{ section.settings.padding_top }}px; --section-padding-bottom: {{ section.settings.padding_bottom }}px;"
 >
     <div class="{{ section.settings.container }}{% if has_bg == false %} section-my{% else %} section-py{% endif %}" style="--column-gap: {{ section.settings.column_gap }}px; --column-gap-mobile: {{ section.settings.mobile_gap }}px; --row-gap: {{ section.settings.column_gap | plus: 10 }}px;">
         {% render 'index-section-header', section_settings: section.settings %}

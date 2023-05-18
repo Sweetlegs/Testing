@@ -1,3 +1,5 @@
+{{ 'instagram.css' | asset_url | stylesheet_tag }}
+
 {%- for block in section.blocks -%}
 {% liquid
   assign b_s = block.settings
@@ -40,7 +42,7 @@
       <div class="sf-aside-content">
         <ul class="sf-list-inline">
           {%- for tag in blog.all_tags -%}
-            <li class="capitalize"><a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a></li>
+            <li class="capitalize">{{ tag | link_to_tag: tag }}</li>
           {%- endfor -%}
         </ul>
       </div>
@@ -93,18 +95,14 @@
     {%- endif -%}
   {%- when 'instagram' -%}
     {%- if settings.instagram_token != blank -%}
-    {{ 'instagram.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'aside-instagram.min.js' | asset_url }}" defer="defer"></script>
     <div class="sf-block-aside">
       <h3 class="sf-aside-title">{{ b_s.title }}</h3>
       <div class="sf-aside-content">
-        <m-aside-instagram>
-          <div class="mt-5 sf__aside-instagram"
+        <div class="mt-5 sf__aside-instagram"
             data-access-token="{{ settings.instagram_token }}"
             data-images-count="{{ b_s.images_count }}">
             <div class="instagram-images grid grid-cols-3 gap-1"></div>
-          </div>
-        </m-aside-instagram>
+        </div>
       </div>
     </div>
     {%- endif -%}

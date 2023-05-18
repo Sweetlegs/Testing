@@ -144,11 +144,7 @@
       "zipcode_validate": "Posta kodu boş bırakılamaz",
       "shipping_rates_result": "Adresiniz için {{count}} kargo ücreti (ler) bulduk",
       "no_found_shipping_rate": "Adresiniz için kargo ücreti yoktur.",
-      "recommend_title": "Sizin için öneri",
-      "delivery_days": {
-        "one": "gün",
-        "other": "Gün"
-      }
+      "recommend_title": "Sizin için öneri"
     },
     "label": {
       "product": "Ürün",

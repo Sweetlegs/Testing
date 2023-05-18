@@ -144,11 +144,7 @@
       "zipcode_validate": "Le code postal ne peut pas être vide",
       "shipping_rates_result": "Nous avons trouvé {{count}} tarif(s) d’expédition pour votre adresse",
       "no_found_shipping_rate": "Il n’y a pas de frais d’expédition pour votre adresse.",
-      "recommend_title": "Recommandation pour vous",
-      "delivery_days": {
-        "one": "jour",
-        "other": "Jours"
-      }
+      "recommend_title": "Recommandation pour vous"
     },
     "label": {
       "product": "Produit",

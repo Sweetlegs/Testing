@@ -144,11 +144,7 @@
       "zipcode_validate": "CEP não pode ser em branco",
       "shipping_rates_result": "Encontramos {{count}} taxa de envio(s) para o seu endereço",
       "no_found_shipping_rate": "Não há taxas de envio para o seu endereço.",
-      "recommend_title": "Recomendação para você",
-      "delivery_days": {
-        "one": "dia",
-        "other": "Dias"
-      }
+      "recommend_title": "Recomendação para você"
     },
     "label": {
       "product": "Produto",

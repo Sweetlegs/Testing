@@ -16,7 +16,7 @@
       </div>
       <div class="md:py-10">
         {% for block in section.blocks %}
-          <div class="sf__accordion-item sf-tab-content md:opacity-0{% if forloop.first and section.settings.default_open %} open{% endif %}" data-block-type="{{ block.type }}"{% if forloop.first == false and section.settings.default_open == false %} style="--content-max-height:0px;"{% endif %}>
+          <div class="sf__accordion-item sf-tab-content md:opacity-0{% if forloop.first and section.settings.default_open %} open{% endif %}" data-block-type={{ block.type }}{% if forloop.first == false and section.settings.default_open == false %} style="--content-max-height:0px;"{% endif %}>
             <div class="sf__accordion-button pb-3 pr-4">{{ block.settings.header }}</div>
             <div class="sf__accordion-content">
               <div class="pb-8 {% if block.type != 'reviews' %}prose{% endif %}">

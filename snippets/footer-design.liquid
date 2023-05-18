@@ -11,7 +11,7 @@
 
                 <div class="sf-footer__right w-full flex flex-wrap justify-center md:justify-start lg:justify-center items-center lg:w-auto">
                     {% if section.settings.show_currency_selector or section.settings.show_language_selector %}
-                    <div class="flex items-center mb-6 md:mb-0">
+                    <div class="flex items-center mb-6 lg:mb-0">
                         {% liquid
                           if section.settings.show_country_selector
                             render 'country-selector', box_size: 'py-0', pos: 'top'
@@ -28,7 +28,7 @@
                     </div>
                     {% endif %}
                     {% if section.settings.show_social_links %}
-                        {% render 'social-media-links', box_size: 'justify-center md:justify-end ml-3 mb-6 md:mb-0' %}
+                        {% render 'social-media-links', box_size: 'justify-center md:justify-end ml-3 mb-6 lg:mb-0' %}
                     {% endif %}
                   {% if section.settings.show_payment_icons %}
                     {% render 'payment-icons', section: section %}
@@ -47,11 +47,11 @@
                 </div>
                 {% endif %}
                 {% if section.settings.show_social_links or section.settings.show_currency_selector or section.settings.show_language_selector %}
-                    <div class="sf-footer__right mb-6 lg:mb-0 flex-1 flex flex-wrap items-center justify-center lg:w-auto w-full lg:justify-end flex-col md:flex-row">
+                    <div class="sf-footer__right mb-6 lg:mb-0 flex-1 flex flex-wrap items-center justify-center md:justify-start lg:w-auto w-full lg:justify-end">
                         {% if section.settings.show_social_links %}
-                            {% render 'social-media-links', box_size: 'justify-center md:justify-end mb-6 md:mb-0' %}
+                            {% render 'social-media-links', box_size: 'justify-center md:justify-end md:mr-4 -mx-4 lg:mx-0' %}
                         {% endif %}
-                        <div class="flex items-center ml-0 md:ml-5">
+                        <div class="flex items-center ml-5 lg:ml-0">
                             {% liquid
                               if section.settings.show_country_selector
                                 render 'country-selector', box_size: 'py-0', pos: 'top'
@@ -70,11 +70,11 @@
                 {% endif %}
             {% when 'footer-3' %}
                 {% if section.settings.show_social_links or section.settings.show_currency_selector or section.settings.show_language_selector %}
-                <div class="sf-footer__left mb-6 lg:mb-0 flex-1 flex flex-wrap items-center -mx-4 justify-center lg:justify-start lg:w-auto w-full flex-col md:flex-row">
+                <div class="sf-footer__left mb-6 lg:mb-0 flex-1 flex flex-wrap items-center -mx-4 justify-center md:justify-start lg:w-auto w-full">
                     {% if section.settings.show_social_links %}
-                        {% render 'social-media-links', box_size: 'md:justify-end mr-0 md:mr-5 mb-6 md:mb-0' %}
+                        {% render 'social-media-links', box_size: 'md:justify-end md:mr-4 -mx-4 lg:mx-0' %}
                     {% endif %}
-                    <div class="flex items-center">
+                    <div class="flex items-center ml-5 lg:ml-0">
                         {% liquid
                           if section.settings.show_country_selector
                             render 'country-selector', box_size: 'py-0', pos: 'top'
@@ -97,7 +97,7 @@
                 </div>
                 {% endif %}
                 {% if section.settings.show_payment_icons %}
-                  <div class="sf-footer__right mb-6 lg:mb-0 flex-1 flex justify-center lg:w-auto w-full lg:justify-end">
+                  <div class="sf-footer__right mb-6 lg:mb-0 flex-1 flex justify-center lg:w-auto w-full md:justify-end">
                     {% render 'payment-icons', section: section %}
                   </div>
                 {% endif %}

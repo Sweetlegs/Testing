@@ -144,11 +144,7 @@
       "zipcode_validate": "Postnummeret kan ikke være tomt",
       "shipping_rates_result": "Vi fandt {{count}} forsendelsespris(er) for din adresse",
       "no_found_shipping_rate": "Der er ingen forsendelsespriser for din adresse.",
-      "recommend_title": "Anbefaling til dig",
-      "delivery_days": {
-        "one": "dag",
-        "other": "Dage"
-      }
+      "recommend_title": "Anbefaling til dig"
     },
     "label": {
       "product": "Produkt",

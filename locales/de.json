@@ -144,11 +144,7 @@
       "zipcode_validate": "Postleitzahl darf nicht leer sein",
       "shipping_rates_result": "Wir haben {{count}} Versandkosten für Ihre Adresse gefunden",
       "no_found_shipping_rate": "Es gibt keine Versandkosten für Ihre Adresse.",
-      "recommend_title": "Empfehlung für Sie",
-      "delivery_days": {
-        "one": "Tag",
-        "other": "Tage"
-      }
+      "recommend_title": "Empfehlung für Sie"
     },
     "label": {
       "product": "Produkt",

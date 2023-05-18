@@ -1,9 +1,12 @@
 {{ 'slideshow.css' | asset_url | stylesheet_tag }}
+
 {% liquid
 assign st = section.settings
-assign first_block = section.blocks[0]
-assign aspect_ratio = first_block.settings.background.aspect_ratio | default: 2.333
-assign aspect_ratio_mobile = first_block.settings.mb_background.aspect_ratio | default: aspect_ratio
+if section.settings.slideshow_height == 'adapt'
+  assign first_block = section.blocks[0]
+  assign aspect_ratio = first_block.settings.background.aspect_ratio | default: 2.333
+  assign aspect_ratio_mobile = first_block.settings.mb_background.aspect_ratio | default: aspect_ratio
+endif
 
 assign use_content_above = section.settings.use_content_above
 %}
@@ -12,46 +15,44 @@ assign use_content_above = section.settings.use_content_above
   id="sf__slideshow-{{ section.id }}"
   class="relative {{ section.settings.custom_class }} slider-{{ section.id }} home-banner__slideshow {% if section.settings.dots_position != 'bottom' %}sf-slider__pagination--{{ section.settings.dots_position }}{% endif %}{% unless use_content_above %} sf__slide-block--content-stack{% endunless %}"
   data-section-type="slider" data-section-id="{{ section.id }}"
+  data-autoplay="{% if request.design_mode %}false{% else %}{{ st.autorotate }}{% endif %}"
+  data-autoplay-speed="{{ st.autorotate_speed }}" 
+  data-enable-arrows="{{ st.show_arrows }}"
+  data-enable-dots="{{ st.show_dots }}"
+  data-slide-height="{{ section.settings.slideshow_height }}"
   style="--data-autoplay-speed: {{ st.autorotate_speed }}s;">
   <div class="{{ section.settings.container }}">
-    <m-slideshow
-      data-id="{{ section.id }}"
-      data-autoplay="{% if request.design_mode %}false{% else %}{{ st.autorotate }}{% endif %}"
-      data-autoplay-speed="{{ st.autorotate_speed }}" 
-      data-enable-arrows="{{ st.show_arrows }}"
-      data-enable-dots="{{ st.show_dots }}"
-      data-slide-height="{{ section.settings.slideshow_height }}"
-    >
-      <div id="sf-slider-{{ section.id }}" class="swiper-container">
-        <div class="swiper-wrapper sf__slider sf__slider--{{ st.slideshow_height }}">
-          {% for block in section.blocks %}
-            {% liquid
-            assign bs = block.settings
-            assign content_positions = bs.content_position | split: ' '
-            assign text_alignment = bs.text_alignment
-            assign text_horizontal_alignment = content_positions.first
-            assign text_vertical_alignment = content_positions.last | strip
-            assign footer_alignment = bs.footer_alignment
-            assign image_link = bs.image_link
-            assign should_show_content = false
-            if bs.title != blank or bs.subheading != blank or bs.description != blank or bs.button_text != blank
-              assign should_show_content = true
-            endif
-  
-            assign content_container = 'container-fluid'
-            if bs.content_in_container == true
-              assign content_container = 'container'
-            endif
-  
-            assign video_urls = bs.video | newline_to_br | split: '<br />'
-  
-            assign bg_image = bs.background
-            if bs.mb_background != blank
-              assign bg_image = bs.mb_background
-            endif
-            %}
-  
-            {% capture video_bg %}
+    <div id="sf-slider-{{ section.id }}" class="swiper-container">
+      <div class="swiper-wrapper sf__slider sf__slider--{{ st.slideshow_height }}">
+        {% for block in section.blocks %}
+          {% liquid
+          assign bs = block.settings
+          assign content_positions = bs.content_position | split: ' '
+          assign text_alignment = bs.text_alignment
+          assign text_horizontal_alignment = content_positions.first
+          assign text_vertical_alignment = content_positions.last | strip
+          assign footer_alignment = bs.footer_alignment
+          assign image_link = bs.image_link
+          assign should_show_content = false
+          if bs.title != blank or bs.subheading != blank or bs.description != blank or bs.button_text != blank
+            assign should_show_content = true
+          endif
+
+          assign content_container = 'container-fluid'
+          if bs.content_in_container == true
+            assign content_container = 'container'
+          endif
+
+          assign video_urls = bs.video | newline_to_br | split: '<br />'
+
+          assign bg_image = bs.background
+          if bs.mb_background != blank
+            assign bg_image = bs.mb_background
+          endif
+          %}
+
+          {% capture video_bg %}
+          <div class="sf__slide-bg">
             <video playsinline muted autoplay loop preload="auto">
               {% for video in video_urls %}
                 {% liquid
@@ -70,156 +71,162 @@ assign use_content_above = section.settings.use_content_above
               {% endfor %}
               {{ 'sections.slider.video.notice' }}
             </video>
-            {% endcapture %}
-            
-            <div {{ block.shopify_attributes }} 
-              data-slide="{{ forloop.index0 }}"
-              class="swiper-slide relative sf__slide--text-{{ bs.text_color }}  {% if forloop.first %} sf-slider--first{% endif %}{% if image_link != blank %} sf-slider--has-link{% endif %}"
-              data-slide-type="{{ block.type }}"
+          </div>
+          {% endcapture %}
+          
+          <div {{ block.shopify_attributes }} 
+            data-slide="{{ forloop.index0 }}"
+            class="swiper-slide relative sf__slide--text-{{ bs.text_color }}  {% if forloop.first %} sf-slider--first{% endif %}{% if image_link != blank %} sf-slider--has-link{% endif %}"
+            data-slide-type="{{ block.type }}"
+          >
+            <div 
+              class="sf__slide-media relative" 
+              {% if section.settings.slideshow_height == 'adapt' %}
+              style="--aspect-ratio: {{ aspect_ratio }}; --aspect-ratio-mobile: {{ aspect_ratio_mobile }}"
+              {% endif %}
             >
-              <div 
-                class="sf__slide-media relative" 
-                {% if section.settings.slideshow_height == 'adapt' %}
-                style="--aspect-ratio: {{ aspect_ratio }}; --aspect-ratio-mobile: {{ aspect_ratio_mobile }}"
-                {% endif %}
-              >
-                {% if image_link != blank %}
-                <a href="{{ image_link }}" class="sf-slider__link"></a>
-                {% endif %}
-  
-                {% comment %} Image on desktop {% endcomment %}
-                <div class="hidden md:block">
-                  <div class="sf__slide-bg{% if bs.background == blank and bs.video == blank %} sf__slideshow-placeholder overflow-hidden{% endif %}">
-                    {% if bs.background == blank and bs.video == blank %}
-                      {% capture current %}{% cycle 1, 2 %}{% endcapture %}
-                      {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'sf__placeholder-svg w-full h-full' }}
-                    {% else %}
-                      {% if block.type == 'video_slide' %}
-                        {{ video_bg }}
-                      {% else %}
-                        {%- liquid
-                          assign image_height = bs.background.width | divided_by: bs.background.aspect_ratio | round
-                          assign lazy_load = 'eager'
-                          unless forloop.first
-                            assign lazy_load = 'lazy'
-                          endunless
-                        -%} 
-                        {{ bs.background | image_url: width: 1500 | image_tag:
-                          loading: lazy_load,
-                          width: bs.background.width,
-                          height: image_height,
-                          sizes: '100vw',
-                          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
-                          alt: bs.background.alt | escape
-                        }}
-                      {% endif %}
-                    {% endif %}
+              {% if image_link != blank %}
+              <a href="{{ image_link }}" class="sf-slider__link"></a>
+              {% endif %}
+
+              {% comment %} Image on desktop {% endcomment %}
+              <div class="hidden md:block">
+                {% if bs.background == blank and bs.video == blank %}
+                  <div class="sf__slide-bg sf__slideshow-placeholder overflow-hidden">
+                    {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                    {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'sf__placeholder-svg w-full h-full' }}
                   </div>
-                </div>
-  
-                {% comment %} Image on mobile {% endcomment %}
-                <div class="md:hidden">
-                  <div class="sf__slide-bg-mobile{% if bg_image == blank and bs.video == blank %} sf__slideshow-placeholder overflow-hidden{% endif %}" style="--aspect-ratio-mobile: {{ aspect_ratio_mobile }}">
-                    {% if bg_image == blank and bs.video == blank %}
-                      {% capture current %}{% cycle 1, 2 %}{% endcapture %}
-                      {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'sf__placeholder-svg w-full h-full' }}
-                    {% else %}
-                      {% if block.type == 'video_slide' and bg_image == blank %}
-                        {{ video_bg }}
-                      {% else %}
-                        {%- liquid
-                          assign bg_image_height = bg_image.width | divided_by: bg_image.aspect_ratio | round
-                          assign lazy_load = 'eager'
-                          unless forloop.first
-                            assign lazy_load = 'lazy'
-                          endunless
-                        -%}
-                        {{ bg_image | image_url: width: 750 | image_tag:
-                          loading: lazy_load,
-                          width: bg_image.width,
-                          height: bg_image_height,
-                          sizes: '100vw',
-                          widths: '375, 550, 750, 1100',
-                          alt: bg_image.alt | escape
-                        }}
-                        {% if image_link != blank %}
-                          <a href="{{ image_link }}" class="sf-slider__link"></a>
-                        {% endif %}
-                      {% endif %}
-                    {% endif %}
-                  </div>
-                </div>
-                {% if st.show_overlay %}
-                  <div class="sf__slideshow-overlay"></div>
+                {% else %}
+                  {% if block.type == 'video_slide' %}
+                    {{ video_bg }}
+                  {% else %}
+                    <div class="sf__slide-bg">
+                      <img 
+                        srcset="
+                          {%- if bs.background.width >= 375 -%}{{ bs.background | image_url: width: 375 }} 375w,{%- endif -%}
+                          {%- if bs.background.width >= 550 -%}{{ bs.background | image_url: width: 550 }} 550w,{%- endif -%}
+                          {%- if bs.background.width >= 750 -%}{{ bs.background | image_url: width: 750 }} 750w,{%- endif -%}
+                          {%- if bs.background.width >= 1100 -%}{{ bs.background | image_url: width: 1100 }} 1100w,{%- endif -%}
+                          {%- if bs.background.width >= 1500 -%}{{ bs.background | image_url: width: 1500 }} 1500w,{%- endif -%}
+                          {%- if bs.background.width >= 1780 -%}{{ bs.background | image_url: width: 1780 }} 1780w,{%- endif -%}
+                          {%- if bs.background.width >= 2000 -%}{{ bs.background | image_url: width: 2000 }} 2000w,{%- endif -%}
+                          {%- if bs.background.width >= 3000 -%}{{ bs.background | image_url: width: 3000 }} 3000w,{%- endif -%}
+                          {%- if bs.background.width >= 3840 -%}{{ bs.background | image_url: width: 3840 }} 3840w,{%- endif -%}
+                          {{ bs.background | image_url }} {{ bs.background.width }}w
+                        " 
+                        sizes="100vw" src="{{ bs.background | image_url: width: 1500 }}" 
+                        {% unless forloop.first %} 
+                        loading="lazy"
+                        {% endunless %} 
+                        alt="{{ bs.background.alt | escape }}"
+                        width="{{ bs.background.width }}"
+                        height="{{ bs.background.width | divided_by: bs.background.aspect_ratio | round }}">
+                    </div>
+                  {% endif %}
                 {% endif %}
               </div>
-  
-              {% liquid
-                assign colorBtn = bs.text_color
-                if colorBtn == 'black'
-                assign colorBtn = '#000'
-                assign colorBtnHover = '#FFF'
-                else
-                assign colorBtn = '#FFF'
-                assign colorBtnHover = '#000'
-                endif
-              %}
-  
-              {% if should_show_content %}
-                <div
-                  class="sf__slide-block slide__block-desktop flex sf__slide-block--{{ text_vertical_alignment }}-{{ text_horizontal_alignment }} {{ content_container }} w-full h-full p-4 md:p-6 lg:py-24 absolute inset-0"
-                  style="--btn-color: {{ colorBtn }};--btn-color-hover: {{ colorBtnHover }};">
-                  <div class="sf__slide-content max-w-4xl w-max text-{{ text_alignment }}">
-                    {% capture text_color %}
-                      {% if use_content_above %}text-{{ bs.text_color }}{% else %}text-black md:text-{{ bs.text_color }}{% endif %}
-                    {% endcapture %}
-  
-                    {% if bs.subheading != blank %}
-                      <div class="slide__block-subtitle {% if bs.text_size == 'medium' %}text-base{% else %}text-xl{% endif %} mb-2 md:mb-[14px] {{ text_color }}">{{ bs.subheading }}</div>
-                    {% endif %}
-  
-                    {% if bs.title != blank %}
-                      <h2 class="slide__block-title {% if bs.text_size == 'medium' %}text-3xl lg:text-5xl{% else %}lg:text-5xl xl:text-6xl 2xl:text-7xl{% endif %} mb-3 md:mb-5 {{ text_color }} lg:leading-tight xl:leading-tight 2xl:leading-tight">
-                        {{ bs.title }}
-                      </h2>
-                    {% endif %}
-  
-                    {% if bs.description != blank %}
-                     <div class="slide__block-description {% if bs.text_size == 'medium' %}text-base{% else %}md:text-xl{% endif %} mb-3 md:mb-7 {{ text_color }}">{{ bs.description }}</div>
-                    {% endif %}
-  
-                    {% if bs.button_text != blank %}
-                      <a href="{{ bs.button_link | default: " #" }}" class="slide__block-link {% if use_content_above %} content_above{% endif %}  inline-block sf__btn {{ bs.button_style }} {{ bs.button_size }}">
-                        {{ bs.button_text }}
-                      </a>
-                    {% endif %}
-                  </div>
-                </div>
+
+              {% comment %} Image on mobile {% endcomment %}
+              <div class="md:hidden">
+                {% if bg_image == blank and bs.video == blank %}
+                  {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                  <div class="sf__slide-bg sf__slideshow-placeholder overflow-hidden">{{ 'lifestyle-' | append: current | placeholder_svg_tag: 'sf__placeholder-svg w-full h-full' }}</div>
+                {% else %}
+                  {% if block.type == 'video_slide' and bg_image == blank %}
+                    {{ video_bg }}
+                  {% else %}
+                    <div class="sf__slide-bg">
+                      {% if image_link != blank %}
+                      <a href="{{ image_link }}" class="sf-slider__link"></a>
+                      {% endif %}
+                      <img 
+                        srcset="
+                          {%- if bg_image.width >= 375 -%}{{ bg_image | image_url: width: 375 }} 375w,{%- endif -%}
+                          {%- if bg_image.width >= 550 -%}{{ bg_image | image_url: width: 550 }} 550w,{%- endif -%}
+                          {%- if bg_image.width >= 750 -%}{{ bg_image | image_url: width: 750 }} 750w,{%- endif -%}
+                          {{ bg_image | image_url }} {{ bg_image.width }}w
+                        " 
+                        sizes="100vw" src="{{ bg_image | image_url: width: 375 }}" 
+                        {% unless forloop.first %} 
+                        loading="lazy" 
+                        {% endunless %} 
+                        alt="{{ bg_image.alt | escape }}"
+                        width="{{ bg_image.width }}"
+                        height="{{ bg_image.width | divided_by: bg_image.aspect_ratio | round }}">
+                    </div>
+                  {% endif %}
+                {% endif %}
+              </div>
+              {% if st.show_overlay %}
+                <div class="sf__slideshow-overlay"></div>
               {% endif %}
-  
-              {% if bs.show_footer %}
-                <div
-                  class="sf__slide-footer {{ content_container }} absolute inset-x-0 bottom-16 z-10 flex items-center justify-{{ footer_alignment }} text-{{ bs.text_color }}">
-                  <span class="mx-2">{{ bs.footer_text }}</span>
-                  {% if bs.footer_link != blank %}
-                  <span>|</span>
-                  <a href="{{ bs.footer_link | default: " #" }}" class="ml-2 sf__btn sf__btn-link">
-                    {{ bs.footer_button }}
-                  </a>
+            </div>
+
+            {% liquid
+              assign colorBtn = bs.text_color
+              if colorBtn == 'black'
+              assign colorBtn = '#000'
+              assign colorBtnHover = '#FFF'
+              else
+              assign colorBtn = '#FFF'
+              assign colorBtnHover = '#000'
+              endif
+            %}
+
+            {% if should_show_content %}
+              <div
+                class="sf__slide-block slide__block-desktop flex sf__slide-block--{{ text_vertical_alignment }}-{{ text_horizontal_alignment }} {{ content_container }} w-full h-full p-4 md:p-6 lg:py-24 absolute inset-0"
+                style="--btn-color: {{ colorBtn }};--btn-color-hover: {{ colorBtnHover }};">
+                <div class="sf__slide-content max-w-4xl w-max text-{{ text_alignment }}">
+                  {% capture text_color %}
+                    {% if use_content_above %}text-{{ bs.text_color }}{% else %}text-black md:text-{{ bs.text_color }}{% endif %}
+                  {% endcapture %}
+
+                  {% if bs.subheading != blank %}
+                    <div class="slide__block-subtitle {% if bs.text_size == 'medium' %}text-base{% else %}text-xl{% endif %} mb-2 md:mb-[14px] {{ text_color }}">{{ bs.subheading }}</div>
+                  {% endif %}
+
+                  {% if bs.title != blank %}
+                    <h2 class="slide__block-title {% if bs.text_size == 'medium' %}text-3xl lg:text-5xl{% else %}lg:text-5xl xl:text-6xl 2xl:text-7xl{% endif %} mb-3 md:mb-5 {{ text_color }} lg:leading-tight xl:leading-tight 2xl:leading-tight">
+                      {{ bs.title }}
+                    </h2>
+                  {% endif %}
+
+                  {% if bs.description != blank %}
+                   <div class="slide__block-description {% if bs.text_size == 'medium' %}text-base{% else %}md:text-xl{% endif %} mb-3 md:mb-7 {{ text_color }}">{{ bs.description }}</div>
+                  {% endif %}
+
+                  {% if bs.button_text != blank %}
+                    <a href="{{ bs.button_link | default: " #" }}" class="slide__block-link {% if use_content_above %} content_above{% endif %}  inline-block sf__btn {{ bs.button_style }} {{ bs.button_size }}">
+                      {{ bs.button_text }}
+                    </a>
                   {% endif %}
                 </div>
-              {% endif %}
-            </div><!-- .swiper-slide -->
-          {% endfor %}
-        </div><!-- .swiper-wrapper -->
-        {% capture dotColor %}sf__dot-{{ section.settings.dots_color }}{% endcapture %}
-        {% if section.blocks.size > 1 %}
-          {% if st.show_dots or st.show_arrows %}
-            {% render 'slider-controls', absolute: true, show_nav: st.show_arrows, nav_class: 'border border-1', dots_class: dotColor %}
-          {% endif %}
+              </div>
+            {% endif %}
+
+            {% if bs.show_footer %}
+              <div
+                class="sf__slide-footer {{ content_container }} absolute inset-x-0 bottom-16 z-10 flex items-center justify-{{ footer_alignment }} text-{{ bs.text_color }}">
+                <span class="mx-2">{{ bs.footer_text }}</span>
+                {% if bs.footer_link != blank %}
+                <span>|</span>
+                <a href="{{ bs.footer_link | default: " #" }}" class="ml-2 sf__btn sf__btn-link">
+                  {{ bs.footer_button }}
+                </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div><!-- .swiper-slide -->
+        {% endfor %}
+      </div><!-- .swiper-wrapper -->
+      {% capture dotColor %}sf__dot-{{ section.settings.dots_color }}{% endcapture %}
+      {% if section.blocks.size > 1 %}
+        {% if st.show_dots or st.show_arrows %}
+          {% render 'slider-controls', absolute: true, show_nav: st.show_arrows, nav_class: 'border border-1', dots_class: dotColor %}
         {% endif %}
-      </div><!-- .swiper-container -->
-    </m-slideshow>
+      {% endif %}
+    </div><!-- .swiper-container -->
   </div><!-- End section container -->
 </section>
 
@@ -644,7 +651,7 @@ assign use_content_above = section.settings.use_content_above
           "type": "textarea",
           "id": "video",
           "label": "Video",
-          "default": "https://cdn.shopify.com/videos/c/o/v/fbb140fd46e3429eba459e1549dbbe38.mp4",
+          "default": "https://cdn.shopify.com/s/files/1/0555/7220/1635/files/blurry-trees.mp4",
           "info": "Allow multiple format, each video in a new line. MP4, MOV and WEBM supported."
         },
         {

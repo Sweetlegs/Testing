@@ -1,27 +1,3 @@
-<style>
-  .f-price__sale,
-  .f-price__availability,
-  .f-price .f-price__badge-sale,
-  .f-price .f-price__badge-sold-out,
-  .f-price--on-sale .f-price__regular,
-  .f-price--on-sale .f-price__availability,
-  .f-price--no-compare .f-price__compare {
-    display: none;
-  }
-
-  .f-price--on-sale .f-price__sale {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .f-price--sold-out .f-price__badge-sold-out, .f-price--on-sale .f-price__badge-sale, .f-price--sold-out .f-price__badges, .f-price--on-sale .f-price__badges {
-    display: inline-flex;
-  }
-  .f-price__unit-wrapper {
-    width: 100%;
-  }
-</style>
 {%- liquid
   assign selected_variant = product.selected_or_first_available_variant
   if use_variant
@@ -45,7 +21,7 @@
     assign money_price = price | money_with_currency
   endif
 
-  if target == product and product.price_varies and settings.pcard_show_lowest_prices
+  if target == product and product.price_varies and settings.pcard_show_lowest_prices    
     assign money_price = 'products.product.from_text_html' | t: price: money_price
   endif
 -%}

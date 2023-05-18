@@ -1,17 +1,17 @@
 {% liquid
   if current_tags != blank
-  assign all_tags_downcase = collection.tags | json | downcase
-  assign current_arr = ''
-  assign new_current_arr = ''
+    assign all_tags_downcase = collection.tags | json | downcase
+    assign current_arr = ''
+    assign new_current_arr = ''
 
-  for tag in current_tags
-    assign newtag = tag | handleize | prepend: '_'
-    assign current_arr = current_arr | append: tag | append: ',' | downcase
-    assign new_current_arr = new_current_arr | append: newtag | append: ',' | downcase
-  endfor
+    for tag in current_tags
+      assign newtag = tag | handleize | prepend: '_'
+      assign current_arr = current_arr | append: tag | append: ',' | downcase
+      assign new_current_arr = new_current_arr | append: newtag | append: ',' | downcase
+    endfor
 
-  assign new_current_tags = new_current_arr | split: ','
-  assign current_tags = current_arr | split: ','
+    assign new_current_tags = new_current_arr | split: ','
+    assign current_tags = current_arr | split: ','
 
   else
     for tag in collection.all_tags

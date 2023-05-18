@@ -144,11 +144,7 @@
       "zipcode_validate": "Zip code can't be blank",
       "shipping_rates_result": "We found {{count}} shipping rate(s) for your address",
       "no_found_shipping_rate": "There are no shipping rates for your address.",
-      "recommend_title": "Recommendation for you",
-      "delivery_days": {
-        "one": "day",
-        "other": "days"
-      }
+      "recommend_title": "Recommendation for you"
     },
     "label": {
       "product": "Product",

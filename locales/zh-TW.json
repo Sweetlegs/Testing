@@ -144,11 +144,7 @@
       "zipcode_validate": "郵遞區編碼不能為空",
       "shipping_rates_result": "我們找到了您位址的{{count}}運費",
       "no_found_shipping_rate": "您的地址沒有運費。",
-      "recommend_title": "為您推薦",
-      "delivery_days": {
-        "one": "日",
-        "other": "日"
-      }
+      "recommend_title": "為您推薦"
     },
     "label": {
       "product": "產品",

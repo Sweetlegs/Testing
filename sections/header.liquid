@@ -1,4 +1,3 @@
-<script src="{{ 'header.min.js' | asset_url }}" defer="defer"></script>
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -84,6 +83,7 @@
       }
   {% endif %}
 {% endstyle %}
+{% comment %} opacity-0 transition-opacity {% endcomment %}
 <section
     data-section-id="{{ section.id }}"
     data-section-type="header"
@@ -152,13 +152,7 @@
                           assign logo_alt = logo.alt | default: shop.name | escape
                           assign logo_height = section.settings.mobile_logo_max_width | divided_by: logo.aspect_ratio | round
                         %}
-                        {{ logo | image_url: width: section.settings.width | image_tag:
-                          class: 'inline-block',
-                          widths: '50, 100, 150, 200, 250, 300, 400',
-                          height: logo_height,
-                          width: section.settings.logo_width,
-                          alt: logo_alt
-                        }}
+                        {{ logo | image_url: width: 300 | image_tag: widths: '50, 100, 150, 200, 250, 300', sizes: section.settings.logo_max_width, height: logo_height, width: section.settings.logo_width, alt: logo_alt, class: 'inline-block' }}
                       </div>
                     {% endif %}
                   </a>
@@ -172,13 +166,13 @@
             {% if show_cart_icon or search_settings != 'hide' %}
                 <div class="w-1/4 flex flex-1 items-center justify-end sf-header__mobile-right">
                     {% if search_settings != 'hide' %}
-                    <m-search-popup class="flex justify-center items-center p-2" data-open-search-popup>
+                    <div class="flex justify-center items-center p-2" data-open-search-popup>
                         <span class="sf__search-mb-icon">
                           <svg class="w-[20px] h-[20px]" fill="currentColor" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path d="M508.5 468.9L387.1 347.5c-2.3-2.3-5.3-3.5-8.5-3.5h-13.2c31.5-36.5 50.6-84 50.6-136C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c52 0 99.5-19.1 136-50.6v13.2c0 3.2 1.3 6.2 3.5 8.5l121.4 121.4c4.7 4.7 12.3 4.7 17 0l22.6-22.6c4.7-4.7 4.7-12.3 0-17zM208 368c-88.4 0-160-71.6-160-160S119.6 48 208 48s160 71.6 160 160-71.6 160-160 160z"/>
                           </svg>
                         </span>
-                    </m-search-popup>
+                    </div>
                     {% endif %}
                     {% if show_cart_icon %}
                       {% render 'cart' %}
@@ -319,7 +313,7 @@
                         </div>
                     </div>
                 {% when 'logo-center__2l' %}
-                    <div class="{{ container }} sf__header-main-top relative">
+                    <div class="{{ container }} sf__header-main-top relative z-[1]">
                         <div class="flex sf-menu-logo-bar items-center">
                             <div class="w-2/5 flex flex-grow items-center">
                                 {% liquid
@@ -360,7 +354,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="{{ container }} sf__header-main-menu relative">
+                    <div class="{{ container }} sf__header-main-menu relative z-[1]">
+                        {% render 'header-logo', header_settings: section.settings %}
                         {% render 'header-main-menu-container', section: section, justify: 'justify-center', box_size: '-mx-4' %}
                         <div class="flex justify-end sf-options-wrapper__desktop items-center">
                             {% liquid
@@ -506,39 +501,6 @@
     <div class="sf-header__overlay hidden md:block pointer-events-none fixed bg-black -inset-0" style="--tw-bg-opacity: 0.6;" ></div>
     {% render 'search-popup', header_settings: section.settings %}
 </section>
-
-<script>
-// Set header height
-function _shh() {
-  if (!_mh || !_dh) {
-    _mh = document.querySelector('header.sf-header__mobile');
-    _dh = document.querySelector('header.sf-header__desktop');
-  }
-  // Header
-  var _hd = window.innerWidth < 1024 ? _mh : _dh;
-  if (_hd) {
-    document.documentElement.style.setProperty('--sf-header-height', _hd.offsetHeight + 'px');
-    window.MinimogSettings.headerHeight = _hd.offsetHeight;
-  }
-}
-
-// setMainContentPadding
-function _smcp() {
-  // pageTemplate
-  var _pt = document.documentElement.dataset.template;
-  if (window.innerWidth >= 1024) {
-    if (_dh && _dh.dataset.transparent === "true") {
-      if (_pt === 'index' || _pt === 'collection') {
-        document.documentElement.style.setProperty('--main-content-padding-top', '0px');
-      }
-    }
-  } else {
-    document.documentElement.style.removeProperty('--main-content-padding-top');
-  }
-}
-_shh();
-_smcp();
-</script>
 
 {% schema %}
 {

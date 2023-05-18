@@ -5,14 +5,17 @@
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4942);
-/* provided dependency */ var MinimogSettings = __webpack_require__(4558)["GQ"];
+/* provided dependency */ var MinimogSettings = __webpack_require__(4558)["MinimogSettings"];
+
 
 class I18N {
   constructor() {
-    var _MinimogSettings$shop,
-      _this = this;
-    (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this, "shop_locale", ((_MinimogSettings$shop = MinimogSettings.shop_locale) === null || _MinimogSettings$shop === void 0 ? void 0 : _MinimogSettings$shop.current) || 'en');
+    var _this = this;
+
+    (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this, "shop_locale", MinimogSettings.shop_locale?.current || 'en');
+
     (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this, "locales", {
       'default': {
         date_format: 'MM/dd/yyyy',
@@ -54,32 +57,37 @@ class I18N {
         preorder_end_note: "🔥 Preorder will end at <strong>{end_time}</strong>"
       }
     });
-    // translate
+
     (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this, "tr", function (key) {
-      var _locales$shop_locale;
       let _params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
       const {
         locales,
         shop_locale
       } = _this;
-      let text = ((_locales$shop_locale = locales[shop_locale]) === null || _locales$shop_locale === void 0 ? void 0 : _locales$shop_locale[key]) || locales['default'][key] || `Foxkit: translation missing for ${key}!`;
+      let text = locales[shop_locale]?.[key] || locales['default'][key] || `Foxkit: translation missing for ${key}!`;
       const params = Object.keys(_params);
+
       if (params.length) {
         Object.entries(_params).forEach(_ref => {
           let [k, v] = _ref;
           return text = text.replace(`{${k}}`, v);
         });
       }
+
       return text;
     });
+
     (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this, "setLocales", (locale, data) => {
       this.locales[locale] = data;
     });
   }
+
 }
+
 const i18n = window.__i18n || new I18N();
 window.__i18n = window.__i18n || i18n;
-/* harmony default export */ __webpack_exports__["Z"] = (i18n);
+/* harmony default export */ __webpack_exports__["default"] = (i18n);
 
 /***/ }),
 
@@ -87,13 +95,14 @@ window.__i18n = window.__i18n || i18n;
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GQ": function() { return /* binding */ MinimogSettings; },
-/* harmony export */   "LE": function() { return /* binding */ MinimogTheme; },
-/* harmony export */   "rZ": function() { return /* binding */ MinimogStrings; },
-/* harmony export */   "s0": function() { return /* binding */ MinimogEvents; }
+/* harmony export */   "MinimogEvents": function() { return /* binding */ MinimogEvents; },
+/* harmony export */   "MinimogTheme": function() { return /* binding */ MinimogTheme; },
+/* harmony export */   "MinimogSettings": function() { return /* binding */ MinimogSettings; },
+/* harmony export */   "MinimogStrings": function() { return /* binding */ MinimogStrings; },
+/* harmony export */   "MinimogLibs": function() { return /* binding */ MinimogLibs; }
 /* harmony export */ });
-/* unused harmony export MinimogLibs */
 /* harmony import */ var _utils_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8971);
 /* harmony import */ var _libs_loadjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9280);
 /* harmony import */ var _libs_loadjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_libs_loadjs__WEBPACK_IMPORTED_MODULE_0__);
@@ -115,29 +124,32 @@ const MinimogLibs = window.MinimogLibs || {};
 
 __loadjs = function () {
   var h = function () {},
-    c = {},
-    u = {},
-    f = {};
+      c = {},
+      u = {},
+      f = {};
+
   function o(e, n) {
     if (e) {
       var r = f[e];
       if (u[e] = n, r) for (; r.length;) r[0](e, n), r.splice(0, 1);
     }
   }
+
   function l(e, n) {
     e.call && (e = {
       success: e
     }), n.length ? (e.error || h)(n) : (e.success || h)(e);
   }
+
   function d(r, t, s, i) {
     var c,
-      o,
-      e = document,
-      n = s.async,
-      u = (s.numRetries || 0) + 1,
-      f = s.before || h,
-      l = r.replace(/[\?|#].*$/, ""),
-      a = r.replace(/^(css|img)!/, "");
+        o,
+        e = document,
+        n = s.async,
+        u = (s.numRetries || 0) + 1,
+        f = s.before || h,
+        l = r.replace(/[\?|#].*$/, ""),
+        a = r.replace(/^(css|img)!/, "");
     i = i || 0, /(^css!|\.css$)/.test(l) ? ((o = e.createElement("link")).rel = "stylesheet", o.href = a, (c = "hideFocus" in o) && o.relList && (c = 0, o.rel = "preload", o.as = "style")) : /(^img!|\.(png|gif|jpg|svg|webp)$)/.test(l) ? (o = e.createElement("img")).src = a : ((o = e.createElement("script")).src = r, o.async = void 0 === n || n), !(o.onload = o.onerror = o.onbeforeload = function (e) {
       var n = e.type[0];
       if (c) try {
@@ -145,30 +157,37 @@ __loadjs = function () {
       } catch (e) {
         18 != e.code && (n = "e");
       }
+
       if ("e" == n) {
         if ((i += 1) < u) return d(r, t, s, i);
       } else if ("preload" == o.rel && "style" == o.as) return o.rel = "stylesheet";
+
       t(r, n, e.defaultPrevented);
     }) !== f(r, o) && e.head.appendChild(o);
   }
+
   function r(e, n, r) {
     var t, s;
+
     if (n && n.trim && (t = n), s = (t ? r : n) || {}, t) {
       if (t in c) throw "LoadJS";
       c[t] = !0;
     }
+
     function i(n, r) {
       !function (e, t, n) {
         var r,
-          s,
-          i = (e = e.push ? e : [e]).length,
-          c = i,
-          o = [];
+            s,
+            i = (e = e.push ? e : [e]).length,
+            c = i,
+            o = [];
+
         for (r = function (e, n, r) {
           if ("e" == n && o.push(e), "b" == n) {
             if (!r) return;
             o.push(e);
           }
+
           --i || t(o);
         }, s = 0; s < c; s++) d(e[s], r, n);
       }(e, function (e) {
@@ -178,18 +197,21 @@ __loadjs = function () {
         }, e), o(t, e);
       }, s);
     }
+
     if (s.returnPromise) return new Promise(i);
     i();
   }
+
   return r.ready = function (e, n) {
     return function (e, r) {
       e = e.push ? e : [e];
       var n,
-        t,
-        s,
-        i = [],
-        c = e.length,
-        o = c;
+          t,
+          s,
+          i = [],
+          c = e.length,
+          o = c;
+
       for (n = function (e, n) {
         n.length && i.push(e), --o || r(i);
       }; c--;) t = e[c], (s = u[t]) ? n(t, s) : (f[t] = f[t] || []).push(n);
@@ -211,81 +233,93 @@ __loadjs = function () {
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mdn_polyfills_Node_prototype_append_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2422);
 /* harmony import */ var mdn_polyfills_Node_prototype_append_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mdn_polyfills_Node_prototype_append_js__WEBPACK_IMPORTED_MODULE_0__);
+
 
 class JSX {
   constructor() {
     this.component = this.component.bind(this);
     return this.component;
   }
+
   component(tagName, attrs) {
     for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
       children[_key - 2] = arguments[_key];
     }
+
     if (typeof tagName === 'function') {
       // Override children
-      return tagName({
-        ...attrs,
+      return tagName({ ...attrs,
         children
       });
     }
+
     if (children) {
       children = children.filter(val => val !== null);
     }
+
     if (attrs) {
       if (attrs.class) {
         attrs.className = attrs.class;
       }
-      delete attrs.children;
-    }
 
-    // Normal DOM node tagName
+      delete attrs.children;
+    } // Normal DOM node tagName
+
+
     function createWithAttrs(tagName, attrs) {
       attrs = attrs || {};
       let elem = document.createElement(tagName);
+
       try {
         elem = Object.assign(elem, attrs);
       } catch {
         const attrKeys = Object.keys(attrs);
+
         for (let i = 0; i < attrKeys.length; i++) {
           if (attrs[i] !== 'dataSet') {
             elem.setAttribute(attrKeys[i], attrs[attrKeys[i]]);
           }
         }
       }
+
       return elem;
     }
-    let elem = tagName !== 'fragment' ? createWithAttrs(tagName, attrs) : document.createDocumentFragment();
-    // Evaluate SVG DOM node tagName
 
+    let elem = tagName !== 'fragment' ? createWithAttrs(tagName, attrs) : document.createDocumentFragment(); // Evaluate SVG DOM node tagName
     // All svg inner tags: https://developer.mozilla.org/en-US/docs/Web/SVG/Element
+
     const svgInnerTags = ['svg', 'path', 'rect', 'text', 'circle', 'g'];
+
     if (svgInnerTags.indexOf(tagName) !== -1) {
       elem = document.createElementNS('http://www.w3.org/2000/svg', tagName);
+
       for (const key in attrs) {
         const attrName = key === 'className' ? 'class' : key;
         elem.setAttribute(attrName, attrs[key]);
       }
-    }
+    } // Populate children to created DOM Node
 
-    // Populate children to created DOM Node
+
     for (const child of children) {
       if (Array.isArray(child)) {
         elem.append(...child);
       } else {
         elem.append(child);
       }
-    }
+    } // After elements are created
 
-    // After elements are created
-    if (attrs !== null && attrs !== void 0 && attrs.dataSet) {
+
+    if (attrs?.dataSet) {
       for (const key in attrs.dataSet) {
         if (Object.prototype.hasOwnProperty.call(attrs.dataSet, key)) {
           elem.dataset[key] = attrs.dataSet[key];
         }
       }
     }
+
     if (attrs && !window.__aleartedJSXData) {
       if (Object.keys(attrs).find(key => key.match(/^data-/))) {
         console.trace(`Your "${tagName}" component uses a data-* attribute! Use dataSet instead!!`);
@@ -293,7 +327,8 @@ class JSX {
         window.__aleartedJSXData = true;
       }
     }
-    if (attrs !== null && attrs !== void 0 && attrs.ref) {
+
+    if (attrs?.ref) {
       // Create a custom reference to DOM node
       if (typeof attrs.ref === 'function') {
         attrs.ref(elem);
@@ -301,26 +336,28 @@ class JSX {
         attrs.ref = elem;
       }
     }
-    if (attrs !== null && attrs !== void 0 && attrs.on) {
+
+    if (attrs?.on) {
       Object.entries(attrs.on).forEach(_ref => {
         let [event, handler] = _ref;
         elem.addEventListener(event, handler);
       });
-    }
+    } // Append style attributes to created DOM node
 
-    // Append style attributes to created DOM node
-    if (attrs !== null && attrs !== void 0 && attrs.style) {
+
+    if (attrs?.style) {
       Object.entries(attrs.style).forEach(_ref2 => {
         let [property, value] = _ref2;
         elem.style.setProperty(property, value);
-      });
-      // Object.assign(elem.style, attrs.style);
+      }); // Object.assign(elem.style, attrs.style);
     }
 
     return elem;
   }
+
 }
-/* harmony default export */ __webpack_exports__["Z"] = (new JSX());
+
+/* harmony default export */ __webpack_exports__["default"] = (new JSX());
 
 /***/ }),
 
@@ -340,6 +377,7 @@ const addEventDelegate = _ref => {
     handler,
     capture = false
   } = _ref;
+
   const listener = function (e) {
     // loop parent nodes from the target to the delegation node
     for (let target = e.target; target && target !== this; target = target.parentNode) {
@@ -349,6 +387,7 @@ const addEventDelegate = _ref => {
       }
     }
   };
+
   context.addEventListener(event, listener, capture);
   return () => {
     context.removeEventListener(event, listener, capture);
@@ -358,16 +397,20 @@ class Event {
   constructor() {
     this.events = {};
   }
+
   get evts() {
     return Object.keys(this.events);
   }
+
   subscribe(event, handler) {
     this.events[event] = this.events[event] || [];
     this.events[event].push(handler);
     return () => this.unSubscribe(event, handler);
   }
+
   unSubscribe(event, handler) {
     const handlers = this.events[event];
+
     if (handlers && Array.isArray(handlers)) {
       for (let i = 0; i < handlers.length; i++) {
         if (handlers[i] === handler) {
@@ -377,10 +420,12 @@ class Event {
       }
     }
   }
+
   emit(event) {
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
+
     console.groupCollapsed(`Event emitted: ${event}`);
     console.trace();
     console.groupEnd();
@@ -388,6 +433,7 @@ class Event {
       handler(...args);
     });
   }
+
 }
 
 /***/ }),
@@ -398,12 +444,13 @@ class Event {
 !function () {
   function t() {
     var e = Array.prototype.slice.call(arguments),
-      n = document.createDocumentFragment();
+        n = document.createDocumentFragment();
     e.forEach(function (e) {
       var t = e instanceof Node;
       n.appendChild(t ? e : document.createTextNode(String(e)));
     }), this.appendChild(n);
   }
+
   [Element.prototype, Document.prototype, DocumentFragment.prototype].forEach(function (e) {
     e.hasOwnProperty("append") || Object.defineProperty(e, "append", {
       configurable: !0,
@@ -423,10 +470,7 @@ class Event {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": function() { return /* binding */ _defineProperty; }
 /* harmony export */ });
-/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7343);
-
 function _defineProperty(obj, key, value) {
-  key = (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(key);
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -437,66 +481,8 @@ function _defineProperty(obj, key, value) {
   } else {
     obj[key] = value;
   }
+
   return obj;
-}
-
-/***/ }),
-
-/***/ 5512:
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _toPrimitive; }
-/* harmony export */ });
-/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1002);
-
-function _toPrimitive(input, hint) {
-  if ((0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(input) !== "object" || input === null) return input;
-  var prim = input[Symbol.toPrimitive];
-  if (prim !== undefined) {
-    var res = prim.call(input, hint || "default");
-    if ((0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(res) !== "object") return res;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return (hint === "string" ? String : Number)(input);
-}
-
-/***/ }),
-
-/***/ 7343:
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _toPropertyKey; }
-/* harmony export */ });
-/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1002);
-/* harmony import */ var _toPrimitive_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5512);
-
-
-function _toPropertyKey(arg) {
-  var key = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(arg, "string");
-  return (0,_typeof_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z)(key) === "symbol" ? key : String(key);
-}
-
-/***/ }),
-
-/***/ 1002:
-/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": function() { return /* binding */ _typeof; }
-/* harmony export */ });
-function _typeof(obj) {
-  "@babel/helpers - typeof";
-
-  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  }, _typeof(obj);
 }
 
 /***/ })
@@ -557,6 +543,17 @@ function _typeof(obj) {
 /******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
 /******/ 	}();
 /******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
@@ -568,7 +565,8 @@ var defineProperty = __webpack_require__(4942);
 // EXTERNAL MODULE: ./src/js/foxkit/i18n.js
 var i18n = __webpack_require__(7345);
 ;// CONCATENATED MODULE: ./src/js/components/BIS/NotifyButton.jsx
-/* provided dependency */ var createElement = __webpack_require__(6295)["Z"];
+/* provided dependency */ var createElement = __webpack_require__(6295)["default"];
+
 
 const NotifyButton = _ref => {
   let {
@@ -576,11 +574,12 @@ const NotifyButton = _ref => {
   } = _ref;
   return createElement("button", {
     className: `sf__btn ${className} btn-back-in-stock flex-grow shrink not-change`
-  }, i18n/* default.tr */.Z.tr('bis_open'));
+  }, i18n["default"].tr('bis_open'));
 };
+
 /* harmony default export */ var BIS_NotifyButton = (NotifyButton);
 ;// CONCATENATED MODULE: ./src/js/components/LazyImage.jsx
-/* provided dependency */ var LazyImage_createElement = __webpack_require__(6295)["Z"];
+/* provided dependency */ var LazyImage_createElement = __webpack_require__(6295)["default"];
 /* harmony default export */ function LazyImage(props) {
   const {
     src,
@@ -593,21 +592,23 @@ const NotifyButton = _ref => {
   const image = LazyImage_createElement("img", {
     style: style,
     className: `transition-opacity opacity-0 ${className}`,
-    src: `${src}&width=300`,
-    loading: "lazy",
+    src: src,
     alt: alt
   });
   image.addEventListener('load', imgLoaded);
   image.addEventListener('error', imgError);
+
   if (image.complete && image.naturalWidth) {
     imgLoaded();
   }
+
   function imgLoaded() {
     onLoad && onLoad();
     image.classList.add('opacity-100');
     image.removeEventListener('load', imgLoaded);
     image.removeEventListener('error', imgError);
   }
+
   function imgError(err) {
     console.error('Failed to load LazyImage. ', err, props);
     onError && onError();
@@ -615,10 +616,11 @@ const NotifyButton = _ref => {
     image.removeEventListener('load', imgLoaded);
     image.removeEventListener('error', imgError);
   }
+
   return image;
 }
 ;// CONCATENATED MODULE: ./src/js/components/Spinner.jsx
-/* provided dependency */ var Spinner_createElement = __webpack_require__(6295)["Z"];
+/* provided dependency */ var Spinner_createElement = __webpack_require__(6295)["default"];
 /* harmony default export */ function Spinner(_ref) {
   let {
     className = ''
@@ -642,9 +644,10 @@ const NotifyButton = _ref => {
   }));
 }
 ;// CONCATENATED MODULE: ./src/js/components/BIS/Popup.jsx
-/* provided dependency */ var MinimogSettings = __webpack_require__(4558)["GQ"];
-/* provided dependency */ var MinimogStrings = __webpack_require__(4558)["rZ"];
-/* provided dependency */ var Popup_createElement = __webpack_require__(6295)["Z"];
+/* provided dependency */ var MinimogSettings = __webpack_require__(4558)["MinimogSettings"];
+/* provided dependency */ var MinimogStrings = __webpack_require__(4558)["MinimogStrings"];
+/* provided dependency */ var Popup_createElement = __webpack_require__(6295)["default"];
+
 
 
 
@@ -664,11 +667,9 @@ const Popup = _ref => {
   const {
     title,
     has_only_default_variant,
-    current_variant_id,
-    variants
+    current_variant_id
   } = productData;
   const variant = productData.variants.find(v => v.id === current_variant_id);
-  if (!variant) return false;
   const {
     price,
     title: variant_title,
@@ -680,7 +681,7 @@ const Popup = _ref => {
   const {
     soldOut
   } = MinimogStrings;
-  const src = (featured_image === null || featured_image === void 0 ? void 0 : featured_image.src) || productData.images[0];
+  const src = featured_image?.src || productData.images[0];
   const syncWithShopify = save_to.indexOf('shopify_customers') !== -1;
   const saveToSubscriptionList = save_to.indexOf('foxkit_subscribers') !== -1;
   const priceNode = Popup_createElement("span", null);
@@ -704,13 +705,13 @@ const Popup = _ref => {
     class: "inline-flex lg:hidden prod__tag--soldout-mobile"
   }, soldOut), Popup_createElement("h3", {
     className: "bis-popup__product-title mt-2 lg:mt-6 font-medium text-xl"
-  }, title), Popup_createElement("p", null, (variants === null || variants === void 0 ? void 0 : variants.length) > 1 ? `${variant_title}  -  ` : null, priceNode))), Popup_createElement("div", {
+  }, title), Popup_createElement("p", null, has_only_default_variant ? null : `${variant_title}  -  `, priceNode))), Popup_createElement("div", {
     className: "bis-popup__form pt-0 p-4 lg:p-4 lg:w-1/2"
   }, Popup_createElement("h3", {
     className: "font-medium text-2xl mb-2.5"
-  }, i18n/* default.tr */.Z.tr('bis_heading')), Popup_createElement("p", {
+  }, i18n["default"].tr('bis_heading')), Popup_createElement("p", {
     className: "mb-2.5 text-color-subtext"
-  }, i18n/* default.tr */.Z.tr('bis_desc')), Popup_createElement("form", {
+  }, i18n["default"].tr('bis_desc')), Popup_createElement("form", {
     id: "bis-form",
     on: {
       submit: handleSubmit
@@ -720,22 +721,22 @@ const Popup = _ref => {
     className: "form-control",
     name: "email",
     required: true,
-    placeholder: i18n/* default.tr */.Z.tr('bis_email')
+    placeholder: i18n["default"].tr('bis_email')
   }), show_name ? Popup_createElement("input", {
     type: "text",
     className: "form-control",
     name: "firstName",
-    placeholder: i18n/* default.tr */.Z.tr('bis_name')
+    placeholder: i18n["default"].tr('bis_name')
   }) : null, show_phone_number ? Popup_createElement("input", {
     type: "text",
     className: "form-control",
     name: "phone",
-    placeholder: i18n/* default.tr */.Z.tr('bis_phone')
+    placeholder: i18n["default"].tr('bis_phone')
   }) : null, show_note ? Popup_createElement("textarea", {
     className: "form-control",
     name: "note",
     rows: "4",
-    placeholder: i18n/* default.tr */.Z.tr('bis_note')
+    placeholder: i18n["default"].tr('bis_note')
   }) : null, !show_signup_newsletter ? null : Popup_createElement("label", {
     className: "flex items-center cursor-pointer"
   }, Popup_createElement("input", {
@@ -744,7 +745,7 @@ const Popup = _ref => {
     value: "true"
   }), Popup_createElement("span", {
     className: "ml-2"
-  }, i18n/* default.tr */.Z.tr('bis_signup'))), syncWithShopify ? Popup_createElement("input", {
+  }, i18n["default"].tr('bis_signup'))), syncWithShopify ? Popup_createElement("input", {
     type: "hidden",
     className: "hidden",
     name: "syncWithShopify",
@@ -762,11 +763,12 @@ const Popup = _ref => {
   }), Popup_createElement("button", {
     type: "submit",
     class: "sf__btn bis-popup__submit sf__btn-primary w-full mt-5"
-  }, Popup_createElement(Spinner, null), Popup_createElement("span", null, i18n/* default.tr */.Z.tr('bis_submit'))))));
+  }, Popup_createElement(Spinner, null), Popup_createElement("span", null, i18n["default"].tr('bis_submit'))))));
 };
+
 /* harmony default export */ var BIS_Popup = (Popup);
 ;// CONCATENATED MODULE: ./src/js/components/Modal.jsx
-/* provided dependency */ var Modal_createElement = __webpack_require__(6295)["Z"];
+/* provided dependency */ var Modal_createElement = __webpack_require__(6295)["default"];
 function Modal_Modal(_ref) {
   let {
     wrapper_class = ''
@@ -798,65 +800,69 @@ function Modal_Modal(_ref) {
 // EXTERNAL MODULE: ./src/js/utilities/events.js
 var events = __webpack_require__(8971);
 ;// CONCATENATED MODULE: ./src/js/modules/modal.js
-/* provided dependency */ var modal_createElement = __webpack_require__(6295)["Z"];
+/* provided dependency */ var modal_createElement = __webpack_require__(6295)["default"];
 
 // eslint-disable-next-line no-unused-vars
 
 
+
 class Modal {
   constructor(wrapper_class) {
-    var _this = this,
-      _this$modal,
-      _this$modal2;
+    var _this = this;
+
     (0,defineProperty/* default */.Z)(this, "init", () => {
       (0,events/* addEventDelegate */.X)({
         selector: '.sf-modal__wrapper',
         handler: e => {
-          var _e$target;
-          if ((e === null || e === void 0 ? void 0 : e.target) === this.modal || e !== null && e !== void 0 && (_e$target = e.target) !== null && _e$target !== void 0 && _e$target.closest('.sf-modal__close')) {
+          if (e?.target === this.modal || e?.target?.closest('.sf-modal__close')) {
             this.close(e);
           }
         }
       });
     });
+
     (0,defineProperty/* default */.Z)(this, "setSizes", function () {
       let sizes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
       _this.resetSize();
+
       _this.sizes = sizes;
       sizes.split(" ").forEach(size => {
-        var _this$modalContent, _this$modalContent$cl;
-        (_this$modalContent = _this.modalContent) === null || _this$modalContent === void 0 ? void 0 : (_this$modalContent$cl = _this$modalContent.classList) === null || _this$modalContent$cl === void 0 ? void 0 : _this$modalContent$cl.add(size);
+        _this.modalContent?.classList?.add(size);
       });
     });
+
     (0,defineProperty/* default */.Z)(this, "setWidth", width => {
       this.modalContent.style.width = width;
     });
+
     (0,defineProperty/* default */.Z)(this, "resetSize", () => {
       if (this.sizes) {
         this.sizes.split(" ").forEach(size => {
-          var _this$modalContent2, _this$modalContent2$c;
-          (_this$modalContent2 = this.modalContent) === null || _this$modalContent2 === void 0 ? void 0 : (_this$modalContent2$c = _this$modalContent2.classList) === null || _this$modalContent2$c === void 0 ? void 0 : _this$modalContent2$c.remove(size);
+          this.modalContent?.classList?.remove(size);
         });
         this.sizes = '';
       }
     });
+
     (0,defineProperty/* default */.Z)(this, "appendChild", child => {
-      var _this$modalContentInn;
-      this === null || this === void 0 ? void 0 : (_this$modalContentInn = this.modalContentInner) === null || _this$modalContentInn === void 0 ? void 0 : _this$modalContentInn.appendChild(child);
+      this?.modalContentInner?.appendChild(child);
       this.children = child;
     });
+
     (0,defineProperty/* default */.Z)(this, "removeChild", () => {
-      var _this$children;
-      this === null || this === void 0 ? void 0 : (_this$children = this.children) === null || _this$children === void 0 ? void 0 : _this$children.remove();
+      this?.children?.remove();
     });
+
     (0,defineProperty/* default */.Z)(this, "open", () => {
       document.documentElement.classList.add('prevent-scroll');
       document.body.appendChild(this.modal);
       setTimeout(() => this.modal.classList.add('opacity-100'));
       window.addEventListener("keydown", this.handleKeyDown);
     });
+
     (0,defineProperty/* default */.Z)(this, "close", e => {
-      e === null || e === void 0 ? void 0 : e.preventDefault();
+      e?.preventDefault();
       this.modal.classList.remove('opacity-100');
       window.removeEventListener("keydown", this.handleKeyDown);
       setTimeout(() => {
@@ -867,28 +873,33 @@ class Modal {
         document.documentElement.classList.remove('prevent-scroll');
       }, this.transitionDuration);
     });
+
     (0,defineProperty/* default */.Z)(this, "handleKeyDown", e => {
       // ESC
       if (e.keyCode === 27) {
         this.close();
       }
     });
+
     this.modal = modal_createElement(Modal_Modal, {
       wrapper_class: wrapper_class || undefined
     });
-    this.modalContent = (_this$modal = this.modal) === null || _this$modal === void 0 ? void 0 : _this$modal.querySelector('.sf-modal__content');
-    this.modalContentInner = (_this$modal2 = this.modal) === null || _this$modal2 === void 0 ? void 0 : _this$modal2.querySelector('.sf-modal__content-inner');
+    this.modalContent = this.modal?.querySelector('.sf-modal__content');
+    this.modalContentInner = this.modal?.querySelector('.sf-modal__content-inner');
     this.transitionDuration = 200;
     this.init();
   }
+
 }
+
 /* harmony default export */ var modal = (Modal);
 ;// CONCATENATED MODULE: ./src/js/foxkit/plugins/bis.js
-/* provided dependency */ var bis_MinimogSettings = __webpack_require__(4558)["GQ"];
-/* provided dependency */ var bis_createElement = __webpack_require__(6295)["Z"];
-/* provided dependency */ var MinimogEvents = __webpack_require__(4558)["s0"];
-/* provided dependency */ var MinimogTheme = __webpack_require__(4558)["LE"];
-/* provided dependency */ var bis_i18n = __webpack_require__(7345)["Z"];
+/* provided dependency */ var bis_MinimogSettings = __webpack_require__(4558)["MinimogSettings"];
+/* provided dependency */ var bis_createElement = __webpack_require__(6295)["default"];
+/* provided dependency */ var MinimogEvents = __webpack_require__(4558)["MinimogEvents"];
+/* provided dependency */ var MinimogTheme = __webpack_require__(4558)["MinimogTheme"];
+/* provided dependency */ var bis_i18n = __webpack_require__(7345)["default"];
+
 
 
 
@@ -896,12 +907,27 @@ class Modal {
 class BIS {
   constructor(settings) {
     (0,defineProperty/* default */.Z)(this, "modal", new modal());
+
     (0,defineProperty/* default */.Z)(this, "appURL", bis_MinimogSettings.foxkitAppURL ? `https://${bis_MinimogSettings.foxkitAppURL}` : '');
+
     (0,defineProperty/* default */.Z)(this, "shop", window.Shopify.shop);
+
     (0,defineProperty/* default */.Z)(this, "productId", bis_MinimogSettings.productId);
+
+    (0,defineProperty/* default */.Z)(this, "mainProdInstance", void 0);
+
+    (0,defineProperty/* default */.Z)(this, "atcButton", void 0);
+
+    (0,defineProperty/* default */.Z)(this, "bisButton", void 0);
+
+    (0,defineProperty/* default */.Z)(this, "stickyProdInstance", void 0);
+
+    (0,defineProperty/* default */.Z)(this, "atcStickyButton", void 0);
+
+    (0,defineProperty/* default */.Z)(this, "bisStickyButton", void 0);
+
     (0,defineProperty/* default */.Z)(this, "init", () => {
-      var _this$atcButton;
-      (_this$atcButton = this.atcButton) === null || _this$atcButton === void 0 ? void 0 : _this$atcButton.after(this.bisButton);
+      this.atcButton.after(this.bisButton);
       this.bisButton.addEventListener("click", e => {
         e.preventDefault();
         this.modal.appendChild(bis_createElement(BIS_Popup, {
@@ -912,20 +938,22 @@ class BIS {
         this.modal.setSizes('max-w-[90vw]');
         this.modal.open();
       });
-      let current_variant_id = this.currentVariant.id;
-      const currentVariant = this.productData.variants.find(v => v.id === current_variant_id);
+      let current_variant_id = this.mainVariantPicker.currentVariant.id;
+      const currentVariant = this.mainVariantPicker.productData.variants.find(v => v.id === current_variant_id);
       this.toggleShowBISButton(currentVariant);
-      this.settings.productData.current_variant_id = currentVariant.id;
       MinimogEvents.subscribe(`${this.productId}__VARIANT_CHANGE`, (variant, prodInstance) => {
         this.settings.productData.current_variant_id = variant.id;
+
         if (!prodInstance.view) {
-          const isMainProduct = prodInstance === null || prodInstance === void 0 ? void 0 : prodInstance.closest('.main-product');
+          const isMainProduct = prodInstance?.closest('.main-product');
+
           if (isMainProduct) {
             this.toggleShowBISButton(variant);
           }
         }
       });
     });
+
     (0,defineProperty/* default */.Z)(this, "initSticky", () => {
       this.atcStickyButton.after(this.bisStickyButton);
       this.bisStickyButton.addEventListener("click", e => {
@@ -938,57 +966,42 @@ class BIS {
         this.modal.setSizes('max-w-[90vw]');
         this.modal.open();
       });
-      let current_variant_id = this.currentVariant.id;
-      const currentVariant = this.productData.variants.find(v => v.id === current_variant_id);
+      let current_variant_id = this.mainVariantPicker.currentVariant.id;
+      const currentVariant = this.mainVariantPicker.productData.variants.find(v => v.id === current_variant_id);
       this.toggleShowBISButtonSticky(currentVariant);
       MinimogEvents.subscribe(`${this.productId}__VARIANT_CHANGE`, (variant, prodInstance) => {
         this.settings.productData.current_variant_id = variant.id;
+
         if (!prodInstance.view) {
           const isMainProduct = prodInstance.closest('.main-product');
+
           if (isMainProduct) {
             this.toggleShowBISButtonSticky(variant);
           }
         }
       });
     });
+
     (0,defineProperty/* default */.Z)(this, "toggleShowBISButton", variant => {
-      if ((variant === null || variant === void 0 ? void 0 : variant.available) === false) {
-        if (this.atcButton) {
-          this.atcButton.style.display = 'none';
-          this.bisButton.style.display = 'inline-block';
-        }
-        if (this.dynamicButton) {
-          this.dynamicButton.style.display = 'none';
-        }
+      if (variant?.available === false) {
+        this.atcButton.style.display = 'none';
+        this.bisButton.style.display = 'inline-block';
       } else {
-        if (this.atcButton) {
-          this.bisButton.style.display = 'none';
-          this.atcButton.style.removeProperty('display');
-        }
-        if (this.dynamicButton) {
-          this.dynamicButton.style.removeProperty('display');
-        }
+        this.bisButton.style.display = 'none';
+        this.atcButton.style.removeProperty('display');
       }
     });
+
     (0,defineProperty/* default */.Z)(this, "toggleShowBISButtonSticky", variant => {
-      if ((variant === null || variant === void 0 ? void 0 : variant.available) === false) {
-        if (this.atcStickyButton) {
-          this.atcStickyButton.style.display = 'none';
-          this.bisStickyButton.style.display = 'inline-block';
-        }
-        if (this.stickyDynamicButton) {
-          this.stickyDynamicButton.style.display = 'none';
-        }
+      if (variant?.available === false) {
+        this.atcStickyButton.style.display = 'none';
+        this.bisStickyButton.style.display = 'inline-block';
       } else {
-        if (this.atcStickyButton) {
-          this.bisStickyButton.style.display = 'none';
-          this.atcStickyButton.style.removeProperty('display');
-        }
-        if (this.stickyDynamicButton) {
-          this.stickyDynamicButton.style.removeProperty('display');
-        }
+        this.bisStickyButton.style.display = 'none';
+        this.atcStickyButton.style.removeProperty('display');
       }
     });
+
     (0,defineProperty/* default */.Z)(this, "handleSubmit", e => {
       e.preventDefault();
       const form = e.target;
@@ -999,7 +1012,7 @@ class BIS {
         domNodes: {
           error: feedBackNode
         }
-      } = this;
+      } = this.mainVariantPicker;
       const {
         current_variant_id,
         title,
@@ -1015,7 +1028,7 @@ class BIS {
       formData.set('title', title);
       formData.set('product_id', id);
       formData.set('product_handle', handle);
-      formData.set('product_image_url', (featured_image === null || featured_image === void 0 ? void 0 : featured_image.src) || images[0]);
+      formData.set('product_image_url', featured_image?.src || images[0]);
       formData.set('variant_id', current_variant_id);
       formData.set('variant_title', variant_title);
       formData.set('platforms', this.settings.platforms || []);
@@ -1039,59 +1052,41 @@ class BIS {
         if (!res.ok) console.error(res.message);
       }).catch(console.error);
     });
+
     (0,defineProperty/* default */.Z)(this, "toggleLoading", (submitButton, active) => {
       const method = active ? 'add' : 'remove';
       submitButton.classList[method]('sf-spinner-loading');
     });
-    this.selectors = {
-      error: '.prod__form-error'
-    };
-    this.container = document.querySelector('.product-template');
-    this.settings = settings;
-    this.mainProduct = document.querySelector('.main-product__block-buy_buttons product-form');
+
+    this.mainProduct = document.querySelector('product-form');
+    this.mainVariantPicker = document.querySelector('variant-picker');
     this.mainStickyAddToCart = document.querySelector('sticky-atc');
-    this.domNodes = queryDomNodes(this.selectors, this.container);
-    this.initData();
-  }
-  async initData() {
-    var _this$container, _this$currentVariant;
-    const themeProducts = window._themeProducts || {};
-    let productData = themeProducts[this.container.dataset.productId];
-    this.productUrl = (_this$container = this.container) === null || _this$container === void 0 ? void 0 : _this$container.dataset.productUrl;
-    this.productData = Object.assign(await this.getProductJson(), productData);
-    const selectedVariantId = this.container.querySelector('[name="id"]').value;
-    this.currentVariant = this.productData.variants.find(variant => variant.id === Number(selectedVariantId));
-    this.productData.current_variant_id = (_this$currentVariant = this.currentVariant) === null || _this$currentVariant === void 0 ? void 0 : _this$currentVariant.id;
-    this.productData.initialVariant = this.currentVariant;
-    if (this.mainProduct && this.productData) {
-      var _this$mainProduct, _this$mainProduct2;
-      this.atcButton = (_this$mainProduct = this.mainProduct) === null || _this$mainProduct === void 0 ? void 0 : _this$mainProduct.querySelector('.add-to-cart');
-      this.dynamicButton = (_this$mainProduct2 = this.mainProduct) === null || _this$mainProduct2 === void 0 ? void 0 : _this$mainProduct2.querySelector('.prod__dynamic_checkout');
+
+    if (this.mainProduct && this.mainVariantPicker.productData) {
+      this.atcButton = this.mainProduct.querySelector('.add-to-cart');
       this.bisButton = bis_createElement(BIS_NotifyButton, {
-        className: 'sf__btn-primary'
+        className: this.mainProduct.enable_dynamic_checkout ? 'sf__btn-secondary' : 'sf__btn-primary'
       });
       this.bisButton.style.display = 'none';
-      this.settings.productData = this.productData;
+      this.settings = settings;
+      this.settings.productData = this.mainVariantPicker.productData;
       this.init();
     }
-    if (this.mainStickyAddToCart && this.productData) {
-      var _this$mainStickyAddTo, _this$mainStickyAddTo2;
-      this.atcStickyButton = (_this$mainStickyAddTo = this.mainStickyAddToCart) === null || _this$mainStickyAddTo === void 0 ? void 0 : _this$mainStickyAddTo.querySelector('.add-to-cart');
-      this.stickyDynamicButton = (_this$mainStickyAddTo2 = this.mainStickyAddToCart) === null || _this$mainStickyAddTo2 === void 0 ? void 0 : _this$mainStickyAddTo2.querySelector('.prod__dynamic_checkout');
+
+    if (this.mainStickyAddToCart) {
+      this.atcStickyButton = this.mainStickyAddToCart.querySelector('.add-to-cart');
       this.bisStickyButton = bis_createElement(BIS_NotifyButton, {
-        className: 'sf__btn-primary'
+        className: this.mainStickyAddToCart.enable_dynamic_checkout ? 'sf__btn-secondary' : 'sf__btn-primary'
       });
       this.bisStickyButton.style.display = 'none';
-      this.settings.productData = this.productData;
+      this.settings = settings;
+      this.settings.productData = this.mainVariantPicker.productData;
       this.initSticky();
     }
   }
-  getProductJson() {
-    return fetch(this.productUrl + ".js").then(function (response) {
-      return response.json();
-    });
-  }
+
 }
+
 window.FoxKit = window.FoxKit || {};
 window.FoxKit.BIS = BIS;
 }();

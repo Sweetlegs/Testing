@@ -144,11 +144,7 @@
       "zipcode_validate": "Az irányítószám nem lehet üres",
       "shipping_rates_result": "{{count}} szállítási díj(oka)t találtunk a címedhez",
       "no_found_shipping_rate": "A címéhez nincs szállítási díj.",
-      "recommend_title": "Ajánlás Önnek",
-      "delivery_days": {
-        "one": "nap",
-        "other": "Napok"
-      }
+      "recommend_title": "Ajánlás Önnek"
     },
     "label": {
       "product": "Termék",

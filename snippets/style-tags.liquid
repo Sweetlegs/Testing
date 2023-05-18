@@ -13,19 +13,6 @@
   endif
   assign font_body_base = settings.type_base_size
   assign font_header_base = settings.type_header_base_size
-
-  assign enable_rtl = settings.enable_rtl
-  assign language_support_rtl = settings.language_support_rtl
-  if enable_rtl and language_support_rtl != blank
-    assign shop_locale = localization.language.iso_code
-    assign language_support_rtl_list = language_support_rtl | split: ','
-    assign is_rtl = language_support_rtl_list | where: shop_locale
-    if is_rtl.size > 0
-      assign enable_rtl = true
-    else
-      assign enable_rtl = false
-    endif
-  endif
 %}
 
 {%- style -%}
@@ -163,19 +150,18 @@
 {%- endstyle -%}
 
 {%- if template.name == "product" -%}
-	{{ 'product-template.css' | asset_url | stylesheet_tag }}
+<link media="print" onload="this.media = 'all'" rel="stylesheet" href="{{ 'product-template.css' | asset_url }}">
 {%- endif -%}
 {%- if template.name == "collection" or template.name == 'list-collections' or template.name == 'search' -%}
-	{{ 'collection.css' | asset_url | stylesheet_tag }}
+<link media="print" onload="this.media = 'all'" rel="stylesheet" href="{{ 'collection.css' | asset_url }}">
 {%- endif -%}
-{%- if template.suffix == "about-us" -%}
-	<link media="print" onload="this.media = 'all'" rel="stylesheet" href="{{ 'about-us.css' | asset_url }}">
+{%- if template.name == "gift_card" -%}
+<link media="print" onload="this.media = 'all'" rel="stylesheet" href="{{ 'template-giftcard.css' | asset_url }}">
 {%- endif -%}
-<link media="print" onload="this.media = 'all'" rel="stylesheet" href="{{ 'vendor.css' | asset_url }}">
 
-{{ 'custom.css' | asset_url | stylesheet_tag }}
-{% if enable_rtl %}
-  {{ 'rtl.css' | asset_url | stylesheet_tag }}
+<link type="text/css" href="{{ 'custom.css' | asset_url }}" rel="stylesheet">
+{% if settings.enable_rtl %}
+  <link type="text/css" href="{{ 'rtl.css' | asset_url }}" rel="stylesheet">
 {% endif %}
 
 {%- style -%}

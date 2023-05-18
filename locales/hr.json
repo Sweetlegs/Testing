@@ -144,11 +144,7 @@
       "zipcode_validate": "Poštanski broj ne može biti prazan",
       "shipping_rates_result": "Pronašli smo {{count}} cijene otpreme za vašu adresu",
       "no_found_shipping_rate": "Ne postoje cijene dostave za vašu adresu.",
-      "recommend_title": "Preporuka za vas",
-      "delivery_days": {
-        "one": "dan",
-        "other": "Dani"
-      }
+      "recommend_title": "Preporuka za vas"
     },
     "label": {
       "product": "Proizvod",

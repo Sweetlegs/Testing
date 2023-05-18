@@ -34,7 +34,6 @@ window.MinimogThemeStyles = {
   product: "{{ 'product.css' | asset_url | prepend: 'https:' }}"
 };
 window.MinimogTheme = {};
-window.MinimogTheme.version = '3.3.0';
 window.MinimogLibs = {};
 window.FoxKitStrings = {};
 window.MinimogStrings = {
@@ -109,9 +108,7 @@ window.MinimogSettings = {
     product_recommendations_url: {{ routes.product_recommendations_url | json }},
     cart_add_url: '{{ routes.cart_add_url }}',
     cart_change_url: '{{ routes.cart_change_url }}',
-    cart_update_url: '{{ routes.cart_update_url }}',
-    predictive_search_url: '{{ routes.predictive_search_url }}',
-    search_url: '{{ routes.search_url }}'
+    cart_update_url: '{{ routes.cart_update_url }}'
   },
   hide_unavailable_product_options: true,
   pcard_image_ratio: {{ settings.pcard_image_ratio | json }},
@@ -151,8 +148,17 @@ window.themeStyleURLs = {
     required: false
   },
   customer: {
-    url: "{{ 'customer.css' | asset_url }}",
-    required: {% if template contains "customers/" %} true {% else %} false {% endif %},
+  url: "{{ 'customer.css' | asset_url }}",
+  required: {% if template contains "customers/" %} true {% else %} false {% endif %},
+  },
+  swiper: {
+    url: "{{ 'swiper.css' | asset_url }}",
+    required: {% if template.name == "product" %} true {% else %} false {% endif %},
+  },
+  cookieConsent: {
+    url: "{{ 'cookie-consent.css' | asset_url }}",
+    required: false,
+    afterWindowLoaded: true
   },
   glightbox: {
     url: "{{ 'glightbox.css' | asset_url }}",
@@ -234,15 +240,29 @@ window.themeScriptURLs = {
     url: "{{ 'tabs.min.js' | asset_url }}",
     required: false,
   },
+  cookieConsent: {
+    url: "{{ 'cookie-consent.min.js' | asset_url }}",
+    required: false,
+    afterWindowLoaded: true
+  },
   glightbox: {
     url: "{{ 'glightbox.min.js' | asset_url }}",
     required: {% if template.name == "product" %} true {% else %} false {% endif %},
+    afterWindowLoaded: true
+  },
+  mansory: {
+    url: "{{ 'mansory-layout.min.js' | asset_url }}",
+    required: false,
     afterWindowLoaded: true
   },
   plyr: {
     url: "{{ 'plyr.min.js' | asset_url }}",
     required: false,
     afterWindowLoaded: true
+  },
+  swiper: {
+    url: "{{ 'swiper.min.js' | asset_url }}",
+    required: {% if template.name == "product" %} true {% else %} false {% endif %},
   },
   parallax: {
     url: "{{ 'simple-parallax.min.js' | asset_url }}",

@@ -26,12 +26,11 @@
   endif
 %}
 
-<section id="sf__hero-{{ section.id }}" class="{{ section.settings.custom_class }}" data-section-type="hero" data-section-id="{{ section.id }}">
+<section id="sf__hero-{{ section.id }}" class="{{ section.settings.custom_class }}" data-section-type="hero" data-section-id="{{ section.id }}" data-parallax="{{ parallax }}">
     <div class="{{ container }}" style="--content-color: {{ section.settings.text_color }};">
-        <m-hero
-            data-parallax="{{ parallax }}"
+        <div
             id="sf-hero-{{ section.id }}"
-            class="sf-hero block {% if image_link != blank %} sf-hero--has-link{% endif %}{% if section.settings.mb_image != blank %} sf-hero__mobile-no-overlay{% endif %} sf-hero--text-{{ section.settings.text_color }} sf-hero--{{ section.settings.hero_size }}{% if show_overlay %} sf-hero--has-overlay{% endif %}{% unless section.settings.use_content_above %} sf-hero--content-stack mb-10 md:mb-0{% endunless %}"
+            class="sf-hero {% if image_link != blank %} sf-hero--has-link{% endif %}{% if section.settings.mb_image != blank %} sf-hero__mobile-no-overlay{% endif %} sf-hero--text-{{ section.settings.text_color }} sf-hero--{{ section.settings.hero_size }}{% if show_overlay %} sf-hero--has-overlay{% endif %}{% unless section.settings.use_content_above %} sf-hero--content-stack mb-10 md:mb-0{% endunless %}"
         >
             {% unless section.settings.image != blank %}
                 <div class="sf-hero__bg hidden pc md:block overflow-hidden">
@@ -39,7 +38,7 @@
                 </div>
             {% else %}
                 <div
-                  class="hidden md:block sf-hero__bg pointer-events-none bg-no-repeat bg-cover{% if parallax %} bg-fixed{% endif %}"
+                  class="hidden md:block sf-hero__bg pointer-events-none bg-no-repeat bg-cover bg-no-repeat{% if parallax %} bg-fixed{% endif %}"
                   style="background-position: {{ section.settings.bg_position | default: 'center' }};{% if section.settings.hero_size == 'adapt' %}--aspect-ratio: {{ min_aspect_ratio }};{% endif %}"
                   data-src="{{ section.settings.image | image_url }}"></div>
             {% endunless %}
@@ -47,27 +46,11 @@
               <a href="{{ image_link }}" class="sf-slider__link"></a>
             {% endif %}
             {% if mb_image == blank %}
-              <div class="sf-hero__bg block md:hidden overflow-hidden">
+              <div class="block md:hidden overflow-hidden">
                 {{ 'lifestyle-2' | placeholder_svg_tag: 'sf__placeholder-svg w-full h-full' }}
               </div>
             {% else %}
-                <div class="sf-hero__bg block md:hidden">
-                  {%- liquid
-                    assign image_height = mb_image.width | divided_by: mb_image.aspect_ratio | round
-                    assign lazy_load = 'eager'
-                    unless forloop.first
-                      assign lazy_load = 'lazy'
-                    endunless
-                  -%}
-                  {{ mb_image | image_url: width: 750 | image_tag:
-                    loading: lazy_load,
-                    width: mb_image.width,
-                    height: image_height,
-                    sizes: '100vw',
-                    widths: '375, 550, 750, 1100',
-                    alt: mb_image.alt | escape
-                  }}
-                </div>
+                <div class="block md:hidden">{% render 'responsive-image', image: mb_image %}</div>
             {% endif %}
 
             {% liquid
@@ -98,7 +81,7 @@
                     {% endif %}
                 </div>
             </div>
-        </m-hero>
+        </div>
     </div>
 </section>
 

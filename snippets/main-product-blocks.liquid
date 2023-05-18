@@ -4,6 +4,16 @@
   assign product_form_id = 'product-form-' | append: section.id
   assign product_form_class = 'main-product-form product-form-' | append: section.id
 
+  capture is_preorder
+    render 'check-preorder', product: product
+  endcapture
+
+  if is_preorder == "true"
+    assign is_preorder = true
+  else
+    assign is_preorder = false
+  endif
+
   if update_browser_history == nil
     assign update_browser_history = section.settings.enable_history_state
   endif
@@ -22,7 +32,7 @@
   if is_block_coundown_timer
       assign has_block_countdown = true
   endif
-
+  
   if section.settings.layout == 'layout-7'
     assign alignBreadcrumb = 'center'
   else
@@ -35,19 +45,8 @@
       break
     endif
   endfor
-
-  assign variant_id = product.selected_or_first_available_variant.id
-  assign selected_variant_id = ''
-  unless section.settings.show_featured_media
-    assign selected_variant_id = product.selected_variant.id
-  endunless
-
-  assign blockBuyButton = section.blocks | where: 'type', 'buy_buttons'
-
 %}
-{% comment %} Fallback for case not show block price, buy buttons {% endcomment %}
-<input type="hidden" name="id" value="{{ variant_id }}" data-selected-variant="{{ selected_variant_id }}" disabled>
-{% comment %} End comment {% endcomment %}
+
 {% if section.blocks.size > 0 %}
   <div class="product-form form main-product"
     data-product-id="{{ product.id }}"
@@ -72,18 +71,14 @@
               -%}
               {% if has_tags %}
                 <div class="mb-4 prod__tags">
-                  {% render 'product-tags', product: product %}
+                  {% render 'product-tags' %}
                 </div>
               {% endif %}
             {%- when 'breadcrumb' -%}
               {% render 'breadcrumb', container: 'container', justify: alignBreadcrumb, hide_current: true %}
             {%- when 'title' -%}
               <div class="prod__title flex justify-between items-start pt-0.5 relative{% if section.settings.show_atwl and section.settings.layout != 'layout-7' %} pr-12{% endif %}">
-                {% if is_featured == true %}
-                  <h2 class="text-2xl md:text-3xl md:leading-[42px] pr-2">{{ product.title }}</h2>
-                {% else %}
-                  <h1 class="text-2xl md:text-3xl md:leading-[42px] pr-2">{{ product.title }}</h1>
-                {% endif %}
+                <h1 class="text-2xl md:text-3xl md:leading-[42px] pr-2">{{ product.title }}</h1>
                 {% if section.settings.show_atwl and section.settings.layout != 'layout-7' %}
                   <div class="hidden md:block absolute right-0 top-0">
                     {% if wishlist_app == 'growave' %}
@@ -115,12 +110,7 @@
                   {{ 'products.product.include_taxes' | t }}
                 </div>
               {%- endif -%}
-              <div class="installment-shoppay">
-                {%- form 'product', product, id: 'product-form-installment', class: 'installment' -%}
-                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                  {{ form | payment_terms }}
-                {%- endform -%}
-              </div>
+              <div class="installment-shoppay">{{ form | payment_terms }}</div>
             {%- when 'short_description' -%}
               {% if product.metafields.descriptor.short_description != blank %}
                 <div class="prod__description leading-6">{{ product.metafields.descriptor.short_description }}</div>
@@ -150,7 +140,7 @@
                     <div class="prod__additional_infos-label">{{ 'products.product.collections' | t }}:</div>
                     <div class="prod__additional_infos-value">
                       {% for collection in product.collections %}
-                        <a href="{{ collection.url }}" class="hover:text-black">
+                        <a href="{{collection.url}}" class="hover:text-black">
                           {{ collection.title }}{%- if forloop.last != true -%}, {%- endif -%}
                         </a>
                       {% endfor %}
@@ -305,6 +295,12 @@
                 if image_field.size > 0
                   assign show_dynamic_checkout = false
                 endif
+
+                assign variant_id = product.selected_or_first_available_variant.id
+                assign selected_variant_id = ''
+                unless section.settings.show_featured_media
+                  assign selected_variant_id = product.selected_variant.id
+                endunless
               %}
               <product-form class="f-product-form" data-product-id="{{ product.id }}">
                 {%- form 'product', product,
@@ -393,26 +389,21 @@
             {%- when 'collapsible_tab' -%}
               {% if block.settings.heading != blank %}
               <div class="prod__accordion">
-                <collapsible-tab
-                  class="collapsible__item no-js-hidden"
-                  data-block-id="collapsible-tab-{{ block.id }}"
-                  {% if block.settings.default_open %}
-                  open="true"
-                  {% endif %}
+                <div
+                    class="sf__accordion-item overflow-hidden{% if block.settings.default_open %} open{% endif %}"
+                    data-index="{{ forloop.index0 }}"
+                    style="--content-max-height: {% if block.settings.default_open %}100%{% else %}0px{% endif %};"
                 >
-                  <button class="collapsible__button lg:text-[18px] pb-2.5 pr-4 border-b border-color-border" data-trigger>
-                      {% if block.settings.icon != blank and block.settings.icon != 'none' %}
-                          {% render 'icon', name: block.settings.icon %}
-                      {% endif %}
-                      <span>{{ block.settings.heading }}</span>
-                  </button>
-                  <div class="collapsible__content" data-content hidden>
-                      <div class="collapsible__content-inner prose">
-                        {{ block.settings.content }}
-                        {{ block.settings.liquid }}
-                      </div>
+                  <div class="sf__accordion-button lg:text-[18px] pb-2.5 pr-4 border-b border-color-border">
+                    {{ block.settings.heading }}
                   </div>
-                </collapsible-tab>
+                  <div class="sf__accordion-content">
+                    <div class="py-5 prose">
+                      {{ block.settings.content }}
+                      {{ block.settings.liquid }}
+                    </div>
+                  </div>
+                </div>
               </div>
               {% endif %}
             {%- when 'text' -%}
@@ -561,108 +552,9 @@
                   </li>
                 {% endif %}
               </ul>
-            {%- when 'complementary' -%}
-              {%- liquid
-                assign hiddenClass = ''
-                unless block.settings.enable_quick_add
-                  assign hiddenClass = hiddenClass | append: 'hide-quick-add '
-                endunless
-                unless block.settings.enable_quick_view
-                  assign hiddenClass = hiddenClass | append: 'hide-quick-view '
-                endunless
-                unless block.settings.enable_compare
-                  assign hiddenClass = hiddenClass | append: 'hide-compare '
-                endunless
-                unless block.settings.enable_wishlist
-                  assign hiddenClass = hiddenClass | append: 'hide-wishlist '
-                endunless
-              -%}
-              {{ 'product-complementary.css' | asset_url | stylesheet_tag }}
-              <product-recommendations
-                class="sf-complementary-products {{ hiddenClass }} {% if block.settings.make_collapsible_row %}show_as_collapsible{% endif %}"
-                data-items-per-page="{{ block.settings.products_per_page }}" data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ block.settings.product_list_limit }}&intent=complementary" style="--column-gap: 15px;
-                --column-gap-mobile: 15px;">
-                {%- if recommendations.performed and recommendations.products_count > 0 -%}
-                  {%- liquid
-                    assign number_of_slides = recommendations.products_count | plus: 0.0 | divided_by: block.settings.products_per_page | ceil
-                    assign enable_slider = false
-                    if number_of_slides > 1
-                      assign enable_slider = true
-                    endif
-                  -%}
-                  {% capture block_content %}
-                    <div class="sf-grid grid grid-cols-2 sf__col-{{ block.settings.products_per_page }} md:grid-cols-{{ block.settings.products_per_page | divided_by: 2.0 | ceil }} xl:grid-cols-{{ block.settings.products_per_page }} {% if enable_slider %}swiper-container{% endif %}">
-                      {%- if enable_slider -%}<div class="swiper-wrapper">{%- endif -%}
-                      {%- for product in recommendations.products -%}
-                        {%- if enable_slider -%}
-                          <div class="swiper-slide sf-column">
-                            {% render 'product-card', product: product, image_ratio: block.settings.pcard_image_ratio, show_vendor: false, show_variant_options: block.settings.enable_variant_options %}
-                          </div>
-                        {%- else -%}
-                          {% render 'product-card', product: product, image_ratio: block.settings.pcard_image_ratio, show_vendor: false, show_variant_options: block.settings.enable_variant_options %}
-                        {%- endif -%}
-                      {%- endfor -%}
-                      {%- if enable_slider -%}</div>{%- endif -%}
-                    </div>
-                    {% if enable_slider %}
-                      {%- liquid
-                        assign controls_absolute = true
-                        if block.settings.make_collapsible_row
-                          assign controls_absolute = false
-                        endif
-                      -%}
-                      {% render 'slider-controls', absolute: controls_absolute, container: section.settings.container, show_pagination: false, show_nav: true %}
-                    {% endif %}
-                  {% endcapture %}
-                  {% if block.settings.make_collapsible_row %}
-                    <collapsible-tab
-                      class="collapsible__item no-js-hidden"
-                      data-block-id="collapsible-tab-{{ block.id }}"
-                      open="true"
-                    >
-                      <button class="collapsible__button lg:text-[18px] pb-2.5 pr-4 border-b border-color-border" data-trigger>
-                          {% if block.settings.icon != blank and block.settings.icon != 'none' %}
-                              {% render 'icon', name: block.settings.icon %}
-                          {% endif %}
-                          <span>{{ block.settings.block_heading }}</span>
-                      </button>
-                      <div class="collapsible__content" data-content hidden>
-                          <div class="collapsible__content-inner">
-                              {{ block_content }}
-                          </div>
-                      </div>
-                    </collapsible-tab>
-                  {% else %}
-                    {% unless block.settings.block_heading == blank %}
-                      <h3 class="complementary-product-heading h4">{{ block.settings.block_heading }}</h3>
-                    {% endunless %}
-                    {{ block_content }}
-                  {% endif %}
-                {%- endif -%}
-              </product-recommendations>
           {%- endcase -%}
         </div>
       {%- endfor -%}
     </div>
   </div>
 {% endif %}
-{% comment %} Fallback for case not show block price, buy buttons {% endcomment %}
-{% if blockBuyButton.size < 1 %}
-  <div class="main-product__block mt-4">
-    {% if has_block_countdown == false %}
-      <div
-        class="prod__countdown hidden mb-4"
-        data-days="{{ 'general.time.days' | t }}"
-        data-hrs="{{ 'general.time.hrs' | t }}"
-        data-mins="{{ 'general.time.mins' | t }}"
-        data-secs="{{ 'general.time.secs' | t }}"
-        data-now="{{- 'now' | date: '%Y/%m/%d %k:%M:00%z (%Z)' -}}"
-      ></div>
-    {% endif %}
-    {% if has_block_stock == false %}
-        {% render 'product-stock-countdown', product: product %}
-    {% endif %}
-    <div class="quantity-discount-hook mt-4"></div>
-  </div>
-{% endif %}
-{% comment %} End comment {% endcomment %}

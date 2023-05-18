@@ -144,11 +144,7 @@
       "zipcode_validate": "郵便番号を空白にすることはできません",
       "shipping_rates_result": "あなたの住所の{{count}}配送料が見つかりました",
       "no_found_shipping_rate": "住所の配送料はありません。",
-      "recommend_title": "あなたのための推奨事項",
-      "delivery_days": {
-        "one": "日",
-        "other": "日"
-      }
+      "recommend_title": "あなたのための推奨事項"
     },
     "label": {
       "product": "積",

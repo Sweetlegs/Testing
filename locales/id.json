@@ -144,11 +144,7 @@
       "zipcode_validate": "Kode pos tidak boleh kosong",
       "shipping_rates_result": "Kami menemukan {{count}} tarif pengiriman untuk alamat Anda",
       "no_found_shipping_rate": "Tidak ada tarif pengiriman untuk alamat Anda.",
-      "recommend_title": "Rekomendasi untuk Anda",
-      "delivery_days": {
-        "one": "hari",
-        "other": "Hari"
-      }
+      "recommend_title": "Rekomendasi untuk Anda"
     },
     "label": {
       "product": "Hasil",

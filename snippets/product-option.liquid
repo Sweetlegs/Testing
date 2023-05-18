@@ -1,12 +1,3 @@
-<style>
-  .variant-picker__input input[type=radio] {
-    clip: rect(0,0,0,0);
-    overflow: hidden;
-    position: absolute;
-    height: 1px;
-    width: 1px;
-  }
-</style>
 {% liquid 
   assign is_size = false
   assign size_title_downcase = size_title | downcase
@@ -66,7 +57,7 @@
             assign is_size = false
         endif
       %}
-      <div class="product-options__option product-options__option--{{ picker_type }}">
+      <div class="product-options__option {{ picker_type }}">
         {%- case picker_type -%}
           {% when 'dropdown' %}
             <variant-select data-picker-field="select" data-option-name="{{ option.name }}" data-selected-value="{{ option.selected_value }}">

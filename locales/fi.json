@@ -144,11 +144,7 @@
       "zipcode_validate": "Postinumero ei voi olla tyhjä",
       "shipping_rates_result": "Löysimme {{count}} toimituskulut osoitteellesi",
       "no_found_shipping_rate": "Osoitteellesi ei ole toimitusmaksuja.",
-      "recommend_title": "Suositus sinulle",
-      "delivery_days": {
-        "one": "päivä",
-        "other": "Päivää"
-      }
+      "recommend_title": "Suositus sinulle"
     },
     "label": {
       "product": "Tuote",

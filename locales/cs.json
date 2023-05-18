@@ -144,11 +144,7 @@
       "zipcode_validate": "PSČ nemůže být prázdné",
       "shipping_rates_result": "Zjistili jsme {{count}} přepravní sazby pro vaši adresu",
       "no_found_shipping_rate": "Pro vaši adresu nejsou uvedeny žádné sazby za dopravu.",
-      "recommend_title": "Doporučení pro vás",
-      "delivery_days": {
-        "one": "den",
-        "other": "Dny"
-      }
+      "recommend_title": "Doporučení pro vás"
     },
     "label": {
       "product": "Výrobek",

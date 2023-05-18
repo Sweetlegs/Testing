@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Minimog - OS 2.0",
-    "theme_version": "3.3.0",
+    "theme_version": "3.0.1",
     "theme_author": "FOXECOM",
     "theme_documentation_url": "https://docs.minimog.co/",
     "theme_support_url": "https://minimog.co"
@@ -1005,10 +1005,6 @@
           {
             "value": "4",
             "label": "Style 4"
-          },
-          {
-            "value": "5",
-            "label": "Style 5"
           }
         ]
       },
@@ -2137,6 +2133,20 @@
     "name": "Social sharing",
     "settings": [
       {
+        "type": "header",
+        "content": "Social sharing image"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Image",
+        "info": "Shown when sharing a link on social media. [Learn more](https://help.shopify.com/manual/using-themes/troubleshooting/showing-social-media-thumbnail-images/) about image thumbnails."
+      },
+      {
+        "type": "header",
+        "content": "Social sharing options"
+      },
+      {
         "type": "checkbox",
         "id": "social_sharing_blog",
         "label": "Enable sharing for blog articles",
@@ -2370,12 +2380,6 @@
         "default": true
       },
       {
-        "type": "checkbox",
-        "id": "show_delivery_days",
-        "label": "Show delivery days for estimate shipping",
-        "default": false
-      },
-      {
         "type": "text",
         "id": "default_country_estimate_shipping",
         "label": "Default country for estimate shipping",
@@ -2429,19 +2433,19 @@
         "label": "Results for unavailable products",
         "options": [
           {
-            "value": "show",
+            "value": "SHOW",
             "label": "Show"
           },
           {
-            "value": "hide",
+            "value": "HIDE",
             "label": "Hide"
           },
           {
-            "value": "last",
+            "value": "LAST",
             "label": "Show at last"
           }
         ],
-        "default": "last"
+        "default": "LAST"
       }
     ]
   },
@@ -2504,12 +2508,6 @@
         "id": "show_cookie_consent",
         "label": "Show cookie consent",
         "default": false
-      },
-      {
-        "type": "checkbox",
-        "id": "cookie_design_mode",
-        "label": "Design mode",
-        "default": true
       },
       {
         "type": "textarea",
@@ -2596,7 +2594,7 @@
         "type": "text",
         "id": "gm_api",
         "label": "API Key",
-        "info": "[Get Api Key](https://help.shopify.com/en/manual/online-store/themes/themes-by-shopify/vintage-themes/customizing-vintage-themes/map-section-api-key)"
+        "info": "[Get Api Key](https://developers.google.com/maps/documentation/javascript/get-api-key)"
       },
       {
         "type": "header",

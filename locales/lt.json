@@ -144,11 +144,7 @@
       "zipcode_validate": "Pašto indeksas negali būti tuščias",
       "shipping_rates_result": "Mes radome {{count}} siuntimo tarifą (-us) jūsų adresui",
       "no_found_shipping_rate": "Jūsų adresui nėra jokių siuntimo tarifų.",
-      "recommend_title": "Rekomendacija Jums",
-      "delivery_days": {
-        "one": "diena",
-        "other": "Dienos"
-      }
+      "recommend_title": "Rekomendacija Jums"
     },
     "label": {
       "product": "Produktas",

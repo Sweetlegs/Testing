@@ -144,11 +144,7 @@
       "zipcode_validate": "PSČ nemôže byť prázdne",
       "shipping_rates_result": "Našli sme {{count}} prepravnú sadzbu (sadzby) pre vašu adresu",
       "no_found_shipping_rate": "Neexistujú žiadne prepravné sadzby pre vašu adresu.",
-      "recommend_title": "Odporúčanie pre vás",
-      "delivery_days": {
-        "one": "deň",
-        "other": "dni"
-      }
+      "recommend_title": "Odporúčanie pre vás"
     },
     "label": {
       "product": "Výrobok",

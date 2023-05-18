@@ -1,7 +1,7 @@
 {% if blocks.size > 0 %}
     <div class="{% if bordered %} lg:border-b lg:border-color-border{% endif %} sf__footer-middle">
         <div class="{{ container }}{% if container == 'w-full' %} px-4{% endif %}">
-            <div class="sf-footer__accordion flex flex-wrap lg:flex-nowrap -mx-4 {% if bordered %}lg:-mx-8{% else %}lg:-mx-5{% endif %}">
+            <div class="sf-footer__accordion flex flex-wrap lg:flex-nowrap {% if bordered %}lg:-mx-8{% else %}-mx-5{% endif %}">
                 {% for block in blocks %}
                     {% liquid
                       case block.settings.width
@@ -32,7 +32,7 @@
                     %}
                     
                     <div class="sf-footer__block {% if block_title != blank %} sf__accordion-item {% if block.settings.open_default %} open{% endif %} {% endif %} sf__footer-block-{{ block.type }} w-full {{ block_width }}{% if bordered and forloop.last != true %} lg:border-r lg:border-color-border{% endif %} {% if block.settings.order_first %} order-first md:order-none{% endif %}">
-                        <div class="sf-footer__block-inner px-4 {% if bordered %}lg:px-8{% else %}lg:px-5{% endif %}">
+                        <div class="sf-footer__block-inner {% if bordered %}lg:px-8{% else %}px-5{% endif %}">
                             {% if block_title != blank %}
                                 <h3 class="font-medium mb-4 text-base sf__accordion-button sf__footer-block-title">{{ block_title }}</h3>
                             {% endif %}
@@ -42,11 +42,9 @@
                                 {% when 'our_store' %}
                                     <div class="{% if block.settings.title != blank %}sf__accordion-content{% endif %} rte sf__footer-block-content">
                                         <div class="pb-5 md:pb-0">
-                                            {% unless block.settings.description == blank %}
-                                              <div class="mt-0 md:mt-4 block-text">
+                                            <div class="mt-0 md:mt-4 block-text">
                                                 {{ block.settings.description }}
-                                              </div>
-                                            {% endunless %}
+                                            </div>
                                             <div class="block-text mt-4">
                                                 {% if settings.contact_phone_number and block.settings.show_phone %}
                                                 <p>
@@ -63,7 +61,7 @@
                                                     </p>
                                                 {% endif %}
                                                 {% if block.settings.show_socials_link %}
-                                                    {% render 'social-media-links', box_size: 'mt-6 px-0 -mx-2', size: 'w-[20px] h-[20px]' %}
+                                                    {% render 'social-media-links', box_size: 'mt-6 px-0 -mx-4', size: 'w-[20px] h-[20px]' %}
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -140,3 +138,4 @@
         </div>
     </div>
 {% endif %}
+
