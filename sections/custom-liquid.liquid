@@ -1,20 +1,26 @@
-{{ section.settings.custom_liquid }}
+<section class="sf-custom-liquid {{ section.settings.custom_class }}">
+  {{ section.settings.custom_liquid }}
+</section>
 
 {% schema %}
 {
-  "name": "t:sections.custom_liquid.name",
-  "tag": "section",
-  "class": "spaced-section",
+  "name": "Custom liquid",
+  "class": "custom-liquid",
   "settings": [
     {
       "type": "liquid",
       "id": "custom_liquid",
-      "label": "t:sections.custom_liquid.settings.custom_liquid.label"
+      "label": "Custom liquid"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
     }
   ],
   "presets": [
     {
-      "name": "t:sections.custom_liquid.presets.name"
+      "name": "Custom liquid"
     }
   ]
 }

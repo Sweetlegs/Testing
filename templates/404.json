@@ -1,1 +1,1 @@
-{"sections":{"main":{"type":"main-404","settings":{}},"16638669138b2076db":{"type":"newsletter","settings":{"title":"Get on the list","subheading":"<p>We will send updates on our latest launches.<\/p>","section_contrast":false,"section_padding":"section--vertical-padding-top-bottom","padding_amount":"0.5"}}},"order":["main","16638669138b2076db"]}
+{"sections":{"main":{"type":"404-template","settings":{}}},"order":["main"]}

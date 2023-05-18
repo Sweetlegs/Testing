@@ -1,218 +1,429 @@
+<script src="{{ 'collection-template.min.js' | asset_url }}" defer="defer"></script>
 {%- liquid
-  assign paginated = false
-  if section.settings.pagination == 'paginated'
-    assign paginated = true
+  assign st = section.settings
+
+  assign initial_column = st.grid_columns
+  if st.grid_layout == 'list'
+    assign initial_column = 1
   endif
+
+  assign show_filter = st.show_filter
+  if st.filters_type == 'storefront_filters' and collection.filters.size == 0
+    assign show_filter = false
+  endif
+  if st.filters_type == 'tags_filter' and section.blocks.size == 0
+    assign show_filter = false
+  endif 
 -%}
 
 <section
+  class="facest-filters-section"
+  data-section-type="collection-template"
   data-section-id="{{ section.id }}"
-  data-section-type="collection"
-  data-pagination-type="{{ section.settings.pagination }}"
-  data-collection-item-count="{{ collection.all_products_count }}"
-  class="
-    collection
-    collection--columns-{{ section.settings.columns }}
-    collection--columns-mobile-{{ section.settings.columns_mobile }}
-    collection--pagination-{{ section.settings.pagination }}
-  "
+  data-filters-type="{{ st.filters_type }}"
+  data-filters-position="{{ st.sidebar }}"
+  data-enable-filters="{{ st.show_filter }}"
+  data-enable-sorting="{{ st.show_sorting }}"
+  data-show-col-switchers="{{ st.show_columns_switcher }}"
+  data-pagination-type="{{ st.paginate_type }}"
+  data-product-count="{{ collection.products.size }}"
+  data-initial-column="{{ initial_column }}"
+  data-view="{{ template.name }}"
 >
-  <div class="collection__inner">
-          {% include 'breadcrumbs' %}
-    {%- if collection.all_products_count > 0 -%}
-      <script type="application/json" data-tags>
-        {% if collection.all_tags.size > 0 %}
-          [
-            {%- for tag in collection.all_tags -%}
-              { "label": "{{ tag | escape }}", "handle": "{{ tag | handleize }}" }
-              {%- if forloop.last == false -%}, {%- endif -%}
-            {%- endfor -%}
-          ]
-        {% else %}
-          []
-        {% endif %}
-      </script>
-
-      {% paginate collection.products by section.settings.per_page %}
-        <div class="collection__container">
-          <div class="collection__content">
-            <div class="collection__filters" data-filter-bar>
-              {% render 'filter-bar' with
-                results: collection,
-                show_sort: section.settings.show_sort,
-                show_filters: section.settings.show_filters
-              %}
-
-              {% render 'mobile-filters' with
-              results: collection,
-                show_sort: section.settings.show_sort,
-                show_filters: section.settings.show_filters
-              %}
+  <div class="{{ st.container }}{% if st.container == 'w-full' %} px-4 xl:px-[30px]{% endif %}">
+    <div class="sf__collection-container {% if st.show_filter %}sidebar__{{ st.sidebar }}{% endif %}">
+      {%- render 'collection-sidebar', show_filter: show_filter -%}
+      <div id="CollectionProductGrid" class="flex-1 w-full {% unless st.sidebar == 'fixed' or st.show_filter == false %}xl:w-3/4 2xl:w-4/5{% endunless %}">
+        {%- render 'collection-page-toolbar', section: section, results: collection -%}
+        {%- liquid 
+            if st.show_filter
+              if st.filters_type == 'storefront_filters'
+                render 'collection-filters-facets', results: collection
+              else
+                render 'selected-tags-filter'
+              endif
+            endif
+        -%}
+        {%- paginate collection.products by st.pagination_limit -%}
+          {%- if collection.products.size == 0 -%}
+            <div class="empty-collection py-24 flex flex-col w-full items-center">
+              <span>{%- render 'icon', name: 'empty-collection', fill: '#9a9a9a' -%}</span>
+              <p class="mt-5 text-color-subtext">{{ 'collections.general.no_matches' | t }}</p>
             </div>
-
-            <div class="collection__main-area">
-              <div class="collection__window">
-                <div class="collection__loading" data-loading>
-                  {% render 'loader' %}
-                </div>
-
-                <div id="root" data-partial>
-                  <div class="collection__active-filters-container">
-                    {%- render 'active-filters' with results: collection -%}
+          {%- else -%}
+            <div
+              class="sf__product-listing sf__col-{{ initial_column }}"
+              data-total-pages="{{ paginate.pages }}"
+              data-product-container
+            >
+              <div class="mt-6 flex flex-wrap -mx-2 xl:-mx-3">
+                {%- for product in collection.products -%}
+                  <div class="sf__col-item w-6/12 md:w-4/12 px-2 xl:px-3">
+                    {%- render 'product-card', product: product, section: section -%}
                   </div>
-                  <div class="collection__products collection__infinite-container">
-                    {% for product in collection.products %}
-                      {% render 'product-item' with
-                        product: product,
-                        aspect_ratio: section.settings.aspect_ratio,
-                        product_columns: section.settings.columns,
-                        product_columns_mobile: section.settings.columns_mobile
-                      %}
-                    {% else %}
-                      <div class="collection__empty">
-                        <div>{{ 'collections.general.no_products' | t }}</div>
-                        <button type="button" class="btn btn--text-link" data-clear="true">{{ 'filters.clear_filters' | t }}</button>
-                      </div>
-                    {% endfor %}
-                  </div>
-
-                  {% unless paginated %}
-                    <div class="collection__infinite-trigger">
-                      {% if paginate.next %}
-                        <a href="{{ paginate.next.url }}" class="btn btn--secondary no-transition">{{ 'general.pagination.load_more' | t }}</a>
-                      {% endif %}
-                    </div>
-                  {% endunless %}
-
-                  {% if paginated %}
-                    <div>
-                      {% if paginate.pages > 1 %}
-                        {% render 'pagination' with
-                          paginate: paginate,
-                          type: 'general.pagination.products'
-                        %}
-                      {% else %}
-                        {% render 'pagination' with
-                          paginate: paginate,
-                          type: 'general.pagination.products',
-                          display_paginate_item_count_only: true
-                        %}
-                      {% endif %}
-                    </div>
-                  {% endif %}
-                </div>
+                {%- endfor -%}
               </div>
             </div>
-          </div>
-        </div>
-      {% endpaginate %}
-
-      {% render 'filter-drawer' with
-        results: collection,
-        show_sort: section.settings.show_sort,
-        show_filters: section.settings.show_filters,
-      %}
-    {%- else -%}
-      <div class="collection__empty ta-c">
-        <p class="fs-body-base fs-body-large-ns">{{ 'collections.general.no_matches' | t }}</p>
-        <a class="btn btn--text-link" href="{{ routes.all_products_collection_url }}">{{ 'general.404.link' | t }}</a>
+            {% if paginate.pages > 1 %}
+              <div class="text-center mt-10">
+                {%- if st.paginate_type == 'paginate' -%}
+                  {%- render 'pagination', paginate: paginate, anchor: '' -%}
+                {%- else -%}
+                  <button class="sf__btn sf__btn-primary" data-load-more>
+                    <span>
+                      {%- render 'new-locale', key: 'collections.paginate.load_more' -%}
+                    </span>
+                    {%- render 'icon', name: 'spinner', size: 'medium' -%}
+                  </button>
+                {%- endif -%}
+              </div>
+            {% endif %}
+          {%- endif -%}
+        {%- endpaginate -%}
       </div>
-    {%- endif -%}
+    </div>
   </div>
+
+  {% if st.show_sorting %}
+    {%- render 'sort-by-mobile', results: collection -%}
+  {% endif %}
 </section>
 
 {% schema %}
-  {
-    "name": "t:sections.main_collection_product_grid.name",
-    "class": "collection-section",
-    "settings": [
-      {
-        "type": "header",
-        "content": "t:sections.main_collection_product_grid.settings.filtering__header.content"
-      },
-      {
-        "id": "show_sort",
-        "type": "checkbox",
-        "label": "t:sections.main_collection_product_grid.settings.show_sort.label",
-        "default": true
-      },
-      {
-        "id": "show_filters",
-        "type": "checkbox",
-        "label": "t:sections.main_collection_product_grid.settings.show_filters.label",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "t:sections.main_collection_product_grid.settings.collection__header.content"
-      },
-      {
-        "type": "range",
-        "id": "columns",
-        "label": "t:sections.main_collection_product_grid.settings.columns.label",
-        "min": 2,
-        "max": 4,
-        "step": 1,
-        "default": 3
-      },
-      {
-        "type": "select",
-        "id": "columns_mobile",
-        "label": "t:sections.main_collection_product_grid.settings.columns_mobile.label",
-        "options": [
-          {
-            "value": "1",
-            "label": "t:sections.main_collection_product_grid.settings.columns_mobile.options__1"
-          },
-          {
-            "value": "2",
-            "label": "t:sections.main_collection_product_grid.settings.columns_mobile.options__2"
-          }
-        ],
-        "default": "2"
-      },
-      {
-        "id": "per_page",
-        "type": "range",
-        "label": "t:sections.main_collection_product_grid.settings.per_page.label",
-        "default": 12,
-        "min": 12,
-        "max": 36,
-        "step": 12
-      },
-      {
-        "type": "select",
-        "id": "pagination",
-        "label": "t:sections.main_collection_product_grid.settings.pagination.label",
-        "default": "paginated",
-        "options": [
-          {
-            "value": "infinite",
-            "label": "t:sections.main_collection_product_grid.settings.pagination.options__1"
-          },
-          {
-            "value": "click",
-            "label": "t:sections.main_collection_product_grid.settings.pagination.options__2"
-          },
-          {
-            "value": "paginated",
-            "label": "t:sections.main_collection_product_grid.settings.pagination.options__3"
-          }
-        ],
-        "info": "t:sections.main_collection_product_grid.settings.pagination.info"
-      },
-      {
-        "id": "aspect_ratio",
-        "type": "select",
-        "label": "t:sections.main_collection_product_grid.settings.aspect_ratio.label",
-        "options": [
-          { "label": "t:sections.main_collection_product_grid.settings.aspect_ratio.options__1", "value": "natural" },
-          { "label": "t:sections.main_collection_product_grid.settings.aspect_ratio.options__2", "value": "square" },
-          { "label": "t:sections.main_collection_product_grid.settings.aspect_ratio.options__3", "value": "landscape" },
-          { "label": "t:sections.main_collection_product_grid.settings.aspect_ratio.options__4", "value": "portrait" }
-        ],
-        "default": "natural"
-      }
-    ]
-  }
+{
+  "name": "Product listing",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container type",
+      "default": "container",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Default"
+        },
+        {
+          "value": "w-full",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Use container box"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "layout"
+    },
+    {
+      "type": "radio",
+      "id": "grid_layout",
+      "label": "Default layout",
+      "options": [
+        {
+          "label": "List",
+          "value": "list"
+        },
+        {
+          "label": "Grid",
+          "value": "grid"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "grid_columns",
+      "label": "Products per row in Grid layout",
+      "info": "For devices with screen width greater than 1024px",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_columns_switcher",
+      "label": "Show columns switcher",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Pagination"
+    },
+    {
+      "type": "range",
+      "id": "pagination_limit",
+      "label": "Products per page",
+      "default": 12,
+      "min": 6,
+      "max": 50,
+      "step": 1
+    },
+    {
+      "type": "select",
+      "id": "paginate_type",
+      "label": "Pagination type",
+      "default": "paginate",
+      "options": [
+        {
+          "value": "paginate",
+          "label": "Paging by number"
+        },
+        {
+          "value": "loadmore",
+          "label": "Load more button"
+        },
+        {
+          "value": "infinite",
+          "label": "Infinite loading"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Sorting and Filtering"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sorting",
+      "label": "Enable sorting",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filter",
+      "label": "Enable filtering",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "filters_type",
+      "label": "Filters type",
+      "options": [
+        {
+          "label": "Storefront filters",
+          "value": "storefront_filters"
+        },
+        {
+          "label": "Filters by custom tags",
+          "value": "tags_filter"
+        }
+      ],
+      "default": "storefront_filters",
+      "info": "Note: the Storefront filters will be hidden if your collection contains more than 1000 products. [Learn more about filters](/admin/menus)"
+    },
+    {
+      "type": "select",
+      "id": "sidebar",
+      "label": "Filters position",
+      "options": [
+        {
+          "value": "leftColumn",
+          "label": "Left sidebar"
+        },
+        {
+          "value": "rightColumn",
+          "label": "Right sidebar"
+        },
+        {
+          "value": "fixed",
+          "label": "Off-canvas sidebar"
+        }
+      ],
+      "default": "leftColumn"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_title",
+      "label": "Filters title",
+      "default": "Filters",
+      "info": "Leave blank to hide"
+    },
+    {
+      "type": "checkbox",
+      "id": "limit_height_widget",
+      "label": "Limit filter widget's height",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "limit_height",
+      "label": "Max height",
+      "default": 300,
+      "step": 10,
+      "min": 200,
+      "max": 600,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Storefront filters settings"
+    },
+    {
+      "type": "paragraph",
+      "content": "For Storefront filters only."
+    },
+    {
+      "type": "checkbox",
+      "id": "change_product_variant_on_fitlering",
+      "label": "Change product card variant on filtering",
+      "default": true,
+      "info": "Change product card options, price and image based on the variant after filtering."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show results count on filter item",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "collapsed_groups",
+      "label": "Collapsed filter groups",
+      "default": "Brand, Vendor, Size",
+      "info": "Filters groups that collapsed by default. Separate by comma."
+    },
+    {
+      "type": "text",
+      "id": "color_swatches",
+      "label": "Color swatches group",
+      "default": "color,colour,couleur,farbe",
+      "info": "Enter color option name, separate by comma."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "filter",
+      "name": "Filter by tags",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "[Filter values correspond to the value \"Tags\" in the product.](https://docs.shopify.com/manual/your-store/products/edit-tags)"
+        },
+        {
+          "type": "paragraph",
+          "content": "The filters won't work with the tags include some special symbols such as %, $ and other currency symbols"
+        },
+        {
+          "type": "paragraph",
+          "content": "Note: if the tag contains no products, it will not appear."
+        },
+        {
+          "type": "select",
+          "id": "design_filtergroup",
+          "label": "Design",
+          "options": [
+            {
+              "value": "default",
+              "label": "List"
+            },
+            {
+              "value": "inrow",
+              "label": "Inline link"
+            },
+            {
+              "value": "button",
+              "label": "Button"
+            },
+            {
+              "value": "color",
+              "label": "Color"
+            }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Tags"
+        },
+        {
+          "type": "textarea",
+          "id": "filtergroup",
+          "label": "Tags List",
+          "default": "Vintage,tops,shirts",
+          "info": "Example: Vintage,tops,shirts..."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_label",
+          "label": "Show color with label",
+          "default": false,
+          "info": "Work with filter colors"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_accordion",
+          "label": "Enable collapsible",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "open_filtergroup",
+          "label": "Expand by default",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "collections",
+      "name": "Collections list",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Collections"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "Only show items linked to a collection"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_image",
+          "label": "Show featured image",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "use_accordion",
+          "label": "Enable collapsible",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "open_filtergroup",
+          "label": "Expand by default",
+          "default": true
+        }
+      ]
+    }
+  ]
+}
 {% endschema %}

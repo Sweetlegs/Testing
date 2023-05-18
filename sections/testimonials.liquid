@@ -1,199 +1,307 @@
-{%- liquid
-  assign header_classes = 'section-header--large'
+{{ 'testimonials.css' | asset_url | stylesheet_tag }}
 
-  if section.settings.text_alignment == 'center'
-    assign header_classes = header_classes | append: ' section-header--center'
-  endif
--%}
+{% liquid
+  assign settings = section.settings
+  assign bg_color = settings.background_color
+  assign has_bg = false
 
-<div
-  data-section-id="{{ section.id }}"
-  data-section-type="testimonials"
-  class="
-    testimonials
-    testimonials--columns-{{ section.settings.columns }}
-    testimonials--align-{{ section.settings.text_alignment }}
-    section
-    {{ section.settings.section_padding }}
+  unless bg_color == "rgba(0,0,0,0)" or bg_color == blank
+    assign has_bg = true
+  endunless
 
-    {% if section.settings.section_contrast -%}
-      section--contrast
-    {%- endif %}
+  assign pagination_type = 'fraction'
+%}
 
-    {% if settings.contrast_spacer -%}
-      section--contrast-spacer
-    {%- endif %}
-  "
-  style="--padding-amount: {{ section.settings.padding_amount }};"
+<section
+    id="st__testimonial-{{ section.id }}"
+    class="sf-testimonials{% if settings.design == 'testimonials-6' and pagination_type == 'fraction' %} sf-slider__fraction{% endif %} relative sf-section-padding {{ settings.custom_class }} {{ settings.design }}"
+    data-section-type="testimonials"
+    data-section-id="{{ section.id }}"
+    data-design="{{ settings.design }}"
+    data-autoplay="{% if request.design_mode %}false{% else %}{{ settings.autorotate }}{% endif %}"
+    data-container="{{ settings.container }}"
+    {% if has_bg %}
+        data-bg="{{ bg_color | color_to_hsl }}"
+    {% endif %}
+    style="background-color: {{ settings.background_color }};--star-color: {{ settings.star_color }};--section-padding-top: {{ settings.padding_top }}px; --section-padding-bottom: {{ settings.padding_bottom }}px;"
 >
-  <div class="section__inner">
-    {% render 'section-header',
-      heading: section.settings.title,
-      subheading: section.settings.subheading,
-      classes: header_classes
-    %}
+    <div class="{{ settings.container }}{% if has_bg == false %} section-my{% else %} section-py{% endif %}">
+        <div class="sf-testimonials__header relative text-{{ settings.header_alignment }}">
+            {% render 'index-section-header', section_settings: settings %}
+            {% if settings.design == 'testimonials-6' and settings.show_navigation or settings.show_pagination %}
+                {% render 'slider-controls', show_nav: settings.show_navigation, show_pagination: settings.show_pagination, pagination_type: pagination_type %}
+            {% endif %}
+        </div>
 
-    <div class="testimonials__grid">
-      {%- for block in section.blocks -%}
-        {%- render 'testimonials-item' with
-          columns: section.settings.columns,
-          heading: block.settings.heading,
-          testimonial: block.settings.testimonial,
-          author: block.settings.author,
-          text_max_width: block.settings.text_max_width,
-        -%}
-      {%- endfor -%}
+        <div class="sf-testimonials__container relative{% if settings.container == 'w-full' %} px-5{% endif %}">
+          <m-testimonials
+            data-container="{{ settings.container }}"
+            data-design="{{ settings.design }}"
+            data-autoplay="{% if request.design_mode %}false{% else %}{{ settings.autorotate }}{% endif %}"
+            {% if settings.design == 'testimonials-6' %}
+              data-pagination-type="{{ pagination_type }}"
+            {% endif %}
+          >
+            {% liquid
+              case settings.design
+                when 'testimonials-1'
+                    render 'testimonials-1', section: section, container_class: settings.container
+                when 'testimonials-2'
+                    render 'testimonials-2', section: section, container_class: settings.container
+                when 'testimonials-3'
+                    render 'testimonials-3', section: section, container_class: settings.container
+                when 'testimonials-4'
+                    render 'testimonials-4', section: section, container_class: settings.container
+                when 'testimonials-5'
+                    render 'testimonials-5', section: section, container_class: settings.container
+                when 'testimonials-6'
+                    render 'testimonials-6', section: section, container_class: settings.container
+              endcase
+            %}
+            </m-testimonials>
+        </div>
     </div>
-  </div>
-</div>
+</section>
 
 {% schema %}
-  {
-    "name": "t:sections.testimonials.name",
-    "tag": "section",
-    "class": "shopify-section--stackable shopify-section--text-first",
-    "settings": [
-      {
-        "type": "range",
-        "id": "columns",
-        "label": "t:sections.testimonials.settings.columns.label",
-        "min": 2,
-        "max": 4,
-        "step": 1,
-        "default": 3
-      },
-      {
-        "id": "title",
-        "type": "text",
-        "label": "t:sections.testimonials.settings.title.label"
-      },
-      {
-        "id": "subheading",
-        "type": "richtext",
-        "label": "t:sections.testimonials.settings.subheading.label"
-      },
-      {
-        "type": "select",
-        "id": "text_alignment",
-        "label": "t:sections.testimonials.settings.text_alignment.label",
-        "default": "left",
-        "options": [
-          {
-            "value": "left",
-            "label": "t:sections.testimonials.settings.text_alignment.options__1"
-          },
-          {
-            "value": "center",
-            "label": "t:sections.testimonials.settings.text_alignment.options__2"
-          }
-        ]
-      },
-      {
-        "type": "header",
-        "content": "t:shared.settings.section_style.header_style.content"
-      },
-      {
-        "id": "section_contrast",
-        "type": "checkbox",
-        "label": "t:sections.testimonials.settings.section_contrast.label",
-        "default": false
-      },
-      {
-        "type": "select",
-        "id": "section_padding",
-        "label": "t:shared.settings.section_style.section_padding.label",
-        "default": "section--vertical-padding-top-bottom",
-        "options": [
-          {
-            "label": "t:shared.settings.section_style.section_padding.option_both",
-            "value": "section--vertical-padding-top-bottom"
-          },
-          {
-            "label": "t:shared.settings.section_style.section_padding.option_top",
-            "value": "section--vertical-padding-top-only"
-          },
-          {
-            "label": "t:shared.settings.section_style.section_padding.option_bottom",
-            "value": "section--vertical-padding-bottom-only"
-          },
-          {
-            "label": "t:shared.settings.section_style.section_padding.option_none",
-            "value": "section--vertical-padding-none"
-          }
-        ]
-      },
-      {
-        "type": "select",
-        "id": "padding_amount",
-        "label": "t:shared.settings.section_style.padding_amount.label",
-        "default": "1.0",
-        "options": [
-          {
-            "label": "t:shared.settings.section_style.padding_amount.option_full",
-            "value": "1.0"
-          },
-          {
-            "label": "t:shared.settings.section_style.padding_amount.option_half",
-            "value": "0.5"
-          },
-          {
-            "label": "t:shared.settings.section_style.padding_amount.option_minimum",
-            "value": "0.075"
-          }
-        ]
-      }
-    ],
-    "max_blocks": 8,
-    "blocks": [
-      {
-        "type": "testimonial",
-        "name": "t:sections.testimonials.blocks.testimonial.name",
-        "settings": [
-          {
-            "id": "heading",
-            "type": "text",
-            "label": "t:sections.testimonials.blocks.testimonial.settings.heading.label",
-            "default": "Amazing product!"
-          },
-          {
-            "id": "testimonial",
-            "type": "richtext",
-            "label": "t:sections.testimonials.blocks.testimonial.settings.testimonial.label",
-            "default": "<p>\"Add customer reviews and testimonials to showcase your store’s happy customers.\"</p>"
-          },
-          {
-            "id": "author",
-            "type": "text",
-            "label": "t:sections.testimonials.blocks.testimonial.settings.author.label",
-            "default": "Author's name"
-          },
-          {
-            "type": "range",
-            "id": "text_max_width",
-            "label": "t:sections.testimonials.blocks.testimonial.settings.text_max_width.label",
-            "min": 24,
-            "max": 48,
-            "step": 1,
-            "default": 42
-          }
-        ]
-      }
-    ],
-    "presets": [
-      {
-        "name": "t:sections.testimonials.presets.name",
-        "blocks": [
-          {
-            "type": "testimonial"
-          },
-          {
-            "type": "testimonial"
-          },
-          {
-            "type": "testimonial"
-          }
-        ]
-      }
-    ]
-  }
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What People Are Saying"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container type",
+      "default": "w-full",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Default"
+        },
+        {
+          "value": "w-full",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Use container box"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "select",
+      "id": "design",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "testimonials-1",
+          "label": "Layout 1"
+        },
+        {
+          "value": "testimonials-2",
+          "label": "Layout 2"
+        },
+        {
+          "value": "testimonials-3",
+          "label": "Layout 3"
+        },
+        {
+          "value": "testimonials-4",
+          "label": "Layout 4"
+        },
+        {
+          "value": "testimonials-5",
+          "label": "Layout 5"
+        },
+        {
+          "value": "testimonials-6",
+          "label": "Layout 6"
+        }
+      ],
+      "default": "testimonials-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stars",
+      "label": "Show stars",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autorotate",
+      "label": "Auto-rotate content",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Stars color",
+      "default": "#000"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Custom Attributes"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom classes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Love it so much"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Content",
+          "default": "<p>\"Short dress in a printed viscose weave with a round neckline, opening with a button at the back of the Seams with small frill trims at the waist and on the sleeves and skirt. Unlined.\"</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "footer",
+          "label": "Author",
+          "default": "<p>Dean D. US</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Optional"
+        },
+        {
+          "type": "richtext",
+          "id": "image_text",
+          "label": "Image text",
+          "info": "Optional"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image link"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "This option is use only for layout 6."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "category": "Promotional",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
 {% endschema %}

@@ -1,362 +1,616 @@
-{%- liquid
-  assign show_locale_selector = section.settings.show_locale_selector
-  assign show_currency_selector = section.settings.show_currency_selector
-  assign show_payment_icons = section.settings.show_payment_icons
-  assign content = section.blocks
-
-  assign locale_selector = false
-  assign currency_selector = false
-  assign payment_icons = false
-
-  if show_locale_selector and shop.published_locales.size > 1
-    assign locale_selector = true
-  endif
-
-  if show_currency_selector and localization.available_countries.size > 1
-    assign currency_selector = true
-  endif
-
-  if show_payment_icons and shop.enabled_payment_types != empty
-    assign payment_icons = true
-  endif
-
-  assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, TikTok, Tumblr, YouTube, Vimeo, LinkedIn' | split: ', '
-  assign social_count = 0
-
-  for social in social_accounts
-    assign social_handle = social | handleize
-    assign social_link = "social_" | append: social_handle | append: '_link'
-
-    if settings[social_link] != blank
-      assign social_count = social_count | plus: 1
-    endif
-  endfor
-
-  assign show_social_icons = false
-
-  if section.settings.show_social_icons and social_count != 0
-    assign show_social_icons = true
-  endif
-
--%}
-
-<div
-  class="footer"
-  data-section-id="{{ section.id }}"
-  data-section-type="footer"
-  style="
-    --color-background-input: {{ settings.color_text_footer | color_modify: 'alpha', 0.2 }};
-    --color-background-input-hover: {{ settings.color_text_footer | color_modify: 'alpha', 0.25 }};
-    --color-background-input-hover-dull: {{ settings.color_text_footer | color_modify: 'alpha', 0.1 }};
-    --color-background-input-highlight: {{ settings.color_text_footer | color_modify: 'alpha', 0.35 }};
-    --color-text-input: {{ settings.color_text_footer | color_modify: 'alpha', 0.95 }};
-  "
->
-  <div class="footer__inner">
-    <div class="footer__groups">
-      {% for block in content %}
-        <div class="footer__group footer__group--{{ block.type }} footer__group--{{ forloop.index }}">
-          {% unless block.settings.title == blank %}
-            <button type="button" class="footer__header" data-header>
-              <span class="footer__heading ff-heading fs-heading-4-base">{{ block.settings.title }}</span>
-              <span class="footer__arrow">{% render 'icon', icon: 'triangle' %}</span>
-            </button>
-          {% endunless %}
-          <div class="footer__group-content">
-            {%- if block.type == 'text' -%}
-              <div class="fs-body-base footer__text">{{ block.settings.text }}</div>
-
-            {%- elsif block.type == 'menu' -%}
-              <div class="footer__links fs-body-base">
-                {% if linklists[block.settings.link_list].links.size > 0 %}
-                  <ul>
-                    {% for link in linklists[block.settings.link_list].links %}
-                      <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-              </div>
-
-            {%- elsif block.type == 'social_icons' -%}
-              <div class="footer__social_icons fs-body-base">
-                {% render 'social-icons' %}
-              </div>
-
-            {%- elsif block.type == 'newsletter' -%}
-              {%- assign success_msg = 'general.newsletter_form.confirmation' | t -%}
-
-              <div class="footer__newsletter">
-                <div class="fs-body-base footer__text">{{ block.settings.text }}</div>
-
-                {% form 'customer', class: 'footer__newsletter-form', id: 'footer-subscribe' %}
-                  {% render 'form-status', form: form, form_id: 'footer-subscribe', success_message: success_msg %}
-
-                  {%- unless form.posted_successfully? -%}
-                    <div class="footer__newsletter-inner">
-                      <input type="hidden" name="contact[tags]" value="newsletter">
-                      <label for="footer-subscribe-email" class="visually-hidden">{{ 'general.newsletter_form.email_placeholder' | t }}</label>
-                      <input type="email"
-                        class="input"
-                        name="contact[email]"
-                        id="footer-subscribe-email"
-                        value="{% if customer.email != blank %}{{ customer.email }}{% endif %}"
-                        placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
-                        autocorrect="off"
-                        autocapitalize="off"
-                      >
-                      <button type="submit" name="commit" id="Subscribe-footer" class="footer__newsletter-button" aria-label="{{ 'general.newsletter_form.submit' | t }}">
-                        {%- render 'icon' with icon: 'arrow-circle' -%}
-                      </button>
-                    </div>
-                  {%- endunless -%}
-                {% endform %}
-              </div>
-            {%- endif -%}
-          </div>
-        </div>
-      {% endfor %}
-
-      {%- if currency_selector -%}
-        <div class="footer__group footer__group--mobile">
-          <button type="button" class="footer__header" data-header>
-            <span class="footer__heading ff-heading fs-heading-4-base">
-              {{ 'sections.footer.headings.currency' | t }}
-            </span>
-            <span class="footer__arrow">{% render 'icon', icon: 'triangle' %}</span>
-          </button>
-          <div class="footer__group-content">
-            {% render 'cross-border' with
-              show_currency: currency_selector,
-              id: 'mobile-currency'
-            %}
-          </div>
-        </div>
-      {%- endif -%}
-
-      {%- if locale_selector  -%}
-        <div class="footer__group footer__group--mobile">
-          <button type="button" class="footer__header" data-header>
-            <span class="footer__heading ff-heading fs-heading-4-base">
-              {{ 'sections.footer.headings.language' | t }}
-            </span>
-            <span class="footer__arrow">{% render 'icon', icon: 'triangle' %}</span>
-          </button>
-          <div class="footer__group-content">
-            {% render 'cross-border' with
-              show_locale: locale_selector,
-              id: 'mobile-locale'
-            %}
-          </div>
-        </div>
-      {%- endif -%}
-
-      {%- if payment_icons -%}
-        <div class="footer__group footer__group--mobile">
-          <button type="button" class="footer__header" data-header>
-            <span class="footer__heading ff-heading fs-heading-4-base">{{ 'sections.footer.headings.payment' | t }}</span>
-            <span class="footer__arrow">{% render 'icon', icon: 'triangle' %}</span>
-          </button>
-          <button type="button" class="footer__group-content">
-            {% render 'payment-icons' %}
-          </button>
-        </div>
-      {%- endif -%}
-    </div>
-
-    <div class="footer__credits fs-body-x-small">
-      <div class='policy'>
-        <ul>
-          <li><a href="https://shop.chick-fil-astage.com/pages/return-policy" target="_blank">Shipping & Returns Policy</a></li>
-          <li><a href="https://shop.chick-fil-astage.com/policies/terms-of-service" target="_blank">Terms of Service</a></li>
-          <li><a target="_blank" rel="noopener noreferrer" href="https://www.chick-fil-a.com/legal#privacy_policy">Privacy Policy</a></li>
-          <li><a target="_blank" rel="noopener noreferrer" href="https://www.chick-fil-a.com/legal#your_california_privacy_rights">California Privacy Notice</a></li>
-          <li><a target="_blank" rel="noopener noreferrer" href="https://www.chick-fil-a.com/legal#chick-fil-a_cookie_and_interest-based_advertising_policy">Cookie and Interest-Based Advertising Policy</a></li>
-        </ul>
-      </div>
-      <div class='footer_logos'>
-        <ul>
-          <li>
-            <img src='https://cdn.shopify.com/s/files/1/0590/0638/6221/files/CFA_AuthenticOriginals_LogoLockup_Approved_10Nov22_Update_94_2ffe36d2-6d5f-47a4-babd-22a0b104258c.png?v=1668117656' width="180px" />
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    {%- if show_social_icons -%}
-      <div class="footer__mobile-social-icons">
-        {% render 'social-icons' %}
-        
-        <div class='copyright'>
-          <p>&copy; {{ 'now' | date: "%Y" }} CFA Properties, Inc. All rights reserved</p>
-        </div>
-      </div>
-    {%- endif -%}
-
-    {%- if locale_selector or currency_selector or show_social_icons or payment_icons -%}
-      <div class="footer__bottom">
-        {%- if locale_selector or currency_selector or show_social_icons -%}
-          <div class="footer__bottom-left">        
-            <div class='copyright'>
-              <p>&copy; {{ 'now' | date: "%Y" }} CFA Properties, Inc. All rights reserved</p>
-            </div>
-            {% render 'cross-border' with
-              show_locale: locale_selector,
-              show_currency: currency_selector,
-              id: 'footer'
-            %}
-          </div>
-        {%- endif -%}
-
-        <div class="footer__bottom-right">
-          {%- if show_social_icons -%}
-            {% render 'social-icons' %}
-          {%- endif -%}
-      
-          {%- if payment_icons -%}
-            {% render 'payment-icons' %}
-          {%- endif -%}
-        </div>
-      </div>
-    {%- endif -%}
-  </div>
-</div>
-
-
+<footer class="sf-footer" data-section-type="footer" data-section-id="{{ section.id }}">
+  {% render 'footer-blocks', blocks: section.blocks, bordered: section.settings.bordered, container: section.settings.container %}
+  {% render 'footer-design', container: section.settings.container %}
+</footer>
+<script src="{{ 'footer.min.js' | asset_url }}" defer="defer"></script>
 {% schema %}
-  {
-    "name": "t:sections.footer.name",
-    "tag": "footer",
-    "class": "footer__parent",
-    "settings": [
-      {
-        "type": "header",
-        "content": "t:sections.footer.settings.language__header.content",
-        "info": "t:sections.footer.settings.language__header.info"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_locale_selector",
-        "label": "t:sections.footer.settings.show_locale_selector.label",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "t:sections.footer.settings.currency__header.content",
-        "info": "t:sections.footer.settings.currency__header.info"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_currency_selector",
-        "label": "t:sections.footer.settings.show_currency_selector.label",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "t:sections.footer.settings.social_media__header.content",
-        "info": "t:sections.footer.settings.social_media__header.info"
-      },
-      {
-        "id": "show_social_icons",
-        "type": "checkbox",
-        "label": "t:sections.footer.settings.show_social_icons.label",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "t:sections.footer.settings.payment__header.content",
-        "info": "t:sections.footer.settings.payment__header.info"
-      },
-      {
-        "id": "show_payment_icons",
-        "type": "checkbox",
-        "label": "t:sections.footer.settings.show_payment_icons.label",
-        "default": true
-      }
-    ],
-    "max_blocks": 5,
-    "blocks": [
-      {
-        "type": "text",
-        "name": "t:sections.footer.blocks.text.name",
-        "limit": 1,
-        "settings": [
-          {
-            "id": "title",
-            "type": "text",
-            "label": "t:sections.footer.blocks.text.settings.title.label",
-            "info": "t:sections.footer.blocks.text.settings.title.info",
-            "default": "About us"
-          },
-          {
-            "id": "text",
-            "type": "richtext",
-            "label": "t:sections.footer.blocks.text.settings.text.label",
-            "default": "<p>Use this text area to tell your customers about your brand and vision. You can change it in the theme settings.</p>"
-          }
-        ]
-      },
-      {
-        "type": "menu",
-        "name": "t:sections.footer.blocks.menu.name",
-        "settings": [
-          {
-            "id": "title",
-            "type": "text",
-            "label": "t:sections.footer.blocks.menu.settings.title.label",
-            "info": "t:sections.footer.blocks.menu.settings.title.info",
-            "default": "Links"
-          },
-          {
-            "id": "link_list",
-            "type": "link_list",
-            "label": "t:sections.footer.blocks.menu.settings.link_list.label",
-            "default": "footer"
-          }
-        ]
-      },
-      {
-        "type": "newsletter",
-        "name": "t:sections.footer.blocks.newsletter.name",
-        "limit": 1,
-        "settings": [
-          {
-            "id": "title",
-            "type": "text",
-            "label": "t:sections.footer.blocks.newsletter.settings.title.label",
-            "info": "t:sections.footer.blocks.newsletter.settings.title.info",
-            "default": "Newsletter"
-          },
-          {
-            "id": "text",
-            "type": "richtext",
-            "label": "t:sections.footer.blocks.newsletter.settings.text.label",
-            "default": "<p>Subscribe for store updates and discounts.</p>"
-          }
-        ]
-      },
-      {
-        "type": "social_icons",
-        "name": "Social Icons",
-        "limit": 1,
-        "settings": [
-          {
-            "id": "title",
-            "type": "text",
-            "label": "Heading",
-            "default": "Social Links"
-          }
-        ]
-      }
-    ],
-    "default": {
-      "blocks": [
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "select",
+      "id": "design",
+      "label": "Layout",
+      "options": [
         {
-          "type": "menu"
+          "value": "footer-1",
+          "label": "Layout 1"
         },
         {
-          "type": "newsletter"
+          "value": "footer-2",
+          "label": "Layout 2"
+        },
+        {
+          "value": "footer-3",
+          "label": "Layout 3"
+        }
+      ],
+      "default": "footer-1"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container type",
+      "default": "container-fluid",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Default"
+        },
+        {
+          "value": "w-full",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Use container box"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "bordered",
+      "label": "Block bordered",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright text",
+      "default": "&copy; minimog 2021"
+    },
+    {
+      "type": "header",
+      "content": "Addons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "label": "Show country/region selector",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "Show currency selector",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language_selector",
+      "label": "Show language selector",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_links",
+      "label": "Show social icons",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Payment methods"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image_custom_payment",
+      "label": "Payment icons by image",
+      "info": "Leave blank to use icons by Payment methods"
+    },
+    {
+      "type": "number",
+      "id": "payment_icons_width",
+      "label": "Image width (px)",
+      "default": 300
+    }
+  ],
+  "max_blocks": 5,
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Footer menu",
+          "default": "main-menu"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Service",
+          "info": "Leave blank to use menu title"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "order_first",
+          "label": "Order first",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "our_store",
+      "name": "About",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Our store"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Find a location nearest you.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Contact information",
+          "info": "Go to \"Theme settings > Store contact\" to update these information."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_email",
+          "label": "Show email",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_phone",
+          "label": "Show phone number",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_socials_link",
+          "label": "Show social icons",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "order_first",
+          "label": "Order first",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Subscribe"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Enter your email below to be the first to know about new collections and product launches."
+        },
+        {
+          "type": "text",
+          "id": "email_placeholder",
+          "label": "Email placeholder",
+          "default": "Enter your email"
+        },
+        {
+          "type": "select",
+          "id": "form_style",
+          "label": "Form style",
+          "default": "bordered",
+          "options": [
+            {
+              "value": "bordered",
+              "label": "Bordered"
+            },
+            {
+              "value": "minimal",
+              "label": "Minimal"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social",
+          "label": "Show social link",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_agree_checkbox",
+          "label": "Show \"Terms & conditions\" checkbox",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "order_first",
+          "label": "Order first",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "custom_text",
+      "name": "Custom content",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Custom text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_max",
+          "label": "Image max-width (px)",
+          "default": "200px"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Content",
+          "default": "<p>Enter your email below to be the first to know about new collections and product launches.</p>"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "order_first",
+          "label": "Order first",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "custom_html",
+      "name": "Custom HTML",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Custom text"
+        },
+        {
+          "type": "liquid",
+          "id": "html",
+          "label": "HTML",
+          "info": "Liquid code supported"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "order_first",
+          "label": "Order first",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "spacing",
+      "name": "Spacing",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Use this block to make a spacing between columns"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "20%",
+              "label": "20%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
         }
       ]
     }
-  }
+  ]
+}
 {% endschema %}
