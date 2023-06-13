@@ -86,5 +86,7 @@ template-{{ template.name | handle }} {{ template.name }}-{{ template.suffix }} 
   <script src="{{ 'quick-view.min.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-card-swatch.min.js' | asset_url }}" defer="defer"></script>
 {% render 'wholesale-now', customer: customer, template: template, product: product, cart: cart %}
-      </body>
+       {% include 'smile-initializer' %}
+
+</body>
 </html>
