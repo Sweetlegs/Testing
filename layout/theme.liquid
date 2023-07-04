@@ -293,44 +293,6 @@ li[data-title="how-did-you-find-the-fit"] span.stamped-reviews-option-value[data
   
   
   
-<<<<<<< HEAD
-</head>
-
-<body
-  id="sf-theme"
-  class="{{ body_classes }} relative min-h-screen{% if customer %} customer-logged-in{% endif %}"
-  {% if template.name == 'product' %}data-product-id="{{ product.id }}"{% endif %}
->
-  {% render 'theme-data' %}
-  {% section 'annoucement' %}
-  {% section 'header' %}
-  {% render 'scroll-top-button' %}
-
-  <main role="main" id="MainContent">
-    {{ content_for_layout }}
-    <div id="cart-drawer-container"></div>
-  </main>
-
-  {%- liquid
-    section 'footer'
-  -%}
-
-  {% section 'mobile-sticky-bar' %}
-
-  {% render 'custom-code-body' %}
-  {% render 'foxkit-messenger' %}
-  {% render 'script-tags' %}
-
-  <script src="{{ 'app.min.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'foxkit-app.min.js' | asset_url }}" defer="defer"></script>
-
-  <script src="{{ 'quick-view.min.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'product-card-swatch.min.js' | asset_url }}" defer="defer"></script>
-{% render 'wholesale-now', customer: customer, template: template, product: product, cart: cart %}
-       {% include 'smile-initializer' %}
-
-</body>
-=======
   <!-- PickyStory code, do not modify. Safe to remove after the app is uninstalled -->
   {% if content_for_header contains 'pickystory' %}
     {% render 'pickystory-combos-prerender' %}
@@ -370,7 +332,6 @@ classname[i].addEventListener('click', addToCart, false);
 {{ 'search.js' | asset_url | script_tag }} 
 {{ 'main-theme.js' | asset_url | script_tag }} 
   {{ 'marquee.js' | asset_url | script_tag }} 
->>>>>>> c46c43b (First initit)
 </html>
 
 
