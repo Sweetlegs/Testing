@@ -1,0 +1,336 @@
+            <div class="product-tabs">
+              <ul class="tabs">
+                {% comment %} <li class="description_tab">
+                  <a href="#tab-desc">Description</a>
+                </li>  {% endcomment %}
+               <li class="description_tab active">
+                  <a href="#tab-add-info" id="info-title">Additional Information</a>
+                </li>           
+                 <li class="reviews_tab">
+                  <a href="#tab-reviews" id="review-title">{{ 'products.product.reviews' | t | escape }}</a>
+                </li>      
+              </ul>
+              {% comment %} <div class="panel" id="tab-desc" style="display:none">
+
+              <span>
+                  `What is Lorem Ipsum?
+                  Lorem Ipsum is simply dummy text of the printing and 
+                  typesetting industry. Lorem Ipsum has been the industry's 
+                  standard dummy text ever since the 1500s, when an unknown 
+                  printer took a galley of type and scrambled it to make a 
+                  type specimen book. It has survived not only five centuries, 
+                  but also the leap into electronic typesetting, remaining essentially unchanged. 
+                  It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
+                  and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              </span>
+              <a href="https://placeholder.com"><img src="https://via.placeholder.com/450"></a>
+
+              </div> {% endcomment %}
+
+              <div class="panel" id="tab-add-info" >
+              
+                         
+              {%- if product.type == 'SweetLegs WWB' -%}
+                {%include 'info-table-wwc' %}
+              {%- elsif  product.type == 'SweetLegs Jeggings' -%}
+                {%include 'info-table-jegging' %}
+              {%- elsif  product.type == 'SweetTops' -%}
+                {%include 'info-table-sweettops' %}
+              {%- else -%}
+                {%include 'info-table-leggings' %}
+              {%- endif -%}
+
+              
+
+              </div>
+              
+              <div class="panel" id="tab-reviews" style='display:none;' >
+                
+              <div id="stamped-main-widget" class="stamped-main-widget"
+                data-product-id="{{ product.id }}"
+                data-name="{{ product.title | escape }}"
+                data-url="{{ shop.url }}{{ product.url }}"
+                data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}"
+                data-description="{{ product.description | escape }}"
+                data-product-sku="{{product.handle}}">
+
+                </div>
+              </div>
+            </div>
+
+
+
+{% comment %} {%- assign current_variant = my_product.selected_or_first_available_variant -%}
+
+<div class="product-tabs">
+
+		
+	<div class="tab-wrapper">
+		<ul class="tabs">
+				<li class="tab-link active" data-tab="1">Description</li>
+				<li class="tab-link" data-tab="2" href="#tab-reviews">{{ 'products.product.reviews' | t | escape }}</li>
+				<li class="tab-link" data-tab="3">Additional Information</li>
+		</ul>
+	</div>
+
+	<div class="content-wrapper">
+
+		<div id="tab-1" class="tab-content active">
+        <h1>hello im working</h1>
+        </div>
+
+		<div id="tab-2" class="tab-content">
+            <div class="panel" id="tab-reviews" style="display:block">
+                <div id="stamped-main-widget" class="stamped-main-widget"
+                  data-product-id="{{ product.id }}"
+                  data-name="{{ product.title | escape }}"
+                  data-url="{{ shop.url }}{{ product.url }}"
+                  data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}"
+                  data-description="{{ product.description | escape }}"
+                  data-product-sku="{{product.handle}}">
+                </div>
+            </div>
+        </div>
+
+		<div id="tab-3"class="tab-content" id="tab-add-info">
+       
+                <!-- {%- include 'shortcode' load: product.description -%} -->
+                <table>
+
+                  <tr>
+                    <td><strong>Weight</strong></td><td>{{ product.variants.first.weight | weight_with_unit }}</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>Dimensions</strong></td><td>25 x 25 x .9 cm</td>
+                  </tr>
+
+                  {% if product.type == 'SweetLegs Petite' %}
+                    <tr>
+                      <td><strong>Size</strong></td>
+                      <td>Petite Size - fits size 00-6, with approx. 26" inseam</td>
+                    </tr>
+                  {% endif %}
+
+                  {% if product.type == 'SweetLegs One Size' %}
+                    <tr>
+                      <td><strong>Size</strong></td>
+                      <td>One Size - fits size 6 to 14, with approx. 26" inseam</td>
+                    </tr>
+                  {% endif %}
+
+                  {% if product.type == 'SweetLegs Plus' %}
+                    <tr>
+                      <td><strong>Size</strong></td>
+                      <td>Plus Size - fits size 14 to 22, with approx. 27" inseam</td>
+                    </tr>
+                  {% endif %}
+                  {% if product.type == 'SweetLegs Plus2' %}
+                    <tr>
+                      <td><strong>Size</strong></td>
+                      <td>Plus2 Size - fits size 22 to 28, with approx. 27" inseam</td>
+                    </tr>
+                  {% endif %}
+
+                  {% if product.type == 'SweetLegs Kids' %}
+                    <tr>
+                      <td><strong>Kids Sizes</strong></td>
+                      <td>
+                        Small: 2/4Y, 2 - 4 yrs, 16.5” - 17.5”, up to 110cm<br>
+                        Medium: 6/8Y, 5 - 8 yrs, 19.5” - 20.5”, up to 140cm<br>
+                        Large: 10/12Y, 9 - 12 yrs, 23.5” - 24.5”, up to 160cm
+                      </td>
+                    </tr>
+                  {% endif %}
+
+                  <tr>
+                    <td><strong>Fabric</strong></td>
+                    <td>Extremely stretchy, opaque, breathable - perfect for every season.</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>Material</strong></td><td>
+                    {% if product.type == 'SweetLegs Athleisure' %}
+                    	70% polyester/30% elastane blend
+                    {% else %}
+                    	Polyester & Spandex Blend
+                    {% endif %}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>Care</strong></td><td>Hand wash cold & hang dry.</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>Hypoallergenic</strong></td><td>Safe for sensitive skin</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>Touch & Feel</strong></td><td>Soft + Fitting + Warm</td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>Note</strong></td>
+                    <td>All dark colors, especially black should be hand washed prior to wearing to prevent bleed.</td>
+                  </tr>
+
+                </table>
+              
+        </div>
+
+	</div>
+	
+
+</div>
+
+
+
+
+
+
+<style>
+ul.tabs {
+  border-bottom: 1px solid #DDDDDD;
+  display: block;
+  margin: 0 0 20px;
+  padding: 0;
+  
+  
+}
+
+
+ul.tabs li {
+  display: block;
+  float: left;
+  height: 30px;
+  margin-bottom: 0;
+  padding: 0;
+  width: auto;
+  margin-top:5% !important;
+}
+.wrapper
+{		
+	margin-top: 50px;
+}
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+.tab-wrapper{
+text-align: center;
+display: block;;
+margin: auto;
+max-width: 100%;
+padding-left:30%;
+}
+}
+.tab-wrapper{
+text-align: center;
+display: block;;
+margin: auto;
+max-width: 100%;
+}
+.tabs
+{	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+}
+.tab-link
+{	margin: 0 1%;
+	list-style: none;
+	padding: 10px 40px;
+	color: #aaa;
+	cursor: pointer;
+	font-weight: 700;
+	transition: all ease 0.5s;
+	border-bottom: solid 3px rgba(255,255,255,0.0);
+	letter-spacing: 1px;
+  }
+
+.tab-link:hover
+{	color: #999;
+	border-color: #999;
+}
+.tab-link.active
+{	color: #333 ;
+	border-color: #333;
+}
+.tab-link:nth-of-type(1).active
+{	color: #26BDB4; 
+	border-color: #26BDB4 ;
+  }
+
+.tab-link:nth-of-type(2).active
+{	color: #26BDB4 ;
+	border-color: #26BDB4 ;
+  }
+
+.tab-link:nth-of-type(3).active
+{	color: #26BDB4 ;
+	border-color: #26BDB4;
+    
+}
+
+
+.tab-content
+{	display: none ;
+	text-align: center;
+	color: #888;
+	font-weight: 300;
+	font-size: 15px;
+	opacity: 0;
+	transform: translateY(15px);
+	animation: fadeIn 0.5s ease 1 forwards;
+}
+.tab-content.active
+	{
+    display: block;
+  }
+
+
+
+</style>
+
+<script>
+$('.tab-link').click( function() {
+	
+	var tabID = $(this).attr('data-tab');
+	
+	$(this).addClass('active').siblings().removeClass('active');
+	
+	$('#tab-'+tabID).addClass('active').siblings().removeClass('active');
+});
+</script> {% endcomment %}
+
+<script>
+
+var url = window.location.href;
+var result = false;
+  console.log(url.includes("#stamped-main-widget"));
+if (url.includes("#stamped-main-widget")){
+result = true ;
+}
+var reviews = document.getElementById('tab-reviews');
+var info = document.getElementById('tab-add-info');
+var ReviewTitle = document.getElementById('review-title');
+var InfoTitle = document.getElementById('info-title');
+
+
+
+$( document ).ready(function() {
+  if(result == true){
+     info.style.display = 'none';
+     reviews.style.display = 'block';
+     ReviewTitle.style.color = "black";
+     InfoTitle.style.color = "#999";
+     $('.stamped-summary-actions-newreview').css('visibility', 'visible');
+  }
+    console.log( "ready!",url,result, reviews);
+
+});
+
+
+
+</script>
+
+

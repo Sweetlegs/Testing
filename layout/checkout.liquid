@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+	 <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+     {{ 'loader.css' | asset_url | stylesheet_tag }}
+    {%- if settings.favicon_image -%}
+    <link rel="shortcut icon" href="{{ settings.favicon_image | img_url: '32x32' }}" type="image/png" />
+    {%- endif -%}
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+  </head>
+  <body>
+    {{ skip_to_content_link }}
+
+    <div class="banner" data-header>
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </div>
+	<input type='hidden' value='{{customer.tags}}' class="customerTag">
+    {{ order_summary_toggle }}
+
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main" role="main">
+          <div class="main__header">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </div>
+          <div class="main__content">
+            {{ content_for_layout }}
+          </div>
+          <div class="main__footer">
+            {{ content_for_footer }}
+          </div>
+        </div>
+        <div class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{ tracking_code }}
+
+  {% include 'stamped-checkout-slider' %}
+<script src="https://www.orderbump.app/embed?shop=sweetlegs-usd.myshopify.com" async></script>
+</body>
+</html>
+<script>
+   var customerId = $('.customerTag').val();
+  $(document). ready(function(e) {
+    var ref_code = '{{ checkout.attributes.Ref_CODE }}'; 
+    if(ref_code) {
+     setTimeout(function() { 
+          $('.referral-code .message').css('color','#00c4b3').append(`<p class="messText" style="margin: 10px 0px"><span class="refTag"><span><img src="https://img.icons8.com/material-sharp/24/000000/add-user-group-man-man.png"></span><span class="ref_text">${ref_code}</span><span class="cancel"><img src="https://img.icons8.com/material-rounded/24/000000/delete-sign.png" style="width:14px; cursor: pointer;"></span></span><span style="padding: 10px; color: #00c4b3">Success!</span></p>`);   
+      }, 2000);
+    }
+	if(!customerId.toLowerCase().includes('distributor')){
+       $('#main-header').before(`<div class="order-summary__section field referral-code" style="padding: 0px; padding-bottom: 15px">
+		<div style="display: flex;">
+			<input placeholder='Referral Code' type='text' size='30' class='referral_code' val='referral code'/>
+			<button class='btn refferal-code'>
+				<span class="apply">Apply</span>
+                <div class="loading loadingio-spinner-rolling-tpd3exlgpib"><div class="ldio-7hqmasuhr8a">
+                    <div></div>
+                </div></div>
+  			</button>
+  		</div>
+		<p class="message" style='padding-top: 10px;'></p>
+        <p class="refMessage" style='margin-top: 0px; font-size: 12px'>
+            Referred by a Distributor? Enter their code above!
+        </p>
+  		</div>`);
+    } 
+    $(document).on('click','.btn.refferal-code', function(e) {
+       let data = {};	
+      let api = '{{settings.sweetlegs_rocks_api}}';
+      e.preventDefault();
+      if($('.referral_code').val()) {
+        data.refferal_code = $('.referral_code').val();
+        $.ajax({
+          type: 'GET',
+          url: `${api}/api/distributor-rewards/referral-codes`,
+          data: data,
+          async: false,
+          success: function(response) {
+          if(response.referral_url) {
+            $('.loading').css('display', 'block');
+      		$('.apply').css('display', 'none');
+            let referralId = response.referral_url.slice(-8);
+            $('#ref_id').val(referralId);
+             var params = {
+                  attributes: {
+                      'Ref_ID': referralId,
+                      'Ref_CODE': $('.referral_code').val(),
+                  }
+            };
+            $.ajax({
+                type: "POST",
+                url: '/cart.js',
+                data: params,
+                success: function(cart){
+     			   window.location.href=window.location.href
+        		   return cart;
+                 },
+                 dataType: 'json'
+            });
+              
+            } else {
+                Cookies.remove('ref_ID'); 
+                Cookies.remove('ref_CODE'); 
+                $('.referral-code .message').css('color','red').text('Enter the valid Referral Code...');
+            	$('input.referral_code').css({ 'border': '1px solid red','box-shadow':'0 0 0 1px #ff6d6d' });
+                $('.refMessage').text(`Referred by a Distributor? Enter their code above!`).css('color', 'black');
+            }
+          },
+          error: function(error) {
+            Cookies.remove('ref_ID'); 
+            Cookies.remove('ref_CODE'); 
+            $('.referral-code .message').css('color','red').text('Enter the valid Referral Code...');
+            $('input.referral_code').css({ 'border': '1px solid red','box-shadow':'0 0 0 1px #ff6d6d' });
+            $('.refMessage').text(`Referred by a Distributor? Enter their code above!`).css('color', 'black');
+          }        
+        });
+      }
+
+    });
+    
+    
+     $(document).on('input', '.referral_code',function(e) {
+      if($('.referral_code').val()) {
+        $('.btn.refferal-code').css('background', '#693c91');
+        $('.btn.refferal-code').css('opacity', '1');
+      } else {
+        $('.btn.refferal-code').css('background', '#c8c8c8');
+      }
+      
+    });
+   $(document).on('click', '.field__input-btn.btn',function(e) {
+      if($(".tags-list .tag").length == 3 && !customerId.toLowerCase().includes('distributor') ) {
+      if($("#error-gift-card").length <= 0) {
+        $('.order-summary__section.order-summary__section--discount .field__input-btn-wrapper').after(`<p id="error-gift-card" style="color:red">Please <a href="/pages/contact-us" target="_blank">contact support </a>for more than 3 gift cards.</p>`);
+      }
+       e.preventDefault();
+      } 
+    });
+    
+    $(document).on('click', '.cancel', function(e) {
+        Cookies.remove('ref_ID'); 
+        Cookies.remove('ref_CODE');
+        $('#refCode').val('');
+        $('.refMessage').text(`Referred by a Distributor? Enter their code above!`).css('color', 'black');
+        $('.message .messText').remove(); 
+    });  
+});
+  
+</script>
+
+
+<style>
+  .loading {
+    display: none;
+  }
+  .apply {
+    white-space: nowrap;
+  }
+  .refTag {
+    border-radius: 4px;
+    background-color: rgba(113,113,113,0.11);
+    color: #717171;
+    font-size: 0.85714em;
+    padding: 0.85714em;
+    overflow: hidden;
+  }
+  .ref_text {
+    padding: 0 10px;
+    color: #323232;
+    font-size: 1.14286em;
+    font-weight: 500;
+  }
+  .referral-code .btn__icon {
+    display: none;
+  }
+  .referral_code {
+    background-color: white;
+    color: #333333;
+    border: 1px #d5d5d5 solid;
+    background-clip: padding-box;
+    border-radius: 5px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.92857em 0.78571em;
+    word-break: normal;
+   
+  }
+  .referral_code:focus {
+    outline: none;
+    border-color: #693c97;
+    box-shadow: 0 0 0 1px #693c97;
+  }
+  .btn.refferal-code {
+    padding-top: 0px;
+   	padding-bottom: 0px;
+    margin-left: 0.85714em;
+    background: #c8c8c8;
+    opacity: .65;
+  }
+ 
+  .popover {
+    display: block;
+  }
+  .hideMe {
+    display: none;
+  }
+  .tooltips {
+    width: 90%;
+    background-color: black;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    position: absolute;
+    top: 5px;
+    left: 40px;
+    z-index: 1;
+  }  
+  .fa-window-close:before, .fa-times:before {
+      padding-left: 100p;
+      position: absolute;
+      top: 12px;
+      right: 10px;
+	}
+  .fas.fa-exclamation-circle {
+    padding-right: 10px;
+  }
+  .detail .close {
+    position: absolute;
+    top: 40px;
+    right: 5px;
+    font-size: 14px;
+  }
+  .detail {
+    font-size: 14px;
+  }
+  .order-summary__section ~ .order-summary__section {
+    border-top: none!important;
+   }
+  .order-summary__section.order-summary__section--discount {
+    border-top: 1px solid rgba(175,175,175,0.34)!important;
+  }
+  .field.referral-code {
+    border-bottom: 1px solid rgba(175,175,175,0.34)!important;
+    margin-bottom: 20px;
+  }
+  #main-header {
+    outline: none;
+  }
+  .alert-info {
+    background-color: #f1f2f2;
+    border-color: #d1d3d4;
+    color: #717171;
+ }
+  @media (max-width: 749px) {
+    .btn {
+        width: auto;
+    }
+  }
+ @media (max-width: 550px){ 
+    .tooltips {
+      width: 85%;
+      font-size: 12px;
+    }
+   .detail {
+    font-size: 12px;
+   }
+   .apply {
+     display:none;
+   }
+   .referral-code .btn__icon {
+      display: block;
+    }
+  
+  }
+  @media (max-width: 450px){ 
+  .tooltips {
+      width: 85%;
+  }
+</style>

@@ -1,616 +1,297 @@
-<footer class="sf-footer" data-section-type="footer" data-section-id="{{ section.id }}">
-  {% render 'footer-blocks', blocks: section.blocks, bordered: section.settings.bordered, container: section.settings.container %}
-  {% render 'footer-design', container: section.settings.container %}
+<footer id="site-footer-{{ section.id }}" class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer-section">
+  {%- if section.settings.footer_instagram != '' -%}
+  {%- assign my_instagram = section.settings.footer_instagram_token | split: '.' -%}
+  <div class="footer-instagram-section">
+    <ul id="footer-instagram" class="instagram-pics instagram-size-small" data-id="{{ my_instagram.first | escape }}" data-token="{{ section.settings.footer_instagram_token | escape }}" data-limit="{{ section.settings.footer_instagram_limit | plus:0 }}"></ul>
+    <p class="clear"><a href="//instagram.com/{{ section.settings.footer_instagram_username | escape }}" rel="me" target="_blank">{{ 'footer.instagram.follow_our_instagram' | t | escape }}</a></p>
+  </div>
+  {%- endif -%}
+  
+  {%- if section.settings.footer_area != '' -%}
+  <div class="f-columns widget-area">
+    {%- case section.settings.footer_area -%}
+    {%- when '1' -%}
+      {%- include 'footer-area-1' -%}
+    {%- when '2' -%}
+      {%- include 'footer-area-2' -%}
+    {%- when '3' -%}
+      {%- include 'footer-area-3' -%}
+    {%- when '4' -%}
+      {%- include 'footer-area-4' -%}
+  	{%- when '5' -%}
+      {%- include 'footer-area-5' -%}
+    {%- when '6' -%}
+      {%- include 'footer-area-6' -%}
+    {%- when '7' -%}
+      {%- include 'footer-area-7' -%}
+    {%- when '8' -%}
+      {%- include 'footer-area-8' -%}
+  	{%- when '9' -%}
+      {%- include 'footer-area-9' -%}
+    {%- endcase -%}
+  </div>
+  {%- endif -%}
+  <div class="f-copyright">
+    <div class="row">
+      <div class="medium-12 columns socials">
+        <div class="footer-divider"></div>
+        {%- if section.settings.footer_social != '' -%}
+          {%- include 'shortcode' load: section.settings.footer_social_content -%}
+        {%- endif -%}            
+      </div>
+      {%- if section.settings.footer_copyright != '' -%}
+      <div class="medium-12 columns copytxt">
+        <p class="copyright">
+          {{ section.settings.footer_copyright }}
+        </p>
+      </div>
+      {%- endif -%}
+    </div>    
+  </div> 
 </footer>
 
 {% schema %}
-{
-  "name": "Footer",
-  "settings": [
-    {
-      "type": "select",
-      "id": "design",
-      "label": "Layout",
-      "options": [
-        {
-          "value": "footer-1",
-          "label": "Layout 1"
-        },
-        {
-          "value": "footer-2",
-          "label": "Layout 2"
-        },
-        {
-          "value": "footer-3",
-          "label": "Layout 3"
-        }
-      ],
-      "default": "footer-1"
-    },
-    {
-      "type": "select",
-      "id": "container",
-      "label": "Container type",
-      "default": "container-fluid",
-      "options": [
-        {
-          "value": "container-fluid",
-          "label": "Default"
-        },
-        {
-          "value": "w-full",
-          "label": "Full width"
-        },
-        {
-          "value": "container",
-          "label": "Use container box"
-        }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "bordered",
-      "label": "Block bordered",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "copyright",
-      "label": "Copyright text",
-      "default": "&copy; minimog 2021"
-    },
-    {
-      "type": "header",
-      "content": "Addons"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_country_selector",
-      "label": "Show country/region selector",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_currency_selector",
-      "label": "Show currency selector",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_language_selector",
-      "label": "Show language selector",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_social_links",
-      "label": "Show social icons",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "Payment methods"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "Show payment icons",
-      "default": false
-    },
-    {
-      "type": "image_picker",
-      "id": "image_custom_payment",
-      "label": "Payment icons by image",
-      "info": "Leave blank to use icons by Payment methods"
-    },
-    {
-      "type": "number",
-      "id": "payment_icons_width",
-      "label": "Image width (px)",
-      "default": 300
-    }
-  ],
-  "max_blocks": 5,
-  "blocks": [
-    {
-      "type": "menu",
-      "name": "Menu",
-      "limit": 4,
-      "settings": [
-        {
-          "type": "link_list",
-          "id": "menu",
-          "label": "Footer menu",
-          "default": "main-menu"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Heading",
-          "default": "Service",
-          "info": "Leave blank to use menu title"
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Mobile settings"
-        },
-        {
-          "type": "checkbox",
-          "id": "order_first",
-          "label": "Order first",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "open_default",
-          "label": "Open by default",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "our_store",
-      "name": "About",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Our store"
-        },
-        {
-          "type": "richtext",
-          "id": "description",
-          "label": "Description",
-          "default": "<p>Find a location nearest you.</p>"
-        },
-        {
-          "type": "header",
-          "content": "Contact information",
-          "info": "Go to \"Theme settings > Store contact\" to update these information."
-        },
-        {
-          "type": "checkbox",
-          "id": "show_email",
-          "label": "Show email",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "show_phone",
-          "label": "Show phone number",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "show_socials_link",
-          "label": "Show social icons",
-          "default": false
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Mobile settings"
-        },
-        {
-          "type": "checkbox",
-          "id": "order_first",
-          "label": "Order first",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "open_default",
-          "label": "Open by default",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "newsletter",
-      "name": "Newsletter",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Subscribe"
-        },
-        {
-          "type": "textarea",
-          "id": "description",
-          "label": "Description",
-          "default": "Enter your email below to be the first to know about new collections and product launches."
-        },
-        {
-          "type": "text",
-          "id": "email_placeholder",
-          "label": "Email placeholder",
-          "default": "Enter your email"
-        },
-        {
-          "type": "select",
-          "id": "form_style",
-          "label": "Form style",
-          "default": "bordered",
-          "options": [
-            {
-              "value": "bordered",
-              "label": "Bordered"
-            },
-            {
-              "value": "minimal",
-              "label": "Minimal"
-            }
-          ]
-        },
-        {
-          "type": "checkbox",
-          "id": "show_social",
-          "label": "Show social link",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "show_agree_checkbox",
-          "label": "Show \"Terms & conditions\" checkbox",
-          "default": false
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Mobile settings"
-        },
-        {
-          "type": "checkbox",
-          "id": "order_first",
-          "label": "Order first",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "open_default",
-          "label": "Open by default",
-          "default": true
-        }
-      ]
-    },
-    {
-      "type": "custom_text",
-      "name": "Custom content",
-      "limit": 5,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Custom text"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "image_max",
-          "label": "Image max-width (px)",
-          "default": "200px"
-        },
-        {
-          "type": "richtext",
-          "id": "description",
-          "label": "Content",
-          "default": "<p>Enter your email below to be the first to know about new collections and product launches.</p>"
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Mobile settings"
-        },
-        {
-          "type": "checkbox",
-          "id": "order_first",
-          "label": "Order first",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "open_default",
-          "label": "Open by default",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "custom_html",
-      "name": "Custom HTML",
-      "limit": 5,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Custom text"
-        },
-        {
-          "type": "liquid",
-          "id": "html",
-          "label": "HTML",
-          "info": "Liquid code supported"
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Mobile settings"
-        },
-        {
-          "type": "checkbox",
-          "id": "order_first",
-          "label": "Order first",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "open_default",
-          "label": "Open by default",
-          "default": false
-        }
-      ]
-    },
-    {
-      "type": "spacing",
-      "name": "Spacing",
-      "limit": 5,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Use this block to make a spacing between columns"
-        },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "20%",
-              "label": "20%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+  {
+    "name": "Footer",
+    "settings": [
+      {
+        "type": "select",
+        "id": "footer_area",
+        "label": "Footer Widget Areas [( ? )](\/\/goo.gl\/xqR9oQ)",
+        "options": [
+          {
+            "value": "0",
+            "label": "None"
+          },
+          {
+            "value": "1",
+            "label": "Area 1"
+          },
+          {
+            "value": "2",
+            "label": "Area 2"
+          },
+          {
+            "value": "3",
+            "label": "Area 3"
+          },
+          {
+            "value": "4",
+            "label": "Area 4"
+          },
+          {
+            "value": "5",
+            "label": "Area 5"
+          },
+          {
+            "value": "6",
+            "label": "Area 6"
+          },
+          {
+            "value": "7",
+            "label": "Area 7"
+          },
+          {
+            "value": "8",
+            "label": "Area 8"
+          },
+          {
+            "value": "9",
+            "label": "Area 9"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Footer 1"
+      },
+      {
+        "type": "select",
+        "id": "footer_1_align",
+        "label": "Text Align",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left-align"
+          },
+          {
+            "label": "Right",
+            "value": "right-align"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_1_content",
+        "label": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Footer 2"
+      },
+      {
+        "type": "select",
+        "id": "footer_2_align",
+        "label": "Text Align",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left-align"
+          },
+          {
+            "label": "Right",
+            "value": "right-align"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_2_content",
+        "label": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Footer 3"
+      },
+      {
+        "type": "select",
+        "id": "footer_3_align",
+        "label": "Text Align",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left-align"
+          },
+          {
+            "label": "Right",
+            "value": "right-align"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_3_content",
+        "label": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Footer 4"
+      },
+      {
+        "type": "select",
+        "id": "footer_4_align",
+        "label": "Text Align",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left-align"
+          },
+          {
+            "label": "Right",
+            "value": "right-align"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_4_content",
+        "label": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Footer 5"
+      },
+      {
+        "type": "select",
+        "id": "footer_5_align",
+        "label": "Text Align",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left-align"
+          },
+          {
+            "label": "Right",
+            "value": "right-align"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_5_content",
+        "label": "Content"
+      },
+      {
+        "type": "header",
+        "content": "Instagram Feed"
+      },
+      {
+        "type": "select",
+        "id": "footer_instagram",
+        "label": "Instagram Feed",
+        "options": [
+          {
+            "label": "Disable",
+            "value": ""
+          },
+          {
+            "label": "Enable",
+            "value": "1"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "footer_instagram_username",
+        "label": "Username"
+      },
+      {
+        "type": "text",
+        "id": "footer_instagram_token",
+        "label": "Access Token [( ? )](\/\/goo.gl\/OypFlG)"
+      },
+      {
+        "type": "range",
+        "id": "footer_instagram_limit",
+        "min": 4,
+        "max": 16,
+        "step": 1,
+        "label": "Limit",
+        "default": 8
+      },
+      {
+        "type": "header",
+        "content": "Social Media Icons"
+      },
+      {
+        "type": "select",
+        "id": "footer_social",
+        "label": "Social Media Icons",
+        "options": [
+          {
+            "label": "Disable",
+            "value": ""
+          },
+          {
+            "label": "Enable",
+            "value": "1"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "id": "footer_social_content",
+        "label": "Social Icons"
+      },
+      {
+        "type": "header",
+        "content": "Copyright"
+      },
+      {
+        "type": "html",
+        "id": "footer_copyright",
+        "label": "Copyright Text"
+      }
+    ]
+  }
 {% endschema %}

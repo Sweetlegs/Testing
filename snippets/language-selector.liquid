@@ -1,0 +1,103 @@
+
+<script>
+    
+  $(document).ready(function(e) { 
+    function changeKalviyoprofileLanguage(language) {
+      $.ajax({
+        url : ` https://sweetlegs.rocks/api/klaviyo/profile`,
+        type : 'patch',
+        data: {
+          email: `{{customer.email}}`,
+          language: language,
+        },
+        success : function(data) {
+        }
+      });     
+    }
+    if(localStorage.getItem('language') == 'french') {
+       $('.french-version').removeClass('visibiltyHidden');
+       $('.english-version').addClass('visibiltyHidden');
+           $('.languageChange button').removeClass('active');
+      $('.languageChange button.frn').addClass('active');
+    } else {
+       $('.french-version').addClass('visibiltyHidden');
+      $('.english-version').removeClass('visibiltyHidden');
+      $('.languageChange button').removeClass('active');
+      $('.languageChange button.eng').addClass('active');
+    }
+    $('.languageChange button.eng').click(function(e) {
+      e.preventDefault();
+      
+       $('.languageChange button').removeClass('active');
+      localStorage.setItem('language', 'english');
+      $(this).addClass('active');
+      $('.french-version').addClass('visibiltyHidden');
+      $('.english-version').removeClass('visibiltyHidden');
+      changeKalviyoprofileLanguage('english');
+    });
+     $('.languageChange button.frn').click(function(e) {
+       e.preventDefault();
+       localStorage.setItem('language', 'french');
+        $('.languageChange button').removeClass('active');
+       $(this).addClass('active');
+       $('.french-version').removeClass('visibiltyHidden');
+       $('.english-version').addClass('visibiltyHidden');
+       changeKalviyoprofileLanguage('french');
+    });
+  })
+</script>
+
+<style>
+.languageChange {
+  display: flex;
+  margin-bottom: 2rem;
+}
+.languageChange button.active {
+  color: #212b36!important;
+  background-color: #0000002b;
+  transition: all 0.3s ease;
+}
+.languageChange button {
+  outline: none;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 1;
+  border: none;
+  background-color: #f5f5f5;
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  vertical-align: top;
+  border-radius: 50%;
+}
+.languageChange button:hover {
+  color: #212b36!important;
+}
+.languageChange button:hover:after {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+.languageChange button:before {
+  position: relative!important;
+  z-index: 2!important;
+}
+.languageChange button:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background-color: #0000002b;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+</style>
+

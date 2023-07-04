@@ -1,0 +1,265 @@
+<style>
+  .stamped-ratings-wrapper {
+    width: 100% !important;
+    width: 48% !important;
+    margin-right: 4% !important;
+    text-align: center !important;
+    vertical-align: top !important;
+    text-align: left !important;
+    padding-top: 30px !important;
+    margin-bottom: 35px !important;
+    padding-bottom: 15px !important;
+    float: left;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 10px;
+    font-size: 14px;
+  }
+  .stamped-ratings-wrapper:nth-child(even) {
+    margin-right: 0px !important;
+}
+  .stamped-reviews-image {
+    height: 145px;
+    width: 100px;
+    float: left;
+    margin-right: 20px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    position: relative;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    z-index: 0;
+  }
+  .stamped-reviews-date {
+    float: right;
+    font-size: 12px;
+    color: #999;
+    margin-left: 0 !important;
+  }
+
+  .stamped-ratings-wrapper > div {
+    position: relative;
+    margin-left: 120px;
+  }
+  .stamped-reviews-title {
+    font-weight: bold;
+  }
+  .stamped-style-color-text {
+    color: #616161 !important;
+  }
+  .stamped-reviews-message {
+    font-weight: normal;
+    margin: 10px 0px;
+  }
+  .stamped-reviews-message-image-block span[data-type] {
+    width: auto;
+    display: inline-block !important;
+    position: relative;
+    margin-left: 0 !important;
+    margin-right: 10px !important;
+    box-shadow: 0px 0px 4px #ccb;
+    padding: 3px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  .stamped-reviews-message-image-block img {
+    height: 100px;
+  }
+  
+  .stamped-style-color-verified {
+    color: #00c4b3 !important;
+}
+  
+.stamped-verified-label[data-verified-type="2"]:after {
+    content: ' \e904 Verified Buyer';
+    font-family: 'stamped-font', 'FontAwesome', 'Open Sans';
+    word-spacing: -5px;
+    font-weight: normal;
+}
+  a.stamped-review-product {
+    font-size: 12px;
+    font-weight: normal;
+    color: #777;
+  }
+  
+
+  .page-title {
+    white-space: pre-wrap !important;
+  }
+  
+@media(max-width: 500px){
+  .stamped-ratings-wrapper{
+  	width: 100% !important;
+  }
+} 
+
+</style>
+<div id="primary" class="content-area">
+  {%- include 'page-header' -%}
+  <div id="content" class="site-content">
+    <article class="page">
+      <div class="row">
+        <div class="large-12 columns">
+          <div class="entry-content">
+            {%- include 'shortcode' load: page.content -%} 
+             <div class="stamped-widget-title">
+                <span class="stamped-widget-stars stamped-style-color-star">
+                  <i class="stamped-fa stamped-fa-star"></i>
+                  <i class="stamped-fa stamped-fa-star"></i>
+                  <i class="stamped-fa stamped-fa-star"></i>
+                  <i class="stamped-fa stamped-fa-star"></i>
+                  <i class="stamped-fa stamped-fa-star"></i>
+                </span>
+                <span class="stamped-widget-text">
+                  Based on <span class="totalReviews"></span>Reviews our customers love us!
+                </span>
+            </div>
+
+            <div class="stamped-reviews-wrapper">             
+
+            </div>
+           
+            </div>
+          </div>
+          <div id="loadingDiv" style="text-align:center;">
+          {{ 'loading.gif' | asset_url | img_tag: 'spin', 'spin' }}
+          <p>Loading ...</p>
+          </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+
+<script>
+
+ page = 1;
+ lastCall = false;
+var $loading = $('#loadingDiv').hide();
+  function getDataFromSmile() {
+       $.ajax({
+         url:`https://stamped.io/api/widget/reviews?page=${page}&storeUrl=sweetlegs-usd.myshopify.com&apiKey=pubkey-l47V85Gah31UV70ZD6V08K451U1iC2&productIds=4295232159767&productIds=4319680299031&productIds=4319684132887&productIds=4364851445783&productIds=4493564542999&productIds=4530085920791&productIds=4530100404247&productIds=4530106368023&productIds=6187443683501&productIds=6583353409709`,
+          type:'get',
+
+          beforeSend: function() {
+             $('#loadingDiv').show();
+          },
+          complete: function(){
+             $('#loadingDiv').hide();
+          },
+          success:function(item){
+            var reviewItems = item.data;
+            $('.totalReviews').text(item.total+' ');
+            reviewItems.forEach(function(item) {
+              rating = ``;
+              for(i=0; i<item.reviewRating; i++) {
+                rating = rating.concat('<i class="stamped-fa stamped-fa-star"></i>');
+              }
+              photo = '';
+              if(item.reviewUserPhotos) {
+                photos = item.reviewUserPhotos.split(",");
+                photos.forEach(function(each) {
+                  photoSrc = 'https://s3-us-west-2.amazonaws.com/stamped.io/uploads/photos/thumb/'+each;
+                  photo = photo.concat(`<span data-type="photo">
+                            <a onclick="StampedWidgetFullPageFn.openModal(1, 0);" style="cursor:pointer;" data-type="photo">
+                                <img data-src="${photoSrc}" class="stamped-lazyload stamped-lazyload-loaded" height="50" alt="Customer Photo" src="${photoSrc}" data-was-processed="true">
+                            </a>
+                          </span>`);
+                })
+              }
+              reviewOption = '';
+              if(item.reviewOptionsList.length > 0) {
+                item.reviewOptionsList.forEach(function(each) {
+                  reviewOption = reviewOption.concat(`<li data-title="how-did-you-find-the-fit" data-value="3">
+                                <span class="stamped-reviews-option-title" data-title="how-did-you-find-the-fit">${each.message}</span> 
+                                <span class="stamped-reviews-option-value" data-value="3">${each.value}</span>
+                              </li>`);
+                })
+              }
+              productVariantName = '';
+              if(typeof item.productVariantName !== 'undefined') {
+                productVariantName = item.productVariantName;
+              }
+              productVariantName =        
+                  $('.stamped-reviews-wrapper').append
+                  (`<div class="stamped-ratings-wrapper stamped-review-card">
+                      <div class="stamped-reviews-image">
+                          <a href="${item.productUrl}" rel="nofollow">
+                          <img data-src="${item.productImageUrl}" style="max-height: 100%; max-width: 100%; width: auto; height: auto; top: 0; bottom: 0; left: 0; right: 0; margin: auto;" onerror="this.style.display=&quot;none&quot;" alt="Pastel Splash Plus Biker Shorts Product Image" class="stamped-lazyload stamped-lazyload-loaded" src="${item.productImageUrl}" data-was-processed="true">
+                        </a>
+                      </div>
+                      <div class="stamped-reviews-date">${item.reviewDate}</div>
+                      <div class="stamped-reviews-rating stamped-style-color-star"> 
+                        ${rating}
+                      </div>
+                      <div class="stamped-reviews-title">
+                        <a href="${item.productUrl}" class="stamped-review-title stamped-style-color-link" rel="nofollow">
+                          ${item.reviewTitle}
+                        </a>
+                      </div>
+                      <div class="stamped-reviews-options">
+                          <ul>
+                              ${reviewOption}
+                          </ul>
+                      </div>
+                      <div class="stamped-reviews-message stamped-style-color-text">
+                          ${item.reviewMessage}
+                      </div>
+                      <div class="stamped-reviews-author stamped-style-color-text">
+                        ${item.author} 
+                        <span class="stamped-verified-label stamped-style-color-verified" data-verified-type="2"></span>
+                      </div>
+                      <div class="stamped-reviews-location" style="display:none;">
+                        ${item.location} 
+                      </div>
+                      <div class="stamped-products-reviews-title">
+                        <a href="${item.productUrl}" class="stamped-review-product style-color-link" rel="nofollow">
+                          ${item.productName}
+                        </a>
+                        <span class="stamped-products-reviews-title-variant">
+                          ${productVariantName}
+                        </span>
+                      </div>
+                      <div class="stamped-reviews-message-image-block">
+                          ${photo}
+                      </div>
+                    </div>`);   
+            });
+          },
+          error: function(xhr, textStatus, error){
+            var $loading = $('#loadingDiv').hide();
+            lastCall = true;
+            console.log(error);
+          }       
+        });  
+  }
+  
+ getDataFromSmile();
+  
+//   $('#pages').on('click', '.stamped-pagination-page a', function(e) {
+//     page = $(this).attr('data-page');
+//     getDataFromSmile();
+    
+//   });
+//   $('.stamped-pagination').on('click', '#stamped-pagination-prev', function(e) {
+//     page = page - 1;
+//     $('.stamped-reviews-wrapper').html('');
+//     getDataFromSmile();    
+//   });
+//   $('.stamped-pagination').on('click', '#stamped-pagination-next', function(e) {
+//     page = page + 1;
+//     $('.stamped-reviews-wrapper').html('');
+//     getDataFromSmile();
+    
+//   });
+  
+  window.addEventListener("scroll", function () {
+    if($(window).scrollTop() + 1000 > $('body').height() - $(window).height() ) {
+      page = page+1;
+      if(!lastCall) {
+        getDataFromSmile();
+      }
+    }
+
+});
+</script>

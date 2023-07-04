@@ -1,0 +1,120 @@
+<style>
+  #fabric-benefit {
+    background-image: url({{section.settings.background-url}});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  #fabric-benefit h1 {
+    color: white;
+  }
+  #fabric-benefit .fab-cont {
+    padding: 150px 0px;
+  }
+  #fabric-benefit .iconContainer {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;   
+  } 
+ .iconBox {
+    flex-grow:1;
+  }
+  .iconText {
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 1.5px;
+  }
+  #fabric-benefit.new-athleisure-landing-page .col-lg-2{
+      width: 12%;    
+  }
+@media only screen and (max-width: 1000px) {
+   #fabric-benefit.new-athleisure-landing-page.col-lg-2{
+      width: 25%;    
+  }
+}
+@media only screen and (max-width: 600px) {
+   #fabric-benefit.new-athleisure-landing-page .col-lg-2{
+      width: 50%;    
+  }
+}
+</style>
+
+<section id="fabric-benefit" class="{{ page.handle }}">
+   <div class="fab-cont">
+    <div class="container-fluid">
+      <div style="text-align: center" class="row">
+        {% assign i = 0 %}
+        {% for block in section.blocks %}  
+        
+        {% assign i = i | plus: 250 %}
+          <div data-aos="fade-in" data-aos-offset="150" data-aos-delay="{{ i }}" data-aos-duration="1000" class="col-lg-2 col-md-4 col-sm-6 col-xs-6">
+            <div class="iconContainer">
+              <div class="iconBox">
+                {{ block.settings.icon | img_url: '75x75', scale: 2 | img_tag: block.settings.image.alt, image_class }}              
+             </div>
+            </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+{% schema %}
+  {
+    "name": "Febric Benefits",
+    "settings": [{
+     	  "type": "text",
+          "id": "background-url",
+          "label": {
+          	"en": "Background Url"
+		  }
+	  },
+	  {
+          "type": "text",
+          "id": "heading",
+          "label": {
+          "en": "Heading"
+	 }
+   }],
+ "blocks": [
+    {
+      "type": "image-left",
+      "name": {
+        "en": "Fabric Icons"
+      },
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": {
+            "en": "Icon"
+          }
+        },
+	  	{
+          "type": "text",
+          "id": "label",
+          "label": {
+          "en": "Label"
+	 	}
+	   }
+      ]
+    }
+  ],
+  "presets": [{
+      "name": "Febric Benefits ",
+      "category": "Image"
+    }]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

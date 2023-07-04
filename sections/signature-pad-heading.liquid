@@ -1,0 +1,50 @@
+<style>
+  .message {
+    background: #f4f6f8;
+    color: black;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 32px;
+    padding: 50px;
+    line-height: 2rem;
+    margin-bottom: 0px;
+    line-height: inherit;
+}
+.visibiltyHidden {
+  padding: 0px;
+}
+
+@media (max-width: 1200px) {
+  .message {
+      padding: 30px;
+      font-size: calc(16px + (40 - 16) * ((100vw - 300px) / (2000 - 300)));
+      line-height: inherit;
+  }
+}
+</style>
+<div class="row">
+  <div class="col-sm-12"> 
+    <p class="message english-version"> {{ section.settings.header }} </p>
+     <p class="message french-version visibiltyHidden">{{ section.settings.headerFr }} </p>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Instruction",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "header",
+      "label": "Instruction in English",
+      "default": "Heading goes here"
+    },
+    {
+      "type": "textarea",
+      "id": "headerFr",
+      "label": "Instruction in French",
+      "default": "Heading in french goes here"
+    } 
+  ]
+}
+{% endschema %}

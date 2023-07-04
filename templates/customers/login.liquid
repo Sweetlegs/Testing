@@ -1,74 +1,112 @@
-<!-- <div class="form-success hide" data-reset-success>
-  {{ 'customer.recover_password.success' | t }}
-</div> -->
-<div class="text-center sf__page-header section__header">
-  <h1 class="section__heading">{{ 'customer.login.title' | t }}</h1>
-  {% render 'breadcrumb', container: 'container', justify: 'center' %}
-</div>
-<div class="sf-customer__forms pb-7 md:pb-15 md:w-11/12 lg:w-3/4 xl:w-2/3 2xl:w-1/2 md:flex mx-auto">
-  <div class="sf-customer__login mx-4 lg:mx-10 md:w-1/2">
-    <h3 class="text-2xl font-medium mb:3 md:mb-6">{{ 'customer.login.title' | t }}</h3>
-    
-    <div data-login-form class="flex flex-col-reverse">
-      {% form 'customer_login' %}
-      {%- comment -%}
-      {% if form.posted_successfully? %}
-      <div class="notification show success mb-3 text-base">
-          {{ 'customer.recover_password.success' | t }}
-      </div>
-      {% endif %}
-      {%- endcomment -%}
-      {% render 'form__error', form: form %}
-  
-      <input type="email" name="customer[email]" placeholder="{{ 'customer.login.email' | t }}" class="form-control" />
-      <input type="password" name="customer[password]" placeholder="{{ 'customer.login.password' | t }}" class="form-control" />
-  
-      <a class="underline block my-3 sf-customer__reset-password-btn">{{ 'customer.login.forgot_password' | t }}</a>
-      <button class="sf__btn sf__btn-primary mt-4  mb-3 w-full" type="submit">
-          {{ 'customer.login.sign_in' | t }}
-      </button>
-      {% endform %}
-    </div>
-  </div>
-  <div class="sf-customer__reset-password hidden mx-4 lg:mx-10 md:w-1/2">
-    <h3 class="text-2xl font-medium">{{ 'customer.recover_password.title' | t }}</h3>
-    <p class="mt-4 mb-2 text-color-secondary">{{ 'customer.recover_password.subtext' | t }}</p>
-    
-    <div data-recover-form>
-      {% form 'recover_customer_password' %}
-      {% if form.posted_successfully? %}
-          <div class="notification show success mt-5 mb-2 text-base sf-customer__recover-form-posted">
-              {{ 'customer.recover_password.success' | t }}
+
+<div id="primary" class="content-area">
+  {%- include 'page-header' -%}
+  <div id="content" class="site-content">
+    <div class="row">
+      <div class="medium-10 medium-centered large-5 large-centered columns">
+        <div class="login-register-container">
+          <div class="row">
+            <div class="large-12 columns">
+              <div class="account-forms-container">
+                <ul class="account-tab-list">
+                  <li class="account-tab-item"><a class="account-tab-link current" href="/account/login">{{ 'customer.login.title' | t }}</a></li>
+                  <li class="account-tab-item last"><a class="account-tab-link" href="/account/register">{{ 'customer.register.title' | t }}</a></li>
+                </ul>
+                <div class="account-forms">
+                  <div id="CustomerLoginForm">
+                    {%- form 'customer_login' -%}
+                  	<input type="hidden" class="checkout_url" name="checkout_url" value="" />
+                    {{- form.errors | default_errors -}}
+
+                    <div class="form-row form-row-wide">
+                      <p class="minimal-form-input no-text">
+                        <label for="login-email">
+                          <span class="text">
+                            <span class="text-inner">{{ 'customer.login.email' | t }} <span class="required">*</span></span>
+                          </span>
+                        </label>
+                        <input type="email" required="required" class="input-text" name="customer[email]" id="login-email" autocorrect="off" autocapitalize="off" autofocus />
+                      </p>
+                    </div>
+                    {%- if form.password_needed -%}
+                    <div class="form-row form-row-wide">
+                      <p class="minimal-form-input no-text">
+                        <label for="login-password">
+                          <span class="text">
+                            <span class="text-inner">{{ 'customer.login.password' | t }} <span class="required">*</span></span>
+                          </span>
+                        </label>
+                        <input type="password" required="required" class="input-text" name="customer[password]" id="login-password" autocorrect="off" autocapitalize="off"  />
+                      </p>
+                    </div>
+                    {%- endif -%}
+                    <p class="form-row">
+                      <input type="submit" class="button" name="login" value="{{ 'customer.login.sign_in' | t }}" />
+                    </p>
+                    {%- if form.password_needed -%}
+                    <p class="form-row2">
+                      <a id="RecoverPassword" href="#recover">{{ 'customer.login.forgot_password' | t }}</a>
+                    </p>
+                    {%- endif -%}
+                    {%- endform -%}
+                  </div>
+                  <div id="RecoverPasswordForm" class="hide">
+                    {%- form 'recover_customer_password' -%}
+                    
+                    <div class="clearfix">
+                      <h2>{{ 'customer.recover_password.title' | t }}</h2>
+                      <p>{{ 'customer.recover_password.subtext' | t }}</p>
+                    </div>
+
+                    {{- form.errors | default_errors -}}
+                    
+                    {%- if form.posted_successfully? -%}
+                    <span class="hide reset-password-success"></span>
+                    {%- endif -%}
+                    
+                    <div class="form-row form-row-wide">
+                      <p class="minimal-form-input no-text">
+                        <label for="recover-email">
+                          <span class="text">
+                            <span class="text-inner">{{ 'customer.recover_password.email' | t }} <span class="required">*</span></span>
+                          </span>
+                        </label>
+                        <input type="email" required="required" class="input-text" name="email" id="recover-email" autocorrect="off" autocapitalize="off" autofocus />
+                      </p>
+                    </div>
+                    <p class="form-row">
+                      <input type="submit" class="button" name="recover" value="{{ 'customer.recover_password.submit' | t }}" />
+                    </p>
+                    <p class="form-row2">
+                      <a id="HideRecoverPasswordLink" href="#">{{ 'customer.recover_password.cancel' | t }}</a>
+                    </p>
+                    {%- endform -%}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-      {% endif %}
-      {% render 'form__error', form: form %}
-  
-      <input class="form-control" type="email" name="email"
-          placeholder="{{ 'customer.recover_password.email' | t }}" spellcheck="false" autocomplete="off"
-          autocapitalize="off" />
-  
-      <div class="flex mt-2">
-          <button type="submit" class="sf__btn sf__btn-primary block w-40">
-              {{ 'customer.recover_password.submit' | t }}
-          </button>
-          <button type="button" data-recover-toggle
-              class="sf__btn-secondary sf-customer__cancel-reset block w-40 ml-4">
-              {{ 'customer.recover_password.cancel' | t }}
-          </button>
+        </div>
       </div>
-      {% endform %}
     </div>
   </div>
-  <div class="mx-4 lg:mx-10 md:w-1/2 mt-12 md:mt-0">
-    <h3 class="text-2xl font-medium mb-6">{{ 'customer.login.new_customer' | t }}</h3>
-    <p class="mb-6 text-color-secondary">
-        {{ 'customer.register.description' | t }}
-    </p>
-    <a
-      class="sf__btn sf__btn-primary"
-      href="{{ routes.account_register_url }}"
-    >
-      {{ 'customer.register.title' | t }}
-    </a>
-  </div>
 </div>
+
+<script>  
+  $(document).ready(function () { 
+    url = window.location.toString();
+    if(url.indexOf('redirect') > 0 ) {
+       var referrer =  document.referrer;
+       hostname = window.location.hostname;
+       $('.checkout_url').val(referrer.split(hostname).pop());
+    }
+    $('input').on('keyup', function(e) {
+       if ($(this).val().length > 0)
+        {
+          $('.minimal-form-input').removeClass('no-text');
+          $('.minimal-form-input').addClass('has-text');
+        }
+    });
+
+  });  
+</script>

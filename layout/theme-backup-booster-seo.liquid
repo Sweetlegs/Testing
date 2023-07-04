@@ -1,0 +1,201 @@
+<!doctype html>
+
+<!--[if IE 9]> <html class="ie9 no-js" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{ shop.locale }}"> <!--<![endif]-->
+<head>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.9.0/css/solid.css" integrity="sha384-KyLwW4NRDhAz4RVatBCvFATniD3ze5rJvP1usxUFectdGgG8n+7OTcZug8s4bj5H" crossorigin="anonymous">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.9.0/css/regular.css" integrity="sha384-FrLF2uGffV1P93pQZme192v/cHRu1XlgjMreWAScHPPjBz/p9pNTx/bTV83x8peQ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.9.0/css/light.css" integrity="sha384-/ggAGHSQWxssDRflcj0aeAlGN2rNgsnWOLv1ZU5FEvjQWxP53glq5pNPjtfldVVN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.9.0/css/brands.css" integrity="sha384-wRa49NRotGDh34aLO1Hjbu65qHSTF/ZNSBm7uTpMUa2EQ1Csq7Zlswm+FR9hcWtn" crossorigin="anonymous">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.9.0/css/fontawesome.css" integrity="sha384-QSCxeayZXa6bvOhHReoQRGN7utvnOnY3JoBHGxM61JQQ1EXA7AT3m7dnlHXLhnCj" crossorigin="anonymous">
+
+  	{{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+	{{'//cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.3/jquery.timeago.js' | script_tag}}
+	{{ '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css' | stylesheet_tag }}
+	{{ '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js' | script_tag }}
+  <meta charset="utf-8" />
+  <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /><![endif]-->
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_button }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  
+  
+  {%- if settings.favicon_image -%}
+    <link rel="shortcut icon" href="{{ settings.favicon_image | img_url: '32x32' }}" type="image/png" />
+  {%- endif -%}
+  {%- if settings.favicon_image_retina -%}
+    <link rel="apple-touch-icon-precomposed" href="{{ settings.favicon_image_retina | img_url: '152x152' }}" type="image/png" />
+  {%- endif -%}
+
+  <!-- {%- capture seo_title -%}
+    {{- page_title -}}
+    {% if current_tags %}
+      {%- assign meta_tags = current_tags | join: ', ' %} &nbsp;&ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {%- endif -%}
+    {%- if current_page != 1 -%}
+      &nbsp;&ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {%- endif -%}
+    {%- unless page_title contains shop.name -%}
+      &nbsp;&ndash; {{ shop.name }}
+    {%- endunless -%}
+  {%- endcapture -%}
+  <title>{{ seo_title }}</title> -->
+
+  <title>
+    {% if template == 'index' %}
+      {{ shop.name }}
+    {% elsif template contains 'collection' %}
+      SweetLegs {{ collection.title }} | Product categories | {{ shop.name }}
+    {% elsif template contains 'product' %}
+      {{ product.title }} | {{ shop.name }}
+    {% elsif template contains 'page' %}
+      {{ page.title }} | {{ shop.name }}
+    {% else %}
+      {{ page_title }} | {{ shop.name }}
+    {% endif %}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}" />
+  {%- endif -%}
+  <script>
+    const slInventoryUrl = 'https://sl-erp.sweetlegs.biz';
+  </script>
+ 
+  
+  
+  
+  {%- include 'social-meta-tags' -%}
+  {%- include 'shopify-head' -%}
+   {{ content_for_header }}
+
+
+  {% assign cad_domain = "https://sweetlegs.ca" %}
+  {% assign usd_domain = "https://sweetlegs.com" %}
+  {% assign current_url = canonical_url | remove: shop.secure_url %} 
+  {% assign current_url_cad = cad_domain | append: current_url %}
+  {% assign current_url_us = usd_domain | append: current_url %}
+  <link rel="alternate" hreflang="en-ca" href="{{current_url_cad}}" />
+  <link rel="alternate" hreflang="en-us" href="{{current_url_us}}" />
+	{{ 'main-theme.css' | asset_url | stylesheet_tag }} 
+	
+
+ 
+
+{% comment %} start instabadge section {% endcomment %}
+
+{% comment %} end instabadge section {% endcomment %}
+</head>
+
+{%- assign form_style = settings.form_style | default: 'default' -%}
+<body class="template-{{ template | split: '.' | first }}" data-form-style="{{ form_style }}">
+  {% paginate collections['quick-order'].products by 1000 %}
+	<script type="text/javascript">
+   		window.totalProducts = "{{collections['quick-order'].products.length}}";   
+  	</script>  
+  {% endpaginate %}
+  {% include 'redirect-bar' %}
+  {% include 'alertMessageLineItem' %}
+  {%- if settings.page_loader == '1' -%}
+  <div id="eva-loader-wrapper">
+    <div class="eva-loader-section">
+      <div class="eva-loader-{{ settings.page_loader_spinner }}"></div>
+    </div>
+  </div>
+  {%- endif -%}
+  
+  {%- section 'header' -%}
+  {%- section 'mega-menu' -%}
+  
+  <div class="offcanvas_container">
+  <input class='customer-tag' value="{{customer.tags}}" type="hidden" />
+    <div class="offcanvas_main_content">
+      <div class="page-wrapper">
+        <main id="main">
+          {{ content_for_layout }}
+        </main>
+        
+        {%- section 'footer' -%}
+      </div>
+    </div>
+    {%- include 'offcanvas' -%}
+  </div>
+  <div class="cd-quick-view"></div>
+  {%- include 'photoswipe' -%}
+  {%- include 'newsletter-popup' -%}
+  {%- include 'notify-products' -%}
+  {%- include 'cookie-banner' -%}
+  {%- include 'facebook-chat' -%}
+
+  <script>
+    //jQuery('a[href^="http"]').not('a[href^="{{ shop.url }}"]').attr('target', '_blank');
+  </script>
+
+    <script async type="text/javascript" id="stamped-script-widget" data-api-key="pubkey-l47V85Gah31UV70ZD6V08K451U1iC2" src="https://cdn-stamped-io.azureedge.net/files/widget.min.js"></script>
+
+ <input type="hidden" name="aaaformbuilder_customer_logged_id" value="{{customer.id}}" id="aaaformbuilder_customer_logged_id"/>
+ 
+ {% include 'smile-initializer' %}
+
+  {% if customer %}
+  {% else %}
+  <style>
+  a.stamped-summary-actions-newreview {
+    display: none !IMPORTANT;
+  }
+  </style>
+  {% endif %}
+
+<script src='https://revsliderapp.com/public/assets/js/themepunch-bind.js' defer="defer"></script>
+  
+
+  
+  
+  <script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script>
+<script>  //klaviyo script for notify me
+    var klaviyo = klaviyo || [];
+    klaviyo.init({
+      account: "MxF3MP",
+       list: 'JF7HEN',
+      platform: "shopify"
+    });
+    klaviyo.enable("backinstock",{ 
+    trigger: {
+      product_page_text: "Notify Me When Available",
+      product_page_class: "notifybtn",
+      product_page_text_align: "center",
+      product_page_margin: "0px",
+      include_on_tags: 'sweettops, notifyme',
+      replace_anchor: false
+    },
+    modal: {
+     headline: "{product_name}",
+     body_content: "Don't miss out when these re-stock! Enter your email below to be notified when this item comes back.",
+     email_field_label: "Enter your Email",
+     button_label: "Notify me when available",
+     subscription_success_label: "You're in! We'll let you know when it's back.",
+     newsletter_subscribe_label: "Keep me in the loop with new products!",
+     footer_content: '',
+     additional_styles: "@import url('https://fonts.googleapis.com/css?family=Helvetica+Neue');",
+     drop_background_color: "#000",
+     background_color: "#fff",
+     text_color: "#222",
+     button_text_color: "#fff",
+     button_background_color: "#00c4b3",
+     close_button_color: "#ccc",
+     error_background_color: "#fcd6d7",
+     error_text_color: "#C72E2F",
+     success_background_color: "#d3efcd",
+     success_text_color: "#1B9500"
+    }
+  });
+</script> 
+  
+  
+  
+</body>
+{{ 'search.js' | asset_url | script_tag }} 
+{{ 'main-theme.js' | asset_url | script_tag }} 
+</html>
+
+
