@@ -38,7 +38,7 @@
     {%- if _main_style == blank -%}
     {%- assign _main_style ="color:transparent" -%}
     {%- endif -%}
-    <li class="{% if _p_name contains 'Fan Favourites' %} fan-favourites {% endif %} menu-item{% if block.type == "menu_mega_item" %} is-mega-menu{% endif %}">
+    <li class="{{_p_name}} {% if _p_name contains "Mother's Day Guide" %} teal {% endif %} menu-item{% if block.type == "menu_mega_item" %} is-mega-menu{% endif %}">
       <a href="{{block.settings.menu_link}}">
         <span><small>{{- _p_name -}}</small></span>
         {%- if _p_label != blank -%}
@@ -51,9 +51,9 @@
       {%- if block.type == "menu_mega_item" -%}
       <div class="sub-menu" style="{% if block.settings.submenu_bg_image != blank %}background-image:url({{ block.settings.submenu_bg_image | img_url:"master" }}); background-position: center left!important; background-size: 220px;{% endif %}{% if block.settings.submenu_bg_color != blank %}background-color:{{ block.settings.submenu_bg_color }};{% endif %}width:{{ block.settings.submenu_width }};">
         <div class="mega-menu-content">
-          <div class="row">
-            <div class="columns large-{{block.settings.colum_width}}">          
-            </div>
+          <div class="row" style="padding-left: 40px;">
+<!--             <div class="columns large-{{block.settings.colum_width}}">          
+            </div> -->
             {%- for link in linklists[block.settings.linklist].links -%}
 
             {%- assign _label = '' -%}
@@ -132,7 +132,7 @@
                   <div class="athleisure-navbar">
                     <span><small>{{- _name -}}</small></span>
                     {%- if _name == 'Athleisure' -%}
-                    	<div class="new-icon-container"><span class="new-icon">New</span></div>
+                      <div class="new-icon-container"><span class="new-icon">New</span></div>
                     {% endif %}
                   </div>
                   {%- if _label != blank -%}
@@ -195,10 +195,11 @@
                  
                           {% endif %}   
                         {%- if _sub_name == 'Super V-Neck Tee'  or  _sub_name == 'Athleisure Collection' -%}
-<!--                           	<div class="new-icon-container crops"><span class="new-icon hot">Hot</span></div>    -->
+<!--                            <div class="new-icon-container crops"><span class="new-icon hot">Hot</span></div>    -->
                           {% endif %} 
                     {% endcapture %}
-                    <li class="menu-item{% if _subactive %} current-menu-item{% endif %}">
+                      {% assign downcase_sub_name =  _sub_name | downcase  %}
+                    <li class="{% if block.settings.mega_menu_heading contains downcase_sub_name %} heading-sub-menu-dropdown {% endif %} {{ _sub_name  | replace: " ", "-"}} menu-item{% if _subactive %} current-menu-item{% endif %}">
                       <a href="{{ sublink.url }}">
                           <span class="{{ className }}">
                            {%- if _sub_name == 'Ultra Soft Open Cardigan' or  _sub_name == 'Everyday Raglan Pullover' -%} 
@@ -352,6 +353,11 @@
             "type": "color",
             "id": "submenu_bg_color",
             "label": "Sub-menu background"
+          },
+          {
+            "type": "text",
+            "id": "mega_menu_heading",
+            "label": "Mega Menu Heading"
           },
           {
             "type": "image_picker",

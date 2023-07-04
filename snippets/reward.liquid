@@ -12,7 +12,7 @@
         <ul class="user-points" style="align-items: center; display: flex">
           <li class="user-points-list earn">
             <div class="points">
-               <a href="#" onclick="StampedFn.loadLauncherView('view-earnings');StampedFn.toggleRewardsModal();" class="btn-default">EARN POINTS</a>
+              <a href="#" data-st-intent="st:points:rules" class="btn-default">EARN POINTS</a>
             </div>
           </li>
           <hr align="left" width="50%;" style="border-bottom: 1px solid #00c4b3">
@@ -20,17 +20,20 @@
             <div class="user-points-image">
               <h5 class="green"
                 style="line-height: 1; margin: 3px; white-space: nowrap;font-size: calc(20px + (30 - 20) * ((100vw - 300px) / (2000 - 300))); font-weight: 700 ">
-                {{customer.first_name | upcase}}, YOU HAVE  </h5>
+                {{customer.first_name | upcase}}, YOU HAVE </h5>
               <h3
-                style="line-height: 1; margin: 3px; font-size: calc(30px + (96 - 30) * ((100vw - 300px) / (2000 - 300)));">
-                <span style="color: black"><div id="stamped-rewards-points-placeholder"></div></span></h3>
+                style="line-height: 1; margin: 3px; font-size: calc(50px + (96 - 50) * ((100vw - 300px) / (2000 - 300)));">
+                <span class="sweettooth-points-balance" style="color: black"></span></h3>
+              <h5 class="pink"
+                style="line-height: 1; margin: 3px;     font-size: calc(30px + (40 - 30) * ((100vw - 300px) / (2000 - 300))); font-weight: bold">
+                POINTS</h5>
             </div>
           </li>
           <hr align="left" width="50%;" style="border-bottom: 1px solid #00c4b3">
           <li class="user-points-list redeeme">
             <div class="points">
               <div></div>
-              <a href="#" onclick="StampedFn.loadLauncherView('view-spendings');StampedFn.toggleRewardsModal();" class="btn-default">REDEEM POINTS</a>
+              <a href="#" class="btn-default smile-history-link" data-st-intent="st:points:rewards">REDEEM POINTS</a>
             </div>
           </li>
         </ul>
@@ -226,7 +229,8 @@
         <div style="padding: 40px" class="slTier">
 
         </div>
-        <img class="vip-tier-image" src={{ 'REWARD-FIREWORK.png' | asset_img_url: '5000x' }} alt="Banner-Image"/>
+        <img class="vip-tier-image" src={{ 'REWARD-FIREWORK.png' | asset_img_url: '5000x' }} alt="Banner-Image"
+          style="">
       </div>
 
       <div class="campaign-section logged-in-user" style="float: left">

@@ -222,6 +222,51 @@
                         
                         
                         <form action="/cart/add" method="post" enctype="multipart/form-data" class="variations_form cart">
+                                                   {% if product.title contains 'Belt' %}
+            
+                      {% assign title = product.title | downcase %}
+                        {% assign myArray = "geometric, natural, rainbow, black" | split: ", " %}
+         
+                        
+                        {% if title contains "natural" %}
+                          {% assign color = 'natural' %}
+                               {% assign urlProduct ='/products/woven-stretch-belt-natural' %}
+                        {% endif %}
+                        {% if title contains "black" %}
+                           {% assign color = 'black' %}
+                               {% assign urlProduct ='/products/woven-stretch-belt-black' %}
+                   
+                        {% endif %}
+                        {% if title contains "geometric" %}
+                           {% assign color = 'geometric' %}
+                             {% assign urlProduct ='/products/woven-stretch-belt-geometric' %}
+                        {% endif %}
+                        {% if title contains "rainbow" %}
+                           {% assign color = 'rainbow' %}
+                             {% assign urlProduct ='/products/woven-stretch-belt-rainbow' %}
+                        {% endif %}
+
+
+                       <div class="selector-wrapper js">
+                          <label for="single-option-selector-0">Color</label>
+                          <div class="tawcvs-swatches-product-sweettops tawcvs-swatches" data-attribute_name="attribute_pa_color">
+                              <span  class="selected swatch  swatch-color swatch-{{ color }}" data-title="{{ color }}" >
+                                                     {% assign colorName = color | append: ".png"  %}
+                                  <span style="background-color:black;background-image:url({{ colorName | asset_url }});">{{ color }}</span>
+                              </span>
+                          {% for item in myArray %} 
+                            {% unless title contains item %}
+                              <a href="/products/woven-stretch-belt-{{ item }}">
+                               <span  class=" swatch  swatch-color swatch-{{ item }}" data-title="{{ item }}" >
+                              {% assign colorName = item | append: ".png"  %}
+                                  <span style="background-color:black;background-image:url({{ colorName | asset_url }});">{{ item }}</span>
+                              </span>
+                              </a>
+                              {% endunless %}
+                            {% endfor %}
+                          </div>
+                      </div>                    
+                        {% endif %}
                           {%- unless product.options.size == 1 and product.variants[0].title == 'Default Title' -%}
                           <div class="selector-container ">
                             {%- for option in product.options_with_values -%}

@@ -1,8 +1,54 @@
+.swatch-item {
+    background-size: contain;
+}
+.SALE.menu-item a{
+  color: #00c4b3!important;
+}
+.SALE.menu-item small{
+  color: #00c4b3!important;
+  font-weight: 500!important;
+}
+.heading-sub-menu-dropdown{
+  font-size: 15px;
+  font-weight: bold;
+  margin: 10px 0px!important;
+}
+header.site-header .nav2 .mega-menu-submenu .sub-menu span small {
+/*   text-transform: capitalize!important; */
+}
 
-
-#smile-ui-container {
+.athleisure-navbar .new-icon-container 
+{
   display: none;
 }
+.heading-sub-menu-dropdown small{
+border-bottom: 1px solid #8080805e;
+    padding-bottom: 7px!important;
+    font-weight: 400!important;
+  text-transform: uppercase!important;
+  
+}
+
+.offcanvas_aside_content .athleisure-navbar {
+  display: block;
+}
+
+.offcanvas_aside_content .heading-sub-menu-dropdown{
+  font-size: 15px;
+  font-weight: 400!important;
+  margin-left: -15px!important;
+  margin-top: 20px!important;
+}
+.offcanvas_aside_content .heading-sub-menu-dropdown small{
+    font-weight: 300!important;
+   text-transform: capitalize!important;
+}
+
+.page-header.shop {
+  margin-bottom: 0px!important;
+  height: 210px;
+}
+
 .image-with-text-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -31,11 +77,11 @@
 .image-with-text-section .heading {
   margin: 30px 0px;
 }
- .image-with-text-section .text-wrapper p {
-      font-weight: 400;
-    font-size: 18px;
+.image-with-text-section .text-wrapper p {
+   font-weight: 400;
+   font-size: 18px;
    margin-bottom: 0px;
-  }
+}
 .image-with-text-section .btn {
       height: 3.4375rem;
     padding: 0 80px;
@@ -61,7 +107,7 @@
 
 }
 
-.fan-favourites.menu-item a{
+.teal.menu-item a{
   color: #00c4b3!important;
 }
 .template-page.giveaway-giftcard #shopify-block-14017166734719355524,.template-page.giveaway-giftcard .smile-launcher-frame {
@@ -266,6 +312,16 @@ header.site-header .nav2 .sub-menu .menu-item .dropdown-toggle small {
   
 }
 @media only screen and (max-width: 600px) {
+  .page-header.shop {
+  height: 180px;
+}
+
+@media (min-width: 1025px){ 
+.mega-menu-content .row .columns{
+    width: 100%;
+  }
+}
+
   .cbb-frequently-bought-container  {
     border: 0px;
     padding: 0px;
@@ -474,7 +530,7 @@ header.site-header .nav2 .sub-menu .menu-item .dropdown-toggle small {
 }
 
 #masthead>div>div.nav2>ul>li:nth-child(5)>a>span>small {
-  color: #E7184E;
+  color: inherit;
   font-weight: bold;
 }
 

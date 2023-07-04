@@ -177,15 +177,21 @@
                         {%- if 'default,images_scroll' contains product_design -%}
                         {%- include 'product-navigation' -%}
                         {%- endif -%}
+                             
                         <div class="product_summary_top">
                           <div class="product-rating">
 
                             <a href="#tab-reviews" onclick = "jQuery('.reviews_tab a').trigger('click'); var scrollContainer = jQuery('html, body'); var curElem = jQuery('.reviews_tab'); scrollContainer.animate({scrollTop : curElem.offset().top - 1}, 500);event.stopPropagation();">
-							<span class="stamped-product-reviews-badge stamped-main-badge" data-id="{{ product.id }}" data-product-sku="{{product.handle}}" style="display: inline-block;"></span> 
+							<span class="stamped-product-reviews-badge stamped-main-badge"
+data-id="{{product.id}}" data-product-sku="{{product.selected_or_first_available_variant.sku}}"
+data-product-title="{{product.title}}" style="display: block;"></span>
                             </a>
        
                           </div>
+                          
                           <h1 itemprop="name" class="product_title entry-title">{{ product.title }}</h1>
+                           
+            
                         </div>
                         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 
@@ -207,6 +213,7 @@
                           <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
                           <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}" />
                         </div>
+                            <p><div data-publish-id='9vwwvtaik4rc8' data-product-id="{{ product.id }}" class='tolstoy-stories'></div></p>
                         <div itemprop="description">
                           <p>
                              {%- include 'shortcode' load: product.description -%}
@@ -421,8 +428,8 @@
 
               {%- assign my_limit = section.settings.product_related_products_limit | plus:1 -%}
               {%- assign my_product_found = false -%}
-				{%- assign collection = collections['plus'] -%}
-              {%- for my_product in collection.products limit: 3 -%}
+	
+              {%- for my_product in collection.products limit: 8 -%}
               {%- if product.handle == my_product.handle -%}
               {%- assign my_product_found = true -%}
               {%- else -%}
@@ -431,13 +438,7 @@
               {%- endunless -%}
               {%- endif -%}
               {%- endfor -%}
-               {%- assign collection = collections['quick-order'] -%}
-              {%- for my_product in collection.products -%}
-              {%- assign product_title = product.title |  remove: 'Kids' | remove: 'Scrunchie'-%}
-               {% if my_product.title contains product_title %}
-                       {%- include 'product-item' -%}
-                {% endif %}
-              {%- endfor -%}
+      
             </div>
           </div>
         </div>

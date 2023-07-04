@@ -7,7 +7,7 @@
             <a href="#tab-reviews" id="review-title">{{ 'products.product.reviews' | t | escape }}</a>
         </li>      
     </ul>
-
+{%- unless product.type == 'SweetLegs Skirts' -%}
 <div class="panel" id="tab-add-info" >
     <div class="container">
         <div class="tag">
@@ -32,15 +32,19 @@
 		{% else %}
                     <span class="info">
             <span class="info-header">SIGNATURE FABRIC:</span>
-            We have developed our own signature fabric made from a luxuriously soft blend of rayon, polyester, and spandex. This combination results in a garment that drapes beautifully and breathes naturally.
+                      {% if product.title contains 'V-Neck' %}
+                        This signature fabric is made from a viscose and polyester blend. With added spandex, this blend is durable and will retain its shape beautifully.
+                      {% else %}
+                        We have developed our own signature fabric made from a luxuriously soft blend of rayon, polyester, and spandex. This combination results in a garment that drapes beautifully and breathes naturally.
+                      {% endif %}
+            
           </span>
 		{% endif %}
       </div>
             <img src="https://cdn.shopify.com/s/files/1/0949/8004/files/tops-fabric_1.jpg?15982">
     </div>
 
-
-
+{%- endunless -%}
 {%- if product.type == 'SweetTops' -%}
 	{% if product.title == "Classic Layering Tank" %}
 		{%include 'info-table-tanks' %}
@@ -49,7 +53,7 @@
   	{% else %}
 		{%include 'info-table-sweettops' %}
 	{% endif %}
-
+{%- elsif product.type == 'SweetLegs Skirts' -%}
 {%- else -%}
 {%include 'info-table-leggings' %}
 {%- endif -%}
@@ -255,6 +259,10 @@ and (-webkit-device-pixel-ratio : 3) {
 and (min-device-width : 375px) 
 and (max-device-width : 812px)
 and (-webkit-device-pixel-ratio : 3) { 
+    img{
+        max-width: 185%;
+
+    }
     .container{
         margin-left: -12% !important; 
         margin-bottom: 121% !important; 
@@ -293,18 +301,22 @@ and (-webkit-device-pixel-ratio : 3) {
 @media only screen 
 and (min-device-width : 375px) 
 and (max-device-width : 667px) { 
+
+img{
+        max-width: 185%;
+
+    }
     .container{
-        margin-left: -12% !important; 
+        margin-left: 18% !important; 
         margin-bottom: 121% !important; 
 
 
     }
     .tag{
     padding: 10% !important;
-    width: 90% !important;
-    margin-left: 10%;
+    width: 100% !important;
+    margin: 5px -85px;
     padding-right: 9% !important;
-    
     }
     .info{
     font-size:15px !important; 
@@ -322,7 +334,7 @@ and (max-device-width : 667px) {
 
     #tab-add-info > div:nth-child(2) > img {
     position: relative;
-    right: 59%;
+    right: 48%;
     }
 
     
@@ -332,12 +344,12 @@ and (max-device-width : 667px) {
 @media only screen 
 and (min-device-width : 768px) 
 and (max-device-width : 1024px)  { 
-/*     img{
+    img{
         max-width: 185%;
 
-    } */
+    }
     .container{
-        margin-left: -12% !important; 
+        margin-left: 23% !important; 
         margin-bottom:27% !important; 
 
 
@@ -345,7 +357,7 @@ and (max-device-width : 1024px)  {
     .tag{
     padding: 10% !important;
     width: 90% !important;
-    margin-left: 10%;
+    margin-left: -23%;
     padding-right: 9% !important;
     
     }

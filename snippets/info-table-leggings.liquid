@@ -1,4 +1,8 @@
-{% if product.type != 'SweetLegs Athleisure' %}  
+{% if product.type contains 'High-Waisted' %}
+{% include 'info-high-waist-leggings' %}
+
+{% elsif product.type != 'SweetLegs Athleisure'%}  
+ 
 
 			<table>
 

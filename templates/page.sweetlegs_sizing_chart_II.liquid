@@ -127,12 +127,12 @@
               <input style="border: 2px solid #47c1bf;" id="sizing_dropdown" class="text-box" value="Please select a product type" type="text" placeholder="Select on" readonly>
               <div class="options">
                 <div onclick="show('SweetLegs leggings, crops, and shorts')">SweetLegs leggings, crops, and shorts</div>
-                <div onclick="show('SweetLegs leggings, crops, and shorts')">SweetLegs Wide Waistband</div>
+                <div onclick="show('SweetLegs leggings, crops, and shorts', 'SweetLegs Wide Waistband/High-Waisted')">SweetLegs Wide Waistband/High-Waisted</div>
                 <div onclick="show('Athleisure leggings, crops, and shorts')">Athleisure leggings, crops, and shorts</div>
                 <div onclick="show('Athleisure leggings, crops, and shorts', 'Anytime Jeggings')">Anytime Jeggings</div>
                 <div onclick="show('Maternity leggings, crops, and shorts')">Maternity leggings, crops, and shorts</div>
                 <div onclick="show('SweetTops')">SweetTops</div>
-                <div onclick="show('The Weekender Dress')">The Weekender Dress</div>
+                <div onclick="show('The Weekender Dress', 'Dresses & Skirts')">Dresses & Skirts</div>
               </div>
             </div>
             <div class="size_chart_holder">
@@ -176,6 +176,7 @@
   
   function show(value, value2) {
     document.querySelector(".text-box").value = value2 ? value2 : value;  
+    $(".text-box").attr('productType', value)
     $('.dropdown input').css("border", "");
     $('.dropdown input').css("border", "2px solid #47c1bf");
     $('.sizing_error').css("transform", "translateY(30px)");
@@ -222,7 +223,7 @@
         $('.recommended_result > *').css("height", "100%");
       });
       
-      var product_type = document.querySelector(".text-box").value;
+      var product_type =$(".text-box").attr('producttype');
       function range(start, end, step = 1) {
         const len = Math.floor((end - start) / step) + 1
         return Array(len).fill().map((_, idx) => start + (idx * step))
@@ -271,7 +272,7 @@
         bust: selected_inches_values[0],
         waist: selected_inches_values[1],
         hip: selected_inches_values[2],
-        product_type: document.getElementById("sizing_dropdown").value,
+        product_type: $("#sizing_dropdown").attr('producttype'),
         measurement: "inch"
       };
         localStorage.setItem('mySize_cookie', JSON.stringify(mySize_cookie));
@@ -280,7 +281,7 @@
           bust: selected_cm_values[0],
           waist: selected_cm_values[1],
           hip: selected_cm_values[2],
-          product_type: document.getElementById("sizing_dropdown").value,
+          product_type: $("#sizing_dropdown").attr('producttype'),
           measurement: "cm"
         };
         localStorage.setItem('mySize_cookie', JSON.stringify(mySize_cookie));
@@ -305,7 +306,7 @@
       {% endif %}
       //  
     
-      var product_type = document.querySelector(".text-box").value;
+      var product_type = $(".text-box").attr('producttype');
       function range(start, end, step = 1) {
         const len = Math.floor((end - start) / step) + 1
         return Array(len).fill().map((_, idx) => start + (idx * step))
@@ -1985,7 +1986,7 @@
         } 
       });
         
-        
+  
     // final results for SweetTops     
         if(xs > 1){
           $('#recommendedsize').text("XS");
