@@ -1,0 +1,234 @@
+<!-- /snippets/product-grid-item.liquid -->
+
+{% comment %}
+  Inner content for a grid itm
+{% endcomment %}
+
+{%- liquid
+  assign slideshow_lazyload_count = 2
+
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  assign sold_out = true
+  if product.available
+    assign sold_out = false
+  endif
+
+  assign sellout_badge = false
+  if sold_out and settings.badge_sellout
+    assign sellout_badge = true
+  endif
+
+  assign sale_badge = false
+  if on_sale and settings.badge_sale
+    assign sale_badge = true
+    assign sale_badge_content = 'products.product.sale' | t
+    if settings.badge_sale_discount
+      if settings.badge_sale_type == 'dollar'
+        if settings.currency_code_enable
+          assign sale_badge_content = product.compare_at_price | minus: product.price | money_with_currency
+        else
+          assign sale_badge_content = product.compare_at_price | minus: product.price | money_without_trailing_zeros
+        endif
+      else
+        assign difference = product.compare_at_price | minus: product.price
+        assign percent_off = difference | times: 1.0 | divided_by: product.compare_at_price | times: 100
+        assign sale_badge_content = percent_off | floor | append: '%'
+      endif
+      assign save_word = 'products.product.save' | t | append: ' '
+      assign sale_badge_content = sale_badge_content | prepend: save_word
+    endif
+  endif
+
+  assign custom_badge = false
+  if settings.badge_custom
+    if product.metafields.theme.badge != blank and product.metafields.theme.badge.type == 'single_line_text_field'
+      assign custom_badge = true
+      assign custom_badge_content = product.metafields.theme.badge.value
+    endif
+    for tag in product.tags
+      if tag contains "_badge_"
+        assign tag_content = tag | remove: '_badge_' | replace: '_', ' '
+         if tag_content != ''
+          assign custom_badge = true
+          assign custom_badge_content = tag_content
+         endif
+        break
+      endif
+    endfor
+  endif
+
+  if badge_string and badge_string != ''
+    assign custom_badge = true
+    assign custom_badge_content = badge_string
+  endif
+
+  assign tagged = false
+  if sellout_badge or sale_badge or custom_badge
+    assign tagged = true
+  endif
+
+  assign images_limit = 1
+  if settings.cycle_hover_enable
+    assign images_limit = 5
+  endif
+
+  comment
+    Disqualify options that have more than 15 variants or are a combined length of > 90 characters
+  endcomment
+  if inline_variant_buttons.values.size > 15
+    assign inline_variant_buttons = nil
+  endif
+
+  if inline_variant_buttons
+    assign all_characters = inline_variant_buttons.values | join: ""
+    if all_characters.size >= 90
+      assign inline_variant_buttons = nil
+    endif
+  endif
+
+  comment
+    Display inline buttons in a compact format if the buttons
+    have a lot of characters or options
+  endcomment
+  assign compact_buttons_class = ""
+  if inline_variant_buttons
+    assign all_characters = inline_variant_buttons.values | join: ""
+    if all_characters.size > 30 and inline_variant_buttons.values.size > 5
+      assign compact_buttons_class = "inline-add-product__options-menu-list--compact"
+    elsif inline_variant_buttons.values.size > 10
+      assign compact_buttons_class = "inline-add-product__options-menu-list--compact"
+    endif
+  endif
+
+-%}
+{%- capture badge -%}
+  {%- if tagged %}
+    {%- if custom_badge -%}
+      <div class="product__badge product__badge--custom product__badge--{{ custom_badge_content | strip_html | handle }}">{{ custom_badge_content }}</div>
+    {%- elsif sellout_badge -%}
+      <div class="product__badge product__badge--sold">{{ 'products.product.sold_out' | t }}</div>
+    {%- elsif sale_badge -%}
+      <div class="product__badge product__badge--sale">{{ sale_badge_content }}</div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign product_img_ratio = product.featured_media.preview_image.aspect_ratio | default: 1
+  assign image_ratio = 1 | divided_by: product_img_ratio | times: 100
+  if settings.product_grid_image == 'crop'
+    assign image_ratio = settings.product_grid_aspect_ratio | times: 100
+  elsif settings.product_grid_image == 'scale'
+    assign multiplier = settings.product_grid_aspect_ratio
+    assign inverse_ratio = 1 | divided_by: product_img_ratio
+    assign top_offset =  1 | divided_by: product_img_ratio | times: 100 | divided_by: 2
+    assign top_offset_subtractor =  multiplier | times: 100 | divided_by: 2
+  endif
+-%}
+
+{%- if settings.product_grid_image == 'scale' -%}
+  {%- capture auto_height -%}
+    {%- if inverse_ratio > multiplier -%}
+      style="width:{{ product_img_ratio | times: multiplier | times: 100 }}%; margin: 0 auto;"
+    {%- else -%}
+      style="padding:{{ top_offset_subtractor | minus: top_offset }}% 0;"
+    {%- endif -%}
+  {%- endcapture -%}
+{%- endif -%}
+
+<product-grid-item-content
+  class="product-grid-item__content{% if on_sale %} on-sale{% endif %}{% if sold_out %} sold-out{% endif %}{% if tagged %} tagged{% endif %}{% if product.media.size > 1 and settings.cycle_hover_enable %} is-slideshow{% endif %}"
+  data-grid-item="{{ product.id }}"
+  data-stop-slideshow-mobile="true"
+  data-grid-item-variant="{{ variant.id }}"
+  {% if visible != true %} hidden {% endif %}
+>
+  <div class="product-grid-item__container" data-error-boundary {{ auto_height }}>
+    <div data-error-display class="product-grid-item__error-display">&nbsp;</div>
+    <a href="{{ product.url | within: collection }}" data-grid-link class="lazy-image" aria-label="{{ product.title | strip_html | escape }}" style="padding-top:{{ image_ratio }}%;">
+      <div class="product-grid-item__images" data-grid-images="{{ images_limit }}" data-grid-slide>
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media limit: images_limit -%}
+            <div
+              class="product-grid-item__image fade-in{% if forloop.index0 < slideshow_lazyload_count %} lazyload{% endif %}{% if forloop.first %} is-active lazypreload{% endif %}"
+              data-grid-image="{{ forloop.index0 }}"
+              data-grid-image-target="{{ media.id }}"
+              data-grid-image-target-default="{{ media.id }}"
+              data-bgset="{% render 'bgset', image: media.preview_image %}"
+              role="img"
+              aria-label="{{ media.alt | default: product.title | strip_html | escape }}"
+              {% if variant.featured_media.id == media.id or variant.featured_image.id == media.id %}data-grid-image-current-variant{% endif %}
+            >
+              &nbsp;
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      {{ badge }}
+    </a>
+
+    {%- if instant_add_button %}
+      {%- assign button_text = 'products.general.instant_add' | t -%}
+      <div class="product-grid-item__actions">
+        {% render 'button-instant-add', variant: variant, text: button_text, class: 'product-grid-item__btn' %}
+      </div>
+    {%- elsif inline_variant_buttons %}
+      <inline-add-product class="product-grid-item__actions">
+        <div aria-hidden class="inline-add-product__button-facade-wrapper product-grid-item__btn">
+          <div class="inline-add-product__button-facade-label">
+            {{ 'products.general.inline_add' | t }}
+          </div>
+        </div>
+        <div class="inline-add-product__options-menu">
+          <ul class="inline-add-product__options-menu-list {{ compact_buttons_class }}">
+            {% assign variant_position_index0 = inline_variant_buttons.position | minus: 1 %}
+            {%- for quick_variant in inline_variants -%}
+              {%- assign option_name = quick_variant.options[variant_position_index0] -%}
+              <li class="inline-add-product__options-menu-list-item">
+                {% render 'button-instant-add', variant: quick_variant, text: option_name, class: 'inline__variant__add product-grid-item__btn inline-add-product__options-menu-list-item-button' %}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </inline-add-product>
+    {%- elsif settings.quickview_enable -%}
+      <product-quickview class="product-grid-item__actions" data-quickview="{{ product.id }}">
+        <div data-quickview-holder="{{ product.id }}" data-add-action-wrapper>
+          <button type="button" class="product-grid-item__btn" data-popup-{{ product.id }}="{{ product.handle }}">
+            <span class="btn-state-ready">
+              {{ 'products.general.quick_view' | t }}
+            </span>
+            <span class="btn-state-loading">
+              <svg height="18" width="18" class="svg-loader">
+                <circle r="7" cx="9" cy="9" />
+                <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
+              </svg>
+            </span>
+          </button>
+
+          <script data-quickview-modal-template type="text/x-template">
+            <div class="drawer drawer--right quickview__modal" data-quickview-modal data-form-holder id="{{ product.id }}" aria-hidden="true">
+              <div class="drawer__content" data-product-quickview-ajax></div>
+
+              <span class="drawer__underlay" data-micromodal-close tabindex="-1">
+                <span class="drawer__underlay__fill"></span>
+                <span class="drawer__underlay__blur"></span>
+              </span>
+            </div>
+          </script>
+        </div>
+      </product-quickview>
+    {%- endif -%}
+  </div>
+  <noscript>
+    <a href="{{ product.url | within: collection }}">
+      <img class="responsive-wide-image" src="{{ product.featured_media.preview_image | img_url: '360x' }}" alt="{{ product.featured_media.alt | default: product.title | strip_html | escape }}">
+      {{ badge }}
+    </a>
+  </noscript>
+</product-grid-item-content>
