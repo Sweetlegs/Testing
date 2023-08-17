@@ -10,8 +10,7 @@ function getData(response, href) {
         var size = "kids";
      }else if(product.product_type === "SweetLegs One Size"){                      
         var size = "one-size";
-     }
-    else if(product.product_type === "SweetLegs Plus2"){                      
+     }else if(product.product_type === "SweetLegs Plus2"){                      
         var size = "plus2-size";
      }
      var title = product.title.toLowerCase().replace(/\"/g,' ');
@@ -22,21 +21,21 @@ function getData(response, href) {
 //                 <a href="https://${href}/collections/${size}/products/${product.handle}"> <img src="${imgSrc}"  style="max-width: none"/></a>                            
 //              `);
      if(product.product_type != "Marketing Materials" || $('.customerTag').val().toLowerCase().includes('distributor')) {
-       if($('.customerTag').val().toLowerCase().includes('distributor')) {
+        if($('.customerTag').val().toLowerCase().includes('distributor')) {
          priceNew = '';
        } else {
          priceNew = `$${product.variants[0].price}`;
        }  
        if(product.product_type != "ID Only Prints") {
          $('table #searchList, #searchListTag ').append(`
-            <tr  class='clickable-row hideMe' data-href="https://${href}/collections/${size}/products/${product.handle}" data-tag="${tags}" data-name="${title}" data-discription="${discription}" data-tag="${tags}" >
-				<td style="border: none;" class="searchListImg">                      
-                  <img src="${imgSrc}"  style="max-width: none"/>                
-               </td>
-               <td style="width: 150px; border: none;">                    
-                  <strong>${product.title} </strong></br>
-                   <span class="price-new"> ${priceNew} </span>                  
-               </td>
+            <tr  class='clickable-row hideMe' data-href="https://${href}/collections/${size}/products/${product.handle}" data-name="${title}" data-tag="${tags}" >
+              <td style="border: none;" class="searchListImg">                    
+              	<img src="${imgSrc}"  style="max-width: none"/>                
+              </td>
+              <td style="width: 150px; border: none;">                   
+              	<strong>${product.title} </strong></br>
+              	<span class="price-new"> ${priceNew} </span>                  
+              </td>
           </tr> 
        `)
        }

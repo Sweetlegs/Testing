@@ -42,7 +42,11 @@
           <div class="offcanvas_close"></div>
           <h2 class="sizechart-title">SIZE GUIDE</h2>
           <div class="sizechart-content">
- 				{%- include 'sweetlegs_sizing_canvas' -%}
+ 				           {% if product.title contains 'Bra' %}     
+ 				{%- include 'sweetlegs_sizing_canvas_bra' -%}
+            {% else %}
+              {%- include 'sweetlegs_sizing_canvas' -%}
+              {% endif %}
             
           </div> 
           
@@ -64,7 +68,11 @@
           <div class="offcanvas_close"></div>
           <h2 class="sizechart-title">SIZE GUIDE</h2>
           <div class="sizechart-content">
- 				{%- include 'sweetlegs_sizing_canvas' -%}
+ 			           {% if product.title contains 'Bra' %}     
+ 				{%- include 'sweetlegs_sizing_canvas_bra' -%}
+            {% else %}
+              {%- include 'sweetlegs_sizing_canvas' -%}
+              {% endif %}
             
           </div> 
           

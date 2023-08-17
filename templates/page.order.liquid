@@ -142,9 +142,12 @@ Source: https://gist.github.com/carolineschnapp/9122054
               </thead>  
               <tbody id="featuredList">
                   {% for product in collectionFeatured.products %}
-                    {% if product.available%}
+                    {% assign productTags = product.tags | join: ', ' %}
+                    {% unless productTags contains 'coming_soon' %}
+                    {% if product.available and product.tags%}
                         {% include 'quickorder' %}
                     {% endif %}
+                      {% endunless %}
                   {% endfor %}
                    {% for product in collectionVault.products %}
                     {% if product.available%}
@@ -169,8 +172,11 @@ Source: https://gist.github.com/carolineschnapp/9122054
                 {% for product in collection.products %}
                   {% if product.available %}
                       {% if product.tags contains 'vault' or product.tags contains 'featured' %}
-                      {% else %}                  
+                      {% else %} 
+                         {% assign productTags = product.tags | join: ', ' %}
+                    {% unless productTags contains 'coming_soon' %}
                       {% include 'quickorder' %}
+                      {% endunless %}
                       {% endif %}
                   {% endif %}
                 {% endfor %}

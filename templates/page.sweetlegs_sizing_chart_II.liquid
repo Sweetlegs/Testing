@@ -133,11 +133,17 @@
                 <div onclick="show('Maternity leggings, crops, and shorts')">Maternity leggings, crops, and shorts</div>
                 <div onclick="show('SweetTops')">SweetTops</div>
                 <div onclick="show('The Weekender Dress', 'Dresses & Skirts')">Dresses & Skirts</div>
+                <div onclick="showComfortBra()">Comfort Sports Bra</div>
               </div>
             </div>
+
             <div class="size_chart_holder">
               {% include 'sweetlegs_sizing' %}
-            </div>   
+            </div>  
+            
+            <div class="size_chart_holder bra hideMe">
+              {% include 'sweetlegs_sizing_bra' %}
+            </div>  
           </div>
         </div>
       </div>
@@ -158,8 +164,8 @@
       $('.range-slider__value.value_in_inches.waist').text(mySizeCookies.waist);
       $('#hip').val(mySizeCookies.hip);
       $('.range-slider__value.value_in_inches.hip').text(mySizeCookies.hip);
-      $('#sizing_dropdown').val(mySizeCookies.product_type);
-      recommendSize();
+      $('#band-measurement').val(mySizeCookies.band);
+      $('.range-slider__value.value_in_inches.band').text(mySizeCookies.band);
     } else {
       let  mySizeCookies = JSON.parse(mySizeCookie);
       myConvertor('CM');
@@ -169,12 +175,65 @@
       $('.range-slider__value.value_in_cm.waist').text(mySizeCookies.waist);
       $('#hip').val(mySizeCookies.hip);
       $('.range-slider__value.value_in_cm.hip').text(mySizeCookies.hip); 
-      $('#sizing_dropdown').val(mySizeCookies.product_type);
-      recommendSize();
+      $('#band-measurement').val(mySizeCookies.band);
+      $('.range-slider__value.value_in_cm.band').text(mySizeCookies.band);
     }
   }
-  
+  function showComfortBra() {
+ 
+    $('.size_chart_holder').addClass('hideMe')
+       $('.size_chart_holder.bra').removeClass('hideMe')
+   if ($('.convert_cm').hasClass('active')) {
+     sizeChartBra = {
+        "sizing": ["XS", "S", "M", "L", "XL", "2X", "3X"],
+        "band": {
+          "XS": "76-81",
+          "S": "81-86",
+          "M": "86-91",
+          "L": "91-97",
+          "XL": "97-102",
+          "2X": "102-112",
+          "3X": "112-117"
+        }
+      }
+   } else {
+         sizeChartBra = {
+      "sizing": ["XS", "S", "M", "L", "XL", "2X", "3X"],
+      "band": {
+        "XS": "30-32",
+        "S": "32-34",
+        "M": "34-36",
+        "L": "36-38",
+        "XL": "38-40",
+        "2X": "40-44",
+        "3X": "44-46"
+      },
+    };
+     
+   }
+     document.querySelector(".text-box").value = 'Comfort Sports Bra';  
+
+    bandMeasurement = parseInt($('.size_chart_holder.bra #band-measurement').val());
+      var bandsize = "";
+    for (var key in sizeChartBra['band']) {
+  if (sizeChartBra['band'].hasOwnProperty(key)) {
+    var range = sizeChartBra['band'][key].split('-');
+    var min = parseInt(range[0]);
+    var max = parseInt(range[1]);
+
+    if (bandMeasurement >= min && bandMeasurement <= max) {
+      bandsize = key;
+      break;
+    }
+  }
+}
+$('.size_chart_holder.bra #recommendedsize').text(bandsize)
+    $('.size_chart_holder.bra #dynamic_message').html('<p>*Selecting your size based on the band size will offer a comfortably relaxed band fit. A Smaller size will be slightly tighter. You decide what feels best.</p>')
+console.log("The corresponding size for a measurement of " + bandMeasurement + " is: " + bandsize);
+  }
   function show(value, value2) {
+        $('.size_chart_holder').removeClass('hideMe')
+       $('.size_chart_holder.bra').addClass('hideMe')
     document.querySelector(".text-box").value = value2 ? value2 : value;  
     $(".text-box").attr('productType', value)
     $('.dropdown input').css("border", "");
@@ -190,7 +249,7 @@
   }
   //  size submission
   $('#recommend_size').css('cursor','pointer');
-  $("#recommend_size" ).click(function(e) {
+  $("#recommend_size, #recommend_size_bra" ).click(function(e) {
     e.preventDefault();  
     if(document.getElementById("sizing_dropdown").value.length == 0)
     {
@@ -228,7 +287,9 @@
         const len = Math.floor((end - start) / step) + 1
         return Array(len).fill().map((_, idx) => start + (idx * step))
       }    
-      recommendSize();
+    
+        recommendSize();
+      
     }
   });
   
@@ -252,7 +313,7 @@
       let slider_value= $('.range-slider__value');
       let count = 1;
       slider_value.each(function(){
-        if(count % 2 != 0){
+        if($(this).hasClass('value_in_inches')){
           selected_inches_values.push($(this).html());  
         }else{
           selected_cm_values.push($(this).html());  
@@ -273,6 +334,7 @@
         waist: selected_inches_values[1],
         hip: selected_inches_values[2],
         product_type: $("#sizing_dropdown").attr('producttype'),
+        band: selected_inches_values[3],
         measurement: "inch"
       };
         localStorage.setItem('mySize_cookie', JSON.stringify(mySize_cookie));
@@ -281,6 +343,7 @@
           bust: selected_cm_values[0],
           waist: selected_cm_values[1],
           hip: selected_cm_values[2],
+          band: selected_cm_values[3],
           product_type: $("#sizing_dropdown").attr('producttype'),
           measurement: "cm"
         };
@@ -313,7 +376,9 @@
       }
 
       // PRODUCT TYPE: SweetLegs
-      if(product_type == "SweetLegs leggings, crops, and shorts" || product_type == "Maternity leggings, crops, and shorts"){
+        if($('#sizing_dropdown').val() == 'Comfort Sports Bra') {
+        showComfortBra();
+      } else if(product_type == "SweetLegs leggings, crops, and shorts" || product_type == "Maternity leggings, crops, and shorts"){
         // Calculated Value
         var calculated_value = [];
         if(Measeurement_In_CM){
@@ -1428,43 +1493,43 @@
       });
             
         if(xs > 1){
-          $('#recommendedsize').text("XS");
+          $('#recommendedsize').text("XS or 1");
           $('#dynamic_message').html('');
           $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your waist and hip measurement.</p>
 <p>The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.</p>`); 
         }
         else if(s > 1){
-          $('#recommendedsize').text("S");
+          $('#recommendedsize').text("S or 1");
           $('#dynamic_message').html('');
           $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your waist and hip measurement.</p>
 <p>The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.</p>`); 
         }
         else if(m > 1){
-          $('#recommendedsize').text("M");
+          $('#recommendedsize').text("M or 2");
           $('#dynamic_message').html('');
           $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your waist and hip measurement.</p>
 <p>The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.</p>`); 
         }
         else if(l > 1){
-          $('#recommendedsize').text("L");
+          $('#recommendedsize').text("L or 2");
           $('#dynamic_message').html('');
           $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your waist and hip measurement.</p>
 <p>The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.</p>`); 
         }
         else if(xl > 1){
-          $('#recommendedsize').text("XL");
+          $('#recommendedsize').text("XL or 3");
           $('#dynamic_message').html('');
           $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your waist and hip measurement.</p>
 <p>The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.</p>`); 
         }
         else if(twoX > 1){
-          $('#recommendedsize').text("2X");
+          $('#recommendedsize').text("2X or 3");
           $('#dynamic_message').html('');
           $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your waist and hip measurement.</p>
 <p>The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.</p>`); 
         }
         else if(threex > 1){
-          $('#recommendedsize').text("3X");
+          $('#recommendedsize').text("3X or 4");
           $('#dynamic_message').html('');
           $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your waist and hip measurement.</p>
 <p>The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.</p>`); 
@@ -1989,7 +2054,7 @@
   
     // final results for SweetTops     
         if(xs > 1){
-          $('#recommendedsize').text("XS");
+          $('#recommendedsize').text("XS or 1");
           $('#dynamic_message').html('');
           if(product_type == "The Weekender Dress"){
             $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust and waist measurement.</p>
@@ -2000,7 +2065,7 @@
           }
         }
         else if(s > 1){
-          $('#recommendedsize').text("S");
+          $('#recommendedsize').text("S or 1");
           $('#dynamic_message').html('');
           if(product_type == "The Weekender Dress"){
             $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust and waist measurement.</p>
@@ -2011,7 +2076,7 @@
           }
         }
         else if(m > 1){
-          $('#recommendedsize').text("M");
+          $('#recommendedsize').text("M or 2");
           $('#dynamic_message').html('');
           if(product_type == "The Weekender Dress"){
             $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust and waist measurement.</p>
@@ -2022,7 +2087,7 @@
           }
         }
         else if(l > 1){
-          $('#recommendedsize').text("L");
+          $('#recommendedsize').text("L or 2");
           $('#dynamic_message').html('');
           if(product_type == "The Weekender Dress"){
             $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust and waist measurement.</p>
@@ -2033,7 +2098,7 @@
           }
         }
         else if(xl > 1){
-          $('#recommendedsize').text("XL");
+          $('#recommendedsize').text("XL or 3");
           $('#dynamic_message').html('');
           if(product_type == "The Weekender Dress"){
             $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust and waist measurement.</p>
@@ -2044,7 +2109,7 @@
           }
         }
         else if(twoX > 1){
-          $('#recommendedsize').text("2X");
+          $('#recommendedsize').text("2X or 3");
           $('#dynamic_message').html('');
           if(product_type == "The Weekender Dress"){
             $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust and waist measurement.</p>
@@ -2055,7 +2120,7 @@
           }
         }
         else if(threex > 1){
-          $('#recommendedsize').text("3X");
+          $('#recommendedsize').text("3X or 4");
           $('#dynamic_message').html('');
           if(product_type == "The Weekender Dress"){
             $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust and waist measurement.</p>
@@ -2069,7 +2134,7 @@
         // Priority Base
         else if(xs == 1){
           if(s == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            $('#recommendedsize').text(calculated_value[0]+' or 1');
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust measurement.</p>
@@ -2082,7 +2147,7 @@
         }
         else if(s == 1){
           if(xs == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            $('#recommendedsize').text(calculated_value[0]+' or 1');
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust measurement.</p>
@@ -2095,7 +2160,7 @@
         }
         else if(m == 1){
           if(xs == 1 || s == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            $('#recommendedsize').text(calculated_value[0]+' or 2');
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust measurement.</p>
@@ -2108,7 +2173,7 @@
         }
         else if(l == 1){
           if(xs == 1 || s == 1 || m == 1 || xl == 1 || twoX == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            $('#recommendedsize').text(calculated_value[0]+' or 2');
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust measurement.</p>
@@ -2121,7 +2186,7 @@
         }
         else if( xl == 1){
           if(xs == 1 || s == 1 || m == 1 || l == 1 || twoX == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            $('#recommendedsize').text(calculated_value[0]+' or 3');
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust measurement.</p>
@@ -2134,7 +2199,7 @@
         }
         else if( twoX == 1){
           if(xs == 1 || s == 1 || m == 1 || l == 1 || xl == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            $('#recommendedsize').text(calculated_value[0]+' or 3');
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust measurement.</p>
@@ -2147,7 +2212,7 @@
         }
         else if( threex == 1){
           if(xs == 1 || s == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            $('#recommendedsize').text(calculated_value[0]+' or 4');
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p class="sizing_message_bold">This recommendation is based on your bust measurement.</p>
@@ -2170,5 +2235,12 @@
     $('.range_slider_container').css("height", "100%");
     $('.recommended_result > *').css("opacity", "0");
     $('.recommended_result > *').css("height", "0");
+  });
+    $( "#edit_size_bra" ).click(function(e) {
+    e.preventDefault();
+    $('.size_chart_holder.bra .range_slider_container').css("opacity", "1");
+    $('.size_chart_holder.bra .range_slider_container').css("height", "100%");
+    $('.size_chart_holder.bra .recommended_result > *').css("opacity", "0");
+    $('.size_chart_holder.bra .recommended_result > *').css("height", "0");
   });
 </script>  

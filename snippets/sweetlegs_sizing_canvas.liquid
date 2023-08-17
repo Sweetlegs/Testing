@@ -2524,38 +2524,69 @@
         
         
     // final results for SweetTops     
-        if(xs > 1){
+        if(xs > 1){       
+          if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+            $('#recommendedsize').text("1");
+          } else {
           $('#recommendedsize').text("XS");
+          }
           $('#dynamic_message').html('');
           $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
         }
         else if(s > 1){
+          if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+          $('#recommendedsize').text("1");
+          } else {
+          $('#recommendedsize').text("S");
+          }
           $('#recommendedsize').text("S");
           $('#dynamic_message').html('');
           $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
         }
         else if(m > 1){
+          if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+                $('#recommendedsize').text("2");
+          } else {
           $('#recommendedsize').text("M");
+          }
+         
           $('#dynamic_message').html('');
           $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
         }
         else if(l > 1){
+          if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+                     $('#recommendedsize').text("2");
+          } else {
           $('#recommendedsize').text("L");
+          }
           $('#dynamic_message').html('');
           $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
         }
         else if(xl > 1){
+          if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+          $('#recommendedsize').text("3");
+          } else {
           $('#recommendedsize').text("XL");
+          }
+
           $('#dynamic_message').html('');
           $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
         }
         else if(twoX > 1){
+          if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+          $('#recommendedsize').text("3");
+          } else {
           $('#recommendedsize').text("2X");
+          }
           $('#dynamic_message').html('');
           $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
         }
         else if(threex > 1){
+          if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+          $('#recommendedsize').text("4");
+          } else {
           $('#recommendedsize').text("3X");
+          }
           $('#dynamic_message').html('');
           $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
         }
@@ -2563,7 +2594,12 @@
         // Priority Base
         else if(xs == 1){
           if(s == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+                 if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+          $('#recommendedsize').text("1");
+          } else {
+           $('#recommendedsize').text(calculated_value[0]);
+          }
+           
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
@@ -2576,7 +2612,11 @@
         }
         else if(s == 1){
           if(xs == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+          $('#recommendedsize').text("1");
+          } else {
+           $('#recommendedsize').text(calculated_value[0]);
+          }
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
@@ -2588,8 +2628,13 @@
           }
         }
         else if(m == 1){
+ 
           if(xs == 1 || s == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+                    $('#recommendedsize').text("2");
+          } else {
+           $('#recommendedsize').text(calculated_value[0]);
+          }
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
@@ -2601,8 +2646,13 @@
           }
         }
         else if(l == 1){
+ 
           if(xs == 1 || s == 1 || m == 1 || xl == 1 || twoX == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+                     $('#recommendedsize').text("2");
+          } else {
+           $('#recommendedsize').text(calculated_value[0]);
+          }
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
@@ -2615,7 +2665,11 @@
         }
         else if( xl == 1){
           if(xs == 1 || s == 1 || m == 1 || l == 1 || twoX == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+                     $('#recommendedsize').text("3");
+          } else {
+           $('#recommendedsize').text(calculated_value[0]);
+          }
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
@@ -2628,7 +2682,11 @@
         }
         else if( twoX == 1){
           if(xs == 1 || s == 1 || m == 1 || l == 1 || xl == 1 || threex == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+                     $('#recommendedsize').text("3");
+          } else {
+           $('#recommendedsize').text(calculated_value[0]);
+          }
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
@@ -2641,7 +2699,11 @@
         }
         else if( threex == 1){
           if(xs == 1 || s == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1){
-            $('#recommendedsize').text(calculated_value[0]);
+            if(`{{product.title}}` == 'Oversized Luxe Knit Cardigan') {
+                    $('#recommendedsize').text("4");
+          } else {
+           $('#recommendedsize').text(calculated_value[0]);
+          }
             $('#dynamic_message').html('');
             if(product_type == "The Weekender Dress"){
               $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>

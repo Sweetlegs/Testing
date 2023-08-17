@@ -12,7 +12,7 @@
         <ul class="user-points" style="align-items: center; display: flex">
           <li class="user-points-list earn">
             <div class="points">
-               <a href="#" onclick="StampedFn.loadLauncherView('view-earnings');StampedFn.toggleRewardsModal();" class="btn-default">EARN POINTS</a>
+              <a href="#" data-st-intent="st:points:rules" class="btn-default">EARN POINTS</a>
             </div>
           </li>
           <hr align="left" width="50%;" style="border-bottom: 1px solid #00c4b3">
@@ -21,9 +21,9 @@
               <h5 class="green"
                 style="line-height: 1; margin: 3px; white-space: nowrap;font-size: calc(20px + (30 - 20) * ((100vw - 300px) / (2000 - 300))); font-weight: 700 ">
                 {{customer.first_name | upcase}}, YOU HAVE </h5>
-                <h3
-                style="line-height: 1; margin: 3px; font-size: calc(30px + (96 - 30) * ((100vw - 300px) / (2000 - 300)));">
-                <span style="color: black"><div id="stamped-rewards-points-placeholder"></div></span></h3>
+              <h3
+                style="line-height: 1; margin: 3px; font-size: calc(50px + (96 - 50) * ((100vw - 300px) / (2000 - 300)));">
+                <span class="sweettooth-points-balance" style="color: black"></span></h3>
               <h5 class="pink"
                 style="line-height: 1; margin: 3px;     font-size: calc(30px + (40 - 30) * ((100vw - 300px) / (2000 - 300))); font-weight: bold">
                 POINTS</h5>
@@ -33,7 +33,7 @@
           <li class="user-points-list redeeme">
             <div class="points">
               <div></div>
-               <a href="#" onclick="StampedFn.loadLauncherView('view-spendings');StampedFn.toggleRewardsModal();" class="btn-default">REDEEM POINTS</a>
+              <a href="#" class="btn-default smile-history-link" data-st-intent="st:points:rewards">REDEEM POINTS</a>
             </div>
           </li>
         </ul>
@@ -181,49 +181,25 @@
                 <tr>
                   <th style="width:20%">VIP Level</th>
                   <th style="width:35%">Spend</th>
-                  <th style="width:20%">EARN/$1</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td class="Member"> Member</td>
                   <td style="width:40%">$0-$199</td>
-                  <td style="width:10%">5 Points </td>
+      
                 </tr>
                 <tr>
                   <td class="Insider">Insider</td>
                   <td>$200-$749</td>
-                  <td> 6 Points</td>
+          
                 </tr>
                 <tr>
                   <td class="SuperFan">Super Fan</td>
-                  <td>$750-$1999</td>
-                  <td> 7 Points</td>
-                </tr>
-                <tr class="distributor">
-                  <td class="RisingStar">Rising Star*</td>
-                  <td>$2,000-$19999</td>
-                  <td> 30 Points</td>
-                </tr>
-                <tr class="distributor">
-                  <td class="Superstar">Superstar*</td>
-                  <td>$20,000-$74999</td>
-                  <td> 30 Points</td>
-                </tr>
-                <tr class="distributor">
-                  <td class="BossBabe">Boss Babe*</td>
-                  <td>$75,000-$114999</td>
-                  <td> 30 Points</td>
-                </tr>
-                <tr class="distributor">
-                  <td class="SweetElite">SweetElite*</td>
-                  <td>$115,000+</td>
-                  <td> 30 Points</td>
+                  <td>$750-$1999</td>     
                 </tr>
               </tbody>
             </table>
-            <p>* Only Sweetlegs Distributors are eligible. <a href="/pages/join-our-team" class="table-sign-up">Join our
-                team</a></p>
           </div>
         </div>
         <div style="padding: 40px" class="slTier">
@@ -250,10 +226,10 @@
                 <i class="far fa-money-bill-wave"></i>
               </div>
               <div class="smile-campaign-value">
-                <span class="smile-campaign-value-content">5+ POINTS</span>
+                  <span class="smile-campaign-value-content">EARN POINTS</span>
               </div>
               <div class="smile-campaign-type">
-                <span class="smile-campaign-type-content">Every $1 you spend</span>
+                  <span class="smile-campaign-type-content">On every purhcase</span>
               </div>
               <div class="smile-campaign-detail">
                 <span class="smile-campaign-detail-content"></span>
@@ -282,7 +258,7 @@
                 <i class="fas fa-gift"></i>
               </div>
               <div class="smile-campaign-value">
-                <span class="smile-campaign-value-content">500 POINTS</span>
+                <span class="smile-campaign-value-content">250 POINTS</span>
               </div>
               <div class="smile-campaign-type">
                 <span class="smile-campaign-type-content">On your birthday!</span>
@@ -292,45 +268,16 @@
               </div>
             </div>
           </li>
-
-          <li class="smile-campaign">
-            <div class="campaign review">
-              <div class="flex-item" style="display:flex; flex-direction: row; justify-content: start">
-                <div class="icon"><i class="fal fa-pencil-alt"></i> </div>
-                <div class="content1">
-                  <h3>150 POINTS</h3>
-                  <P>Write a review</P>
-                </div>
-              </div>
-              <hr>
-              <div class="flex-item" style="display:flex; flex-direction: row; justify-content: start">
-                <div class="icon"><i class="far fa-images"></i></div>
-                <div class="content1">
-                  <h3>+100 POINTS</h3>
-                  <P>Add a photo</P>
-                </div>
-              </div>
-              <hr>
-              <div class="flex-item" style="display:flex; flex-direction: row; justify-content: start">
-                <div class="icon"><i class="fas fa-video"></i></div>
-                <div class="content1">
-                  <h3>+100 POINTS</h3>
-                  <P>Add a video</P>
-                </div>
-              </div>
-
-            </div>
-          </li>
           <li class="smile-campaign">
             <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389357">
               <div class="smile-campaign-image">
-                <i class="fab fa-facebook-square"></i>
+                <i class="fal fa-pencil-alt"></i>
               </div>
               <div class="smile-campaign-value">
-                <span class="smile-campaign-value-content multiplier">50 POINTS</span>
+                <span class="smile-campaign-value-content multiplier">150 POINTS</span>
               </div>
               <div class="smile-campaign-type">
-                <span class="smile-campaign-type-content">Share on Facebook</span>
+                <span class="smile-campaign-type-content">Write a review</span>
               </div>
               <div class="smile-campaign-detail">
                 <span class="smile-campaign-detail-content"></span>
@@ -340,12 +287,12 @@
           <li class="smile-campaign">
             <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389358">
               <div class="smile-campaign-image">
-                <i class="fab fa-instagram"></i>
+                <i class="far fa-images"></i>
                 <div class="smile-campaign-value">
-                  <span class="smile-campaign-value-content">50 POINTS</span>
+                  <span class="smile-campaign-value-content">+100 POINTS</span>
                 </div>
                 <div class="smile-campaign-type">
-                  <span class="smile-campaign-type-content">Share On Instagram</span>
+                  <span class="smile-campaign-type-content">Add a photo to your review</span>
                 </div>
                 <div class="smile-campaign-detail">
                   <span class="smile-campaign-detail-content"></span>
@@ -355,13 +302,29 @@
           <li class="smile-campaign">
             <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389359">
               <div class="smile-campaign-image">
-                <i class="fab fa-twitter"></i>
+                <i class="fas fa-video"></i>
               </div>
               <div class="smile-campaign-value">
-                <span class="smile-campaign-value-content">50 POINTS</span>
+                <span class="smile-campaign-value-content">+100 POINTS</span>
               </div>
               <div class="smile-campaign-type">
-                <span class="smile-campaign-type-content">Retweet via Twitter</span>
+                <span class="smile-campaign-type-content">Add a video to your review</span>
+              </div>
+              <div class="smile-campaign-detail">
+                <span class="smile-campaign-detail-content"></span>
+              </div>
+            </div>
+          </li>
+                   <li class="smile-campaign">
+            <div class="smile-campaign-content" data-display-mode="modal" data-campaign-id="389359">
+              <div class="smile-campaign-image">
+                <i class="fas fa-gift-card"></i>
+              </div>
+              <div class="smile-campaign-value">
+                <span class="smile-campaign-value-content">BONUS OFFERS</span>
+              </div>
+              <div class="smile-campaign-type">
+                <span class="smile-campaign-type-content">Exclusive earning events</span>
               </div>
               <div class="smile-campaign-detail">
                 <span class="smile-campaign-detail-content"></span>
@@ -1737,14 +1700,14 @@
 
       #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-value-content {
         font-weight: bold;
-        font-size: calc(20px + (34 - 20) * ((100vw - 300px) / (2000 - 300)));
+        font-size: calc(20px + (30 - 20) * ((100vw - 300px) / (2000 - 300)));
         color: #1fc4b3;
         display: block;
         line-height: 26px;
       }
 
       #smile-reward-sweetlegs .campaign-section .smile-campaign-list .smile-campaign-type-content {
-        font-size: calc(14px + (20 - 14) * ((100vw - 300px) / (2000 - 300)));
+        font-size: calc(14px + (18 - 14) * ((100vw - 300px) / (2000 - 300)));
         font-weight: 700;
         margin-bottom: 0;
         display: block;

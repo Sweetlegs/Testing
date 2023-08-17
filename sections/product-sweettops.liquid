@@ -45,6 +45,19 @@
     margin: 2.5rem 0;
 }
 </style>
+    {% assign product_tags = product.tags | join: ', ' %}
+  
+              {% for tag in product.tags %}
+          {% if tag contains 'coming_soon' %}
+
+            {% assign tagParts = tag | split: '_' %}
+            {% if tagParts.size > 2 %}
+              {% assign date = tagParts[2] %}
+            
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
 <div id="ProductSection-{{ section.id }}" class="product-section {{ product_design }}" data-section-id="{{ section.id }}" data-section-type="product-template" data-enable-history-state="true" data-product_swatch_color="{{ settings.product_swatch_color }}" data-product_swatch_size="{{ settings.product_swatch_size }}">
   <div id="primary" class="content-area">
     <div id="content" class="site-content">
@@ -245,18 +258,21 @@
                             </span>
                           </div>
                           {%- endif -%}
-
-
-
-
-
-
-                        
-                          
                           {% unless customer.tags contains 'distributor' or customer.tags contains "Distributor" %}
                           	{% if product.type == 'Marketing Materials' %}
                           		<p> Item only available to Distributors. </p>
+                                   {% elsif product_tags contains "coming_soon" %}
+                                   <div style=" text-align: center; margin-top: 2rem; margin-bottom: 3rem">
+                            <div style="background: black; color: white; padding: 10px 20px; display: inline-block; margin-bottom: 10px;">COMING SOON</div>
+                              <div class="comming_soon_tag_product">Available {{ tagParts[2] }} {{ tagParts[3] }}</div>
+                            </div>
                           {% else %}
+                                            {% if product_tags contains "coming_soon" %}
+                             <div style=" text-align: center; margin-top: 2rem; margin-bottom: 3rem">
+                            <div style="background: black; color: white; padding: 10px 20px; display: inline-block; margin-bottom: 10px;">COMING SOON</div>
+                              <div class="comming_soon_tag_product">Available {{ tagParts[2] }} {{ tagParts[3] }}</div>
+                            </div>
+                                   {% else %}
                             <div class="variations_button">
                               <div class="quantity proQty">
                                 <span class="prodMinus"><i class="fa fa-minus" aria-hidden="true"></i></span>
@@ -303,6 +319,7 @@
                               </button>
                             </div>
                           <div class="limit-cnt"></div>
+                              {% endif %}
                           {% endunless %}
                           
                           
@@ -352,7 +369,7 @@
                         The following block of code is for the SHARE , CHART, WISHLIST
                         {% endcomment %}
                         <div class="product-buttons">
-                          {%- if settings.product_size_chart != '' -%}
+                        {%- if settings.product_size_chart != ''  and product.title != 'Oversized Luxe Knit Cardigan' -%}
                           <div class="eva-size-chart">
                             <a href="#sizechart" data-toggle="offcanvas" data-target="sizechart-offcanvas" data-src="right" class="eva-size-chart-link">
                               <i class="icon-px-solid-ruler"></i>

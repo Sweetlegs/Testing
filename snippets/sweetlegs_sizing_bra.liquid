@@ -4,9 +4,6 @@
     padding: 20PX;
     font-size: 30px;
     text-align: center;
-  } 
-  .table-heading {
-    background: #f7f7f7;
   }
   .sizing_label_image{
     float: none; 
@@ -345,56 +342,28 @@
 </style> 
 
 <!--       Sizing Calculator         -->
-<div class="size_chart_wrapper" id="sweetlegs-sizing-chart">
+<div class="size_chart_wrapper">
   <div class="size_chart_container">
     <div class="range_slider_container">
       <p class="sgheading">ENTER YOUR MEASUREMENTS</p>
       <div class="range-slider">
-        <span class="range_slider_title">BUST</span>
-        <input id="bust" class="range-slider__range" type="range" value="42" min="32" max="54">
+        <span class="range_slider_title">Band</span>
+        <input id="band-measurement" class="range-slider__range" type="range" value="42" min="30" max="46">
         <div class="flip-card">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <span class="range-slider__value value_in_inches bust">42</span>
+              <span class="range-slider__value value_in_inches band">42</span>
             </div>  
             <div class="flip-card-back">
-              <span  class="range-slider__value value_in_cm bust">107</span>
+              <span  class="range-slider__value value_in_cm band">107</span>
             </div>  
           </div>
         </div>
       </div>
 
-      <div class="range-slider">
-        <span class="range_slider_title">WAIST</span>
-        <input id="waist" class="range-slider__range" type="range" value="37" min="24" max="48">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="range-slider__value value_in_inches waist">37</span>
-            </div>  
-            <div class="flip-card-back">
-              <span  class="range-slider__value value_in_cm waist">89</span>
-            </div>  
-          </div>
-        </div>
-      </div>
 
-      <div class="range-slider">
-        <span class="range_slider_title">HIP</span>
-        <input id="hip" class="range-slider__range" type="range" value="49" min="35" max="59">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="range-slider__value value_in_inches hip">49</span>
-            </div>  
-            <div class="flip-card-back">
-              <span  class="range-slider__value value_in_cm hip">127</span>
-            </div>  
-          </div>
-        </div>
-      </div> 
       <div style="width: 100%; display: flex;">  
-        <a href="" id="recommend_size" class="button btn1 bshadow alt" style="width: 50%; margin: 20px auto; letter-spacing: .125rem;"><span>RECOMMEND SIZE</span></a>
+        <div id="recommend_size_bra" class="button btn1 bshadow alt" style="width: 50%; margin: 20px auto; letter-spacing: .125rem;"><span>RECOMMEND SIZE</span></div>
       </div>
     </div>  
     <div class="recommended_result">
@@ -406,7 +375,7 @@
         </div>  
       </div>
       <div style="width: 100%; display: flex;">  
-        <a href="" id="edit_size" class="button btn1 bshadow alt" style="margin: 20px auto; letter-spacing: .125rem;"><span>EDIT SIZE</span></a>
+        <a href="" id="edit_size_bra" class="button btn1 bshadow alt" style="margin: 20px auto; letter-spacing: .125rem;"><span>EDIT SIZE</span></a>
       </div>
     </div>
   </div>
@@ -418,7 +387,7 @@
         <div class="view-hide-button">
           <span><b>CHART: </b></span>&nbsp;&nbsp;
           <label class="switch">
-            <input class="sizing_toggling" type="checkbox">
+            <input class="sizing_toggling-bra" type="checkbox">
             <span class="slider round"></span>
           </label>
         </div>
@@ -428,24 +397,12 @@
               <span class="convert_cm" onclick="myConvertor('CM')">CM</span>
             </div>
       	</div>
-   <div class="accordiance-container">     
+   <div class="accordiance-container-bra">     
     <div class="measurements-container">
       <table class="sizetable measurements-table sizing_inches">
         <tbody>
-          <tr class="table-heading">
-            <th class="topRow noBorder" rowspan="3">Sizing</th>
-            <th colspan="2"class="topRow">1</th>
-            <th colspan="2"class="topRow">2</th>
-            <th colspan="2"class="topRow">3</th>
-            <th class="topRow">4</th>
-          </tr>
-          <tr class="table-heading">
-            <th colspan="2"class="topRow">PETITE</th>
-            <th colspan="2"class="topRow">ONE SIZE</th>
-            <th colspan="2"class="topRow">PLUS</th>
-            <th colspan="2"class="topRow">PLUS2</th>
-          </tr>
-          <tr class="table-heading">
+          <tr>
+            <th class="topRow">Sizing</th>
             <th class="topRow">XS</th>
             <th class="topRow">S</th>
             <th class="topRow">M</th>
@@ -454,114 +411,62 @@
             <th class="topRow">2X</th>
             <th class="topRow">3X</th>
           </tr>
-          <tr class="table-heading">
-            <th class="topRow noBorder">Dress Size</th>
-            <th class="topRow">0-2</th>
-            <th class="topRow">4-6</th>
-            <th class="topRow">8-10</th>
-            <th class="topRow">12-14</th>
-            <th class="topRow">16-18</th>
-            <th class="topRow">20-22</th>
-            <th class="topRow">24-26</th>
+          <tr class="">
+            <th class="labelMeasurements">Band</th>
+            <td><span class="metric band inch" style="display: block;">30-32</span></td>
+            <td><span class="metric band inch" style="display: block;">32-34</span></td>
+            <td><span class="metric band inch" style="display: block;">34-36</span></td>
+            <td><span class="metric band inch" style="display: block;">36-38</span></td>
+            <td><span class="metric band inch" style="display: block;">38-40</span></td>
+            <td><span class="metric band inch" style="display: block;">40-44</span></td>
+            <td><span class="metric band inch" style="display: block;">44-46</span></td>
           </tr>
           <tr>
             <th class="labelMeasurements">Bust</th>
-            <td><span class="metric" style="display: block;">32-33</span></td>
-            <td><span class="metric" style="display: block;">34-35</span></td>
-            <td><span class="metric" style="display: block;">36-37</span></td>
-            <td><span class="metric" style="display: block;">38-41</span></td>
-            <td><span class="metric" style="display: block;">42-46</span></td>
-            <td><span class="metric" style="display: block;">47-50</span></td>
-            <td><span class="metric" style="display: block;">51-54</span></td>
-          </tr>
-          <tr>
-            <th class="labelMeasurements">Waist</th>
-            <td><span class="metric" style="display: block;">24-25</span></td>
-            <td><span class="metric" style="display: block;">26-27</span></td>
-            <td><span class="metric" style="display: block;">28-29</span></td>
-            <td><span class="metric" style="display: block;">30-34</span></td>
-            <td><span class="metric" style="display: block;">35-39</span></td>
-            <td><span class="metric" style="display: block;">40-44</span></td>
-            <td><span class="metric" style="display: block;">45-48</span></td>
-          </tr>
-          <tr>
-            <th class="labelMeasurements">Hip</th>
-            <td><span class="metric" style="display: block;">35-36</span></td>
-            <td><span class="metric" style="display: block;">37-38</span></td>
-            <td><span class="metric" style="display: block;">39-41</span></td>
-            <td><span class="metric" style="display: block;">42-45</span></td>
-            <td><span class="metric" style="display: block;">46-50</span></td>
-            <td><span class="metric" style="display: block;">51-55</span></td>
-            <td><span class="metric" style="display: block;">56-59</span></td>
+            <td><span class="metric bust inch" style="display: block;">31-33</span></td>
+            <td><span class="metric bust inch" style="display: block;">33-35.5</span></td>
+            <td><span class="metric bust inch" style="display: block;">35.5-38.5</span></td>
+            <td><span class="metric bust inch" style="display: block;">38.5-41.5</span></td>
+            <td><span class="metric bust inch" style="display: block;">41.5-45.5</span></td>
+            <td><span class="metric bust inch" style="display: block;">45.5-49.5</span></td>
+            <td><span class="metric bust inch" style="display: block;">49.5-53.5</span></td>
           </tr>
         </tbody>
       </table>
       <!--  Sizing In CM      -->
       <table class="sizetable measurements-table sizing_cm">
-        <tbody>
-          <tr class="table-heading">
-            <th class="topRow noBorder" rowspan="3">Sizing</th>
-            <th colspan="2"class="topRow">1</th>
-            <th colspan="2"class="topRow">2</th>
-            <th colspan="2"class="topRow">3</th>
-            <th class="topRow">4</th>
-          </tr>
-          <tr class="table-heading">
-            <th colspan="2"class="topRow">PETITE</th>
-            <th colspan="2"class="topRow">ONE SIZE</th>
-            <th colspan="2"class="topRow">PLUS</th>
-            <th colspan="2"class="topRow">PLUS2</th>
-          </tr>
-          <tr class="table-heading">
-            <th class="topRow">XS</th>
-            <th class="topRow">S</th>
-            <th class="topRow">M</th>
-            <th class="topRow">L</th>
-            <th class="topRow">XL</th>
-            <th class="topRow">2X</th>
-            <th class="topRow">3X</th>
-          </tr>
-          <tr class="table-heading">
-            <th class="topRow noBorder">Dress Size</th>
-            <th class="topRow">0-2</th>
-            <th class="topRow">4-6</th>
-            <th class="topRow">8-10</th>
-            <th class="topRow">12-14</th>
-            <th class="topRow">16-18</th>
-            <th class="topRow">20-22</th>
-            <th class="topRow">24-26</th>
-          </tr>
-          <tr>
-            <th class="labelMeasurements">Bust</th>
-            <td><span class="metric" style="display: block;">81-85</span></td>
-            <td><span class="metric" style="display: block;">86-90</span></td>
-            <td><span class="metric" style="display: block;">91-95</span></td>
-            <td><span class="metric" style="display: block;">96-105</span></td>
-            <td><span class="metric" style="display: block;">106-118</span></td>
-            <td><span class="metric" style="display: block;">119-128</span></td>
-            <td><span class="metric" style="display: block;">129-137</span></td>
-          </tr>
-          <tr>
-            <th class="labelMeasurements">Waist</th>
-            <td><span class="metric" style="display: block;">61-65</span></td>
-            <td><span class="metric" style="display: block;">66-70</span></td>
-            <td><span class="metric" style="display: block;">71-75</span></td>
-            <td><span class="metric" style="display: block;">76-87</span></td>
-            <td><span class="metric" style="display: block;">88-100</span></td>
-            <td><span class="metric" style="display: block;">101-113</span></td>
-            <td><span class="metric" style="display: block;">114-122</span></td>
-          </tr>
-          <tr>
-            <th class="labelMeasurements">Hip</th>
-            <td><span class="metric" style="display: block;">89-92</span></td>
-            <td><span class="metric" style="display: block;">93-98</span></td>
-            <td><span class="metric" style="display: block;">99-105</span></td>
-            <td><span class="metric" style="display: block;">106-115</span></td>
-            <td><span class="metric" style="display: block;">116-128</span></td>
-            <td><span class="metric" style="display: block;">129-141</span></td>
-            <td><span class="metric" style="display: block;">142-150</span></td>
-          </tr>
-        </tbody>
+ <tbody>
+    <tr>
+      <th class="topRow">Sizing</th>
+      <th class="topRow">XS</th>
+      <th class="topRow">S</th>
+      <th class="topRow">M</th>
+      <th class="topRow">L</th>
+      <th class="topRow">XL</th>
+      <th class="topRow">2X</th>
+      <th class="topRow">3X</th>
+    </tr>
+    <tr>
+      <th class="labelMeasurements">Band</th>
+      <td><span class="metric" style="display: block;">76-81</span></td>
+      <td><span class="metric" style="display: block;">81-86</span></td>
+      <td><span class="metric" style="display: block;">86-91</span></td>
+      <td><span class="metric" style="display: block;">91-96</span></td>
+      <td><span class="metric" style="display: block;">96-101</span></td>
+      <td><span class="metric" style="display: block;">101-111</span></td>
+      <td><span class="metric" style="display: block;">111-116</span></td>
+    </tr>
+    <tr>
+      <th class="labelMeasurements">Bust</th>
+      <td><span class="metric" style="display: block;">79-84</span></td>
+      <td><span class="metric" style="display: block;">84-90</span></td>
+      <td><span class="metric" style="display: block;">90-98</span></td>
+      <td><span class="metric" style="display: block;">98-106</span></td>
+      <td><span class="metric" style="display: block;">106-116</span></td>
+      <td><span class="metric" style="display: block;">116-126</span></td>
+      <td><span class="metric" style="display: block;">126-136</span></td>
+    </tr>
+  </tbody>
       </table>
     </div>
       </div>
@@ -570,7 +475,7 @@
   </div>
   <div>
     <p class="sgheading border-dashed-bottom">HOW TO MEASURE</p>
-    <img class="sizing_label_image" src="https://cdn.shopify.com/s/files/1/2445/2869/files/sweettops-sizing_1024x1024.jpg?v=1572915906" alt="sweettops sizing" width="1024x1024" height="1024x1024">
+    <img class="sizing_label_image" src="https://cdn.shopify.com/s/files/1/2445/2869/files/HowToMeasure-sportsbra.jpg?v=1689014092" alt="sweettops sizing" width="1024x1024" height="1024x1024">
   </div>
 </div>  
 
@@ -590,7 +495,7 @@
       range.on('input', function(){
         if(($('.convert_inches')).hasClass('active')){
           let range_slider_value = $(this).parent().find('.range-slider__value.value_in_inches');
-          range_slider_value.html(this.value);
+           range_slider_value.html(this.value)
         }else{
           let range_slider_value = $(this).parent().find('.range-slider__value.value_in_cm');
           range_slider_value.html(this.value);
@@ -612,6 +517,7 @@
       let bust_value_inches = $('.range-slider__value.value_in_inches.bust').text();
       let waist_value_inches =  $('.range-slider__value.value_in_inches.waist').text();
       let hip_value_inches =  $('.range-slider__value.value_in_inches.hip').text();
+       let band_value_inches =  $('.range-slider__value.value_in_inches.band').text();
 
       var bust_inches_to_cm = (bust_value_inches/0.393700787).toFixed(0);
       $('.range-slider__value.value_in_cm.bust').text(bust_inches_to_cm);
@@ -621,6 +527,9 @@
 
       var hip_inches_to_cm = (hip_value_inches/0.393700787).toFixed(0);
       $('.range-slider__value.value_in_cm.hip').text(hip_inches_to_cm);
+
+       var band_inches_to_cm = (band_value_inches/0.393700787).toFixed(0);
+      $('.range-slider__value.value_in_cm.band').text(band_inches_to_cm);
 
       $('#bust').attr('max', 137);
       $('#bust').attr('min', 81);
@@ -634,6 +543,10 @@
       $('#hip').attr('min', 89);
       $('#hip').val(hip_inches_to_cm);
 
+      $('#band-measurement').attr('min', 76);
+      $('#band-measurement').attr('max', 116);
+           $('#band-measurement').val(band_inches_to_cm);
+
       $('.sizing_cm').css("opacity", "1");
       $('.convert_cm').addClass("active");
       //  
@@ -646,6 +559,7 @@
       let bust_value_cm = $('.range-slider__value.value_in_cm.bust').text();
       let waist_value_cm =  $('.range-slider__value.value_in_cm.waist').text();
       let hip_value_cm =  $('.range-slider__value.value_in_cm.hip').text();
+      let band_value_cm =  $('.range-slider__value.value_in_cm.band').text();
 
       var bust_cm_to_inches = (bust_value_cm*0.393700787).toFixed(0);
       $('.range-slider__value.value_in_inches.bust').text(bust_cm_to_inches);
@@ -656,6 +570,9 @@
 
       var hip_cm_to_inches = (hip_value_cm*0.393700787).toFixed(0);
       $('.range-slider__value.value_in_inches.hip').text(hip_cm_to_inches);
+
+        var band_cm_to_inches = (band_value_cm*0.393700787).toFixed(0);
+      $('.range-slider__value.value_in_inches.band').text(band_cm_to_inches);
 
 
       $('#bust').attr('max', 54);
@@ -670,6 +587,10 @@
       $('#hip').attr('min', 35);
       $('#hip').val(hip_cm_to_inches);
 
+      $('#band-measurement').attr('min', 30);
+      $('#band-measurement').attr('max', 46);
+           $('#band-measurement').val(band_cm_to_inches);
+
       $('.sizing_cm').css("opacity", "0");
       $('.convert_cm').removeClass("active");
       //  
@@ -677,8 +598,8 @@
     }
   }
 
-  $('.sizing_toggling').click(function() {
-    $('.accordiance-container').toggleClass('show');
+  $('.sizing_toggling-bra').click(function() {
+    $('.accordiance-container-bra').toggleClass('show');
   });
   
   

@@ -2,7 +2,11 @@
       	setTimeout(function(){
           $('.cbb-frequently-bought-add-button').addClass("button btn1 bshadow alt");
         }, 1000);
-      
+        if ($(window).width() < 768) {
+          var iframe = $('#lookbook-athleisure');
+           var newSrc = $('#lookbook-athleisure').attr('src') + '&pageLayout=singlePage';
+          iframe.attr('src', newSrc);
+        } 
       $(document).on('click', '.swatch-item', function(e) {
         $('.swatch-item').removeClass('active');
         $(this).addClass('active');

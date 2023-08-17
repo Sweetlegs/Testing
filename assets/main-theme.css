@@ -1,3 +1,26 @@
+.Coming.Soon span {
+  color: #00c4b3;
+}
+.product_content_wrapper div[itemprop="description"] li{
+  font-size: 16px;
+}
+.product_content_wrapper div[itemprop="description"] p{
+  font-size: 16px;
+}
+.comming_soon_tag_collection {
+  position: absolute;
+  bottom: 55px;
+  background: black;
+  color: white;
+  font-weight: 400;
+  z-index: 99999;
+  padding: 5px 10px;
+  font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: .05em;
+}
+
 .swatch-item {
     background-size: contain;
 }
@@ -6,7 +29,7 @@
 }
 .SALE.menu-item small{
   color: #00c4b3!important;
-  font-weight: 500!important;
+  font-weight: 600!important;
 }
 .heading-sub-menu-dropdown{
   font-size: 15px;
@@ -103,6 +126,10 @@ border-bottom: 1px solid #8080805e;
   .image-with-text-section  .text-wrapper {
     padding: 20px;
     padding-bottom: 0px;
+  }
+
+  .comming_soon_tag_collection {
+    bottom: 30px;
   }
 
 }

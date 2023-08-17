@@ -9,6 +9,16 @@
 {% for item in cart.items %}
 {% assign totalLineItem = totalLineItem | plus: 1 %}      
 {% endfor %}
+    {% assign product_tags = my_product.tags | join: ', ' %}
+              {% for tag in my_product.tags %}
+          {% if tag contains 'coming_soon' %}
+            {% assign tagParts = tag | split: '_' %}
+            {% if tagParts.size > 2 %}
+              {% assign date = tagParts[2] %}
+             
+            {% endif %}
+          {% endif %}
+        {% endfor %}
 <!-- If the product type is Marketing Materials do not render -->
 {% if my_product.type == 'Marketing Materials' %}
   <!-- check the distributor tag -->
@@ -24,6 +34,7 @@
   {%- if my_product.images.size > 1 and settings.shop_second_image != '' -%}
   {%- assign shop_second_image = true -%}
   {%- endif -%}
+
   <div class="product_thumbnail{% if shop_second_image %} with_second_image{% endif %}">
     <span class="button-loader"></span>
     <a class="aspect-product__wrapper" href="{{ my_product.url | within: collection }}">
@@ -35,7 +46,7 @@
         {%- endif -%}
 
         {% if current_variant.compare_at_price > current_variant.price or my_product.price_varies and my_product.title !='Virtual Gift Card'%}
-          {% if handle contains 'clearance'%}
+         {% if handle contains 'clearance'%}
           <div class="custom-badge-sale-container">
             <div class="custom-badge-sale">
               <div class="discount-holder">{{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | money_without_currency | times: 100 | remove: '.0'}}% Off</div>
@@ -43,11 +54,13 @@
           </div>  
           {% else %}
             <div class="instabadge-badge sale"></div>  
-          {% endif %}   
+          {% endif %}  
+          {%  elsif product_tags contains "coming_soon" %}
+       <div class="comming_soon_tag_collection">AVAILABLE  {{ tagParts[2] }} {{ tagParts[3] }}</div>
         {% elsif my_product.tags contains "crops" %}
-          {% if days_lapsed <= 14 %}
-          <div class="instabadge-badge new"></div>
-          {% endif %}
+        {% if days_lapsed <= 14 %}
+        <div class="instabadge-badge new"></div>
+        {% endif %}
         <div class="instabadge-badge crops"></div>       
         {% elsif my_product.tags contains "limited" %}
         <div class="instabadge-badge limited"></div>
@@ -56,23 +69,26 @@
         {% elsif my_product.tags contains "featured" %}
         <div class="instabadge-badge featured"></div>
          {% elsif days_lapsed <= 14 %}
-        {% unless my_product.title == 'Black Licorice' %}
-        <div class="instabadge-badge new"></div>
-        {%endunless%}
+        {% unless my_product.title == 'Black Licorice'  %}
+                                  <div class="instabadge-badge new"></div>
+                                {%endunless%}
         {% endif %}
+
+       
+
 
         <img class="aspect-product__picture" style="padding-top: 5px" src="{{ featured_image | product_img_url: '166x' }}" alt="{{ my_product.title | escape }}" srcset="{{ featured_image | product_img_url: '500x' }} 500w, {{ featured_image | product_img_url: '166x' }} 166w" sizes="(max-width: 500px) 100vw, 500px" />
         {%- if my_product.available == false -%}
         <span class="out_of_stock_title">{{ 'products.general.out_of_stock' | t | escape }}</span>
         {%- endif -%}
       </div>
-      <object class="wishlists" >
+      <div class="wishlists" >
         <div class="add-to-wishlist">
           <div class="add-button show">
             {%- include 'wishlist' with true -%}
           </div>
         </div>
-      </object>
+      </div>
     </a>
     {%- if my_instructions.countdown != blank -%}
     <div class="countdown flex-container countdown-item" data-countdown="{{my_instructions.countdown}}">
@@ -94,7 +110,7 @@
     {%- endif -%}
 
     {%- if settings.shop_review != '' -%}
-    <div class="star-rating">
+     <div class="star-rating">
       <span class="stamped-product-reviews-badge stamped-main-badge" data-id="{{ my_product.id }}" data-product-sku="{{my_product.handle}}" style="display: inline-block;"></span> 
       </div>
     {%- endif -%}
@@ -149,18 +165,12 @@
       <div class="product_after_shop_loop">
         <div class="product_after_shop_loop_switcher">
           <div class="product_after_shop_loop_price">
-              <div class="product_after_shop_loop_price">
-              <div class="price">        
+            <span class="price">
               {%- if current_variant.compare_at_price > current_variant.price -%}
-                <div class="price-old money">{{ current_variant.compare_at_price | money }}</div>
+              <span class="price-old money testingg">{{ current_variant.compare_at_price | money }}</span>
               {%- endif -%}
-              <div class="price-new money color{%- if current_variant.compare_at_price > current_variant.price -%}Red{%endif%}">{%- if current_variant.compare_at_price > current_variant.price -%}<span class="colorRed"> Now </span>{%- endif -%}{{ current_variant.price | money }}</div>
-              {%- if current_variant.compare_at_price > current_variant.price -%}
-<!--               	<div class="price-discount-percentage"> ({{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | money_without_currency | times: 100 | remove: '.0'}}% Off)
-              	</div> -->
-              {%- endif -%}
-            </div>
-          </div>
+              <div class="price-new money testingg color{%- if current_variant.compare_at_price > current_variant.price -%}Red{%endif%}">{%- if current_variant.compare_at_price > current_variant.price -%}<span class="colorRed"> Now </span>{%- endif -%}{{ current_variant.price | money }}</div>
+            </span>
           </div>
           {%- if settings.catalog_mode == '' -%}
           <div class="product_after_shop_loop_buttons">
@@ -176,6 +186,9 @@
               </a>
               {%- else -%}
               <form action="/cart/add" method="post" enctype="multipart/form-data">
+                 {%- if my_product.tags contains 'final sale'-%}
+    				<input id="sale" type="hidden" name="properties[_Sale]" value="Final Sale">
+      			{% endif %}
                 <input type="hidden" name="quantity" value="1" />
                 {%- for variant in my_product.variants -%}
                 <input class="url" value={{variant.url}} type=hidden />
@@ -208,6 +221,9 @@
               </a>
               {%- else -%}
               <form action="/cart/add" method="post" enctype="multipart/form-data">
+                 {%- if my_product.tags contains 'final sale'-%}
+    				<input id="sale" type="hidden" name="properties[_Sale]" value="Final Sale">
+      			{% endif %}
                 <input type="hidden" name="quantity" value="1" />
                 {%- for variant in my_product.variants -%}
                 <input class="url" value={{variant.url}} type=hidden />
@@ -220,7 +236,7 @@
                 </select>
                 <button class="click"> <a rel="nofollow" href="{{ my_product.url | within: collection }}" class="button product_type_simple add_to_cart_button ajax_add_to_cart">
                   <span class="button-loader"></span>
-                  {{- 'products.product.add_to_cart' | t | escape -}}
+                  {{- 'products.product.add_to_cart' | t | escape -}}dfsdafasf
                   </a></button>
               </form>
               {%- endif -%}
@@ -261,7 +277,7 @@
         {%- endif -%}
 
         {% if current_variant.compare_at_price > current_variant.price or my_product.price_varies and my_product.title !='Virtual Gift Card'%}
-          {% if handle contains 'clearance'%}
+         {% if handle contains 'clearance'%}
           <div class="custom-badge-sale-container">
             <div class="custom-badge-sale">
               <div class="discount-holder">{{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | money_without_currency | times: 100 | remove: '.0'}}% Off</div>
@@ -269,11 +285,14 @@
           </div>  
           {% else %}
             <div class="instabadge-badge sale"></div>  
-          {% endif %}
-        {% elsif my_product.tags contains "cropsfdjkfj" %}
+          {% endif %} 
+         {%  elsif product_tags contains "coming_soon" %}
+
+    <div class="comming_soon_tag_collection">AVAILABLE {{ tagParts[2] }} {{ tagParts[3] }}</div>
+         {% elsif my_product.tags contains "crops" %}
         {% if days_lapsed <= 14 %}
         <div class="instabadge-badge new"></div>
-        {% endif %}
+        {% endif %}	
         <div class="instabadge-badge crops"></div>       
         {% elsif my_product.tags contains "limited" %}
         <div class="instabadge-badge limited"></div>
@@ -282,9 +301,9 @@
         {% elsif my_product.tags contains "featured" %}
         <div class="instabadge-badge featured"></div>
         {% elsif days_lapsed <= 14 %}
-        {% unless my_product.title == 'Black Licorice' or my_product.title == 'Maternity Legging Black'%}
-        <div class="instabadge-badge new"></div>
-        {%endunless%}
+             {% unless my_product.title == 'Black Licorice' or my_product.title == 'Heart to Heart Kids'%}
+                                  <div class="abcd instabadge-badge new"></div>
+                                {%endunless%}
         {% endif %}
 
         
@@ -295,13 +314,13 @@
         <span class="out_of_stock_title">{{ 'products.general.out_of_stock' | t | escape }}</span>
         {%- endif -%}
       </div>
-      <object class="wishlists" >
+      <div class="wishlists" >
         <div class="add-to-wishlist">
           <div class="add-button show">
             {%- include 'wishlist' with true -%}
           </div>
         </div>
-      </object>
+      </div>
     </a>
     {%- if my_instructions.countdown != blank -%}
     <div class="countdown flex-container countdown-item" data-countdown="{{my_instructions.countdown}}">
@@ -323,7 +342,7 @@
     {%- endif -%}
 
     {%- if settings.shop_review != '' -%}
-       <div class="star-rating">
+     <div class="star-rating">
       <span class="stamped-product-reviews-badge stamped-main-badge" data-id="{{ my_product.id }}" data-product-sku="{{my_product.handle}}" style="display: inline-block;"></span> 
       </div>
     {%- endif -%}
@@ -364,7 +383,12 @@
 
 
     <p class="product-category-listing">
-      <a href="{{ my_product.url }}" class="product-category-link">{{ my_product.type | remove: 'SweetLegs ' }}</a>
+  {% if my_product.type  == 'SweetLegs WWB'%} 
+    
+      <a href="{{ my_product.url }}" class="product-category-link">Wide Waistband</a>
+    {% else %}
+    <a href="{{ my_product.url }}" class="product-category-link">{{ my_product.type | remove: 'SweetLegs ' }}</a>
+    {% endif %}
     </p>
 
 
@@ -373,21 +397,17 @@
       <div class="clear">
       </div>
 
-      <h3><a class="shop_product_title" href="{{ my_product.url | within: collection }}">{{ my_product.title | escape }}{% if current_variant.sku != '' %}<span class="woos_sku">{{ current_variant.sku }}</span>{% endif %}</a></h3>
+      <h3><a class="shop_product_title {{ my_product.tags }}" href="{{ my_product.url | within: collection }}">{{ my_product.title | escape }}{% if current_variant.sku != '' %}<span class="woos_sku">{{ current_variant.sku }}</span>{% endif %}</a></h3>
       {%- include 'product-color-swatch' -%}
       <div class="product_after_shop_loop">
         <div class="product_after_shop_loop_switcher">
           <div class="product_after_shop_loop_price">
-                          <div class="price">        
+            <span class="price">
               {%- if current_variant.compare_at_price > current_variant.price -%}
-                <div class="price-old money">{{ current_variant.compare_at_price | money }}</div>
+              <span class="price-old money">{{ current_variant.compare_at_price | money }}</span>
               {%- endif -%}
               <div class="price-new money color{%- if current_variant.compare_at_price > current_variant.price -%}Red{%endif%}">{%- if current_variant.compare_at_price > current_variant.price -%}<span class="colorRed"> Now </span>{%- endif -%}{{ current_variant.price | money }}</div>
-              {%- if current_variant.compare_at_price > current_variant.price -%}
-<!--               	<div class="price-discount-percentage"> ({{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | money_without_currency | times: 100 | remove: '.0'}}% Off)
-              	</div> -->
-              {%- endif -%}
-            </div>
+            </span>
           </div>
           {%- if settings.catalog_mode == '' -%}
           <div class="product_after_shop_loop_buttons">
@@ -403,6 +423,9 @@
               </a>
               {%- else -%}
               <form action="/cart/add" method="post" enctype="multipart/form-data">
+                 {%- if my_product.tags contains 'final sale'-%}
+    				<input id="sale" type="hidden" name="properties[_Sale]" value="Final Sale">
+      			{% endif %}
                 <input type="hidden" name="quantity" value="1" />
                 {%- for variant in my_product.variants -%}
                 <input class="url" value={{variant.url}} type=hidden />
@@ -413,10 +436,12 @@
                   <option value="{{ variant.id }}">{{ variant.title | escape}} - {{variant.price | money }}</option>
                   {%- endfor -%}
                 </select>
+                   {%  unless product_tags contains "coming_soon" %}
                 <button class="click"> <a rel="nofollow" href="{{ my_product.url | within: collection }}" class="button product_type_simple add_to_cart_button ajax_add_to_cart">
                   <span class="button-loader"></span>
                   {{- 'products.product.add_to_cart' | t | escape -}}
                   </a></button>
+                {% endunless %}
               </form>
               {%- endif -%}
               {%- else -%}
@@ -435,6 +460,9 @@
               </a>
               {%- else -%}
               <form action="/cart/add" method="post" enctype="multipart/form-data">
+                 {%- if my_product.tags contains 'final sale'-%}
+    				<input id="sale" type="hidden" name="properties[_Sale]" value="Final Sale">
+      			{% endif %}
                 <input type="hidden" name="quantity" value="1" />
                 {%- for variant in my_product.variants -%}
                 <input class="url" value={{variant.url}} type=hidden />
@@ -445,10 +473,12 @@
                   <option value="{{ variant.id }}">{{ variant.title | escape}} - {{variant.price | money }}</option>
                   {%- endfor -%}
                 </select>
+             {%  unless product_tags contains "coming_soon" %}
                 <button class="click"> <a rel="nofollow" href="{{ my_product.url | within: collection }}" class="button product_type_simple add_to_cart_button ajax_add_to_cart">
                   <span class="button-loader"></span>
                   {{- 'products.product.add_to_cart' | t | escape -}}
                   </a></button>
+                {% endunless %}
               </form>
               {%- endif -%}
               {%- else -%}

@@ -93,7 +93,7 @@
                         status = ` <span class="stock in-stock">In stock.</span>`;
                       }
                     } else {
-                      if(variant.available){
+                      if(variant.available && !product.tags.toString().includes('coming_soon')){
                         status = ` <span class="stock in-stock">In stock.</span>`;
                         addToCart = `                      
                                         <form action="/cart/add" method="post" enctype="multipart/form-data">

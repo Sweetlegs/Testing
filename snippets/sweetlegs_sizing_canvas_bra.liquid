@@ -1,0 +1,781 @@
+<style>
+    .sizing_label_image{
+    float: none; 
+    width: 100%;  
+    object-fit: contain;
+  }
+  .view-hide-button{
+    display: flex;
+    align-items: center;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+  }
+
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    left: 5px;
+    bottom: 5px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  input:checked + .slider {
+    background-color: #00c4b3;
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px #00c4b3;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+    left: 2px;
+  }
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+/*    */
+  .accordiance-container {
+    height: 0px;
+    opacity: 0;
+    transition: all 0.5s ease;
+    overflow: hidden;
+  }
+  .accordiance-container.show {
+    height: 200px;
+    opacity: 1;
+    transition: all 0.5s ease;
+  }
+   *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: #fafafa;
+  }
+
+  .dropdown {
+    position: relative;
+    z-index: 999;
+  }
+
+  .dropdown::before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 1000;
+    width: 8px;
+    height: 8px;
+    border: 2px solid #333;
+    border-top: 2px solid #fff;
+    border-right: 2px solid #fff;
+    transform: rotate(-45deg);
+    transition: 0.5s;
+    pointer-events: none;
+  }
+  .border-dashed-bottom {
+    border-bottom-style: dashed;
+    border-color: #80808063;
+    padding: 10px 0px;
+  }
+
+  .dropdown.active::before {
+    top: 22px;
+    transform: rotate(-225deg);
+  }
+
+  .dropdown input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background: #fff;
+    font-size: 1.2em;
+    border: none;
+    outline: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    padding: 12px 20px !important;
+    border-radius: 10px;
+    border: 2px solid #47c1bf;
+  }
+
+  .dropdown .options {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    display: none;
+  }
+
+  .dropdown.active .options {
+    display: block;
+  }
+
+  .dropdown .options div {
+    padding: 12px 20px;
+    cursor: pointer;
+  }
+
+  .dropdown .options div:hover {
+    background: #47c1bf  !important;
+    color: #fff !important;
+  }
+  
+  .size_chart_holder{
+    margin-top: 50px;
+  }
+
+  .size_chart_holder .size_chart_wrapper,
+  .size_chart_holder .range-slider,
+  .size_chart_holder #recommend_size,
+  .size_chart_holder #sizing
+  {
+    height: 100%;
+    opacity: 1;
+    margin: 20px 0;
+  }
+  
+  .sizing_error{
+    padding: 15px 5px;
+    font-size: 16px;
+    font-weight: 400;
+    color: red;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: transform .5s cubic-bezier(.17,.67,.83,.67);
+  }
+  .range-slider {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .range-slider__range {
+    -webkit-appearance: none;
+    width: calc(100% - (73px));
+    height: 10px;
+    border-radius: 5px;
+    background: #d7dcdf;
+    outline: none;
+    padding: 0;
+    margin: 0;
+  }
+  .range-slider__range::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #000;;
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+  }
+  .range-slider__range::-webkit-slider-thumb:hover {
+    background: #1abc9c;
+  }
+  .range-slider__range:active::-webkit-slider-thumb {
+    background: #1abc9c;
+  }
+  .range-slider__range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+    background: #2c3e50;
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+  }
+  .range-slider__range::-moz-range-thumb:hover {
+    background: #1abc9c;
+  }
+  .range-slider__range:active::-moz-range-thumb {
+    background: #1abc9c;
+  }
+  .range-slider__range:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px #fff, 0 0 0 6px #1abc9c;
+  }
+  .range-slider__value {
+    display: inline-block;
+    position: relative;
+    width: 60px;
+    color: #fff;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 3px;
+    background: #000;
+    padding: 5px 10px;
+  }
+
+  ::-moz-range-track {
+    background: #d7dcdf;
+    border: 0;
+  }
+
+  input::-moz-focus-inner, input::-moz-focus-outer {
+    border: 0;
+  }
+
+  .range_slider_title{
+    width: 90px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #585858;
+  }
+
+  /*    */
+  .size_chart_container{
+    position: relative;
+  }
+  .recommended_result{
+    position: relative;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%);
+  }
+  .recommended_result > *{
+    opacity: 0;
+    height: 0;
+    transition: all 1s ease-out;
+  }
+  .sizing_message{
+    font-size: 16px;
+  }
+  .sizing_message_bold {
+    font-size: 21px;
+    color: #6a6a6a;
+    line-height: 24px;
+    font-weight: 400;
+    padding: 10px 0;
+  }
+  #sizing .topRow {
+    border: 1px solid #808080ba;
+    width: 150px;
+  }
+  #sizing .topRow.noBorder {
+    border: none;
+    text-align: left;
+    padding: 0 10px 0 0;
+    padding-left: 5px;
+  }
+  #sizing  th.labelMeasurements {
+    text-align: left;
+    padding-left: 5px;
+  }
+  span.metric{
+    font-size: 14x;
+    text-align: center;
+  }
+  #sizing table td{
+    border: 1px solid #808080ba;   
+    padding: 0.6rem 0;
+  }
+  #sizing table th{
+    padding: 1rem 0;
+  }
+  .size_convertor{
+    float: right;
+    margin-bottom: 15px;
+  }
+  .size_convertor > .active{
+    background: #00c4b354;
+    transition: background 0.15s ease-in-out;
+    color: #00c4b3;
+    padding: 4px 12px;
+    font-weight: 500;
+    border-radius: 0.189em;
+  }
+  #sizing{
+    position: relative;
+  }
+  table.sizetable.measurements-table.sizing_cm {
+    position: absolute;
+    top: 36px;
+  }
+  
+  .convert_inches, 
+  .convert_cm{
+    cursor: pointer;
+  }
+  
+  .sizing_cm{
+    opacity: 0;
+    transition: all .25s ease-out;
+  }
+  
+  @media(max-width: 600px){
+    span.metric {
+      font-size: 10px;
+      padding: 0px 5px;
+    }
+    #sizing table th{
+      font-size: 10px;
+    }
+    #sizing table th {
+      padding: 0.5rem 0;
+    }
+    #sizing .topRow {
+      width: 50px;
+    }
+    .size_convertor > .active{
+      padding: 2px 4px;
+    }
+    .size_convertor {
+      margin-bottom: 5px;
+    }
+    table.sizetable.measurements-table.sizing_cm {
+      top: 36px;
+    }
+  }
+  .flip-card {
+    perspective: 1000px;
+    position: relative;
+    width: 60px;
+    margin-left: 8px;
+    margin-top: -25px;
+  }
+  
+  .flip-card-inner {
+    position: relative;
+    text-align: center;
+    width: inherit;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: inherit;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .value_in_inches, .value_in_cm{
+    width: inherit;
+  }
+
+  .flip-card-back {
+    transform: rotateY(180deg);
+  }
+  .sgheading {
+    text-align: center;
+    font-size: 14px;
+  }
+  #recommendedsize {
+    background: #FAFAFA;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+  }
+</style> 
+
+<!--       Sizing Calculator         -->
+<div class="size_chart_wrapper">
+  <div class="size_chart_container">
+    <div class="range_slider_container">
+      <p class="sgheading">ENTER YOUR BAND SIZE</p>
+      <div class="range-slider">
+        <span class="range_slider_title">Band</span>
+        <input id="band-measurement" class="range-slider__range" type="range" value="42" min="30" max="46">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <span class="range-slider__value value_in_inches band">42</span>
+            </div>  
+            <div class="flip-card-back">
+              <span  class="range-slider__value value_in_cm band">107</span>
+            </div>  
+          </div>
+        </div>
+      </div>
+
+<div>*Selecting your size based on the band size will offer a comfortably relaxed band fit. A Smaller size will be slightly tighter. You decide what feels best.</div>
+      <div style="width: 100%; display: flex;">  
+        <div id="recommend_size_bra" class="button btn1 bshadow alt" style="width: 50%; margin: 20px auto; letter-spacing: .125rem;"><span>RECOMMEND SIZE</span></div>
+      </div>
+    </div>  
+    <div class="recommended_result">
+      <div>
+        <div style="text-align: center;">
+          <p class="sgheading">RECOMMENDED SIZE FOR THIS PRODUCT</p>
+          <h1 id="recommendedsize" class="bigsize sgheading text-focus-in"></h1>
+          <p id="dynamic_message" class="sizing_message_bold"></p>
+        </div>  
+      </div>
+
+      <div style="width: 100%; display: flex;">  
+        <a href="" id="edit_size_bra" class="button btn1 bshadow alt" style="margin: 20px auto; letter-spacing: .125rem;"><span>EDIT SIZE</span></a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Size table -->
+  <div id="sizing">
+    <div class="accordiance">
+      <div class="accordiance-title" style="display: flex;justify-content: space-between">
+        <div class="view-hide-button">
+          <span><b>CHART: </b></span>&nbsp;&nbsp;
+          <label class="switch">
+            <input class="sizing_toggling-bra" type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </div>
+           <div class="size_convertor">
+             <span>UNITS:</span>
+              <span class="convert_inches active" onclick="myConvertor('IN')">IN</span> /
+              <span class="convert_cm" onclick="myConvertor('CM')">CM</span>
+            </div>
+      	</div>
+   <div class="accordiance-container-bra">     
+    <div class="measurements-container">
+      <table class="sizetable measurements-table sizing_inches">
+        <tbody>
+          <tr>
+            <th class="topRow">Sizing</th>
+            <th class="topRow">XS</th>
+            <th class="topRow">S</th>
+            <th class="topRow">M</th>
+            <th class="topRow">L</th>
+            <th class="topRow">XL</th>
+            <th class="topRow">2X</th>
+            <th class="topRow">3X</th>
+          </tr>
+          <tr class="">
+            <th class="labelMeasurements">Band</th>
+            <td><span class="metric band inch" style="display: block;">30-32</span></td>
+            <td><span class="metric band inch" style="display: block;">32-34</span></td>
+            <td><span class="metric band inch" style="display: block;">34-36</span></td>
+            <td><span class="metric band inch" style="display: block;">36-38</span></td>
+            <td><span class="metric band inch" style="display: block;">38-40</span></td>
+            <td><span class="metric band inch" style="display: block;">40-44</span></td>
+            <td><span class="metric band inch" style="display: block;">44-46</span></td>
+          </tr>
+          <tr>
+            <th class="labelMeasurements">Bust</th>
+            <td><span class="metric bust inch" style="display: block;">31-33</span></td>
+            <td><span class="metric bust inch" style="display: block;">33-35.5</span></td>
+            <td><span class="metric bust inch" style="display: block;">35.5-38.5</span></td>
+            <td><span class="metric bust inch" style="display: block;">38.5-41.5</span></td>
+            <td><span class="metric bust inch" style="display: block;">41.5-45.5</span></td>
+            <td><span class="metric bust inch" style="display: block;">45.5-49.5</span></td>
+            <td><span class="metric bust inch" style="display: block;">49.5-53.5</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <!--  Sizing In CM      -->
+      <table class="sizetable measurements-table sizing_cm">
+ <tbody>
+    <tr>
+      <th class="topRow">Sizing</th>
+      <th class="topRow">XS</th>
+      <th class="topRow">S</th>
+      <th class="topRow">M</th>
+      <th class="topRow">L</th>
+      <th class="topRow">XL</th>
+      <th class="topRow">2X</th>
+      <th class="topRow">3X</th>
+    </tr>
+    <tr>
+      <th class="labelMeasurements">Band</th>
+      <td><span class="metric" style="display: block;">76-81</span></td>
+      <td><span class="metric" style="display: block;">81-86</span></td>
+      <td><span class="metric" style="display: block;">86-91</span></td>
+      <td><span class="metric" style="display: block;">91-96</span></td>
+      <td><span class="metric" style="display: block;">96-101</span></td>
+      <td><span class="metric" style="display: block;">101-111</span></td>
+      <td><span class="metric" style="display: block;">111-116</span></td>
+    </tr>
+    <tr>
+      <th class="labelMeasurements">Bust</th>
+      <td><span class="metric" style="display: block;">79-84</span></td>
+      <td><span class="metric" style="display: block;">84-90</span></td>
+      <td><span class="metric" style="display: block;">90-98</span></td>
+      <td><span class="metric" style="display: block;">98-106</span></td>
+      <td><span class="metric" style="display: block;">106-116</span></td>
+      <td><span class="metric" style="display: block;">116-126</span></td>
+      <td><span class="metric" style="display: block;">126-136</span></td>
+    </tr>
+  </tbody>
+      </table>
+    </div>
+      </div>
+    </div>
+    
+  </div>
+  <div>
+    <p class="sgheading border-dashed-bottom">HOW TO MEASURE</p>
+    <img class="sizing_label_image" src="https://cdn.shopify.com/s/files/1/2445/2869/files/HowToMeasure-sportsbra.jpg?v=1689014092" alt="sweettops sizing" width="1024x1024" height="1024x1024">
+  </div>
+</div>  
+
+<script>
+  var product_type = `{{product.type}}`;
+  var productTitle = `{{product.title}}`;
+  if(productTitle.includes('Dress') || productTitle.includes('Skirt')) {
+     product_type = 'The Weekender Dress'
+  }
+  if(product_type == 'SweetLegs Jeggings') {
+     product_type = 'SweetLegs Athleisure';
+  }
+  window.Measeurement_In_CM = false;
+  let mySizeCookie = localStorage.getItem('mySize') ? localStorage.getItem('mySize') : '{{customer.metafields.my_fields.my_size}}';
+  console.log('mysize', mySizeCookie);
+  
+  var rangeSlider = function(){
+    var slider = $('.range-slider'),
+        range = $('.range-slider__range'),
+        value = $('.range-slider__value');
+
+    slider.each(function(){
+      value.each(function(){
+        var each_value = $(this).prev().attr('value');
+        $(this).html(each_value);
+      });
+      
+      range.on('input', function(){
+        if(($('.convert_inches')).hasClass('active')){
+          let range_slider_value = $(this).parent().find('.range-slider__value.value_in_inches');
+          range_slider_value.html(this.value);
+        }else{
+          let range_slider_value = $(this).parent().find('.range-slider__value.value_in_cm');
+          range_slider_value.html(this.value);
+        }
+
+      });
+    });
+  };
+  
+  if(mySizeCookie) {
+    let  mySizeCookies = JSON.parse(mySizeCookie);
+    if(mySizeCookies.measurement == 'inch') {
+      $('#bust').val(mySizeCookies.bust);
+      $('.range-slider__value.value_in_inches.bust').text(mySizeCookies.bust);
+      $('#waist').val(mySizeCookies.waist);
+      $('.range-slider__value.value_in_inches.waist').text(mySizeCookies.waist);
+      $('#hip').val(mySizeCookies.hip);
+      $('.range-slider__value.value_in_inches.hip').text(mySizeCookies.hip);
+      recommendSize();
+    } else {
+      let  mySizeCookies = JSON.parse(mySizeCookie);
+      myConvertor('CM');
+       $('#bust').val(mySizeCookies.bust);
+      $('.range-slider__value.value_in_cm.bust').text(mySizeCookies.bust);
+      $('#waist').val(mySizeCookies.waist);
+      $('.range-slider__value.value_in_cm.waist').text(mySizeCookies.waist);
+      $('#hip').val(mySizeCookies.hip);
+      $('.range-slider__value.value_in_cm.hip').text(mySizeCookies.hip);      
+      recommendSize();
+    }
+    
+  }
+  
+  
+  rangeSlider();
+  function myConvertor(e){
+    rangeSlider();
+    if(e == "CM"){
+      Measeurement_In_CM = true;
+      $('.sizing_inches').css("opacity", "0");
+      $('.convert_inches').removeClass ("active");
+
+      let band_value_inches = $('.range-slider__value.value_in_inches.band').text();
+
+      var band_inches_to_cm = (band_value_inches/0.393700787).toFixed(0);
+      $('.range-slider__value.value_in_cm.band').text(band_inches_to_cm);
+
+
+      $('#band-measurement').attr('max', 116);
+      $('#band-measurement').attr('min', 76);
+      $('#band-measurement').val(band_inches_to_cm);
+      
+
+
+      $('.sizing_cm').css("opacity", "1");
+      $('.convert_cm').addClass("active");
+      //  
+      $('.flip-card-inner').css("transform", "rotateY(180deg)");
+    }else{
+      Measeurement_In_CM = false;
+      $('.sizing_inches').css("opacity", "1");
+      $('.convert_inches').addClass ("active");
+      
+      let band_value_cm = $('.range-slider__value.value_in_cm.band').text();
+
+          
+      var band_cm_to_inches =  (band_value_cm*0.393700787).toFixed(0);
+      $('.range-slider__value.value_in_inches band').text(band_cm_to_inches);
+      
+      
+
+
+      $('#band-measurement').attr('max', 46);
+      $('#band-measurement').attr('min', 30);
+   $('#band-measurement').val(band_cm_to_inches);
+      
+
+
+      $('.sizing_cm').css("opacity", "0");
+      $('.convert_cm').removeClass("active");
+      //  
+      $('.flip-card-inner').css("transform", "rotateY(0deg)");
+    }
+  }
+  
+  function show(value) {
+    document.querySelector(".text-box").value = value;
+    
+    $('.dropdown input').css("border", "");
+    $('.dropdown input').css("border", "2px solid #47c1bf");
+    $('.sizing_error').css("transform", "translateY(30px)");
+    $('.sizing_error').css("opacity", "0");
+ 
+    recommendSize();
+  }
+
+
+  //  size submission
+  $( "#recommend_size_bra" ).click(function(e) {
+    e.preventDefault();  
+         
+      $('.dropdown input').css("border", "");
+      $('.dropdown input').css("border", "2px solid #47c1bf");
+      $('.sizing_error').css("transform", "translateY(30px)");
+      $('.sizing_error').css("opacity", "0");
+      
+      var selected_inches_values = [];
+      var selected_cm_values = [];
+      let slider_value= $('.range-slider__value');
+      let count = 1;
+      slider_value.each(function(){
+        if(count % 2 != 0){
+          selected_inches_values.push($(this).html());  
+        }else{
+          selected_cm_values.push($(this).html());  
+        }
+        count++;        
+        // 
+        $('.range_slider_container').css("opacity", "0");
+        $('.range_slider_container').css("height", "0");
+        $('.recommended_result > *').css("opacity", "1");
+        $('.recommended_result > *').css("height", "100%");
+      });
+    
+
+      recommendSize();
+    
+  });
+  
+  // recommend Size overloading
+  function recommendSize(){
+ 
+  
+   if ($('.convert_cm').hasClass('active')) {
+     sizeChartBra = {
+        "sizing": ["XS", "S", "M", "L", "XL", "2X", "3X"],
+        "band": {
+          "XS": "76-81",
+          "S": "81-86",
+          "M": "86-91",
+          "L": "91-97",
+          "XL": "97-102",
+          "2X": "102-112",
+          "3X": "112-117"
+        }
+      }
+   } else {
+         sizeChartBra = {
+      "sizing": ["XS", "S", "M", "L", "XL", "2X", "3X"],
+      "band": {
+        "XS": "30-32",
+        "S": "32-34",
+        "M": "34-36",
+        "L": "36-38",
+        "XL": "38-40",
+        "2X": "40-44",
+        "3X": "44-46"
+      },
+    };
+     
+   }
+  
+
+    bandMeasurement = parseInt($('#band-measurement').val());
+      var bandsize = "";
+    for (var key in sizeChartBra['band']) {
+  if (sizeChartBra['band'].hasOwnProperty(key)) {
+    var range = sizeChartBra['band'][key].split('-');
+    var min = parseInt(range[0]);
+    var max = parseInt(range[1]);
+
+    if (bandMeasurement >= min && bandMeasurement <= max) {
+      bandsize = key;
+      break;
+    }
+  }
+}
+$('#recommendedsize').text(bandsize)
+    $('#dynamic_message').html('<p>*Selecting your size based on the band size will offer a comfortably relaxed band fit. A Smaller size will be slightly tighter. You decide what feels best.</p>')
+console.log("The corresponding size for a measurement of " + bandMeasurement + " is: " + bandsize);
+  }
+  
+  // Edit Size   
+  $( "#edit_size_bra" ).click(function(e) {
+    e.preventDefault();
+    $('.range_slider_container').css("opacity", "1");
+    $('.range_slider_container').css("height", "100%");
+    $('.recommended_result > *').css("opacity", "0");
+    $('.recommended_result > *').css("height", "0");
+  });
+
+  //
+  
+  $('.sizing_toggling-bra').click(function() {
+    $('.accordiance-container-bra').toggleClass('show');
+  });
+
+  
+</script>  

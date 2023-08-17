@@ -51,39 +51,32 @@
 <script>
   var shortUrl;
   function ShortLinkBitly() { /*pLongUrl is the long URL*/
-    pLongUrl ="https://sweetlegs.com/pages/shared-wishlist/{{customer.id}}";
-    console.log(pLongUrl);
+    pLongUrl ="https://"+"{{ shop.permanent_domain }}"+"/pages/shared-wishlist/{{customer.id}}";
 	/*Long URL must start with a protocol, bitly can't (and won't) figure out the right protocol.*/
 	if ( !pLongUrl.match(/(ftp|http|https):\/\//i) ) {
 		return "Error: Link must start with a protocol (e.g.: http or https).";
 	}
-
+    
 	var apiKey = 'R_d565560f9eb84bb29567dc04c8daeb55';
 	var username = 'sweetlegs';
 	
 	/*Ajax call*/
 	$.ajax(
 	{
-		url: 'https://api-ssl.bitly.com/v3/shorten?login=' + username + '&apiKey=' + apiKey + '&format=json&longUrl=' + encodeURIComponent(pLongUrl),
-		
-		dataType: 'jsonp',
-		
+		url: 'https://api-ssl.bitly.com/v4/shorten',
+		type: "POST",
+		data: JSON.stringify({
+          "long_url": pLongUrl,
+          "domain": "bit.ly"
+        }),
+		headers: {
+            Authorization: 'Bearer 9cc8b74480300c217de31ac8b4b3e7dfe8068242'
+        },
+      
 		success: function( response ) {
-          console.log(response.data.url);
-			if ( response.status_code == 500) {
-				/*500 status code means the link is malformed.*/
-				return "Error: Invalid link.";
+          console.log('shorurl', response.link);
 
-            } else if ( response.status_code != 200){
-			 	/*If response is not 200 then an error ocurred. It can be a network issue or bitly is down.*/
-				return "Error: Service unavailable.";
-				
-				/*Uncomment the following line only for debugging purposes*/
-				/*console.log('Response: ' + response.status_code + '-' + response.status_txt);*/
-			}
-          else {
-           $('.shortUrl').val(response.data.url);				
-          }
+           $('.shortUrl').val(response.link);				
 		},
 		
 		contentType: 'application/json'
