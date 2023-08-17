@@ -1,0 +1,2675 @@
+<style>
+    .sizing_label_image{
+    float: none; 
+    width: 100%;  
+    height: 650px; 
+    object-fit: contain;
+  }
+  .view-hide-button{
+    display: flex;
+    align-items: center;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+  }
+
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    left: 5px;
+    bottom: 5px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  input:checked + .slider {
+    background-color: #00c4b3;
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px #00c4b3;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+    left: 2px;
+  }
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+/*    */
+  .accordiance-container {
+    height: 0px;
+    opacity: 0;
+    transition: all 0.5s ease;
+    overflow: hidden;
+  }
+  .accordiance-container.show {
+    height: 350px;
+    opacity: 1;
+    transition: all 0.5s ease;
+  }
+   *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: #fafafa;
+  }
+
+  .dropdown {
+    position: relative;
+    z-index: 999;
+  }
+
+  .dropdown::before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 1000;
+    width: 8px;
+    height: 8px;
+    border: 2px solid #333;
+    border-top: 2px solid #fff;
+    border-right: 2px solid #fff;
+    transform: rotate(-45deg);
+    transition: 0.5s;
+    pointer-events: none;
+  }
+  .border-dashed-bottom {
+    border-bottom-style: dashed;
+    border-color: #80808063;
+    padding: 10px 0px;
+  }
+
+  .dropdown.active::before {
+    top: 22px;
+    transform: rotate(-225deg);
+  }
+
+  .dropdown input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background: #fff;
+    font-size: 1.2em;
+    border: none;
+    outline: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    padding: 12px 20px !important;
+    border-radius: 10px;
+    border: 2px solid #47c1bf;
+  }
+
+  .dropdown .options {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    display: none;
+  }
+
+  .dropdown.active .options {
+    display: block;
+  }
+
+  .dropdown .options div {
+    padding: 12px 20px;
+    cursor: pointer;
+  }
+
+  .dropdown .options div:hover {
+    background: #47c1bf  !important;
+    color: #fff !important;
+  }
+  
+  .size_chart_holder{
+    margin-top: 50px;
+  }
+
+  .size_chart_holder .size_chart_wrapper,
+  .size_chart_holder .range-slider,
+  .size_chart_holder #recommend_size,
+  .size_chart_holder #sizing
+  {
+    height: 100%;
+    opacity: 1;
+    margin: 20px 0;
+  }
+  
+  .sizing_error{
+    padding: 15px 5px;
+    font-size: 16px;
+    font-weight: 400;
+    color: red;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: transform .5s cubic-bezier(.17,.67,.83,.67);
+  }
+  .range-slider {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .range-slider__range {
+    -webkit-appearance: none;
+    width: calc(100% - (73px));
+    height: 10px;
+    border-radius: 5px;
+    background: #d7dcdf;
+    outline: none;
+    padding: 0;
+    margin: 0;
+  }
+  .range-slider__range::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #000;;
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+  }
+  .range-slider__range::-webkit-slider-thumb:hover {
+    background: #1abc9c;
+  }
+  .range-slider__range:active::-webkit-slider-thumb {
+    background: #1abc9c;
+  }
+  .range-slider__range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+    background: #2c3e50;
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+  }
+  .range-slider__range::-moz-range-thumb:hover {
+    background: #1abc9c;
+  }
+  .range-slider__range:active::-moz-range-thumb {
+    background: #1abc9c;
+  }
+  .range-slider__range:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px #fff, 0 0 0 6px #1abc9c;
+  }
+  .range-slider__value {
+    display: inline-block;
+    position: relative;
+    width: 60px;
+    color: #fff;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 3px;
+    background: #000;
+    padding: 5px 10px;
+  }
+
+  ::-moz-range-track {
+    background: #d7dcdf;
+    border: 0;
+  }
+
+  input::-moz-focus-inner, input::-moz-focus-outer {
+    border: 0;
+  }
+
+  .range_slider_title{
+    width: 90px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #585858;
+  }
+
+  /*    */
+  .size_chart_container{
+    position: relative;
+  }
+  .recommended_result{
+    position: relative;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%);
+  }
+  .recommended_result > *{
+    opacity: 0;
+    height: 0;
+    transition: all 1s ease-out;
+  }
+  .sizing_message{
+    font-size: 16px;
+  }
+  .sizing_message_bold {
+    font-size: 21px;
+    color: #6a6a6a;
+    line-height: 24px;
+    font-weight: 400;
+    padding: 10px 0;
+  }
+  #sizing .topRow {
+    border: 1px solid #808080ba;
+    width: 150px;
+  }
+  #sizing .topRow.noBorder {
+    border: none;
+    text-align: left;
+    padding: 0 10px 0 0;
+    padding-left: 5px;
+  }
+  #sizing  th.labelMeasurements {
+    text-align: left;
+    padding-left: 5px;
+  }
+  span.metric{
+    font-size: 14x;
+    text-align: center;
+  }
+  #sizing table td{
+    border: 1px solid #808080ba;   
+    padding: 0.6rem 0;
+  }
+  #sizing table th{
+    padding: 1rem 0;
+  }
+  .size_convertor{
+    float: right;
+    margin-bottom: 15px;
+  }
+  .size_convertor > .active{
+    background: #00c4b354;
+    transition: background 0.15s ease-in-out;
+    color: #00c4b3;
+    padding: 4px 12px;
+    font-weight: 500;
+    border-radius: 0.189em;
+  }
+  #sizing{
+    position: relative;
+  }
+  table.sizetable.measurements-table.sizing_cm {
+    position: absolute;
+    top: 36px;
+  }
+  
+  .convert_inches, 
+  .convert_cm{
+    cursor: pointer;
+  }
+  
+  .sizing_cm{
+    opacity: 0;
+    transition: all .25s ease-out;
+  }
+  
+  @media(max-width: 600px){
+    span.metric {
+      font-size: 10px;
+      padding: 0px 5px;
+    }
+    #sizing table th{
+      font-size: 10px;
+    }
+    #sizing table th {
+      padding: 0.5rem 0;
+    }
+    #sizing .topRow {
+      width: 50px;
+    }
+    .size_convertor > .active{
+      padding: 2px 4px;
+    }
+    .size_convertor {
+      margin-bottom: 5px;
+    }
+    table.sizetable.measurements-table.sizing_cm {
+      top: 36px;
+    }
+  }
+  .flip-card {
+    perspective: 1000px;
+    position: relative;
+    width: 60px;
+    margin-left: 8px;
+    margin-top: -25px;
+  }
+  
+  .flip-card-inner {
+    position: relative;
+    text-align: center;
+    width: inherit;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: inherit;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .value_in_inches, .value_in_cm{
+    width: inherit;
+  }
+
+  .flip-card-back {
+    transform: rotateY(180deg);
+  }
+  .sgheading {
+    text-align: center;
+    font-size: 14px;
+  }
+  #recommendedsize {
+    background: #FAFAFA;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+  }
+</style> 
+
+<!--       Sizing Calculator         -->
+<div class="size_chart_wrapper">
+  <div class="size_chart_container">
+    <div class="range_slider_container">
+      <p class="sgheading">ENTER YOUR MEASUREMENTS</p>
+      <div class="range-slider">
+        <span class="range_slider_title">BUST</span>
+        <input id="bust" class="range-slider__range" type="range" value="42" min="32" max="54">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <span class="range-slider__value value_in_inches bust">42</span>
+            </div>  
+            <div class="flip-card-back">
+              <span  class="range-slider__value value_in_cm bust">107</span>
+            </div>  
+          </div>
+        </div>
+      </div>
+
+      <div class="range-slider">
+        <span class="range_slider_title">WAIST</span>
+        <input id="waist" class="range-slider__range" type="range" value="37" min="24" max="48">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <span class="range-slider__value value_in_inches waist">37</span>
+            </div>  
+            <div class="flip-card-back">
+              <span  class="range-slider__value value_in_cm waist">89</span>
+            </div>  
+          </div>
+        </div>
+      </div>
+
+      <div class="range-slider">
+        <span class="range_slider_title">HIP</span>
+        <input id="hip" class="range-slider__range" type="range" value="49" min="35" max="59">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <span class="range-slider__value value_in_inches hip">49</span>
+            </div>  
+            <div class="flip-card-back">
+              <span  class="range-slider__value value_in_cm hip">127</span>
+            </div>  
+          </div>
+        </div>
+      </div> 
+      <div style="width: 100%; display: flex;">  
+        <a href="" id="recommend_size" class="button btn1 bshadow alt" style="width: 50%; margin: 20px auto; letter-spacing: .125rem;"><span>RECOMMEND SIZE</span></a>
+      </div>
+    </div>  
+    <div class="recommended_result">
+      <div>
+        <div style="text-align: center;">
+          <p class="sgheading">RECOMMENDED SIZE FOR THIS PRODUCT</p>
+          <h1 id="recommendedsize" class="bigsize sgheading text-focus-in"></h1>
+          <p id="dynamic_message" class="sizing_message_bold"><strong>This recommendation is based on your <span id="based_on"></span> measurement.</strong></p>
+        </div>  
+        <p class="sizing_message">This means that this will be the size that best lines up with how this style has been designed to fit!</p>
+      </div>
+      <div style="width: 100%; display: flex;">  
+        <a href="" id="edit_size" class="button btn1 bshadow alt" style="width: 50%; margin: 20px auto; letter-spacing: .125rem;"><span>EDIT SIZE</span></a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Size table -->
+  <div id="sizing">
+    <div class="accordiance border-dashed-bottom">
+      <div class="accordiance-title" style="display: flex;justify-content: space-between">
+          <div class="view-hide-button">
+            <span><b>CHART: </b></span>&nbsp;&nbsp;
+            <label class="switch">
+              <input class="sizing_toggling" type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+           <div class="size_convertor">
+             <span onclick="myConvertor('IN')">UNITS:</span>
+              <span class="convert_inches active" onclick="myConvertor('IN')">IN</span> /
+              <span class="convert_cm" onclick="myConvertor('CM')">CM</span>
+            </div>
+        </div>
+   <div class="accordiance-container">     
+    <div class="measurements-container">
+      <table class="sizetable measurements-table sizing_inches">
+        <tbody>
+          <tr>
+            <th class="topRow noBorder" rowspan="2" style="background: #f0f0f0;">Sizing</th>
+            <th colspan="2"class="topRow">PETITE</th>
+            <th colspan="2"class="topRow">ONE SIZE</th>
+            <th colspan="2"class="topRow">PLUS</th>
+            <th colspan="2"class="topRow">PLUS2</th>
+          </tr>
+          <tr>
+            <th class="topRow">XS</th>
+            <th class="topRow">S</th>
+            <th class="topRow">M</th>
+            <th class="topRow">L</th>
+            <th class="topRow">XL</th>
+            <th class="topRow">2X</th>
+            <th class="topRow">3X</th>
+          </tr>
+          <tr>
+            <th class="topRow noBorder">Dress Size</th>
+            <th class="topRow">0-2</th>
+            <th class="topRow">4-6</th>
+            <th class="topRow">8-10</th>
+            <th class="topRow">12-14</th>
+            <th class="topRow">16-18</th>
+            <th class="topRow">20-22</th>
+            <th class="topRow">24-26</th>
+          </tr>
+          <tr>
+            <th class="labelMeasurements">Bust</th>
+            <td><span class="metric" style="display: block;">32-33</span></td>
+            <td><span class="metric" style="display: block;">34-35</span></td>
+            <td><span class="metric" style="display: block;">36-37</span></td>
+            <td><span class="metric" style="display: block;">38-41</span></td>
+            <td><span class="metric" style="display: block;">42-46</span></td>
+            <td><span class="metric" style="display: block;">47-50</span></td>
+            <td><span class="metric" style="display: block;">51-54</span></td>
+          </tr>
+          <tr>
+            <th class="labelMeasurements">Waist</th>
+            <td><span class="metric" style="display: block;">24-25</span></td>
+            <td><span class="metric" style="display: block;">26-27</span></td>
+            <td><span class="metric" style="display: block;">28-29</span></td>
+            <td><span class="metric" style="display: block;">30-34</span></td>
+            <td><span class="metric" style="display: block;">35-39</span></td>
+            <td><span class="metric" style="display: block;">40-44</span></td>
+            <td><span class="metric" style="display: block;">45-48</span></td>
+          </tr>
+          <tr>
+            <th class="labelMeasurements">Hip</th>
+            <td><span class="metric" style="display: block;">35-36</span></td>
+            <td><span class="metric" style="display: block;">37-38</span></td>
+            <td><span class="metric" style="display: block;">39-41</span></td>
+            <td><span class="metric" style="display: block;">42-45</span></td>
+            <td><span class="metric" style="display: block;">46-50</span></td>
+            <td><span class="metric" style="display: block;">51-55</span></td>
+            <td><span class="metric" style="display: block;">56-59</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <!--  Sizing In CM      -->
+      <table class="sizetable measurements-table sizing_cm">
+        <tbody>
+          <tr>
+            <th class="topRow noBorder" rowspan="2" style="background: #f0f0f0;">Sizing</th>
+            <th colspan="2"class="topRow">PETITE</th>
+            <th colspan="2"class="topRow">ONE SIZE</th>
+            <th colspan="2"class="topRow">PLUS</th>
+            <th colspan="2"class="topRow">PLUS2</th>
+          </tr>
+          <tr>
+            <th class="topRow">XS</th>
+            <th class="topRow">S</th>
+            <th class="topRow">M</th>
+            <th class="topRow">L</th>
+            <th class="topRow">XL</th>
+            <th class="topRow">2X</th>
+            <th class="topRow">3X</th>
+          </tr>
+          <tr>
+            <th class="topRow noBorder">Dress Size</th>
+            <th class="topRow">0-2</th>
+            <th class="topRow">4-6</th>
+            <th class="topRow">8-10</th>
+            <th class="topRow">12-14</th>
+            <th class="topRow">16-18</th>
+            <th class="topRow">20-22</th>
+            <th class="topRow">24-26</th>
+          </tr>
+          <tr>
+            <th class="labelMeasurements">Bust</th>
+            <td><span class="metric" style="display: block;">81-85</span></td>
+            <td><span class="metric" style="display: block;">86-90</span></td>
+            <td><span class="metric" style="display: block;">91-95</span></td>
+            <td><span class="metric" style="display: block;">96-105</span></td>
+            <td><span class="metric" style="display: block;">106-118</span></td>
+            <td><span class="metric" style="display: block;">119-128</span></td>
+            <td><span class="metric" style="display: block;">129-137</span></td>
+          </tr>
+          <tr>
+            <th class="labelMeasurements">Waist</th>
+            <td><span class="metric" style="display: block;">61-65</span></td>
+            <td><span class="metric" style="display: block;">66-70</span></td>
+            <td><span class="metric" style="display: block;">71-75</span></td>
+            <td><span class="metric" style="display: block;">76-87</span></td>
+            <td><span class="metric" style="display: block;">88-100</span></td>
+            <td><span class="metric" style="display: block;">101-113</span></td>
+            <td><span class="metric" style="display: block;">114-122</span></td>
+          </tr>
+          <tr>
+            <th class="labelMeasurements">Hip</th>
+            <td><span class="metric" style="display: block;">89-92</span></td>
+            <td><span class="metric" style="display: block;">93-98</span></td>
+            <td><span class="metric" style="display: block;">99-105</span></td>
+            <td><span class="metric" style="display: block;">106-115</span></td>
+            <td><span class="metric" style="display: block;">116-128</span></td>
+            <td><span class="metric" style="display: block;">129-141</span></td>
+            <td><span class="metric" style="display: block;">142-150</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+      </div>
+    </div>
+    
+  </div>
+  <div>
+    <p class="sgheading border-dashed-bottom">HOW TO MEASURE</p>
+    <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/sweettops-sizing_1024x1024.jpg?v=1572915906" alt="sweettops sizing" width="1024x1024" height="1024x1024" style="float: none; width: 100%;">
+  </div>
+</div>  
+
+<script>
+  var product_type = `{{product.type}}`;
+  var productTitle = `{{product.title}}`;
+  if(productTitle.includes('Dress') || productTitle.includes('Skirt')) {
+     product_type = 'The Weekender Dress'
+  }
+  if(product_type == 'SweetLegs Jeggings') {
+     product_type = 'SweetLegs Athleisure';
+  }
+  window.Measeurement_In_CM = false;
+  let mySizeCookie = localStorage.getItem('mySize') ? localStorage.getItem('mySize') : '{{customer.metafields.my_fields.my_size}}';
+  console.log('mysize', mySizeCookie);
+  
+  var rangeSlider = function(){
+    var slider = $('.range-slider'),
+        range = $('.range-slider__range'),
+        value = $('.range-slider__value');
+
+    slider.each(function(){
+      value.each(function(){
+        var each_value = $(this).prev().attr('value');
+        $(this).html(each_value);
+      });
+      
+      range.on('input', function(){
+        if(($('.convert_inches')).hasClass('active')){
+          let range_slider_value = $(this).parent().find('.range-slider__value.value_in_inches');
+          range_slider_value.html(this.value);
+        }else{
+          let range_slider_value = $(this).parent().find('.range-slider__value.value_in_cm');
+          range_slider_value.html(this.value);
+        }
+
+      });
+    });
+  };
+  
+  if(mySizeCookie) {
+    let  mySizeCookies = JSON.parse(mySizeCookie);
+    if(mySizeCookies.measurement == 'inch') {
+      $('#bust').val(mySizeCookies.bust);
+      $('.range-slider__value.value_in_inches.bust').text(mySizeCookies.bust);
+      $('#waist').val(mySizeCookies.waist);
+      $('.range-slider__value.value_in_inches.waist').text(mySizeCookies.waist);
+      $('#hip').val(mySizeCookies.hip);
+      $('.range-slider__value.value_in_inches.hip').text(mySizeCookies.hip);
+      recommendSize();
+    } else {
+      let  mySizeCookies = JSON.parse(mySizeCookie);
+      myConvertor('CM');
+       $('#bust').val(mySizeCookies.bust);
+      $('.range-slider__value.value_in_cm.bust').text(mySizeCookies.bust);
+      $('#waist').val(mySizeCookies.waist);
+      $('.range-slider__value.value_in_cm.waist').text(mySizeCookies.waist);
+      $('#hip').val(mySizeCookies.hip);
+      $('.range-slider__value.value_in_cm.hip').text(mySizeCookies.hip);      
+      recommendSize();
+    }
+    
+  }
+  
+  
+  rangeSlider();
+  function myConvertor(e){
+    rangeSlider();
+    if(e == "CM"){
+      Measeurement_In_CM = true;
+      $('.sizing_inches').css("opacity", "0");
+      $('.convert_inches').removeClass ("active");
+
+      let bust_value_inches = $('.range-slider__value.value_in_inches.bust').text();
+      let waist_value_inches =  $('.range-slider__value.value_in_inches.waist').text();
+      let hip_value_inches =  $('.range-slider__value.value_in_inches.hip').text();
+      
+      var bust_inches_to_cm = (bust_value_inches/0.393700787).toFixed(0);
+      $('.range-slider__value.value_in_cm.bust').text(bust_inches_to_cm);
+
+      var waist_inches_to_cm = (waist_value_inches/0.393700787).toFixed(0);
+      $('.range-slider__value.value_in_cm.waist').text(waist_inches_to_cm);
+
+      var hip_inches_to_cm = (hip_value_inches/0.393700787).toFixed(0);
+      $('.range-slider__value.value_in_cm.hip').text(hip_inches_to_cm);
+
+      $('#bust').attr('max', 137);
+      $('#bust').attr('min', 81);
+      $('#bust').val(bust_inches_to_cm);
+      
+      $('#waist').attr('max', 122);
+      $('#waist').attr('min', 61);
+      $('#waist').val(waist_inches_to_cm);
+      
+      $('#hip').attr('max', 150);
+      $('#hip').attr('min', 89);
+      $('#hip').val(hip_inches_to_cm);
+
+      $('.sizing_cm').css("opacity", "1");
+      $('.convert_cm').addClass("active");
+      //  
+      $('.flip-card-inner').css("transform", "rotateY(180deg)");
+    }else{
+      Measeurement_In_CM = false;
+      $('.sizing_inches').css("opacity", "1");
+      $('.convert_inches').addClass ("active");
+      
+      let bust_value_cm = $('.range-slider__value.value_in_cm.bust').text();
+      let waist_value_cm =  $('.range-slider__value.value_in_cm.waist').text();
+      let hip_value_cm =  $('.range-slider__value.value_in_cm.hip').text();
+          
+      var bust_cm_to_inches = (bust_value_cm*0.393700787).toFixed(0);
+      $('.range-slider__value.value_in_inches.bust').text(bust_cm_to_inches);
+      
+      
+      var waist_cm_to_inches = (waist_value_cm*0.393700787).toFixed(0);
+      $('.range-slider__value.value_in_inches.waist').text(waist_cm_to_inches);
+      
+      var hip_cm_to_inches = (hip_value_cm*0.393700787).toFixed(0);
+      $('.range-slider__value.value_in_inches.hip').text(hip_cm_to_inches);
+      
+
+      $('#bust').attr('max', 54);
+      $('#bust').attr('min', 32);
+      $('#bust').val(bust_cm_to_inches);
+      
+      $('#waist').attr('max', 48);
+      $('#waist').attr('min', 24);
+      $('#waist').val(waist_cm_to_inches);
+      
+      $('#hip').attr('max', 59);
+      $('#hip').attr('min', 35);
+      $('#hip').val(hip_cm_to_inches);
+
+      $('.sizing_cm').css("opacity", "0");
+      $('.convert_cm').removeClass("active");
+      //  
+      $('.flip-card-inner').css("transform", "rotateY(0deg)");
+    }
+  }
+  
+  function show(value) {
+    document.querySelector(".text-box").value = value;
+    
+    $('.dropdown input').css("border", "");
+    $('.dropdown input').css("border", "2px solid #47c1bf");
+    $('.sizing_error').css("transform", "translateY(30px)");
+    $('.sizing_error').css("opacity", "0");
+ 
+    recommendSize();
+  }
+
+
+  //  size submission
+  $( "#recommend_size" ).click(function(e) {
+    e.preventDefault();  
+         
+      $('.dropdown input').css("border", "");
+      $('.dropdown input').css("border", "2px solid #47c1bf");
+      $('.sizing_error').css("transform", "translateY(30px)");
+      $('.sizing_error').css("opacity", "0");
+      
+      var selected_inches_values = [];
+      var selected_cm_values = [];
+      let slider_value= $('.range-slider__value');
+      let count = 1;
+      slider_value.each(function(){
+        if(count % 2 != 0){
+          selected_inches_values.push($(this).html());  
+        }else{
+          selected_cm_values.push($(this).html());  
+        }
+        count++;        
+        // 
+        $('.range_slider_container').css("opacity", "0");
+        $('.range_slider_container').css("height", "0");
+        $('.recommended_result > *').css("opacity", "1");
+        $('.recommended_result > *').css("height", "100%");
+      });
+    
+    var mySize;
+    let check_value_for_cookie = $('.convert_inches');      
+    if(check_value_for_cookie.hasClass('active')){
+      mySize = {
+        bust: selected_inches_values[0],
+        weist: selected_inches_values[1],
+        hip: selected_inches_values[2],
+        measurement: "inch"
+      };
+        localStorage.setItem('mySize', JSON.stringify(mySize));
+    } else{
+      mySize = {
+        bust: selected_cm_values[0],
+        weist: selected_cm_values[1],
+        hip: selected_cm_values[2],
+        measurement: "cm"
+      };
+      localStorage.setItem('mySize', JSON.stringify(mySize));
+    }
+      function range(start, end, step = 1) {
+        const len = Math.floor((end - start) / step) + 1
+        return Array(len).fill().map((_, idx) => start + (idx * step))
+      }   
+    
+      //  
+      {% if customer %}
+      var customerId = {{customer.id}};
+      var Sizing_Data = {
+        mySize: JSON.stringify(mySize),
+        customerId: customerId
+      };
+      $.ajax({
+        type: "POST",
+        url: "https://sweetlegs.rocks/api/customer/metafield",
+        data: Sizing_Data,
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        console.log(data);
+      });
+      {% endif %}
+      //   
+      recommendSize();
+    
+  });
+  
+  // recommend Size overloading
+  function recommendSize(){
+   
+      $('.dropdown input').css("border", "");
+      $('.dropdown input').css("border", "2px solid #47c1bf");
+      $('.sizing_error').css("transform", "translateY(30px)");
+      $('.sizing_error').css("opacity", "0");
+
+      var selected_inches_values = [];
+      var selected_cm_values = [];
+      let slider_value= $('.range-slider__value');
+      let count = 1;
+      slider_value.each(function(){
+        if(count % 2 != 0){
+          selected_inches_values.push($(this).html());  
+        }else{
+          selected_cm_values.push($(this).html());  
+        }
+        count++;      
+        // 
+        $('.range_slider_container').css("opacity", "0");
+        $('.range_slider_container').css("height", "0");
+        $('.recommended_result > *').css("opacity", "1");
+        $('.recommended_result > *').css("height", "100%");
+      });
+
+
+      function range(start, end, step = 1) {
+        const len = Math.floor((end - start) / step) + 1
+        return Array(len).fill().map((_, idx) => start + (idx * step))
+      }
+
+      // PRODUCT TYPE: SweetLegs
+      if(product_type.includes("SweetLegs") && product_type !== "SweetLegs Athleisure" || product_type.includes("Shorts")){
+        $('.sizing_message').text('The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.');
+                                  
+        // Calculated Value
+        var calculated_value = [];
+        if(Measeurement_In_CM){
+          // Bust Value        
+          let bust_value_incm_xs = range(81,84);
+          let bust_value_incm_s = range(86,89);
+          let bust_value_incm_md = range(91,94);
+          let bust_value_incm_lg = range(97,104);
+          let bust_value_incm_xl = range(107,117);
+          let bust_value_incm_2x = range(119, 127);
+          let bust_value_incm_3x = range(130, 137);
+          // Waist
+          let waist_value_incm_xs = range(61,64);
+          let waist_value_incm_s = range(66,69);
+          let waist_value_incm_md = range(71,74);
+          let waist_value_incm_lg = range(76,86);
+          let waist_value_incm_xl = range(89,99);
+          let waist_value_incm_2x = range(102, 112);
+          let waist_value_incm_3x = range(114,122);
+
+          // Hip  
+          let hip_value_incm_xs = range(89,91);
+          let hip_value_incm_s = range(94,97);
+          let hip_value_incm_md = range(99,104);
+          let hip_value_incm_lg = range(107,114);
+          let hip_value_incm_xl = range(117,127);
+          let hip_value_incm_2x = range(130,140);
+          let hip_value_incm_3x = range(142,150); 
+          
+          for (let i = 0; i < bust_value_incm_xs.length; i++) {
+            if(bust_value_incm_xs[i] == selected_cm_values[0]){
+              var bust = "XS";
+              calculated_value.push(bust);
+              console.log("Xtra Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_s.length; i++) {
+            if(bust_value_incm_s[i] == selected_cm_values[0]){
+              var bust = "S";
+              calculated_value.push(bust);
+              console.log("Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_md.length; i++) {
+            if(bust_value_incm_md[i] == selected_cm_values[0]){
+              var bust = "M";
+              calculated_value.push(bust);
+              console.log("Medium ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_lg.length; i++) {
+            if(bust_value_incm_lg[i] == selected_cm_values[0]){
+              var bust = "L";
+              calculated_value.push(bust);
+              console.log("Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_xl.length; i++) {
+            if(bust_value_incm_xl[i] == selected_cm_values[0]){
+              var bust = "XL";
+              calculated_value.push(bust);
+              console.log("Extra Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_2x.length; i++) {
+            if(bust_value_incm_2x[i] == selected_cm_values[0]){
+              var bust = "2X";
+              calculated_value.push(bust);
+              console.log("2X ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_3x.length; i++) {
+            if(bust_value_incm_3x[i] == selected_cm_values[0]){
+              var bust = "3X";
+              calculated_value.push(bust);
+              console.log("3X ", bust);
+              break;
+            }
+          }
+          //  Waist Value 
+          for (let i = 0; i < waist_value_incm_xs.length; i++) {
+            if(waist_value_incm_xs[i] == selected_cm_values[1]){
+              var waist = "XS";
+              calculated_value.push(waist);
+              console.log("Xtra Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_s.length; i++) {
+            if(waist_value_incm_s[i] == selected_cm_values[1]){
+              var waist = "S";
+              calculated_value.push(waist);
+              console.log("Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_md.length; i++) {
+            if(waist_value_incm_md[i] == selected_cm_values[1]){
+              var waist = "M";
+              calculated_value.push(waist);
+              console.log("Medium ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_lg.length; i++) {
+            if(waist_value_incm_lg[i] == selected_cm_values[1]){
+              var waist = "L";
+              calculated_value.push(waist);
+              console.log("Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_xl.length; i++) {
+            if(waist_value_incm_xl[i] == selected_cm_values[1]){
+              var waist = "XL";
+              calculated_value.push(waist);
+              console.log("Extra Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_2x.length; i++) {
+            if(waist_value_incm_2x[i] == selected_cm_values[1]){
+              var waist = "2X";
+              calculated_value.push(waist);
+              console.log("2X ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_3x.length; i++) {
+            if(waist_value_incm_3x[i] == selected_cm_values[1]){
+              var waist = "3X";
+              calculated_value.push(waist);         
+              console.log("3X ", waist);
+              break;
+            }
+          }
+
+          // Hip Value 
+          for (let i = 0; i < hip_value_incm_xs.length; i++) {
+            if(hip_value_incm_xs[i] == selected_cm_values[2]){
+              var hip = "XS";
+              calculated_value.push(hip);
+              console.log("Xtra Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_s.length; i++) {
+            if(hip_value_incm_s[i] == selected_cm_values[2]){
+              var hip = "S";
+              calculated_value.push(hip);
+              console.log("Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_md.length; i++) {
+            if(hip_value_incm_md[i] == selected_cm_values[2]){
+              var hip = "M";
+              calculated_value.push(hip);
+              console.log("Medium ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_lg.length; i++) {
+            if(hip_value_incm_lg[i] == selected_cm_values[2]){
+              var hip = "L";
+              calculated_value.push(hip);
+              console.log("Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_xl.length; i++) {
+            if(hip_value_incm_xl[i] == selected_cm_values[2]){
+              var hip = "XL";
+              calculated_value.push(hip);
+              console.log("Extra Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_2x.length; i++) {
+            if(hip_value_incm_2x[i] == selected_cm_values[2]){
+              var hip = "2X";
+              calculated_value.push(hip);
+              console.log("2X ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_3x.length; i++) {
+            if(hip_value_incm_3x[i] == selected_cm_values[2]){
+              var hip = "3X";
+              calculated_value.push(hip);
+              console.log("3X ", hip);
+              break;
+            }
+          }     
+        }else{
+          // Bust Value        
+          let bust_value_xs = range(32,33);
+          let bust_value_s = range(34,35);
+          let bust_value_md = range(36,37);
+          let bust_value_lg = range(38,41);
+          let bust_value_xl = range(42,46);
+          let bust_value_2x = range(47, 50);
+          let bust_value_3x = range(51,54);
+          // Waist
+          let waist_value_xs = range(24,25);
+          let waist_value_s = range(26,27);
+          let waist_value_md = range(28,29);
+          let waist_value_lg = range(30,34);
+          let waist_value_xl = range(35,39);
+          let waist_value_2x = range(40, 44);
+          let waist_value_3x = range(45,48);
+
+          // Hip  
+          let hip_value_xs = range(35,36);
+          let hip_value_s = range(37,38);
+          let hip_value_md = range(39,41);
+          let hip_value_lg = range(42,45);
+          let hip_value_xl = range(46,50);
+          let hip_value_2x = range(51, 55);
+          let hip_value_3x = range(56,59);
+          
+          
+          for (let i = 0; i < bust_value_xs.length; i++) {
+            if(bust_value_xs[i] == selected_inches_values[0]){
+              var bust = "XS";
+              calculated_value.push(bust);
+              console.log("Xtra Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_s.length; i++) {
+            if(bust_value_s[i] == selected_inches_values[0]){
+              var bust = "S";
+              calculated_value.push(bust);
+              console.log("Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_md.length; i++) {
+            if(bust_value_md[i] == selected_inches_values[0]){
+              var bust = "M";
+              calculated_value.push(bust);
+              console.log("Medium ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_lg.length; i++) {
+            if(bust_value_lg[i] == selected_inches_values[0]){
+              var bust = "L";
+              calculated_value.push(bust);
+              console.log("Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_xl.length; i++) {
+            if(bust_value_xl[i] == selected_inches_values[0]){
+              var bust = "XL";
+              calculated_value.push(bust);
+              console.log("Extra Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_2x.length; i++) {
+            if(bust_value_2x[i] == selected_inches_values[0]){
+              var bust = "2X";
+              calculated_value.push(bust);
+              console.log("2X ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_3x.length; i++) {
+            if(bust_value_3x[i] == selected_inches_values[0]){
+              var bust = "3X";
+              calculated_value.push(bust);
+              console.log("3X ", bust);
+              break;
+            }
+          }
+          //  Waist Value 
+          for (let i = 0; i < waist_value_xs.length; i++) {
+            if(waist_value_xs[i] == selected_inches_values[1]){
+              var waist = "XS";
+              calculated_value.push(waist);
+              console.log("Xtra Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_s.length; i++) {
+            if(waist_value_s[i] == selected_inches_values[1]){
+              var waist = "S";
+              calculated_value.push(waist);
+              console.log("Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_md.length; i++) {
+            if(waist_value_md[i] == selected_inches_values[1]){
+              var waist = "M";
+              calculated_value.push(waist);
+              console.log("Medium ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_lg.length; i++) {
+            if(waist_value_lg[i] == selected_inches_values[1]){
+              var waist = "L";
+              calculated_value.push(waist);
+              console.log("Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_xl.length; i++) {
+            if(waist_value_xl[i] == selected_inches_values[1]){
+              var waist = "XL";
+              calculated_value.push(waist);
+              console.log("Extra Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_2x.length; i++) {
+            if(waist_value_2x[i] == selected_inches_values[1]){
+              var waist = "2X";
+              calculated_value.push(waist);
+              console.log("2X ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_3x.length; i++) {
+            if(waist_value_3x[i] == selected_inches_values[1]){
+              var waist = "3X";
+              calculated_value.push(waist);         
+              console.log("3X ", waist);
+              break;
+            }
+          }
+
+          // Hip Value 
+          for (let i = 0; i < hip_value_xs.length; i++) {
+            if(hip_value_xs[i] == selected_inches_values[2]){
+              var hip = "XS";
+              calculated_value.push(hip);
+              console.log("Xtra Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_s.length; i++) {
+            if(hip_value_s[i] == selected_inches_values[2]){
+              var hip = "S";
+              calculated_value.push(hip);
+              console.log("Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_md.length; i++) {
+            if(hip_value_md[i] == selected_inches_values[2]){
+              var hip = "M";
+              calculated_value.push(hip);
+              console.log("Medium ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_lg.length; i++) {
+            if(hip_value_lg[i] == selected_inches_values[2]){
+              var hip = "L";
+              calculated_value.push(hip);
+              console.log("Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_xl.length; i++) {
+            if(hip_value_xl[i] == selected_inches_values[2]){
+              var hip = "XL";
+              calculated_value.push(hip);
+              console.log("Extra Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_2x.length; i++) {
+            if(hip_value_2x[i] == selected_inches_values[2]){
+              var hip = "2X";
+              calculated_value.push(hip);
+              console.log("2X ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_3x.length; i++) {
+            if(hip_value_3x[i] == selected_inches_values[2]){
+              var hip = "3X";
+              calculated_value.push(hip);
+              console.log("3X ", hip);
+              break;
+            }
+          }     
+        }    
+      
+      var xs=0, s=0, m=0, l=0, xl=0, twoX=0, threex=0;
+      calculated_value.forEach(function(value, index){
+        
+        if(index == 0){
+          return;
+        }
+        
+        if(value == "XS"){
+           xs += 1;
+        }else if(value == "S"){
+           s += 1;
+        } 
+        else if(value == "M"){
+           m += 1;
+        } 
+        else if(value == "L"){
+           l += 1;
+        } 
+        else if(value == "XL"){
+           xl += 1;
+        } 
+        else if(value == "2X"){
+           twoX += 1;
+        } 
+        else if(value == "3X"){
+           threex += 1;
+        } 
+      });
+        
+    // final results for Sweetlegs       
+        if(xs > 1){
+          $('#recommendedsize').text("PETITE");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(s > 1){
+          $('#recommendedsize').text("PETITE");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(m > 1){
+          $('#recommendedsize').text("ONE SIZE");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(l > 1){
+          $('#recommendedsize').text("ONE SIZE");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(xl > 1){
+          $('#recommendedsize').text("PLUS");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(twoX > 1){
+          $('#recommendedsize').text("PLUS");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(threex > 1){
+          $('#recommendedsize').text("PLUS2");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        
+        // Priority Base
+        else if(xs == 1){
+          if(s == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
+            console.log(calculated_value[2]);
+            if(calculated_value[2] == "XS" || calculated_value[2] == "S"){
+              $('#recommendedsize').text("PETITE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "M" || calculated_value[2] == "L"){
+              $('#recommendedsize').text("ONE SIZE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "XL" || calculated_value[2] == "2X"){
+              $('#recommendedsize').text("PLUS");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "3X"){
+              $('#recommendedsize').text("PLUS2");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+          }
+        }
+        else if( s == 1){
+          if(xs == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
+            console.log(calculated_value[2]);
+            if(calculated_value[2] == "XS" || calculated_value[2] == "S"){
+              $('#recommendedsize').text("PETITE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "M" || calculated_value[2] == "L"){
+              $('#recommendedsize').text("ONE SIZE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "XL" || calculated_value[2] == "2X"){
+              $('#recommendedsize').text("PLUS");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "3X"){
+              $('#recommendedsize').text("PLUS2");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+          }
+        }
+        else if( m == 1){
+          if(xs == 1 || s == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
+            console.log(calculated_value[2]);
+            if(calculated_value[2] == "XS" || calculated_value[2] == "S"){
+              $('#recommendedsize').text("PETITE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "M" || calculated_value[2] == "L"){
+              $('#recommendedsize').text("ONE SIZE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "XL" || calculated_value[2] == "2X"){
+              $('#recommendedsize').text("PLUS");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "3X"){
+              $('#recommendedsize').text("PLUS2");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+          }
+        }
+        else if(l == 1){
+          if(xs == 1 || m == 1 || s == 1 || xl == 1 || twoX == 1 || threex == 1){
+            console.log(calculated_value[2]);
+            if(calculated_value[2] == "XS" || calculated_value[2] == "S"){
+              $('#recommendedsize').text("PETITE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "M" || calculated_value[2] == "L"){
+              $('#recommendedsize').text("ONE SIZE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "XL" || calculated_value[2] == "2X"){
+              $('#recommendedsize').text("PLUS");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "3X"){
+              $('#recommendedsize').text("PLUS2");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+          }
+        }
+        else if( xl == 1){
+          if(xs == 1 || m == 1 || l == 1 || s == 1 || twoX == 1 || threex == 1){
+            console.log(calculated_value[2]);
+            if(calculated_value[2] == "XS" || calculated_value[2] == "S"){
+              $('#recommendedsize').text("PETITE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "M" || calculated_value[2] == "L"){
+              $('#recommendedsize').text("ONE SIZE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "XL" || calculated_value[2] == "2X"){
+              $('#recommendedsize').text("PLUS");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "3X"){
+              $('#recommendedsize').text("PLUS2");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+          }
+        }
+        else if(twoX == 1){
+          if(xs == 1 || m == 1 || l == 1 || xl == 1 || s == 1 || threex == 1){
+            console.log(calculated_value[2]);
+            if(calculated_value[2] == "XS" || calculated_value[2] == "S"){
+              $('#recommendedsize').text("PETITE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "M" || calculated_value[2] == "L"){
+              $('#recommendedsize').text("ONE SIZE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "XL" || calculated_value[2] == "2X"){
+              $('#recommendedsize').text("PLUS");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "3X"){
+              $('#recommendedsize').text("PLUS2");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+          }
+        }
+        else if( threex == 1){
+          if(xs == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || s == 1){
+            console.log(calculated_value[2]);
+            if(calculated_value[2] == "XS" || calculated_value[2] == "S"){
+              $('#recommendedsize').text("PETITE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "M" || calculated_value[2] == "L"){
+              $('#recommendedsize').text("ONE SIZE");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "XL" || calculated_value[2] == "2X"){
+              $('#recommendedsize').text("PLUS");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+            else if(calculated_value[2] == "3X"){
+              $('#recommendedsize').text("PLUS2");
+              $('#dynamic_message').html('');
+              $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+            }
+          }
+        }        
+      }
+      
+  
+     // PRODUCT TYPE: Athleisure leggings, Crops, and Shorts - 2222
+      else if(product_type == "SweetLegs Athleisure"){
+        $('.sizing_message').text('The recommended size best lines up with how this garment has been designed to fit. We know fit is a personal preference, so if you prefer a snug fit, size down, or size up if a relaxed fit is more your thing. Please note that the way a fabric performs may be impacted by choosing a size outside of the recommendation above.');
+        // Calculated Value
+        var calculated_value = [];
+        if(Measeurement_In_CM){
+          // Bust Value        
+          let bust_value_incm_xs = range(81,84);
+          let bust_value_incm_s = range(86,89);
+          let bust_value_incm_md = range(91,94);
+          let bust_value_incm_lg = range(97,104);
+          let bust_value_incm_xl = range(107,117);
+          let bust_value_incm_2x = range(119, 127);
+          let bust_value_incm_3x = range(130, 137);
+          // Waist
+          let waist_value_incm_xs = range(61,64);
+          let waist_value_incm_s = range(66,69);
+          let waist_value_incm_md = range(71,74);
+          let waist_value_incm_lg = range(76,86);
+          let waist_value_incm_xl = range(89,99);
+          let waist_value_incm_2x = range(102, 112);
+          let waist_value_incm_3x = range(114,122);
+
+          // Hip  
+          let hip_value_incm_xs = range(89,91);
+          let hip_value_incm_s = range(94,97);
+          let hip_value_incm_md = range(99,104);
+          let hip_value_incm_lg = range(107,114);
+          let hip_value_incm_xl = range(117,127);
+          let hip_value_incm_2x = range(130,140);
+          let hip_value_incm_3x = range(142,150); 
+          
+          for (let i = 0; i < bust_value_incm_xs.length; i++) {
+            if(bust_value_incm_xs[i] == selected_cm_values[0]){
+              var bust = "XS";
+              calculated_value.push(bust);
+              console.log("Xtra Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_s.length; i++) {
+            if(bust_value_incm_s[i] == selected_cm_values[0]){
+              var bust = "S";
+              calculated_value.push(bust);
+              console.log("Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_md.length; i++) {
+            if(bust_value_incm_md[i] == selected_cm_values[0]){
+              var bust = "M";
+              calculated_value.push(bust);
+              console.log("Medium ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_lg.length; i++) {
+            if(bust_value_incm_lg[i] == selected_cm_values[0]){
+              var bust = "L";
+              calculated_value.push(bust);
+              console.log("Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_xl.length; i++) {
+            if(bust_value_incm_xl[i] == selected_cm_values[0]){
+              var bust = "XL";
+              calculated_value.push(bust);
+              console.log("Extra Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_2x.length; i++) {
+            if(bust_value_incm_2x[i] == selected_cm_values[0]){
+              var bust = "2X";
+              calculated_value.push(bust);
+              console.log("2X ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_3x.length; i++) {
+            if(bust_value_incm_3x[i] == selected_cm_values[0]){
+              var bust = "3X";
+              calculated_value.push(bust);
+              console.log("3X ", bust);
+              break;
+            }
+          }
+          //  Waist Value 
+          for (let i = 0; i < waist_value_incm_xs.length; i++) {
+            if(waist_value_incm_xs[i] == selected_cm_values[1]){
+              var waist = "XS";
+              calculated_value.push(waist);
+              console.log("Xtra Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_s.length; i++) {
+            if(waist_value_incm_s[i] == selected_cm_values[1]){
+              var waist = "S";
+              calculated_value.push(waist);
+              console.log("Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_md.length; i++) {
+            if(waist_value_incm_md[i] == selected_cm_values[1]){
+              var waist = "M";
+              calculated_value.push(waist);
+              console.log("Medium ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_lg.length; i++) {
+            if(waist_value_incm_lg[i] == selected_cm_values[1]){
+              var waist = "L";
+              calculated_value.push(waist);
+              console.log("Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_xl.length; i++) {
+            if(waist_value_incm_xl[i] == selected_cm_values[1]){
+              var waist = "XL";
+              calculated_value.push(waist);
+              console.log("Extra Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_2x.length; i++) {
+            if(waist_value_incm_2x[i] == selected_cm_values[1]){
+              var waist = "2X";
+              calculated_value.push(waist);
+              console.log("2X ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_3x.length; i++) {
+            if(waist_value_incm_3x[i] == selected_cm_values[1]){
+              var waist = "3X";
+              calculated_value.push(waist);         
+              console.log("3X ", waist);
+              break;
+            }
+          }
+
+          // Hip Value 
+          for (let i = 0; i < hip_value_incm_xs.length; i++) {
+            if(hip_value_incm_xs[i] == selected_cm_values[2]){
+              var hip = "XS";
+              calculated_value.push(hip);
+              console.log("Xtra Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_s.length; i++) {
+            if(hip_value_incm_s[i] == selected_cm_values[2]){
+              var hip = "S";
+              calculated_value.push(hip);
+              console.log("Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_md.length; i++) {
+            if(hip_value_incm_md[i] == selected_cm_values[2]){
+              var hip = "M";
+              calculated_value.push(hip);
+              console.log("Medium ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_lg.length; i++) {
+            if(hip_value_incm_lg[i] == selected_cm_values[2]){
+              var hip = "L";
+              calculated_value.push(hip);
+              console.log("Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_xl.length; i++) {
+            if(hip_value_incm_xl[i] == selected_cm_values[2]){
+              var hip = "XL";
+              calculated_value.push(hip);
+              console.log("Extra Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_2x.length; i++) {
+            if(hip_value_incm_2x[i] == selected_cm_values[2]){
+              var hip = "2X";
+              calculated_value.push(hip);
+              console.log("2X ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_3x.length; i++) {
+            if(hip_value_incm_3x[i] == selected_cm_values[2]){
+              var hip = "3X";
+              calculated_value.push(hip);
+              console.log("3X ", hip);
+              break;
+            }
+          }     
+        }else{
+          // Bust Value        
+          let bust_value_xs = range(32,33);
+          let bust_value_s = range(34,35);
+          let bust_value_md = range(36,37);
+          let bust_value_lg = range(38,41);
+          let bust_value_xl = range(42,46);
+          let bust_value_2x = range(47, 50);
+          let bust_value_3x = range(51,54);
+          // Waist
+          let waist_value_xs = range(24,25);
+          let waist_value_s = range(26,27);
+          let waist_value_md = range(28,29);
+          let waist_value_lg = range(30,34);
+          let waist_value_xl = range(35,39);
+          let waist_value_2x = range(40, 44);
+          let waist_value_3x = range(45,48);
+
+          // Hip  
+          let hip_value_xs = range(35,36);
+          let hip_value_s = range(37,38);
+          let hip_value_md = range(39,41);
+          let hip_value_lg = range(42,45);
+          let hip_value_xl = range(46,50);
+          let hip_value_2x = range(51, 55);
+          let hip_value_3x = range(56,59);
+          
+          
+          for (let i = 0; i < bust_value_xs.length; i++) {
+            if(bust_value_xs[i] == selected_inches_values[0]){
+              var bust = "XS";
+              calculated_value.push(bust);
+              console.log("Xtra Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_s.length; i++) {
+            if(bust_value_s[i] == selected_inches_values[0]){
+              var bust = "S";
+              calculated_value.push(bust);
+              console.log("Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_md.length; i++) {
+            if(bust_value_md[i] == selected_inches_values[0]){
+              var bust = "M";
+              calculated_value.push(bust);
+              console.log("Medium ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_lg.length; i++) {
+            if(bust_value_lg[i] == selected_inches_values[0]){
+              var bust = "L";
+              calculated_value.push(bust);
+              console.log("Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_xl.length; i++) {
+            if(bust_value_xl[i] == selected_inches_values[0]){
+              var bust = "XL";
+              calculated_value.push(bust);
+              console.log("Extra Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_2x.length; i++) {
+            if(bust_value_2x[i] == selected_inches_values[0]){
+              var bust = "2X";
+              calculated_value.push(bust);
+              console.log("2X ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_3x.length; i++) {
+            if(bust_value_3x[i] == selected_inches_values[0]){
+              var bust = "3X";
+              calculated_value.push(bust);
+              console.log("3X ", bust);
+              break;
+            }
+          }
+          //  Waist Value 
+          for (let i = 0; i < waist_value_xs.length; i++) {
+            if(waist_value_xs[i] == selected_inches_values[1]){
+              var waist = "XS";
+              calculated_value.push(waist);
+              console.log("Xtra Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_s.length; i++) {
+            if(waist_value_s[i] == selected_inches_values[1]){
+              var waist = "S";
+              calculated_value.push(waist);
+              console.log("Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_md.length; i++) {
+            if(waist_value_md[i] == selected_inches_values[1]){
+              var waist = "M";
+              calculated_value.push(waist);
+              console.log("Medium ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_lg.length; i++) {
+            if(waist_value_lg[i] == selected_inches_values[1]){
+              var waist = "L";
+              calculated_value.push(waist);
+              console.log("Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_xl.length; i++) {
+            if(waist_value_xl[i] == selected_inches_values[1]){
+              var waist = "XL";
+              calculated_value.push(waist);
+              console.log("Extra Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_2x.length; i++) {
+            if(waist_value_2x[i] == selected_inches_values[1]){
+              var waist = "2X";
+              calculated_value.push(waist);
+              console.log("2X ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_3x.length; i++) {
+            if(waist_value_3x[i] == selected_inches_values[1]){
+              var waist = "3X";
+              calculated_value.push(waist);         
+              console.log("3X ", waist);
+              break;
+            }
+          }
+
+          // Hip Value 
+          for (let i = 0; i < hip_value_xs.length; i++) {
+            if(hip_value_xs[i] == selected_inches_values[2]){
+              var hip = "XS";
+              calculated_value.push(hip);
+              console.log("Xtra Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_s.length; i++) {
+            if(hip_value_s[i] == selected_inches_values[2]){
+              var hip = "S";
+              calculated_value.push(hip);
+              console.log("Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_md.length; i++) {
+            if(hip_value_md[i] == selected_inches_values[2]){
+              var hip = "M";
+              calculated_value.push(hip);
+              console.log("Medium ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_lg.length; i++) {
+            if(hip_value_lg[i] == selected_inches_values[2]){
+              var hip = "L";
+              calculated_value.push(hip);
+              console.log("Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_xl.length; i++) {
+            if(hip_value_xl[i] == selected_inches_values[2]){
+              var hip = "XL";
+              calculated_value.push(hip);
+              console.log("Extra Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_2x.length; i++) {
+            if(hip_value_2x[i] == selected_inches_values[2]){
+              var hip = "2X";
+              calculated_value.push(hip);
+              console.log("2X ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_3x.length; i++) {
+            if(hip_value_3x[i] == selected_inches_values[2]){
+              var hip = "3X";
+              calculated_value.push(hip);
+              console.log("3X ", hip);
+              break;
+            }
+          }     
+        }  
+      
+      var xs=0, s=0, m=0, l=0, xl=0, twoX=0, threex=0;
+      calculated_value.forEach(function(value, index){
+        
+        if(index == 0){
+          return;
+        }
+        
+        if(value == "XS"){
+           xs += 1;
+        }else if(value == "S"){
+           s += 1;
+        } 
+        else if(value == "M"){
+           m += 1;
+        } 
+        else if(value == "L"){
+           l += 1;
+        } 
+        else if(value == "XL"){
+           xl += 1;
+        } 
+        else if(value == "2X"){
+           twoX += 1;
+        } 
+        else if(value == "3X"){
+           threex += 1;
+        } 
+      });
+            
+        if(xs > 1){
+          $('#recommendedsize').text("XS");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(s > 1){
+          $('#recommendedsize').text("S");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(m > 1){
+          $('#recommendedsize').text("M");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(l > 1){
+          $('#recommendedsize').text("L");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(xl > 1){
+          $('#recommendedsize').text("XL");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(twoX > 1){
+          $('#recommendedsize').text("2X");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if(threex > 1){
+          $('#recommendedsize').text("3X");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your waist and hip measurement.");
+        }
+        else if ('{{product.type}}' == "SweetLegs Jeggings" && calculated_value.length > 1 ) {
+          sizeJeggings = ['XS', 'S', 'M', 'L', 'XL', '2X', '3X'];
+          hipIndex = sizeJeggings.findIndex(function(element) {
+            return element === calculated_value[1];
+          });
+          waistIndex = sizeJeggings.findIndex(function(element) {
+            return element === calculated_value[2];
+          });
+          finalSize = [];
+            if(waistIndex > hipIndex) {
+              for(i=hipIndex;  i <= waistIndex; i++) {
+                 finalSize.push(sizeJeggings[i]);
+               }
+            } else {
+                for(i=waistIndex;  i <= hipIndex; i++) {
+                 finalSize.push(sizeJeggings[i]);
+               }
+        }
+
+               $('#recommendedsize').text(finalSize);
+          $('.sizing_message').addClass('hideMe')
+                           $('#dynamic_message').html('');
+            $('#dynamic_message').html(`
+<p class="sizing_message_bold">Your body shape may be a perfect fit for multiple sizes. Your hips match our ${calculated_value[2]} size and your waist falls in line with the ${calculated_value[1]}! Please choose the size that you think will flatter your unique body type.</p>`);
+               
+        }
+        // Priority Base
+        else if( xs == 1){
+          if(s == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[2]);
+            $('#dynamic_message').html('');
+            $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+          }
+        }
+        else if(s == 1){
+          if(xs == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[2]);
+            $('#dynamic_message').html('');
+            $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+          }
+        }
+        else if(m == 1){
+          if(xs == 1 || s == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[2]);
+            $('#dynamic_message').html('');
+            $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+          }
+        }
+        else if(l == 1){
+          if(xs == 1 || s == 1 || m == 1 || xl == 1 || twoX == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[2]);
+            $('#dynamic_message').html('');
+            $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+          }
+        }
+        else if( xl == 1){
+          if(xs == 1 || s == 1 || m == 1 || l == 1 || twoX == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[2]);
+            $('#dynamic_message').html('');
+            $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+          }
+        }
+        else if( twoX == 1){
+          if(xs == 1 || s == 1 || m == 1 || l == 1 || xl == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[2]);
+            $('#dynamic_message').html('');
+            $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+          }
+        }
+        else if( threex == 1){
+          if(xs == 1 || s == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1){
+            $('#recommendedsize').text(calculated_value[2]);
+            $('#dynamic_message').html('');
+            $('#dynamic_message').text("This recommendation is based on your hip measurement.");
+          }
+        }        
+      }
+      
+      else if(product_type == "SweetTops" || product_type == "The Weekender Dress"){
+        if(product_type == "SweetTops") {
+          $('.sizing_message').text('Every SweetTop has been designed for a different fit, and this recommendation should help you find the most ideal size. Please refer to the product descriptions for each specific style for additional recommendations.  Please note that the way a fabric drapes may be impacted by choosing a size outside of the recommendation above.');
+          } else {
+                                      $('.sizing_message').text('The recommended size best lines up with how this garment has been designed to fit. This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared for comfort and ease of movement.');
+          }
+        // Calculated Value
+        var calculated_value = [];
+        if(Measeurement_In_CM){
+          // Bust Value        
+          let bust_value_incm_xs = range(81,84);
+          let bust_value_incm_s = range(86,89);
+          let bust_value_incm_md = range(91,94);
+          let bust_value_incm_lg = range(97,104);
+          let bust_value_incm_xl = range(107,117);
+          let bust_value_incm_2x = range(119, 127);
+          let bust_value_incm_3x = range(130, 137);
+          // Waist
+          let waist_value_incm_xs = range(61,64);
+          let waist_value_incm_s = range(66,69);
+          let waist_value_incm_md = range(71,74);
+          let waist_value_incm_lg = range(76,86);
+          let waist_value_incm_xl = range(89,99);
+          let waist_value_incm_2x = range(102, 112);
+          let waist_value_incm_3x = range(114,122);
+
+          // Hip  
+          let hip_value_incm_xs = range(89,91);
+          let hip_value_incm_s = range(94,97);
+          let hip_value_incm_md = range(99,104);
+          let hip_value_incm_lg = range(107,114);
+          let hip_value_incm_xl = range(117,127);
+          let hip_value_incm_2x = range(130,140);
+          let hip_value_incm_3x = range(142,150); 
+          
+          for (let i = 0; i < bust_value_incm_xs.length; i++) {
+            if(bust_value_incm_xs[i] == selected_cm_values[0]){
+              var bust = "XS";
+              calculated_value.push(bust);
+              console.log("Xtra Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_s.length; i++) {
+            if(bust_value_incm_s[i] == selected_cm_values[0]){
+              var bust = "S";
+              calculated_value.push(bust);
+              console.log("Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_md.length; i++) {
+            if(bust_value_incm_md[i] == selected_cm_values[0]){
+              var bust = "M";
+              calculated_value.push(bust);
+              console.log("Medium ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_lg.length; i++) {
+            if(bust_value_incm_lg[i] == selected_cm_values[0]){
+              var bust = "L";
+              calculated_value.push(bust);
+              console.log("Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_xl.length; i++) {
+            if(bust_value_incm_xl[i] == selected_cm_values[0]){
+              var bust = "XL";
+              calculated_value.push(bust);
+              console.log("Extra Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_2x.length; i++) {
+            if(bust_value_incm_2x[i] == selected_cm_values[0]){
+              var bust = "2X";
+              calculated_value.push(bust);
+              console.log("2X ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_incm_3x.length; i++) {
+            if(bust_value_incm_3x[i] == selected_cm_values[0]){
+              var bust = "3X";
+              calculated_value.push(bust);
+              console.log("3X ", bust);
+              break;
+            }
+          }
+          //  Waist Value 
+          for (let i = 0; i < waist_value_incm_xs.length; i++) {
+            if(waist_value_incm_xs[i] == selected_cm_values[1]){
+              var waist = "XS";
+              calculated_value.push(waist);
+              console.log("Xtra Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_s.length; i++) {
+            if(waist_value_incm_s[i] == selected_cm_values[1]){
+              var waist = "S";
+              calculated_value.push(waist);
+              console.log("Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_md.length; i++) {
+            if(waist_value_incm_md[i] == selected_cm_values[1]){
+              var waist = "M";
+              calculated_value.push(waist);
+              console.log("Medium ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_lg.length; i++) {
+            if(waist_value_incm_lg[i] == selected_cm_values[1]){
+              var waist = "L";
+              calculated_value.push(waist);
+              console.log("Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_xl.length; i++) {
+            if(waist_value_incm_xl[i] == selected_cm_values[1]){
+              var waist = "XL";
+              calculated_value.push(waist);
+              console.log("Extra Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_2x.length; i++) {
+            if(waist_value_incm_2x[i] == selected_cm_values[1]){
+              var waist = "2X";
+              calculated_value.push(waist);
+              console.log("2X ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_incm_3x.length; i++) {
+            if(waist_value_incm_3x[i] == selected_cm_values[1]){
+              var waist = "3X";
+              calculated_value.push(waist);         
+              console.log("3X ", waist);
+              break;
+            }
+          }
+
+          // Hip Value 
+          for (let i = 0; i < hip_value_incm_xs.length; i++) {
+            if(hip_value_incm_xs[i] == selected_cm_values[2]){
+              var hip = "XS";
+              calculated_value.push(hip);
+              console.log("Xtra Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_s.length; i++) {
+            if(hip_value_incm_s[i] == selected_cm_values[2]){
+              var hip = "S";
+              calculated_value.push(hip);
+              console.log("Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_md.length; i++) {
+            if(hip_value_incm_md[i] == selected_cm_values[2]){
+              var hip = "M";
+              calculated_value.push(hip);
+              console.log("Medium ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_lg.length; i++) {
+            if(hip_value_incm_lg[i] == selected_cm_values[2]){
+              var hip = "L";
+              calculated_value.push(hip);
+              console.log("Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_xl.length; i++) {
+            if(hip_value_incm_xl[i] == selected_cm_values[2]){
+              var hip = "XL";
+              calculated_value.push(hip);
+              console.log("Extra Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_2x.length; i++) {
+            if(hip_value_incm_2x[i] == selected_cm_values[2]){
+              var hip = "2X";
+              calculated_value.push(hip);
+              console.log("2X ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_incm_3x.length; i++) {
+            if(hip_value_incm_3x[i] == selected_cm_values[2]){
+              var hip = "3X";
+              calculated_value.push(hip);
+              console.log("3X ", hip);
+              break;
+            }
+          }     
+        }else{
+          // Bust Value        
+          let bust_value_xs = range(32,33);
+          let bust_value_s = range(34,35);
+          let bust_value_md = range(36,37);
+          let bust_value_lg = range(38,41);
+          let bust_value_xl = range(42,46);
+          let bust_value_2x = range(47, 50);
+          let bust_value_3x = range(51,54);
+          // Waist
+          let waist_value_xs = range(24,25);
+          let waist_value_s = range(26,27);
+          let waist_value_md = range(28,29);
+          let waist_value_lg = range(30,34);
+          let waist_value_xl = range(35,39);
+          let waist_value_2x = range(40, 44);
+          let waist_value_3x = range(45,48);
+
+          // Hip  
+          let hip_value_xs = range(35,36);
+          let hip_value_s = range(37,38);
+          let hip_value_md = range(39,41);
+          let hip_value_lg = range(42,45);
+          let hip_value_xl = range(46,50);
+          let hip_value_2x = range(51, 55);
+          let hip_value_3x = range(56,59);
+          
+          
+          for (let i = 0; i < bust_value_xs.length; i++) {
+            if(bust_value_xs[i] == selected_inches_values[0]){
+              var bust = "XS";
+              calculated_value.push(bust);
+              console.log("Xtra Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_s.length; i++) {
+            if(bust_value_s[i] == selected_inches_values[0]){
+              var bust = "S";
+              calculated_value.push(bust);
+              console.log("Small ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_md.length; i++) {
+            if(bust_value_md[i] == selected_inches_values[0]){
+              var bust = "M";
+              calculated_value.push(bust);
+              console.log("Medium ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_lg.length; i++) {
+            if(bust_value_lg[i] == selected_inches_values[0]){
+              var bust = "L";
+              calculated_value.push(bust);
+              console.log("Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_xl.length; i++) {
+            if(bust_value_xl[i] == selected_inches_values[0]){
+              var bust = "XL";
+              calculated_value.push(bust);
+              console.log("Extra Large ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_2x.length; i++) {
+            if(bust_value_2x[i] == selected_inches_values[0]){
+              var bust = "2X";
+              calculated_value.push(bust);
+              console.log("2X ", bust);
+              break;
+            }
+          }
+          for (let i = 0; i < bust_value_3x.length; i++) {
+            if(bust_value_3x[i] == selected_inches_values[0]){
+              var bust = "3X";
+              calculated_value.push(bust);
+              console.log("3X ", bust);
+              break;
+            }
+          }
+          //  Waist Value 
+          for (let i = 0; i < waist_value_xs.length; i++) {
+            if(waist_value_xs[i] == selected_inches_values[1]){
+              var waist = "XS";
+              calculated_value.push(waist);
+              console.log("Xtra Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_s.length; i++) {
+            if(waist_value_s[i] == selected_inches_values[1]){
+              var waist = "S";
+              calculated_value.push(waist);
+              console.log("Small ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_md.length; i++) {
+            if(waist_value_md[i] == selected_inches_values[1]){
+              var waist = "M";
+              calculated_value.push(waist);
+              console.log("Medium ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_lg.length; i++) {
+            if(waist_value_lg[i] == selected_inches_values[1]){
+              var waist = "L";
+              calculated_value.push(waist);
+              console.log("Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_xl.length; i++) {
+            if(waist_value_xl[i] == selected_inches_values[1]){
+              var waist = "XL";
+              calculated_value.push(waist);
+              console.log("Extra Large ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_2x.length; i++) {
+            if(waist_value_2x[i] == selected_inches_values[1]){
+              var waist = "2X";
+              calculated_value.push(waist);
+              console.log("2X ", waist);
+              break;
+            }
+          }
+          for (let i = 0; i < waist_value_3x.length; i++) {
+            if(waist_value_3x[i] == selected_inches_values[1]){
+              var waist = "3X";
+              calculated_value.push(waist);         
+              console.log("3X ", waist);
+              break;
+            }
+          }
+
+          // Hip Value 
+          for (let i = 0; i < hip_value_xs.length; i++) {
+            if(hip_value_xs[i] == selected_inches_values[2]){
+              var hip = "XS";
+              calculated_value.push(hip);
+              console.log("Xtra Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_s.length; i++) {
+            if(hip_value_s[i] == selected_inches_values[2]){
+              var hip = "S";
+              calculated_value.push(hip);
+              console.log("Small ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_md.length; i++) {
+            if(hip_value_md[i] == selected_inches_values[2]){
+              var hip = "M";
+              calculated_value.push(hip);
+              console.log("Medium ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_lg.length; i++) {
+            if(hip_value_lg[i] == selected_inches_values[2]){
+              var hip = "L";
+              calculated_value.push(hip);
+              console.log("Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_xl.length; i++) {
+            if(hip_value_xl[i] == selected_inches_values[2]){
+              var hip = "XL";
+              calculated_value.push(hip);
+              console.log("Extra Large ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_2x.length; i++) {
+            if(hip_value_2x[i] == selected_inches_values[2]){
+              var hip = "2X";
+              calculated_value.push(hip);
+              console.log("2X ", hip);
+              break;
+            }
+          }
+          for (let i = 0; i < hip_value_3x.length; i++) {
+            if(hip_value_3x[i] == selected_inches_values[2]){
+              var hip = "3X";
+              calculated_value.push(hip);
+              console.log("3X ", hip);
+              break;
+            }
+          }     
+        }   
+      
+      var xs=0, s=0, m=0, l=0, xl=0, twoX=0, threex=0;
+      calculated_value.forEach(function(value, index){
+        
+        if(index == 2){
+          return;
+        }
+        
+        console.log(value);
+        
+        if(value == "XS"){
+           xs += 1;
+        }else if(value == "S"){
+           s += 1;
+        } 
+        else if(value == "M"){
+           m += 1;
+        } 
+        else if(value == "L"){
+           l += 1;
+        } 
+        else if(value == "XL"){
+           xl += 1;
+        } 
+        else if(value == "2X"){
+           twoX += 1;
+        } 
+        else if(value == "3X"){
+           threex += 1;
+        } 
+      });
+        
+        
+    // final results for SweetTops     
+        if(xs > 1){
+          $('#recommendedsize').text("XS");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
+        }
+        else if(s > 1){
+          $('#recommendedsize').text("S");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
+        }
+        else if(m > 1){
+          $('#recommendedsize').text("M");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
+        }
+        else if(l > 1){
+          $('#recommendedsize').text("L");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
+        }
+        else if(xl > 1){
+          $('#recommendedsize').text("XL");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
+        }
+        else if(twoX > 1){
+          $('#recommendedsize').text("2X");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
+        }
+        else if(threex > 1){
+          $('#recommendedsize').text("3X");
+          $('#dynamic_message').html('');
+          $('#dynamic_message').text("This recommendation is based on your bust and waist measurement.");
+        }
+        
+        // Priority Base
+        else if(xs == 1){
+          if(s == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[0]);
+            $('#dynamic_message').html('');
+            if(product_type == "The Weekender Dress"){
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared to add ease of movement.</b></p>`);  
+            }else{
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>Every SweetTop is designed with a different fit, please refer to the product descriptions for specific sizing details.</b></p>`);  
+            }
+          }
+        }
+        else if(s == 1){
+          if(xs == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[0]);
+            $('#dynamic_message').html('');
+            if(product_type == "The Weekender Dress"){
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared to add ease of movement.</b></p>`);  
+            }else{
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>Every SweetTop is designed with a different fit, please refer to the product descriptions for specific sizing details.</b></p>`);  
+            }
+          }
+        }
+        else if(m == 1){
+          if(xs == 1 || s == 1 || l == 1 || xl == 1 || twoX == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[0]);
+            $('#dynamic_message').html('');
+            if(product_type == "The Weekender Dress"){
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared to add ease of movement.</b></p>`);  
+            }else{
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>Every SweetTop is designed with a different fit, please refer to the product descriptions for specific sizing details.</b></p>`);  
+            }
+          }
+        }
+        else if(l == 1){
+          if(xs == 1 || s == 1 || m == 1 || xl == 1 || twoX == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[0]);
+            $('#dynamic_message').html('');
+            if(product_type == "The Weekender Dress"){
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared to add ease of movement.</b></p>`);  
+            }else{
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>Every SweetTop is designed with a different fit, please refer to the product descriptions for specific sizing details.</b></p>`);  
+            }
+          }
+        }
+        else if( xl == 1){
+          if(xs == 1 || s == 1 || m == 1 || l == 1 || twoX == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[0]);
+            $('#dynamic_message').html('');
+            if(product_type == "The Weekender Dress"){
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared to add ease of movement.</b></p>`);  
+            }else{
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>Every SweetTop is designed with a different fit, please refer to the product descriptions for specific sizing details.</b></p>`);  
+            }
+          }
+        }
+        else if( twoX == 1){
+          if(xs == 1 || s == 1 || m == 1 || l == 1 || xl == 1 || threex == 1){
+            $('#recommendedsize').text(calculated_value[0]);
+            $('#dynamic_message').html('');
+            if(product_type == "The Weekender Dress"){
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared to add ease of movement.</b></p>`);  
+            }else{
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>Every SweetTop is designed with a different fit, please refer to the product descriptions for specific sizing details.</b></p>`);  
+            }
+          }
+        }
+        else if( threex == 1){
+          if(xs == 1 || s == 1 || m == 1 || l == 1 || xl == 1 || twoX == 1){
+            $('#recommendedsize').text(calculated_value[0]);
+            $('#dynamic_message').html('');
+            if(product_type == "The Weekender Dress"){
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>This dress is considered to be a ‘fit and flare’, where the top fits close to the body and the skirt is flared to add ease of movement.</b></p>`);  
+            }else{
+              $('#dynamic_message').html(`<p>This recommendation is based on your Bust measurement.</p>
+<p><b>Every SweetTop is designed with a different fit, please refer to the product descriptions for specific sizing details.</b></p>`);  
+            }
+          }
+        }            
+      }
+    
+  }
+  
+  // Edit Size   
+  $( "#edit_size" ).click(function(e) {
+    e.preventDefault();
+    $('.range_slider_container').css("opacity", "1");
+    $('.range_slider_container').css("height", "100%");
+    $('.recommended_result > *').css("opacity", "0");
+    $('.recommended_result > *').css("height", "0");
+  });
+
+  //
+  
+  $('.sizing_toggling').click(function() {
+    $('.accordiance-container').toggleClass('show');
+  });
+
+  
+</script>  

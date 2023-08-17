@@ -1,0 +1,78 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+
+<style>
+  .maternity-section-three {
+    margin-top: 4rem;
+  }
+  .maternity-section-three h1{ 
+    font-family: 'Noto Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .25rem;
+    font-weight: 400;
+  }
+  .maternity-section-three h2{
+    margin: 2rem 0;
+    font-family: 'Noto Sans', sans-serif;
+  }
+  .maternity_title{
+  	font-size: 32px; 
+    font-weight: bold;
+  }
+  .maternity_paragraph{
+ 	font-size: 24px
+  }
+  
+  @media (max-width: 640px) {
+    .maternity-section-three h1{
+      letter-spacing: .15rem;
+    }
+    .maternity-section-three h2{
+        margin: 1rem 0;
+    }
+    .maternity-section-three{
+      margin-top: 2rem;
+    }
+    .maternity_title {
+        font-size: 22px;
+    }
+    .maternity_paragraph{
+      font-size: 18px;
+    }
+  }
+</style>
+  
+<div class="row maternity-section-three">
+  <h1 data-aos="fade-up" data-aos-offset="80" data-aos-delay="350" data-aos-duration="1000">{{section.settings.description_heading}}</h1>
+  <h2 data-aos="fade-up" data-aos-offset="80" data-aos-delay="450" data-aos-duration="1000" class="maternity_title">{{section.settings.description_title}}</h2>
+  <p style="margin-bottom: 4rem;" data-aos="fade-up" data-aos-offset="80" data-aos-delay="550" data-aos-duration="1000" class="maternity_paragraph">{{section.settings.description_paragraph}}</p>
+</div>
+
+{% schema %}
+  {
+    "name": "Maternity Description",
+    "settings": [{
+		"type": "text",
+		"id": "description_heading",
+		"label": "Description Heading"
+		},
+		{
+		"type": "text",
+		"id": "description_title",
+		"label": "Description Title"
+		},
+		{
+		"type": "textarea",
+		"id": "description_paragraph",
+		"label": "Description Paragraph"
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

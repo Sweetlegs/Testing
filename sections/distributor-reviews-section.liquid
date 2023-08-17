@@ -1,0 +1,56 @@
+<h2 class="know-more-heading">What they say about <span class="unique-text">SweetLegs!</span></h2>
+  <section class="testimonial">
+    <div class="owl-carousel owl-theme">
+       {% for block in section.blocks %}         
+        <div class="item">
+          <p>
+            {{ block.settings.review }}
+          </p>
+          <p style="font-weight: bold; margin-top: 1rem">{{ block.settings.owner }}.</p>
+        </div>
+         {% endfor %}
+    </div>
+  </section>
+
+
+{% schema %}
+{
+  "name": "Distributor Reviews",
+  "class": "distributor-reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Distributor Reviews"
+    }
+  ],
+  "blocks": [
+     {
+       "name": "Review",
+       "type": "Review",
+       "settings": [
+         {
+           "type": "textarea",
+           "id": "review",
+           "label": "Review"
+         },
+         {
+           "type": "text",
+           "id": "owner",
+           "label": "Owner"
+         }
+       ]
+     }
+  ],
+  "presets": [
+    {
+      "name": "Distributor Reviews",
+      "blocks": [
+        {
+          "type": "Review"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

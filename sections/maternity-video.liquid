@@ -1,0 +1,345 @@
+<style>  
+  .maternity-second-section{
+  	margin-top: 4rem;
+  }  
+
+  .buttons > a{
+    text-decoration:none
+  }
+  
+  .buttons{
+    display:flex;
+    height:50vh;
+    max-height: 50vh;
+    background-image:  url({{section.settings.background_image | prepend: "https://cdn.shopify.com/s/files/1/2445/2869/"}});
+    box-shadow: 21px 25px 23px -7px rgba(0,0,0,0.15);
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    -webkit-background-size: cover;
+    background-size:cover ;
+    z-index: 1;
+    border-radius: 15px;
+  }
+  
+  .buttons:after{
+      position:absolute;
+      content:'';
+      top:0;
+      left:0;
+      z-index:2;
+      width:100%;
+      height:100%;
+  }
+  
+  .playing{
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      margin:100px auto;
+      position:relative;
+      -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+      box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:#fff;
+      font-size: 20px;
+      z-index: 4;
+      cursor: pointer;
+  }
+  .playing span{
+    display:block;
+    position:absolute;
+    border:2px dotted #ffff;
+    border-radius:50%;
+    animation:playing 1s infinite
+
+  }
+  .playing span:nth-child(2){
+      width:250%;
+      height:250%;
+      animation-delay:0.1s
+
+  }
+  .playing span:nth-child(3){
+      width:350%;
+      height:350%;
+      animation-delay:0.2s
+  }
+  .playing span:nth-child(4){
+      width:450%;
+      height:450%;
+      animation-delay:0.3s
+
+  }
+  .playing:after{
+      content:'';
+      position:absolute;
+      display:block;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      border-radius:50%;
+      background: #9e9e9e;
+      animation:playing 1s infinite;
+      z-index: -1;
+  }
+
+  @keyframes playing{
+    from{
+      transform:scale(1);
+      opacity:1
+    }
+    to{
+      transform:scale(1.4);
+      opacity:0
+    }
+  }
+
+  .video-modal,
+  .video-modal .overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 300;
+  }
+  .video-modal {
+      overflow: hidden;
+      position: fixed;
+      opacity: 0.0;
+
+      -webkit-transform: translate(500%,0%);
+      transform: translate(500%,0%);
+
+      -webkit-transition: -webkit-transform 0s linear 0s;
+      transition: transform 0s linear 0s;
+
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+
+      -webkit-box-pack: center;
+      -moz-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+
+      -webkit-box-align: center;
+      -moz-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+
+      -webkit-transform-style: preserve-3d;
+      -moz-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+  }
+  .video-modal .overlay {
+      z-index: 0;
+      background: rgb(0 0 0 / 77%);
+      opacity: 0.0;
+      -webkit-transition: opacity 0.2s ease-out 0.05s;
+      transition: opacity 0.2s ease-out 0.05s;
+  }
+
+  .video-modal-content {
+      position: relative;
+      top: auto;
+      right: auto;
+      bottom: auto;
+      left: auto;
+      z-index: 1;
+/*       height: 67%; */
+      width: calc(100% - 200px);
+      max-width: 1000px;
+      max-height: calc(100% - 100px);
+      margin: 0 auto;
+      overflow-y: visible;
+  }
+
+  .close-video-modal {
+      display: block;
+      position: absolute;
+      right: 0;
+      top: -40px;
+
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+      color: #fff;
+  }
+  .close-video-modal svg{
+    width:22px;
+  }
+
+  .video-sizer {
+      display: block;
+      width: 100%;
+      height: auto;
+  }
+
+  iframe#youtube {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+
+      background: #fff;
+      box-shadow: 0px 2px 16px rgba(0,0,0,0.5);
+  }
+
+  .show-video-modal .video-modal {
+      opacity: 1.0;
+
+      transform: translate(0%,0%);
+      -webkit-transform: translate(0%,0%);
+  }
+  .show-video-modal .video-modal .overlay {
+      opacity: 1.0;
+  }
+  .show-video-modal .video-modal-content {
+      transform: translate(0%,0%);
+      -webkit-transform: translate(0%,0%);
+  } 
+
+  @media only screen and (max-width: 640px) {
+    .video-modal-content {
+      width: calc(100% - 16px);
+    }
+
+    .buttons{
+      height:25vh;
+    }
+
+    .maternity-second-section {
+      margin-top: 2rem;
+    }
+
+    .playing span:nth-child(2){
+      width:100%;
+      height:100%;
+      animation-delay:0.1s
+
+    }
+    .playing span:nth-child(3){
+      width:200%;
+      height:200%;
+      animation-delay:0.2s
+    }
+    .playing span:nth-child(4){
+      width:300%;
+      height:300%;
+      animation-delay:0.3s
+
+    }
+  }
+  
+  @media only screen and (min-width: 641px) and (max-width: 1025px)  {
+    .buttons{
+      height:35vh;
+    }
+  }
+  
+  @media only screen and (min-width: 1026px) and (max-width: 1500px)  {
+    .buttons{
+      height:40vh;
+    }
+  }
+</style>
+
+<!--   section second     -->  
+<div class="maternity-second-section row">
+  
+  <div data-aos="fade-up" data-aos-offset="80" data-aos-delay="250" data-aos-duration="1000" class="buttons">
+    <a href="{{section.settings.maternity_video}}" data-youtube-id="{{section.settings.maternity_video_id}}" class="video-thumb js-trigger-modal">	
+      <div class="playing"><i class="fa fa-play" aria-hidden="true"></i><span></span><span></span><span></span></div>
+    </a>
+  </div>
+
+  <section class="video-modal">
+    <div id="video-modal-content" class="video-modal-content">
+
+      <img class="video-sizer" src="{{section.settings.background_image | prepend: "https://cdn.shopify.com/s/files/1/2445/2869/"}}"/>
+
+      <iframe id="youtube" width="100%" height="100%" frameborder="0" allowfullscreen src=></iframe>
+      <a href="#" class="close-video-modal" >
+        <svg version="1.1"
+             viewBox="0 0 469.785 469.785">
+          <g transform="matrix(1.25 0 0 -1.25 0 45)">
+            <g>
+              <g>
+                <path style="fill:#FFFF;" d="M228.294-151.753L367.489-12.558c11.116,11.105,11.116,29.116,0,40.22
+                                               c-11.105,11.116-29.104,11.116-40.22,0L188.073-111.533L48.866,27.663c-11.093,11.116-29.116,11.116-40.22,0
+                                               c-11.105-11.105-11.105-29.116,0-40.22l139.207-139.196L8.338-291.268c-11.116-11.116-11.116-29.116,0-40.22
+                                               c5.552-5.564,12.834-8.34,20.116-8.34c7.27,0,14.552,2.776,20.105,8.34l139.514,139.514l139.196-139.196
+                                               c5.564-5.552,12.834-8.34,20.116-8.34c7.27,0,14.552,2.788,20.105,8.34c11.116,11.105,11.116,29.104,0,40.22L228.294-151.753z"/>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </a>
+    </div>
+      <div class="overlay"></div>
+  </section>
+</div>
+  
+
+<script>
+$(document).ready(function(){
+	$('a.video-thumb').click(function () {
+		var id = $(this).attr('data-youtube-id');
+		var autoplay = '?autoplay=1';
+		var related_no = '&rel=0';
+		var src = '//www.youtube.com/embed/'+id+autoplay+related_no;
+		$("#youtube").attr('src', src);
+		return false;
+	});
+	function toggle_video_modal() {
+	    $(".js-trigger-modal").on("click", function(event){
+	        event.preventDefault();
+	        $("body").addClass("show-video-modal");
+	    });
+	    $('body').on('click', '.close-video-modal, .video-modal .overlay', function(event) {
+	        event.preventDefault();
+	        $("body").removeClass("show-video-modal");
+			$("#youtube").attr('src', '');
+	    });
+	}
+	toggle_video_modal();
+});
+</script>
+
+{% schema %}
+  {
+    "name": "Video Section",
+    "settings": [
+  		{
+  		"type": "text",
+  		"id": "maternity_video",
+  		"label": "Video Link"
+  		},
+  		{
+  		"type": "text",
+  		"id": "maternity_video_id",
+  		"label": "Video ID"
+  		},
+  		{
+        "type": "image_picker",
+  		"id": "background_image",
+  		"label": "Background Image"
+  		}
+  	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

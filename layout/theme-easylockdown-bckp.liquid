@@ -1,0 +1,119 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{ shop.locale }}"> <!--<![endif]-->
+<head>
+<link rel='preconnect dns-prefetch' href='https://triplewhale-pixel.web.app/' crossorigin />
+<link rel='preconnect dns-prefetch' href='https://api.config-security.com/' crossorigin />
+<script>
+/* >> TriplePixel :: start*/
+~function(W,H,A,L,E,_,B,N){function O(U,T,H,R){void 0===R&&(R=!1),H=new XMLHttpRequest,H.open("GET",U,!0),H.send(null),H.onreadystatechange=function(){4===H.readyState&&200===H.status?(R=H.responseText,U.includes(".txt")?eval(R):N[B]=R):(299<H.status||H.status<200)&&T&&!R&&(R=!0,O(U,T-1))}}if(N=window,!N[H+"sn"]){N[H+"sn"]=1;try{A.setItem(H,1+(0|A.getItem(H)||0)),(E=JSON.parse(A.getItem(H+"U")||"[]")).push(location.href),A.setItem(H+"U",JSON.stringify(E))}catch(e){}A.getItem('"!nC`')||(A=N,A[H]||(L=function(){return Date.now().toString(36)+"_"+Math.random().toString(36)},E=A[H]=function(t,e){return W=L(),(E._q=E._q||[]).push([W,t,e]),W},E.ch=W,B="configSecurityConfModel",N[B]=1,O("//conf.config-security.com/model",0),O("//triplewhale-pixel.web.app/triplefw.txt?",5)))}}("K","TriplePixel",localStorage);
+/* << TriplePixel :: end*/
+</script>
+{% include 'easylockdown_head' %}
+  <meta charset="utf-8" />
+  <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /><![endif]-->
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_button }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  
+  {%- if settings.favicon_image -%}
+    <link rel="shortcut icon" href="{{ settings.favicon_image | img_url: '32x32' }}" type="image/png" />
+  {%- endif -%}
+  {%- if settings.favicon_image_retina -%}
+    <link rel="apple-touch-icon-precomposed" href="{{ settings.favicon_image_retina | img_url: '152x152' }}" type="image/png" />
+  {%- endif -%}
+
+  <!-- {%- capture seo_title -%}
+    {{- page_title -}}
+    {% if current_tags %}
+      {%- assign meta_tags = current_tags | join: ', ' %} &nbsp;&ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {%- endif -%}
+    {%- if current_page != 1 -%}
+      &nbsp;&ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {%- endif -%}
+    {%- unless page_title contains shop.name -%}
+      &nbsp;&ndash; {{ shop.name }}
+    {%- endunless -%}
+  {%- endcapture -%}
+  <title>{{ seo_title }}</title> -->
+
+  <title>
+    {% if template == 'index' %}
+      {{ shop.name }}
+    {% elsif template contains 'collection' %}
+      SweetLegs {{ collection.title }} | Product categories | {{ shop.name }}
+    {% elsif template contains 'product' %}
+      {{ product.title }} | {{ shop.name }}
+    {% elsif template contains 'page' %}
+      {{ page.title }} | {{ shop.name }}
+    {% else %}
+      {{ page_title }} | {{ shop.name }}
+    {% endif %}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}" />
+  {%- endif -%}
+
+  {%- include 'social-meta-tags' -%}
+  {%- include 'shopify-head' -%}
+  
+  {{ content_for_header }}
+
+  {% assign cad_domain = "https://sweetlegs.ca" %}
+  {% assign usd_domain = "https://sweetlegs.com" %}
+  {% assign current_url = canonical_url | remove: shop.secure_url %} 
+  {% assign current_url_cad = cad_domain | append: current_url %}
+  {% assign current_url_us = usd_domain | append: current_url %}
+  <link rel="alternate" hreflang="en-ca" href="{{current_url_cad}}" />
+  <link rel="alternate" hreflang="en-us" href="{{current_url_us}}" />
+
+
+
+{% comment %} start instabadge section {% endcomment %}
+{{ 'instabadge.css' | asset_url | stylesheet_tag }}
+{% include 'instabadge' %}
+{% comment %} end instabadge section {% endcomment %}
+</head>
+
+{%- assign form_style = settings.form_style | default: 'default' -%}
+<body class="template-{{ template | split: '.' | first }}" data-form-style="{{ form_style }}">
+
+  {% include 'redirect-bar' %}
+  
+  {%- if settings.page_loader == '1' -%}
+  <div id="eva-loader-wrapper">
+    <div class="eva-loader-section">
+      <div class="eva-loader-{{ settings.page_loader_spinner }}"></div>
+    </div>
+  </div>
+  {%- endif -%}
+  
+  {%- section 'header' -%}
+  {%- section 'mega-menu' -%}
+  
+  <div class="offcanvas_container">
+    <div class="offcanvas_main_content">
+      <div class="page-wrapper">
+        <main id="main">
+          {% comment %}{{ content_for_layout }}{% endcomment %}{% include 'easylockdown_body' %}
+        </main>
+        
+        {%- section 'footer' -%}
+      </div>
+    </div>
+    {%- include 'offcanvas' -%}
+  </div>
+  <div class="cd-quick-view"></div>
+  {%- include 'photoswipe' -%}
+  {%- include 'newsletter-popup' -%}
+  {%- include 'notify-products' -%}
+  {%- include 'cookie-popup' -%}
+  {%- include 'facebook-chat' -%}
+
+  <script>
+    jQuery('a[href^="http"]').not('a[href^="{{ shop.url }}"]').attr('target', '_blank');
+  </script>
+
+ </body>
+</html>

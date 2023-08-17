@@ -1,0 +1,74 @@
+<div id="refund" class="tab-pane fade">
+    <h3>Returns History</h3>
+    <button class="createRefundBtn" onclick="window.location='/pages/return-for-distributor'">Create a Return</button>
+    <table class="shop_table">
+      <thead>
+        <tr>
+          <th>RMA NO</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th class="order-quantity-outer">Quantity</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+  
+      </tbody>
+    </table>
+  </div>  
+  <style>
+    .createRefundBtn {
+      padding: 10px 15px;
+      background: #00c4b3;
+      color: white;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+    .rma-no a{
+      font-weight: 600;
+      font-size: 18px;
+    }
+    #refund a:hover {
+      color: #2699ab;
+    }
+  </style>
+  <script>
+    proxy = '{{settings.sweetlegs_rocks_api}}';
+    customerID = '{{customer.id}}';
+    let data = {};
+    data.customer_id = customerID;
+     //read the customer refund 
+     $.ajax({
+          type: 'GET',
+           url: `${proxy}/api/distributor-returns`,
+       		data: data,
+           success: function(refunds) { 
+            console.log(refunds);
+            refunds.forEach(function(refund) {
+              var refundDate = new Date(refund.updated_at.replace(' ', 'T'));
+              $('#refund table tbody').append(`<tr>
+                  <td class="rma-no"><a href="#">#${refund.rma_no}</a></td>
+                  <td>${refundDate.toLocaleString('en-us', { month: 'long' })} ${refundDate.getDate()}, ${refundDate.getFullYear()} </td>
+                  <td class="status" id='$${refund.id}' rma='${refund.rma_no}'>${refund.status}</td>
+                  <td>${refund.quantity}</td>
+                  <td>$${parseFloat(refund.total).toFixed(2)}</td>
+                </tr>`);
+            })
+           },
+           error: function(error) {
+             console.log(error);
+           }
+     });
+
+
+
+    $(document).on('click', '#refund tr', function(e) {
+      var rma = $(this).find('td.status').attr('rma');
+      var id = $(this).find('td.status').attr('id');
+      if($(this).find('td.status').text() == 'Saved' || $(this).find('td.status').text() == 'Incomplete' ) {     
+        window.location=`/pages/return-for-distributor/?${rma}`;      
+      } else {
+        window.location=`/pages/distributor-returns/?${id}`; 
+      }
+    });
+  </script>

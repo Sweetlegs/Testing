@@ -1,0 +1,122 @@
+{% assign primaryFontColor = section.settings.color_font  %}
+{% assign primaryColor = section.settings.color_background %}
+
+<style>
+  .header-v2{
+    background-color: {{primaryColor}} !important;
+    color: {{primaryFontColor}} !important;
+  }
+  footer .footer-secondary-color {
+  	color: {{primaryFontColor}} !important;
+  }	
+  header.site-header .header-wrapper .nav .header-nav .menu-trigger div span::before, header.site-header .header-wrapper .nav .header-nav .menu-trigger div span::after, header.site-header .header-wrapper .nav .header-nav .menu-trigger div span {
+    background: {{primaryFontColor}} !important;
+  }
+  .topbar .topbar-menu a:hover {
+    color: {{primaryFontColor}} !important;
+  }
+  
+  header .counter_number {
+    background: {{primaryFontColor}} !important;
+    color: {{primaryColor}} !important;
+  }
+
+  header.site-header .header-wrapper .menu-item > a>span>small  {
+    color: {{primaryFontColor}} !important;
+  }
+  header.site-header .header-wrapper .sub-menu .menu-item > a>span>small{
+    	color: black !important;
+  }
+
+  .copyright img{
+    display: none !important;
+  }
+  
+  footer .social-icons a:before {
+    color: {{primaryFontColor}} !important;
+  }
+  footer .footer-divider {
+    border-color: {{primaryFontColor}} !important;
+  }
+  footer .subscribebtn {
+    color: {{primaryFontColor}} !important;
+  }
+
+
+  i.fas.fa-heart {
+    color: {{primaryFontColor}} !important;
+  }
+
+  header.site-header .header-wrapper .tools ul li.cart-button .cart-desc{
+    color: {{primaryFontColor}} !important;
+  }
+  
+  #shopify-section-footer {
+    margin-top: 0px!important;
+    padding-top: 50px!important;
+    background-color: {{primaryColor}} !important;
+  }
+
+
+  .mainImg{
+    filter: invert(97%) sepia(100%) saturate(12%) hue-rotate( 
+      219deg) brightness(250%) contrast(103%) !important;
+  }
+  
+  header.site-header .header-wrapper .tools ul li.cart-button i:before, header.site-header .header-wrapper .tools ul li.search-button i:before {
+    color: {{primaryFontColor}} !important;
+  }
+ 
+  .offcanvas_main_content {
+    margin-top: 0;
+  }
+  
+
+  h5.widget-title{
+    color: {{primaryFontColor}} !important;
+  }
+  
+ .site-footer{
+   background-color: {{primaryColor}} !important;
+  }
+ 
+  
+  footer.site-footer .f-copyright .socials .social-icons{                   
+    background-color: {{primaryColor}} !important;           
+  }
+  
+  li.menu-item.bulk-order-button span {
+    color: {{primaryFontColor}} !important;
+  }
+
+  .medium-12.columns.copytxt,  
+  .medium-12.columns.copytxt a,                               
+  .column.column-widget.left-align,        
+  ul.menu a,
+  i.fa.fa-heart-o.tooltipstered
+  {
+    color: {{primaryFontColor}} !important;
+  }
+</style>
+
+
+{% schema %}
+  {
+    "name": "Page Theme Settings",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background Color",
+        "default": "#000"
+      },
+	  {
+        "type": "color",
+        "id": "color_font",
+        "label": "Font Color",
+        "default": "#fff"
+      }
+    ]
+  }
+{% endschema %}
+

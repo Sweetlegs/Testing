@@ -1,0 +1,121 @@
+<style>
+.tickerwrapper { /* the outer div */
+  position:relative;
+  left:0px;
+  width: 100%; 
+  overflow: hidden; 
+  cursor: pointer;
+  height: 0px;
+  transform: scaleY(0);    
+  transform-origin: top;
+  transition: transform .8s ease;
+}
+.tickerwrapper ul.list {
+  position:relative;
+  display:inline-block;
+  list-style:none;
+}
+.tickerwrapper ul.list.cloned {
+  position:absolute;
+  top:0;
+  left:0;
+}
+.tickerwrapper ul.list li {
+  float: left;
+  padding-right:20px;
+  width: 100vw;
+  opacity: 0;
+  display: inline-block;
+  white-space: nowrap;  
+  transition: opacity 2s ease;
+  margin-left: 100px;
+}
+  
+@media(max-width: 600px) {
+  .tickerwrapper ul.list {
+    text-align: left!important;
+    padding: 10px 0px;
+  }
+  .tickerwrapper ul.list li {
+    width: 120vw;
+  }
+  
+}
+  
+</style>
+
+<div class="tickerwrapper" onclick="fsb_button_on_click_v1(event)">
+   <ul class='list'>
+    <li class='listitem'>
+      <span>
+      </span>
+    </li>
+  </ul>
+</div>
+
+<script>
+  let temp = 1;
+  
+  const myInterval = setInterval(scroll, 500);
+  
+  function myStopFunction() {
+    clearInterval(myInterval);
+  }
+
+  function scroll() {
+    if(temp === 1) {
+      if($('#fsb_bar').html()) {
+        const style = $('#fsb_bar').attr('style');
+        $('.tickerwrapper .list').attr('style', style);
+        temp = temp +1;
+        const childHtml = $('#fsb_bar').html();
+        $('.tickerwrapper').css({'transform': 'scaleY(1)'});
+        $('.tickerwrapper .listitem').css({'opacity': 1});
+        $('.tickerwrapper .listitem span').append(`${childHtml}`);
+        const height = $('.tickerwrapper .list').outerHeight(true);
+        $('.tickerwrapper').css({'height': height});
+      	myStopFunction();
+      }
+    }
+  }
+ 
+//   const myTimeout = setTimeout(scroll, 3000);
+  var $tickerWrapper = $(".tickerwrapper");
+  var $list = $tickerWrapper.find("ul.list");
+  var $clonedList = $list.clone();
+  var listWidth = 30;
+          $list.find("li").each(function (i) {
+              listWidth += $(this, i).outerWidth(true);
+          });
+
+  var endPos = $tickerWrapper.width() - listWidth;
+
+  $list.add($clonedList).css({
+      "width" : listWidth + "px"
+  });
+
+  $clonedList.addClass("cloned").appendTo($tickerWrapper);
+
+  //TimelineMax
+  var infinite = new TimelineMax({force3D:true, repeat: -1, paused: false});
+  var time = 15;
+  let startTime = 0;
+  
+  setTimeout(infiniteScroll, startTime);
+  function infiniteScroll() {
+    infinite.fromTo($list, time, {x:0}, {x: -listWidth, ease: Linear.easeNone}, 0);
+    infinite.fromTo($clonedList, time, {x:listWidth}, {x:0, ease: Linear.easeNone}, 0);
+    infinite.set($list, {x: listWidth});
+    infinite.to($clonedList, time, {x: -listWidth, ease: Linear.easeNone}, time);
+    infinite.to($list, time, {x: 0, ease: Linear.easeNone}, time);
+  }
+
+
+  //Pause/Play
+
+  $tickerWrapper.on("mouseenter", function(){
+      infinite.pause();
+  }).on("mouseleave", function(){
+      infinite.play();
+  });
+</script>

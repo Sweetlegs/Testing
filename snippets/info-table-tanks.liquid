@@ -1,0 +1,42 @@
+ <table>
+                  <tr>
+                    <td><strong>Weight</strong></td><td>{{ product.variants.first.weight | weight_with_unit }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Dimensions</strong></td><td>25 x 25 x .9 cm</td>
+                  </tr>
+                    <tr>
+                      <td><strong>Size</strong></td>
+                    {% if product.title == "Classic Layering Tank" %}
+                       <td>Available in S,M,L,XL,2XL,3XL</td>
+
+                  {% elsif product.title == "Classic Swing Tank" %}
+              		<td>Available in XS,S,M,L,XL,2XL,3XL</td>
+
+                  {% endif %}
+                     
+                    </tr>
+                  <tr>
+                    <td><strong>Fabric</strong></td>
+                    <td>Silky soft and smooth! This fabric blend is durable and will retain its shape beautifully.</td>
+                  </tr>
+                {% if product.metafields.my_fields.materials %}
+                    <tr>
+                      <td><strong>Material</strong></td><td>
+
+                      {{product.metafields.my_fields.materials}}
+                      </td>
+                     </tr>
+   				 {% endif %}
+                  <tr>
+                    <td><strong>Care</strong></td><td>Hand wash cold and hang to dry</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hypoallergenic</strong></td><td>Safe for sensitive skin</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Touch & Feel</strong></td><td>Extremely soft, luxe, and durable</td>
+                  </tr>
+
+
+                </table>

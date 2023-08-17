@@ -1,0 +1,95 @@
+<div id="search-section">
+  <div class="search-desktop">
+    <div class="offcanvas_close"></div>
+    <h2 class="search-title">{{ 'searchs.search.title' | t | escape }}</h2>
+
+    <div id="primary" class="content-area"> 
+      <div id="content" class="site-content">
+        <article class="page">
+          <div class="search-row">
+            <div class="large-12 search-columns">
+              <div class="entry-content">          
+              </div>  
+            </div>
+          </div>       
+          {% include 'new-search' %}
+        </article>
+      </div>
+    </div>
+   </div>
+</div>
+
+
+<script type="text/javascript">
+
+  $(document).ready(function() { 
+    if ($('input:-webkit-autofill') && $('.form-controls').val().length > 0)
+    {
+      $('.minimal-form-input').removeClass('no-text');
+      $('.minimal-form-input').addClass('has-text');
+    } else {
+      $('.minimal-form-input').addClass('no-text');
+      $('.minimal-form-input').removeClass('has-text');
+    }
+
+  });  
+
+</script>
+                    
+           
+<style>
+  .search-row {
+    margin: 0px;
+  }
+   #searchList td{
+    padding: 2px;
+  }
+  #searchListTitle td{
+    padding: 2px;
+  }
+  #searchListTag td{
+    padding: 2px;
+  }
+
+  .search-column {
+    padding: 5px;
+  }
+  .orderForm td:first-child {
+     width: 20%; 
+   }
+  .searchListImg img {
+    object-fit: cover;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+  }
+ .search-row tr {
+    cursor: pointer;
+  }
+  .form-controls {
+    border: none;
+  }
+  .search-row tr:hover {   
+    background: #f9f9f9;
+    padding: 2px;
+	}
+  .search_hint {
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+  .search-content {
+    margin-top: 30px;
+  }
+  .offcanvas_search .search-form:after {
+  	position: absolute;
+    top: 15px;
+    right: 0px;
+  }
+  .filterBox.fBox.minimal-form-input label span.text {
+    top: 30%;
+  }
+  td.searchListImg {
+   width: 50px;
+  }
+</style>
+    

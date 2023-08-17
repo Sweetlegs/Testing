@@ -1,0 +1,25 @@
+<div class="page-header spacing animated fadeIn">
+  <div class="row">
+    {%- unless template.name == '404' -%}
+    <div class="title-section spacing">
+      {%- include 'breadcrumb' -%}
+    
+ 		{%- if page_title == 'Account' and customer.first_name -%} 
+      		<h1 class="page-title">Hello {{customer.first_name}}, welcome to  your {{ page.title | downcase}}.</h1>
+      	{%- elsif  page_title == 'Bulk Order Form' -%}
+              <h1 class="page-title" >Quick Order Form</h1>
+        {%- else  -%}
+            <h1 class="page-title" > {{ page.title}}</h1>
+        {%- endif -%}
+      
+    </div>
+    {%- endunless -%}
+  </div>
+</div>
+
+
+<style>
+  .page-title {
+     white-space: nowrap;
+  }
+</style>

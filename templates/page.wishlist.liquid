@@ -1,0 +1,188 @@
+{%- assign wishlist_size = customer.metafields.wishlist | size -%}
+
+<div id="primary" class="content-area">
+  {%- include 'page-header' -%}
+  <div id="content" class="site-content">
+    <article class="page">
+      <div class="row">
+        <div class="large-10 columns large-centered">
+          <div class="entry-content page-wishlist">
+            {%- if customer -%}
+            <p class="infos hide">{{ 'wishlists.wishlist.product_successfully_removed' | t }}</p>
+   			 <input type="hidden" class= "customerId" name="customer" value="{{ customer.id }}" />
+            {{ collection.all_products_count }}
+            <script type="text/javascript">
+                window.wishlist = '{{customer.metafields.wishlist}}'; 
+                window.totalProductsCount = "{{collections['quick-order'].all_products_count}}";
+                window.customerId ="{{cusomer.id}}";
+            </script> 
+             <input type="hidden" name="shop" class='shop' value="{{ shop.permanent_domain }}">
+            <input type="hidden" name="metafield" class='metafield' value='{{customer.metafields.wishlist}}'>          
+           {% if wishlist_size > 0 %} 
+          <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/WishlistBanner.jpg?v=1643664129" alt="" width="" height="" /><br><br>
+            <table class="shop_table cart  wishlist_table products ">            
+              <thead>
+                <tr>
+                  <th class="product-remove"></th>
+                  <th class="product-thumbnail"></th>
+                  <th class="product-name">
+                    <span class="nobr">Product</span>
+                  </th>
+                   <th class="product-price">
+                    <span class="nobr">{{ 'wishlists.wishlist.unit_price' | t }}</span>
+                  </th>
+                  <th class="product-add-to-cart"></th>                
+                </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+             {% else %}
+        
+                  <tr class="wishlist-empty{% if wishlist_size > 0 %} hide{% endif %}">
+                  <td colspan="6">{{ 'wishlists.wishlist.no_products' | t }}</td>
+                </tr>
+              {% endif %}
+            {%- else -%}
+           <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/WishlistBanner.jpg?v=1643664129" alt="" width="" height="" />
+            <div style="text-align: center;padding: 25px 0 0 0;font-size: 20px;">{{ 'wishlists.wishlist.need_login_html' | t }}</div>
+            {%- endif -%}
+            {% if customer and wishlist_size > 0 %}
+           	   {%- include 'shared-wishlist' -%}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+<script>
+ var addToCart, imgSrc, wishlist = JSON.parse(window.wishlist.replace(/\=>/g, ':')),variantId =5, variantTitle, price, current_variant_price,inventoryQuantity, status = ` <span class="stock out-of-stock">Sold Out.</span>`, current_variant_compare_at_price;  
+  $(document).ready(function(e) {
+    customerId = $('.customerId').val();
+    shop = $('.shop').val();    
+    for(i =1; i <= (totalProductsCount/50 + 1); i++) {
+       $.ajax({
+          type: "GET",
+         url: `/collections/quick-order/products.json?limit=50&page=${i}`, 
+           success: function(response) {
+             response.products.forEach(function(product) {  
+                var index = product.images[0].src.indexOf('.jpg');
+               	handle = product.handle;
+               	productTitle = product.title;
+               	status = ` <span class="stock out-of-stock">Sold Out.</span>`;
+    			imgSrc = [product.images[0].src.slice(0, index), '_small', product.images[0].src.slice(index)].join('');
+               	product.variants.forEach(function(variant) {
+                  variantId = variant.id;
+                  variantTitle = variant.title;
+                 current_variant_compare_at_price = variant.compare_at_price;
+                 current_variant_price = variant.price;
+                   if(current_variant_compare_at_price > current_variant_price) {
+                          price = `<del><span class="price-old money">$${ current_variant_compare_at_price}</span></del>&nbsp;&nbsp;<ins><span class="price-new money">$${ current_variant_price}</span></ins>`;
+                        } else {
+                           price = `<ins><span class="price-new money">$${ current_variant_price}</span></ins>`;
+                        }
+               
+               if(product.variants.length > 1) {
+                      addToCart =` <a rel="nofollow" href="/collections/all/products/${handle}" class="button product_type_variable">
+                          <span class="button-loader"></span>
+                          {{- 'products.product.select_options' | t | escape -}}
+                        </a>`;
+                      if(variant.available){
+                        status = ` <span class="stock in-stock">In stock.</span>`;
+                      }
+                    } else {
+                      if(variant.available){
+                        status = ` <span class="stock in-stock">In stock.</span>`;
+                        addToCart = `                      
+                                        <form action="/cart/add" method="post" enctype="multipart/form-data">
+                                          <input type="hidden" name="quantity" value="1" />
+                                          <select class="hide" name="id">
+                                            <option value="${variantId }">${ variantTitle} - ${current_variant_price}</option>
+                                          </select>
+                                          <a rel="nofollow" href="/collections/all/products/${handle}" class="button product_type_simple add_to_cart_button ajax_add_to_cart">
+                                            <span class="button-loader"></span>
+                                            {{- 'products.product.add_to_cart' | t | escape -}}
+                                          </a>
+                                        </form>`;
+                      } else {
+                        addToCart= `<a rel="nofollow" href="/collections/all/products/${handle}" class="button product_type_simple">
+                          <span class="button-loader"></span>
+                          {{- 'products.product.read_more' | t | escape -}}
+                        </a>`;
+                      }
+                }
+               });
+               if(wishlist[product.id]) {
+                  $('.wishlist_table tbody').append(`<tr class="product eva_ajax_load_more_item_visible">
+                    <td class="product-remove">
+                      <form method="post" action="/contact" class="wishlist-form" enctype="multipart/form-data">
+                        <input type="hidden" name="customer" value="${customerId}">
+                        <input type="hidden" name="shop" value="${shop}">
+                        <input type="hidden" name="product" value="${product.id}">
+                        <a href="javascript:;" class="remove remove_from_wishlist" title="Remove this product">×</a>
+                      </form>
+                    </td>
+                    <td class="searchListImg">
+                      <a href="/collections/all/products/${handle}">
+                      <img src="${imgSrc}"  style="max-width: none"/>  
+                     </td>
+					<td class="product-name">
+						<a href="/collections/all/products/${handle}">${productTitle}</a>
+ 					</td>
+					<td class="product-price">
+ 						${price}
+                   </td>
+					<td class="product-add-to-cart">
+						<div class="product_after_shop_loop_buttons"> 
+							${addToCart}
+						</div>
+                  </td>
+				</tr>`)
+               }
+             });
+
+          },
+       });
+  	}
+    
+  $(document).on('click','.add_to_cart_button', function(e) {
+      $('.cart_items_number.counter_number.animated.rubberBand').text(parseInt($('.cart_items_number.counter_number.animated.rubberBand').text()) + 1);
+    });
+
+});
+
+</script>
+<style>
+  .wishlist_table .searchListImg img {
+      height: 67px;
+      width: 67px;
+  }
+  .wishlist_table th {
+    text-align: left;
+  }
+  .add_to_cart_button {
+    min-width: 100px;
+  }
+  @media (max-width: 550px){ 
+    td.product-price {
+      display: none;
+    }
+    table.wishlist_table tbody td {
+      padding: 10px 5px;
+    }
+    .wishlist_table .searchListImg img {
+      height: 50px;
+      width: 50px;
+	}
+    .product-name a {
+      font-size: 12px!important;
+    }
+    th.product-price{
+      display:none;
+    } 
+  }
+</style>
+
+

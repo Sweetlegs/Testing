@@ -1,0 +1,768 @@
+<style>  
+  /* fabric-benefit css goes here   */
+  
+  @media (min-width: 1025px)
+	header.site-header .nav2 .menu-item.is-mega-menu .sub-menu {
+    	left: -480px!important;
+	}
+  .altheisure-table th {
+    text-align: left;
+  }
+  .section-sixth-cont {
+    padding: 2.5rem;
+  }
+  .img-styling {
+    width: 100%;
+  }
+  #fabric-benefit {
+    background-image: url(https://cdn.shopify.com/s/files/1/2445/2869/files/Athleisure-FabricBenefitsPhoto.jpg?v=1634929759);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  #fabric-benefit h1 {
+    color: white;
+  }
+  #fabric-benefit img {
+    height: 150px;
+  }
+  #fabric-benefit .fab-cont {
+    background: #00000078;
+    padding: 100px 0px;
+  }
+  
+/* fabric-benefit ends css goes here   */
+  html {
+    scroll-behavior: smooth;
+  }
+  a:hover{
+    color: white !important;
+    cursor: pointer;
+  }
+  .altheisure-banner{
+    position: relative;
+    height: 70vh;
+    background: #171513;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .altheisure-banner-child{
+      position: absolute;
+  }
+  .altheisure-banner h1,
+  .altheisure-banner h3{
+  	color: white;
+    text-align: right;
+  }
+  
+  .banner {
+    background-color: #222;
+    height: 100vh;
+  }  
+  
+/* form   */
+
+.form{
+  margin: 0 auto !important;
+}
+.form-item{
+  position: relative !important;
+  margin-bottom: 15px !important;
+}
+.form-item input{
+  display: block !important;
+  width: 100% !important;
+  height: 50px !important;
+  background: #171513 !important;
+  border: solid 2px #22201e !important;
+  transition: all .3s ease !important;
+  padding: 15px !important;
+  color: white !important;
+  border-radius: 5px;
+  font-size: 16px !important;
+}
+.form-item input:focus{
+  border-color: white !important;
+}
+.form-item label{
+  position: absolute !important;
+  cursor: text !important;
+  z-index: 2 !important;
+  top: 13px;
+  left: 10px !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
+  background: #171513 !important;
+  padding: 0 10px !important;
+  color: white !important;
+  transition: all .3s ease !important;
+}
+.form-item input:focus + label,
+.form-item input:valid + label{
+  font-size: 11px !important;
+  top: -8px !important;
+}
+
+  .active{
+    top: -8px !important;
+  }  
+  
+  
+.form-item input:focus + label{
+  color: white !important;
+}
+ 
+  
+/*  */
+
+.athleisure-button,
+button.athleisure-button{
+	font-weight: 700;
+    font-size: 16px;
+    background-color: white;
+    color: rgb(0,0,0);
+    border: .8px solid white;
+  	border-radius: 3px;
+  	padding: .6375rem 1.575rem;
+    background: linear-gradient(to right, white 50%, #171513 50%) left;
+    background-size: 200%;
+    transition: all 1.2s .25s cubic-bezier(0,1,.3,1), opacity .6s .25s ease-out;
+}
+  
+  button.athleisure-button:hover{
+    background-position: right;
+    color: white;
+  }
+  
+  .form-container {
+  background: #171513;
+  border-radius: 12px;
+  height: 286.8px;
+}
+
+.form-container2{
+  background: #171513;
+  padding: 2rem 4rem;
+  margin: 0;
+  border-radius: 12px;
+  height: 286.8px;
+}
+  
+ .social-container{
+  background: #171513;
+  padding: 2rem;
+  margin: 0 0px 30px 0;
+  border-radius: 12px;
+  height: 286.8px;
+  color: white;
+ }
+  
+  .second-sub p{
+    color: white;
+    font-size: 25px;
+    font-weight: unset;
+    margin: 2rem 0;
+    padding: 0 15px;
+  }
+  /*    */
+  .wrapper{
+    width: 100%;
+    height: 634.4px;
+    overflow: hidden;
+  }
+
+  .wrapper .wrapper__video{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    #fabric-benefit img {
+    	height: 120px;
+	}
+    .social-container {
+       padding: 2rem;
+       height: unset;
+    }
+    .second-sub p{
+      font-size: 18px;
+      padding: 0;
+    }
+    .form-container {
+      height: 367.6px;
+	  margin: 0 0 30px 0;
+      padding: 0;
+    }
+   	.form-container2{
+      margin: 0;
+      padding: 2rem;
+      height: 367.6px;
+    }
+    .section-third {
+      margin-top: 0;
+    }
+    .wrapper{
+      height: 292.8px;
+    }
+    #card{
+      padding-left: 0;
+    }
+  }
+  
+  .footer-text {
+    font-size: 26px;
+    background: black;
+  }
+  
+  @media only screen and (max-width: 768px) and (min-width: 601px) {
+    .form-container {
+      height: 334.6px;
+      margin: 0 0 30px 0;
+      padding: 0;
+    }
+    .form-container2{
+      margin: 0;
+      padding: 2rem;
+      height: 334.6px;
+    }
+    .flip-card {
+      padding: 0;
+    }
+  }
+  
+  .form-container p,
+  .social-container p{
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  
+
+  
+  @media only screen and (min-width: 769px) and (max-width: 1100px) {
+    .form-container,
+    .form-container2
+    {
+      height: 244px;
+    }
+    .social-container{
+      height: unset;
+    }
+    .form-container{
+      margin-bottom: 30px;
+    }
+    .flip-card {
+      padding: 0;
+    }
+    .form-container2{
+      margin-right: 10px;
+    }
+  }
+  
+  
+  header.site-header .header-wrapper .nav .header-nav .menu-trigger div span, header.site-header .header-wrapper .nav .header-nav .menu-trigger div span::after, header.site-header .header-wrapper .nav .header-nav .menu-trigger div span::before {
+     background: white !important; 
+  }
+  
+  .social-icons2{
+    margin-top: 1.2rem;
+    background-color: #171513 !important;
+    padding: 0;
+    margin-left: 0;
+    display: flex;
+    text-align: center;
+    list-style: none;
+  }
+  
+  .social-icons2 li a:before {
+    font-family: FontAwesome;
+    font-weight: 400;
+    font-style: normal;
+    display: inline-block;
+    color: #00c4b3 !important;
+    font-size: 24px;
+    width: 45px;
+    height: 35px;
+    -moz-transition: transform .3s ease;
+    -o-transition: transform .3s ease;
+    -webkit-transition: transform .3s ease;
+    transition: transform .3s ease;
+}
+  
+  .social-icons2 li.facebook a:before {
+    content: "\f09a";
+}
+  
+  .social-icons2 li.instagram a:before {
+    content: "\f16d";
+}
+
+ .social-icons2 li a:hover:before{
+   transform: scale(1.4) !important;
+}
+  
+  #share-email{
+    display: flex;
+    align-items: center;
+    margin-top: 3px;
+  }
+  
+  span.fa.fa-envelope-o {
+    color: #00c4b3;
+    font-size: 1.5rem;
+    transition: all .3s ease;
+  }
+  
+  span.fa.fa-envelope-o:hover {
+    font-size: 2rem;
+  }
+  
+  
+/* new CSS */  
+.row-flex {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+[class*="col-"] {
+  margin-bottom: 30px;
+}
+
+.content {
+  height: 100%;
+  border: none;
+}
+  
+/* Flip the card */
+  .flip-card {
+  background-color: transparent;
+  perspective: 1000px;
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -o-perspective:1000;
+    -ms-perspective: 1000;
+}
+  .heading {
+    font-weight: normal;
+  }
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d; 
+        -ms-transform-style: preserve-3d;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+      -webkit-backface-visibility: hidden;
+      -moz-backface-visibility: hidden;
+      -ms-backface-visibility: hidden;
+      backface-visibility: hidden; 
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+
+.flip-card-back {
+  color: white;
+  transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+      -moz-transform: rotateY(180deg);
+      -o-transform: rotateY(180deg);
+      -ms-transform: rotateY(180deg);
+}
+  
+  #altheisure input:-webkit-autofill {
+    color: white !important;
+    background-color: #171513 !important;
+    -webkit-box-shadow: 0 0 0 60px #171513 inset !important;
+  }
+
+  input:-webkit-autofill {
+    color: white !important;
+    background-color: #171513 !important;
+    -webkit-box-shadow: 0 0 0 60px #171513 inset !important;
+  }
+  input:autofill {
+    color: white !important;
+    background-color: #171513 !important;
+    -webkit-box-shadow: 0 0 0 60px #171513 inset !important;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active  {
+    color: white !important;
+    -webkit-box-shadow: 0 0 0 60px #171513 inset !important;
+    background-color: #171513 !important;
+    background: transparent !important;
+    -webkit-text-fill-color: white !important;
+    background-clip: content-box !important;
+  }
+  .it-bold {
+    font-weight: bold;
+    font-style: italic;
+  }
+  .vimeo-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .vimeo-wrapper iframe {
+    width: 100vw;
+    height: 56.25vw; /* Given a 16:9 aspect ratio, 9/16*100 = 56.25 */
+    min-height: 100vh;
+    min-width: 177.77vh; /* Given a 16:9 aspect ratio, 16/9*100 = 177.77 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .second-paragraph{
+    line-height: 2.6rem;
+    color: #333;
+    font-weight: 400;
+    font-size: 18px;
+  }
+
+  .section-fifth, .section-fourth, .section-third {
+    background: white;
+    padding-top: 3rem;
+  }
+
+  .section-sixth {
+    color: white;
+    background-image: url(https://cdn.shopify.com/s/files/1/2445/2869/files/Bag-blackbg.jpg?v=1619024123.jpg);
+    background-position: 100% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .section-sixth-content{
+    background: #00000078;
+    padding: 2rem 0px;
+  }
+  
+/*   .section-fifth-heading {
+    padding: 3rem 0 2rem 0;
+  } */
+  
+  p.section-fifth-paragraph {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  ul.section-fifth-list {
+    line-height: 2.6rem;
+    font-size: 18px;
+    font-weight: 400;
+    padding-left: 20px;
+}
+  
+  #altheisure .altheisure-table>tbody>tr>td{
+    text-align: center !important;
+    padding: 15px !important;
+  }
+  
+  .altheisure-table{
+    margin-top: 3rem
+  }
+  .eco-images img{
+    height: 100px;
+  }
+  .section-fifth-heading{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .img-styling{
+  	box-shadow: 21px 25px 23px -7px rgba(0,0,0,0.15);
+    border-radius: 20px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .content,.main-altheisure-table{
+      padding: 0;
+    }
+    .section-fifth{
+      padding-top: 0;
+    }
+    .second-paragraph, ul.section-fifth-list {
+      line-height: 1.6rem;
+      font-weight: 300;
+      font-size: 16px;
+    }
+    .altheisure-table {
+      margin-top: 0rem;
+    }
+    .eco-images{
+      display: none;
+    }
+  }
+  
+  
+</style>  
+        <div class="second-section">
+          <div class="row" style="text-align: center">
+            <div class="col-xs-12">
+              <h1 class="heading" data-aos="fade-up" data-aos-offset="100" data-aos-delay="200" data-aos-duration="1000" class="columns large-12" style="color: rgb(0,0,0)">CONFIDENCE IN MOTION. YOU ARE <span class="it-bold">WILD, UNSTOPPABLE,</span> AND <span class="it-bold">EXCITING</span>.
+                THIS COLLECTION IS DESIGNED FOR <span class="it-bold">YOU.</span></h1>
+            </div>
+          </div>
+          <div class="row row-flex">
+            <div data-aos="fade-left" data-aos-offset="250" data-aos-delay="400" data-aos-duration="1000" class="col-md-6 col-sm-12 col-xs-12">
+              <div class="content">
+				<img class="img-styling" src="https://cdn.shopify.com/s/files/1/2445/2869/files/Athleisure-IntroPhoto.jpg?v=1619024123"/>
+              </div>
+            </div>
+            <div data-aos="fade-right" data-aos-offset="250" data-aos-delay="400" data-aos-duration="1000" class="col-md-6 col-sm-12 col-xs-12">
+              <div class="content">
+                <p class="second-paragraph">The Free Motion Legging was created with every lifestyle in mind and is designed to move with you during your day-to-day activities while still being ultra-comfortable for your next Netflix binge.</p>
+                <p class="second-paragraph">Our soft-touch exclusive polyester-elastane blend features a highly requested wide yoga waistband, and our breathable moisture-wicking fabric with medium compression will keep you smooth and comfortable all day. A hidden waistband pocket for your keys or credit card allows you to ditch your wallet, and the four-way stretch and reinforced gusset provide strength and support when you're always on the go.</p>
+                <p class="second-paragraph">Whether you're working out, grabbing groceries, doing school drop-off, or relaxing, our Free Motion Leggings have you covered.</p>
+              </div>
+            </div>
+          </div>          
+        </div>
+
+        <!--   section third     -->  
+         <section id="fabric-benefit">
+          <div class="fab-cont">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-xs-12">
+                  <h1 data-aos="fade-up" data-aos-offset="100" data-aos-delay="180" data-aos-duration="1000" class="columns large-12">FABRIC BENEFITS</h1>
+                </div>
+              </div>
+              <div style="text-align: center" class="row">
+                  <div data-aos="fade-in" data-aos-offset="150" data-aos-delay="250" data-aos-duration="1000" class="col-lg-2 col-md-4 col-sm-6 col-xs-6"><img src="https://cdn.shopify.com/s/files/1/2445/2869/files/AthleisureIcons-white-1.svg?v=1634929839"/></div>
+                  <div data-aos="fade-in" data-aos-offset="150" data-aos-delay="450" data-aos-duration="1000" class="col-lg-2 col-md-4 col-sm-6 col-xs-6"><img src="https://cdn.shopify.com/s/files/1/2445/2869/files/AthleisureIcons-white-2.svg?v=1634929839"/></div>
+                  <div data-aos="fade-in" data-aos-offset="150" data-aos-delay="650" data-aos-duration="1000" class="col-lg-2 col-md-4 col-sm-6 col-xs-6"><img src="https://cdn.shopify.com/s/files/1/2445/2869/files/AthleisureIcons-white-3.svg?v=1634929839"/></div>
+                  <div data-aos="fade-in" data-aos-offset="150" data-aos-delay="850" data-aos-duration="1000" class="col-lg-2 col-md-4 col-sm-6 col-xs-6"><img src="https://cdn.shopify.com/s/files/1/2445/2869/files/AthleisureIcons-white-antimicrobial.svg?v=1635343902"/></div>
+                  <div data-aos="fade-in" data-aos-offset="150" data-aos-delay="1050" data-aos-duration="1000" class="col-lg-2 col-md-4 col-sm-6 col-xs-6"><img src="https://cdn.shopify.com/s/files/1/2445/2869/files/AthleisureIcons-white-5.svg?v=1634929839"/></div>
+                  <div data-aos="fade-in" data-aos-offset="150" data-aos-delay="1250" data-aos-duration="1000" class="col-lg-2 col-md-4 col-sm-6 col-xs-6"><img src="https://cdn.shopify.com/s/files/1/2445/2869/files/AthleisureIcons-white-6.svg?v=1634929839"/></div>
+              </div>
+            </div>
+          </div>
+        </section> 
+        <!--          -->
+        
+        <!--   Section Fourth       -->
+        <div class="section-fourth">
+          <div class="row row-flex">
+            <div class="col-lg-6">
+              <div data-aos="fade-left" data-aos-offset="250" data-aos-delay="375" data-aos-duration="1000">
+                <div class="content">
+                  <img class="img-styling" src="https://cdn.shopify.com/s/files/1/2445/2869/files/Athleisure-SizeChartPhoto.jpg?v=1619024123" alt="Athleisure Size Chart"/>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-right" data-aos-offset="250" data-aos-delay="375" data-aos-duration="1000">
+              <div class="content">
+                <h1 class="section-fourth-heading">SIZE CHART</h1>
+                <table class="table altheisure-table">
+                  <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col">BUST</th>
+                      <th scope="col">WAIST</th>
+                      <th scope="col">HIP</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">XS</th>
+                      <td>32-33</td>
+                      <td>24-25</td>
+                      <td>35-36</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">S</th>
+                      <td>34-35</td>
+                      <td>26-27</td>
+                      <td>37-38</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">M</th>
+                      <td>36-37</td>
+                      <td>28-29</td>
+                      <td>39-41</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">L</th>
+                      <td>38-41</td>
+                      <td>30-34</td>
+                      <td>42-45</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">XL</th>
+                      <td>42-46</td>
+                      <td>35-39</td>
+                      <td>46-50</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2X</th>
+                      <td>47-50</td>
+                      <td>40-44</td>
+                      <td>51-55</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3X</th>
+                      <td>51-54</td>
+                      <td>45-48</td>
+                      <td>56-59</td>
+                    </tr>         
+                  </tbody>
+                </table>
+                <p>
+                  Our compression fabric will apply gentle pressure to the body and have a tight, close fit that will provide support to your stomach, back, and legs.
+                </p>
+                <p>
+                  To find your perfect fit, we recommend measuring your bust, hips, and waist with a soft measuring tape and comparing your measurements to the size chart below. If your measurements fall in between sizes, we recommend sizing up.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--          -->
+        
+        <!--   Section Fifth       -->
+        <div class="section-fifth">
+          <div class="row">
+            <div class="col-xs-12">
+              <h1 data-aos="fade-up" data-aos-offset="200" data-aos-delay="250" data-aos-duration="1000" class="section-fifth-heading">DESIGN FEATURES</h1>
+              <img data-aos="fade-up" data-aos-offset="200" data-aos-delay="350" data-aos-duration="1000" class="img-styling" src="https://cdn.shopify.com/s/files/1/2445/2869/files/Athleisure-DesignFeauturesPhoto.jpg?v=1619024123" alt="Atleisure Legging">   
+            </div>
+          </div>
+        </div>  
+        <!--          -->
+        
+        <!--   Section Sixth       -->
+        <div class="section-sixth">
+   		<div class="section-sixth-content">
+          <div class="row">
+            <div class="col-xs-12 section-sixth-cont">
+                <div data-aos="fade-up" data-aos-offset="200" data-aos-delay="250" data-aos-duration="1000" class="section-fifth-heading">
+                  <h1>ECO PACKAGING</h1>
+                  <div class="eco-images">
+                    <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/Eco-Icon-1.svg?v=1619024123" alt="icons">
+                    <img src="https://cdn.shopify.com/s/files/1/2445/2869/files/Eco-Icon-2.svg?v=1619024123" alt="icons">
+                  </div>
+                </div>
+                <div data-aos="fade-up" data-aos-offset="200" data-aos-delay="600" data-aos-duration="1000" class="section-fifth-list">
+                  <div class="footer-text">As part of our ongoing commitment to the environment, our Athleisure packaging is proudly made from plant starch and will safely biodegrade in a landfill or your home compost.</div>
+                </div> 
+            </div>
+          </div>
+          </div>
+        </div>
+        <!--          -->
+
+  
+
+<script type="text/javascript" src="//www.klaviyo.com/media/js/public/klaviyo_subscribe.js"></script>
+<script>
+  
+  $(document).ready(function(){
+    $("video").load();
+
+    var video_button = $(".wrapper")[0];
+    video_button.addEventListener("click", function() {
+      var video = $("video")[0];
+      const booleanValue = video.muted.valueOf();
+      if (booleanValue == true) {
+        video.muted = false;
+      } else {
+        video.muted = true;
+      }
+    });
+  });
+
+
+$('#altheisure input').on('focusin', function() {
+  $(this).parent().find('label').addClass('active');
+});
+
+$('#altheisure input').on('focusout', function() {
+  if (!this.value) {
+    $(this).parent().find('label').removeClass('active');
+  }
+});
+  
+  
+  $('#altheisure .facebook a').click(function(e) {
+    url = 'sweetlegs.com/pages/atheleisure';
+    url = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    window.open(url,'_blank');
+  });
+  
+    $('#altheisure .instagram a').click(function(e) {
+    url = 'sweetlegs.com/pages/atheleisure';
+    url = `https://www.instagram.com/sharer/sharer.php?u=${url}`;
+    window.open(url,'_blank');
+  });
+  
+  $('#share-email').click(function(e) {
+    var user = `{{customer.first_name}}`;
+    var dynamic_subject = '';
+    
+    if(!user){
+    	dynamic_subject = `Preview the new SweetLegs Athleisure collection!`;
+    }else{
+    	dynamic_subject = `{{customer.first_name}} is inviting you to preview the new SweetLegs Athleisure collection!`;
+    }
+    var shareLink = 'https://sweetlegs.com/pages/athleisure';
+    var body = `Redefine the way you move with Athleisure by SweetLegs, coming soon! Click here to learn more! ${shareLink}`;
+    var subject = dynamic_subject;
+    window.location = `mailto:?subject=${subject}&body=${body}`;
+  }); 
+
+
+</script>
+  
+<script>
+  $("#athleisure-button").click(function (event) {  
+    event.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: `https://sweetlegs.rocks/api/klaviyo/sms-sign-up/atheleisure`,
+      data: $('#athleisure_signup').serialize(),
+      dataType: "json",
+    }).done(function (data) {
+      if(data['statusCode'] != 200) {
+        var flip = document.getElementsByClassName('flip-card-inner')[0];
+        var form_visibility = document.getElementById('front-part');
+        var button_hide = document.getElementById('athleisure-button');
+        form_visibility.style.visibility = "hidden";
+        button_hide.style.display = "none";
+        flip.style.transform = "rotateY(180deg)";  
+      } else {
+        console.log("Fail subscription");
+      }
+    });
+  });
+</script>
+
+  
+
+
+
+
